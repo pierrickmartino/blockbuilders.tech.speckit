@@ -18,6 +18,10 @@
   - Tested independently
   - Deployed independently
   - Demonstrated to users independently
+
+  Constitution alignment: For every story call out the principles it satisfies
+  (quality, simplicity, testing, experience, performance) and the acceptance
+  checks that will prove compliance.
 -->
 
 ### User Story 1 - [Brief Title] (Priority: P1)
@@ -74,6 +78,8 @@
 
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
+- Which UX or accessibility failures must be handled (keyboard traps, focus loss, missing alt text)?
+- What happens if performance budgets are exceeded (e.g., TTI >2s, API p95 >200ms, job queue saturation)?
 
 ## Requirements *(mandatory)*
 
@@ -83,6 +89,9 @@
 -->
 
 ### Functional Requirements
+
+> Map each requirement to the relevant constitution principle. Explicitly list
+> the tests, telemetry, or UX artefacts that will demonstrate compliance.
 
 - **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
 - **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
@@ -109,7 +118,7 @@
 
 ### Measurable Outcomes
 
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+- **SC-QLT**: Quality gates execute successfully (`pnpm lint`, `pnpm type-check`, `pnpm test:coverage`, `ruff check`, `uv run pytest`) with ≥80% coverage for affected code.
+- **SC-UX**: Experience meets documented acceptance criteria, including WCAG 2.2 AA validation (axe audits, keyboard walkthrough, screen reader spot-check).
+- **SC-PERF**: Performance budgets stay within target (e.g., TTI ≤2s, LCP ≤2.5s, API p95 ≤200ms) with telemetry instrumentation proving compliance.
+- **SC-BIZ**: [Business metric, e.g., "Reduce support tickets related to onboarding by 50%"]

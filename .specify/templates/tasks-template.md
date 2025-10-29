@@ -12,6 +12,9 @@ description: "Task list template for feature implementation"
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
+**Quality Gates**: Ensure the task list covers constitution obligations—pre-implementation tests,
+lint/type checks, accessibility validation, and performance telemetry updates for the affected user stories.
+
 ## Format: `[ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
@@ -81,7 +84,9 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation. Add
+> accessibility audits (axe, keyboard walkthrough) and performance validation
+> tasks whenever the UX or runtime changes.**
 
 - [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
@@ -107,6 +112,9 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
 
+> Apply the same constitution checks: failing-first tests, accessibility audits,
+> and performance validations for the surfaces affected by User Story 2.
+
 - [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
 
@@ -128,6 +136,9 @@ Examples of foundational tasks (adjust based on your project):
 **Independent Test**: [How to verify this story works on its own]
 
 ### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+
+> Plan the coverage, accessibility, and performance validation before
+> implementation; document how each aligns with the constitution.
 
 - [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
 - [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py

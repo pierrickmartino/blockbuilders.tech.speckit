@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- **Code Quality Without Compromise**: List the linting, type-checking, security, and review gates (Next.js: `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`; Python: `ruff check`, `uv run pytest`) that will run before implementation.
+- **Simplicity Over Speculation**: Map every planned deliverable to approved requirements in `/specs/.../spec.md`; flag and remove scope without traceability or document the governance exception.
+- **Test Evidence First**: Identify the failing tests that will be written before implementation (unit, integration, accessibility, API contract) and how ≥80% coverage will be maintained.
+- **Consistent Experience Every Time**: Reference Tailwind tokens, shared components, and UX acceptance checks that ensure WCAG 2.2 AA compliance for the affected flows.
+- **Performance and Reliability Budgets**: Capture the target metrics (e.g., TTI ≤2s, LCP ≤2.5s, API p95 ≤200ms) and the telemetry or load validation that will prove compliance.
 
 ## Project Structure
 
