@@ -70,6 +70,7 @@ Engineers need documented workflows that run automated linting, unit tests, and 
 - **FR-006**: Container definitions and a compose configuration MUST enable local orchestration of all services to mirror production topology (Principles: performance, simplicity). Verified by successful container build and compose up execution.
 - **FR-007**: Continuous integration workflows MUST run linting, testing, and container builds on every push, blocking merges on failure and surfacing actionable logs (Principles: quality, testing). Verified by CI pipeline configuration and run history.
 - **FR-008**: Repository documentation MUST guide developers through prerequisites, setup time expectations, troubleshooting steps, and common tasks within 15 minutes of reading (Principles: experience, simplicity). Verified by onboarding dry run feedback.
+- **FR-009**: Frontend environment loader MUST validate required runtime variables with Zod, selected under the Simplicity Over Speculation principle to reuse an established TypeScript-first schema tool instead of introducing heavier config frameworks or bespoke parsing. Verified by automated Vitest coverage that fails when required variables are absent or malformed.
 
 ### Key Entities *(include if feature involves data)*
 

@@ -35,6 +35,7 @@
 
 - [ ] T007 [P] [US1] Author failing Vitest spec covering build snapshot shape in `apps/frontend/tests/unit/build-metadata.spec.ts`
 - [ ] T008 [P] [US1] Add Playwright smoke test validating landing page metadata attributes in `apps/frontend/tests/smoke/root.spec.ts`
+- [ ] T050 [P] [US1] Extend Vitest and Playwright coverage to assert default metadata labels render when git details are missing in `apps/frontend/tests/unit/build-metadata.spec.ts` and `apps/frontend/tests/smoke/root.spec.ts`
 
 ### Implementation for User Story 1
 
@@ -47,6 +48,7 @@
 - [ ] T015 [P] [US1] Implement build metadata helper consuming shared script output in `apps/frontend/lib/build-metadata.ts`
 - [ ] T016 [US1] Compose root layout applying globals and injecting metadata context in `apps/frontend/app/layout.tsx`
 - [ ] T017 [US1] Render landing page exposing build metadata via `data-app-*` attributes in `apps/frontend/app/page.tsx`
+- [ ] T051 [US1] Handle missing git metadata by providing default labels before rendering in `apps/frontend/lib/build-metadata.ts` and `apps/frontend/app/page.tsx`
 - [ ] T018 [P] [US1] Configure Vitest runner with coverage ≥80% in `apps/frontend/vitest.config.ts`
 - [ ] T019 [P] [US1] Configure Playwright smoke project with axe accessibility checks in `apps/frontend/playwright.config.ts`
 - [ ] T020 [P] [US1] Provide environment example placeholders for NEXT_PUBLIC variables in `apps/frontend/.env.example`
@@ -98,7 +100,11 @@
 - [ ] T039 [P] [US3] Add GitHub Actions workflow running lint, type-check, and tests in `configs/ci/workflows/ci.yml`
 - [ ] T040 [P] [US3] Add GitHub Actions workflow building containers and running vulnerability scans in `configs/ci/workflows/containers.yml`
 - [ ] T041 [US3] Create Makefile targets for dev, lint, test, and compose operations in `Makefile`
-- [ ] T042 [US3] Update root README with CI matrices, container usage, and troubleshooting in `README.md`
+- [ ] T042 [US3] Update root README with CI matrices, container usage, troubleshooting, and links to recorded performance metrics in `README.md`
+- [ ] T046 [P] [US3] Record lint/test execution time in CI runs and store evidence referenced by quickstart (SC-TEST)
+- [ ] T047 [P] [US3] Instrument pytest to log `/health` latency across five CI runs and persist the aggregated report (SC-OPS)
+- [ ] T048 [P] [US3] Collect Next.js build metrics and Playwright performance trace verifying TTI ≤2s and LCP ≤2.5s; publish runbook in `configs/ci/reports/frontend-performance.md`
+- [ ] T049 [P] [US3] Capture frontend/backend container cold start timings in CI and store artifact summary in `configs/ci/reports/container-start-times.md`
 
 **Checkpoint**: Tooling parity confirmed—local and CI workflows enforce guardrails for both services.
 
@@ -109,7 +115,7 @@
 **Purpose**: Documentation and validation tasks that span all stories.
 
 - [ ] T043 Compile troubleshooting matrix for frontend/backend services in `docs/TROUBLESHOOTING.md`
-- [ ] T044 Capture validated quickstart walkthrough aligning commands with reality in `docs/QUICKSTART.md`
+- [ ] T044 Capture validated quickstart walkthrough aligning commands with reality and highlight CI timing/latency evidence in `docs/QUICKSTART.md`
 - [ ] T045 Record release readiness checklist covering tests, coverage, and container scans in `docs/RELEASE_CHECKLIST.md`
 
 ---
@@ -136,7 +142,8 @@
 
 ```bash
 # Parallel tests
-# T007 vs T008 (Vitest spec and Playwright smoke) target separate files and can be developed concurrently.
+# T007 vs T008 (baseline Vitest + Playwright) target separate files and can be developed concurrently.
+# T050 layers fallback coverage once baseline metadata rendering is in place.
 
 # Parallel implementation
 # T010–T015 cover tsconfig, next.config, tailwind config, env loader, and metadata helper.
@@ -150,7 +157,7 @@
 ### MVP First (User Story 1 Only)
 
 1. Complete Setup and Foundational phases (T001–T006).  
-2. Deliver User Story 1 (T007–T021) and validate via `pnpm dev`, Vitest, and Playwright.  
+2. Deliver User Story 1 (T007–T021, T050–T051) and validate via `pnpm dev`, Vitest, and Playwright.  
 3. Demo landing page metadata to stakeholders before expanding scope.
 
 ### Incremental Delivery
@@ -165,4 +172,3 @@
 1. Pair focus: One team drives User Story 1 while another handles User Story 2 after foundational work.  
 2. A third contributor can begin User Story 3 once both app stories expose stable commands, coordinating on Makefile and CI definitions.  
 3. Reconvene to complete Polish tasks ensuring documentation matches delivered workflows.
-

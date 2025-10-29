@@ -1,11 +1,11 @@
-/speckit.constitution 
+# /speckit.constitution 
 
 Create principles focused on code quality, simplicity (KISS - Keep It Simple, Stupid / YAGNI - You Aren't Gonna Need It), testing standards, user experience consistency, and performance requirements. 
 Include governance for how these principles should guide technical decisions and implementation choices. 
 Use standard and best-practices for NextJS 15, React 19, TailwindCSS, Python.
 
 
-/speckit.specify
+# /speckit.specify
 
 Title: Initial technical skeleton (mono-repo)
 Why: Establish fast iteration loop with tests & CI; no product features yet.
@@ -22,10 +22,10 @@ Acceptance Criteria:
 - Repo READMEs document how to run locally.
 
 
-/speckit.clarify
+# /speckit.clarify
 
 
-/speckit.plan
+# /speckit.plan
 
 Stack decisions & architecture:
 - Frontend: Next.js 15 + Tailwind; directory layout, env handling, base layout.tsx.
@@ -35,5 +35,11 @@ Stack decisions & architecture:
 - CI: GHA workflows matrix for Frontend/Backend.
 Risks: version pinning, caching in CI, docker layer caching.
 
-/speckit.tasks
 
+# /speckit.tasks
+
+
+# /speckit.analyze
+
+
+# /speckit.implement Phase 1
