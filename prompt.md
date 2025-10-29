@@ -19,3 +19,14 @@ Acceptance Criteria:
 - `pnpm dev` runs Frontend at /; `uv run fastapi dev` (or `make dev`) serves Backend at /health.
 - `pnpm test` and `pytest` green in CI.
 - Repo READMEs document how to run locally.
+
+
+/speckit.plan
+
+Stack decisions & architecture:
+- Frontend: Next.js 15 + Tailwind; directory layout, env handling, base layout.tsx.
+- Backend: FastAPI app factory pattern; routers folder; settings module; uvicorn config.
+- Local orchestration: docker-compose with shared network; .env.example files.
+- Testing strategy: Vitest + Playwright smoke; pytest for Backend; coverage thresholds.
+- CI: GHA workflows matrix for Frontend/Backend.
+Risks: version pinning, caching in CI, docker layer caching.

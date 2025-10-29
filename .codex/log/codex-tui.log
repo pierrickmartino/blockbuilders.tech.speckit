@@ -603,3 +603,484 @@
 [2m2025-10-29T21:27:08.193396Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Gather context and determine feature short name and next feature number"},{"status":"completed","step":"Run feature creation script to generate branch and initial spec file"},{"status":"completed","step":"Draft specification content per template and quality criteria"},{"status":"completed","step":"Create validation checklist, verify spec, and update as needed"}]}
 [2m2025-10-29T21:27:13.463282Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status -sb"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
 [2m2025-10-29T21:28:01.937729Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --paths-only"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:29:54.779583Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-10-29T21:29:57.960754Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-10-29T21:29:57.968034Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-10-29T21:30:21.071541Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"in_progress","step":"Run setup script to retrieve feature spec metadata"},{"status":"pending","step":"Load required context files and review existing plan template"},{"status":"pending","step":"Populate IMPL_PLAN through Phase 0 research outputs"},{"status":"pending","step":"Complete Phase 1 design artifacts and agent context update"},{"status":"pending","step":"Summarize results with required reporting"}]}
+[2m2025-10-29T21:30:22.613042Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/setup-plan.sh --json"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:30:26.548934Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to retrieve feature spec metadata"},{"status":"in_progress","step":"Load required context files and review existing plan template"},{"status":"pending","step":"Populate IMPL_PLAN through Phase 0 research outputs"},{"status":"pending","step":"Complete Phase 1 design artifacts and agent context update"},{"status":"pending","step":"Summarize results with required reporting"}], "explanation":"Setup script returned paths for feature spec, plan template, and repo branch."}
+[2m2025-10-29T21:30:29.278714Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .specify/memory/constitution.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:30:30.915828Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/001-bootstrap-monorepo/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:30:32.755011Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/001-bootstrap-monorepo/plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:30:35.536715Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to retrieve feature spec metadata"},{"status":"completed","step":"Load required context files and review existing plan template"},{"status":"in_progress","step":"Populate IMPL_PLAN through Phase 0 research outputs"},{"status":"pending","step":"Complete Phase 1 design artifacts and agent context update"},{"status":"pending","step":"Summarize results with required reporting"}], "explanation":"Reviewed feature spec, constitution, and plan template to prepare for drafting plan."}
+[2m2025-10-29T21:31:21.307292Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-bootstrap-monorepo/plan.md
+@@
+-# Implementation Plan: [FEATURE]
+-
+-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+-
+-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+-
+-## Summary
+-
+-[Extract from feature spec: primary requirement + technical approach from research]
++# Implementation Plan: Initial Technical Skeleton (Mono-Repo)
++
++**Branch**: `001-bootstrap-monorepo` | **Date**: 2025-10-29 | **Spec**: `/specs/001-bootstrap-monorepo/spec.md`
++**Input**: Feature specification from `/specs/001-bootstrap-monorepo/spec.md`
++
++## Summary
++
++Establish a mono-repo baseline that hosts a Next.js 15 + Tailwind frontend and a FastAPI service, both containerized and orchestrated locally via Docker Compose. The iteration delivers workspace scaffolding, build metadata surface, health endpoint, shared tooling (pnpm, uv), automated tests (Vitest, Playwright smoke, pytest), and GitHub Actions pipelines that enforce linting, type safety, coverage thresholds, and container builds.
+@@
+-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+-**Project Type**: [single/web/mobile - determines source structure]  
+-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
++**Language/Version**: TypeScript (Node.js 20 LTS) + Python 3.12  
++**Primary Dependencies**: Next.js 15 (React 19), Tailwind CSS, FastAPI, Pydantic v2, pnpm, uv  
++**Storage**: N/A (configuration and metadata only)  
++**Testing**: Vitest (unit), Playwright (smoke), pytest (unit/integration), coverage ≥80%  
++**Target Platform**: Frontend SSR/ISR on Linux containers; FastAPI service on Linux container with Uvicorn  
++**Project Type**: Multi-app mono-repo (web client + backend service)  
++**Performance Goals**: Web TTI ≤2s, LCP ≤2.5s, API health p95 ≤200ms, container start ≤30s  
++**Constraints**: Cross-platform developer experience (macOS/Linux/WSL), reproducible containers, environment-driven configuration  
++**Scale/Scope**: Skeleton for internal engineering team; two services, shared tooling, CI pipelines
+@@
+-## Constitution Check
+-
+-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+-
+-- **Code Quality Without Compromise**: List the linting, type-checking, security, and review gates (Next.js: `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`; Python: `ruff check`, `uv run pytest`) that will run before implementation.
+-- **Simplicity Over Speculation**: Map every planned deliverable to approved requirements in `/specs/.../spec.md`; flag and remove scope without traceability or document the governance exception.
+-- **Test Evidence First**: Identify the failing tests that will be written before implementation (unit, integration, accessibility, API contract) and how ≥80% coverage will be maintained.
+-- **Consistent Experience Every Time**: Reference Tailwind tokens, shared components, and UX acceptance checks that ensure WCAG 2.2 AA compliance for the affected flows.
+-- **Performance and Reliability Budgets**: Capture the target metrics (e.g., TTI ≤2s, LCP ≤2.5s, API p95 ≤200ms) and the telemetry or load validation that will prove compliance.
++## Constitution Check
++
++*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
++
++- **Code Quality Without Compromise**: Frontend gating via `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm test:e2e --project smoke`; backend gating via `uv run ruff check`, `uv run pytest --cov=app --cov-report=term-missing`; containers scanned with `docker scout cves` prior to merge. Peer review required with evidence captured in CI logs.
++- **Simplicity Over Speculation**: Deliverables map to FR-001–FR-007; no additional services or dependencies beyond Next.js, FastAPI, testing, Dockerfiles, and CI workflows specified in the feature spec. Shared utilities constrained to build metadata helpers and env settings documented in scope.
++- **Test Evidence First**: Write failing Vitest unit tests for build metadata helper, Playwright smoke test for `/`, pytest for `/health`, and contract tests for compose services. Enforce ≥80% statement/branch coverage via `vitest --coverage` and `pytest --cov`, with thresholds enforced in config and CI.
++- **Consistent Experience Every Time**: Tailwind tokens seeded from design primitives doc, base `app/layout.tsx` enforces global styles, and accessibility smoke included via Playwright axe plugin. Quickstart documents WCAG 2.2 AA checks for the landing page (focus order, contrast, semantics).
++- **Performance and Reliability Budgets**: Capture metrics through Next.js build output (TTI proxy), Playwright performance traces, and Uvicorn startup timings in pytest. Document budgets (TTI ≤2s, LCP ≤2.5s, API p95 ≤200ms) and validate via smoke tests and CI logs; compose includes healthcheck intervals to monitor latency.
+@@
+-### Documentation (this feature)
+-
+-```text
+-specs/[###-feature]/
+-├── plan.md              # This file (/speckit.plan command output)
+-├── research.md          # Phase 0 output (/speckit.plan command)
+-├── data-model.md        # Phase 1 output (/speckit.plan command)
+-├── quickstart.md        # Phase 1 output (/speckit.plan command)
+-├── contracts/           # Phase 1 output (/speckit.plan command)
+-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+-```
+-
+-### Source Code (repository root)
+-<!--
+-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+-  for this feature. Delete unused options and expand the chosen structure with
+-  real paths (e.g., apps/admin, packages/something). The delivered plan must
+-  not include Option labels.
+--->
+-
+-```text
+-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+-src/
+-├── models/
+-├── services/
+-├── cli/
+-└── lib/
+-
+-tests/
+-├── contract/
+-├── integration/
+-└── unit/
+-
+-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+-backend/
+-├── src/
+-│   ├── models/
+-│   ├── services/
+-│   └── api/
+-└── tests/
+-
+-frontend/
+-├── src/
+-│   ├── components/
+-│   ├── pages/
+-│   └── services/
+-└── tests/
+-
+-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+-api/
+-└── [same as backend above]
+-
+-ios/ or android/
+-└── [platform-specific structure: feature modules, UI flows, platform tests]
+-```
+-
+-**Structure Decision**: [Document the selected structure and reference the real
+-directories captured above]
++### Documentation (this feature)
++
++```text
++specs/001-bootstrap-monorepo/
++├── plan.md              # This file (/speckit.plan command output)
++├── research.md          # Phase 0 output (/speckit.plan command)
++├── data-model.md        # Phase 1 output (/speckit.plan command)
++├── quickstart.md        # Phase 1 output (/speckit.plan command)
++├── contracts/           # Phase 1 output (/speckit.plan command)
++└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
++```
++
++### Source Code (repository root)
++
++```text
++apps/
++├── frontend/                # Next.js 15 app
++│   ├── app/                 # App Router entrypoints (layout.tsx, page.tsx)
++│   ├── lib/                 # Shared utilities (build metadata, env parsing)
++│   ├── styles/              # Tailwind configuration and globals
++│   └── tests/
++│       ├── unit/            # Vitest suites
++│       └── smoke/           # Playwright smoke project
++├── backend/                 # FastAPI service
++│   ├── app/
++│   │   ├── core/            # settings.py, logging, config loaders
++│   │   ├── api/
++│   │   │   ├── routers/     # health router modules
++│   │   │   └── dependencies/
++│   │   └── factory.py       # app factory returning FastAPI instance
++│   └── tests/
++│       ├── unit/
++│       └── integration/
++└── shared/                  # Placeholder for future shared packages (lint configs, types)
++
++configs/
++├── docker/
++│   ├── frontend.Dockerfile
++│   └── backend.Dockerfile
++├── compose/
++│   └── docker-compose.dev.yml
++└── ci/
++    └── workflows/          # GitHub Actions definitions
++
++.specify/                    # Planning artefacts (existing)
++```
++
++**Structure Decision**: Adopt an `apps/` mono-repo layout with isolated frontend and backend projects plus shared tooling directories, aligning with pnpm workspaces and uv-managed FastAPI service while keeping future shared packages centralized under `shared/`.
+*** End Patch
+[2m2025-10-29T21:31:24.461624Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","tail -n +1 specs/001-bootstrap-monorepo/plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:31:53.340793Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-bootstrap-monorepo/research.md
++# Phase 0 Research
++
++## Decisions
++
++Decision: Standardize on Node.js 20 LTS for the Next.js workspace managed via pnpm  
++Rationale: Next.js 15 and React 19 target Node 18+, but Node 20 LTS aligns with current Vercel defaults, includes the latest V8 features required by Turbopack, and remains supported by pnpm without additional flags. Pinning Node 20.11+ avoids cross-platform inconsistencies and simplifies Docker base images.  
++Alternatives considered: Node 18 LTS (kept for long-term support but lacks some V8 optimizations and would require future upgrade), Node 22 (too new for stable CI tooling and increases risk of ecosystem incompatibilities).
++
++Decision: Scaffold Next.js App Router with a global `app/layout.tsx` that wires Tailwind base styles and injects build metadata via server components  
++Rationale: App Router is the recommended architecture for Next.js 15, enabling server components and streaming by default. A centralized layout ensures shared providers (theme, analytics placeholder) and global Tailwind styles while keeping pages minimal. Injecting build metadata at the layout level guarantees it is cached consistently and available to smoke tests.  
++Alternatives considered: Pages Router (deprecated for new apps; lacks server component ergonomics), injecting metadata per page (risks divergence and duplicated logic).
++
++Decision: Manage environment configuration with `.env.example` files per service and typed helpers (`apps/frontend/lib/env.ts`, `apps/backend/app/core/settings.py`)  
++Rationale: Separate examples clarify required variables while keeping secrets out of VCS. Typed loaders (zod schema on frontend, Pydantic BaseSettings on backend) surface validation errors early and ease CI bootstrapping. Shared `.env` loading in docker-compose keeps parity between local and CI runs.  
++Alternatives considered: Single repo-wide `.env.example` (harder to scope service-specific needs), ad-hoc `process.env` access or `os.getenv` usage (no validation, harder to debug failures).
++
++Decision: Implement FastAPI using an application factory (`create_app()`) with routers packaged by domain and Uvicorn configuration module  
++Rationale: Factory pattern keeps initialization deterministic, enables dependency injection for future services, and simplifies testing by instantiating isolated apps. Dedicated `app/api/routers/__init__.py` organizes versioned routes, while `app/core/config.py` centralizes settings. Uvicorn config module standardizes host/port/log level and is shared by CLI and Docker entrypoints.  
++Alternatives considered: Single global FastAPI instance (less testable and complicates future configuration overrides), mounting routers directly in `main.py` (harder to scale when additional routers/services arrive).
++
++Decision: Use Docker Compose with a shared user-defined network, build args for version pinning, and bind-mounted source for dev workflows  
++Rationale: Compose ensures consistent local orchestration, enabling `frontend`, `backend`, and optional `playwright` services to communicate via stable hostnames. Build args enforce Node 20 and Python 3.12 base images, while caching layers (pnpm store, uv cache) are persisted via named volumes to accelerate rebuilds. Shared network mirrors production ingress expectations.  
++Alternatives considered: Running services separately via npm/uv scripts (faster initial setup but diverges from containerized CI path), Kubernetes manifests (overkill for skeleton, slower feedback).
++
++Decision: Enforce testing strategy with Vitest for unit coverage, Playwright smoke suite, and pytest with coverage thresholds at 80%+  
++Rationale: Vitest provides Jest-compatible DX with fast TypeScript support. Playwright handles end-to-end smoke with cross-browser capability and accessibility checks. Pytest remains the de-facto FastAPI testing harness, and coverage thresholds satisfy constitution Principle III. Splitting smoke tests into a dedicated Playwright project keeps CI matrices efficient.  
++Alternatives considered: Jest (heavier config under ESM), Cypress for smoke (requires additional services and licensing for parallelization), Nose/UnitTest for Python (less modern ecosystem support).
++
++Decision: Configure GitHub Actions matrix workflows separating frontend and backend jobs with caching for pnpm, Playwright, uv, and Docker layers  
++Rationale: Matrix jobs allow independent lint/test cycles while sharing a setup stage to populate caches. `actions/setup-node` with pnpm cache and `actions/setup-python` with uv cache shorten runtimes. Docker layer caching via `docker/build-push-action` and GitHub cache tokens mitigates rebuild costs. Explicit version pinning in workflows reduces flakiness and satisfies the identified risk.  
++Alternatives considered: Single combined workflow (simpler but slower with intertwined failures), GitLab or other CI providers (not aligned with current tooling), skipping Docker builds in CI (violates acceptance criteria for container readiness).
++
++Decision: Adopt Docker Scout (or Trivy fallback) scanning as part of container build pipeline to catch CVEs early  
++Rationale: Principle I requires security scanning. Docker Scout integrates with GitHub Actions, understands multi-stage Dockerfiles, and supports caching. Including a fallback (Trivy) ensures coverage if licensing blocks Scout.  
++Alternatives considered: Deferring security scans to later iterations (risks violating constitution), custom script with `grype` (requires more maintenance without added value).
+*** End Patch
+[2m2025-10-29T21:31:55.800891Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/001-bootstrap-monorepo/research.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:32:04.098872Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to retrieve feature spec metadata"},{"status":"completed","step":"Load required context files and review existing plan template"},{"status":"completed","step":"Populate IMPL_PLAN through Phase 0 research outputs"},{"status":"in_progress","step":"Complete Phase 1 design artifacts and agent context update"},{"status":"pending","step":"Summarize results with required reporting"}], "explanation":"Filled plan summary/context, documented constitution gating, and produced Phase 0 research findings resolving open questions."}
+[2m2025-10-29T21:32:14.738886Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-bootstrap-monorepo/data-model.md
++# Data Model
++
++## Build Snapshot
++
++- **Purpose**: Surface build provenance on the frontend landing page and in automated smoke tests.
++- **Fields**:
++  - `version` (string): Semantic version or fallback `0.1.0-dev`. Required. Sourced from `package.json` or CI tag.
++  - `commit` (string): Short git SHA. Required. Falls back to `unknown` if git metadata unavailable.
++  - `environment` (string): Human-readable label (`local`, `ci`, `staging`). Required. Derived from env var `NEXT_PUBLIC_APP_ENV`.
++  - `timestamp` (ISO 8601 string): Build time captured at build step. Required. Generated in build script to ensure reproducibility.
++- **Validation Rules**:
++  - Strings must be trimmed, non-empty, and ≤64 chars.
++  - `environment` must match allowed enum `[local, ci, staging, production]` with default `local`.
++  - When running in CI, `commit` MUST resolve from `GITHUB_SHA`; local dev may fallback safely.
++- **State Transitions**:
++  - Updated on each build or `pnpm dev` boot via metadata helper.
++  - Frontend caches snapshot via server component; invalidated on redeploy or rebuild.
++
++## Service Health Status
++
++- **Purpose**: Communicate backend readiness to internal consumers and CI probes.
++- **Fields**:
++  - `status` (string enum): `ok` or `error`. Defaults to `ok` when dependencies satisfied.
++  - `version` (string): Backend service version (mirrors pyproject or git SHA). Optional; included when available.
++  - `timestamp` (ISO 8601 string): Response generation time for observability. Required.
++  - `details` (object | null): Optional diagnostics (`message`, `checks` array) returned only on error.
++- **Validation Rules**:
++  - `status="ok"` MUST return HTTP 200 with empty `details`.
++  - Error responses MUST set HTTP 503 and populate `details.message`.
++  - Response bodies MUST serialize via Pydantic model to guarantee schema stability.
++- **State Transitions**:
++  - Default `ok` when app factory initializes without exceptions.
++  - Shifts to `error` when dependency checks fail (e.g., env validation) or startup raises.
++
++## Relationships
++
++- Build Snapshot data is consumed by frontend only; backend can expose metadata via future `/meta` route but not required in this iteration.
++- Health Status is produced by backend and consumed by smoke tests, docker-compose healthcheck, and CI workflows.
++- Both entities share version/commit sources to maintain consistency between surfaces; quickstart documents how to regenerate metadata across services.
+*** End Patch
+[2m2025-10-29T21:32:29.873853Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-bootstrap-monorepo/contracts/frontend.openapi.yaml
++openapi: 3.1.0
++info:
++  title: Blockbuilders Frontend Skeleton
++  version: 0.1.0
++  description: >
++    Contract for the baseline web client delivered in iteration 001. The landing page
++    renders build metadata required by smoke tests and manual verification.
++servers:
++  - url: http://localhost:3000
++    description: Local development via `pnpm dev`
++  - url: http://frontend:3000
++    description: Docker Compose service hostname
++paths:
++  /:
++    get:
++      summary: Render root landing page with build metadata
++      description: >
++        Serves the Next.js App Router root layout. Response includes data attributes
++        exposing build snapshot values for automated smoketests:
++        `data-app-version`, `data-app-commit`, `data-app-environment`, and
++        `data-app-timestamp`.
++      operationId: getLandingPage
++      tags:
++        - landing-page
++      responses:
++        "200":
++          description: Landing page rendered successfully
++          content:
++            text/html:
++              schema:
++                type: string
++              examples:
++                default:
++                  summary: Sample landing page snippet
++                  value: |
++                    <!doctype html>
++                    <html lang="en">
++                      <body data-app-version="0.1.0-dev"
++                            data-app-commit="abc1234"
++                            data-app-environment="local"
++                            data-app-timestamp="2025-10-29T12:34:56Z">
++                        <main>
++                          <h1>Blockbuilders Mono-Repo Skeleton</h1>
++                        </main>
++                      </body>
++                    </html>
++        "500":
++          description: Server error during render. Handler logs structured error and Playwright smoke blocks release.
+*** End Patch
+[2m2025-10-29T21:32:36.661436Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-bootstrap-monorepo/contracts/backend.openapi.yaml
++openapi: 3.1.0
++info:
++  title: Blockbuilders Backend Skeleton
++  version: 0.1.0
++  description: FastAPI health contract required for CI, docker-compose, and future probes.
++servers:
++  - url: http://localhost:8000
++    description: Local Uvicorn development server (`uv run fastapi dev` or `make dev`)
++  - url: http://backend:8000
++    description: Docker Compose service hostname
++paths:
++  /health:
++    get:
++      summary: Service readiness check
++      description: Returns current health status and version metadata. Endpoint must respond within 1 second.
++      operationId: getHealth
++      tags:
++        - health
++      responses:
++        "200":
++          description: Service is healthy
++          content:
++            application/json:
++              schema:
++                $ref: "#/components/schemas/HealthStatus"
++              examples:
++                default:
++                  summary: Healthy response
++                  value:
++                    status: ok
++                    version: 0.1.0-dev
++                    timestamp: 2025-10-29T12:34:56Z
++        "503":
++          description: Service failed dependency or startup check
++          content:
++            application/json:
++              schema:
++                $ref: "#/components/schemas/HealthStatus"
++              examples:
++                failure:
++                  summary: Error payload
++                  value:
++                    status: error
++                    timestamp: 2025-10-29T12:34:56Z
++                    details:
++                      message: Environment validation failed
++                      checks:
++                        - name: DATABASE_URL
++                          status: missing
++components:
++  schemas:
++    HealthStatus:
++      type: object
++      required:
++        - status
++        - timestamp
++      properties:
++        status:
++          type: string
++          enum:
++            - ok
++            - error
++        version:
++          type: string
++          description: Optional semantic version or git SHA exposed when available
++        timestamp:
++          type: string
++          format: date-time
++        details:
++          type: object
++          nullable: true
++          additionalProperties: true
++          description: Omitted on success; populated with diagnostics on error
+*** End Patch
+[2m2025-10-29T21:32:48.784470Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-bootstrap-monorepo/quickstart.md
++# Quickstart Guide — Initial Technical Skeleton
++
++## Prerequisites
++
++- Node.js 20.11+ (install via `fnm`, `nvm`, or Volta); pnpm 9.x globally (`corepack enable`)
++- Python 3.12 with [`uv`](https://github.com/astral-sh/uv) (`pip install uv`)
++- Docker Desktop (>= 4.33) or compatible runtime with Compose V2
++- Git 2.44+, make, and Playwright dependencies (`npx playwright install --with-deps`)
++
++## Repository Setup
++
++```bash
++git clone git@github.com:blockbuilders/mono.git
++cd mono
++pnpm install --frozen-lockfile         # installs frontend workspace deps
++uv sync                                # creates backend virtual environment
++cp apps/frontend/.env.example apps/frontend/.env.local
++cp apps/backend/.env.example apps/backend/.env
++```
++
++Populate `.env` files with required variables:
++
++- `NEXT_PUBLIC_APP_ENV` (`local`, `ci`, `staging`, `production`)
++- `APP_VERSION` (optional override; defaults to `package.json` version)
++- `SERVICE_PORT` (backend; defaults to `8000`)
++
++## Development Servers
++
++### Frontend
++
++```bash
++pnpm dev --filter apps/frontend...     # Next.js dev server on http://localhost:3000
++```
++
++Landing page exposes build metadata via `data-app-*` attributes for smoke tests.
++
++### Backend
++
++```bash
++uv run fastapi dev apps/backend/app/main.py --reload
++# or
++make dev-backend
++```
++
++The `/health` endpoint responds on `http://localhost:8000/health` with the contract defined in `contracts/backend.openapi.yaml`.
++
++### Docker Compose (full stack)
++
++```bash
++docker compose -f configs/compose/docker-compose.dev.yml up --build
++```
++
++Services share the `app-network` network and load environment variables from `.env` files. Stop with `docker compose ... down`.
++
++## Quality Gates
++
++```bash
++pnpm lint --filter apps/frontend...
++pnpm type-check --filter apps/frontend...
++pnpm test:coverage --filter apps/frontend...      # Vitest unit coverage ≥80%
++pnpm test:e2e --filter apps/frontend... --project smoke  # Playwright smoke + accessibility
++
++uv run ruff check apps/backend
++uv run pytest --cov=app --cov-report=term-missing
++```
++
++Run all gates before opening a PR to satisfy Constitution Principle I.
++
++## CI Parity
++
++- GitHub Actions workflows live in `configs/ci/workflows/`. They run lint, test, coverage, build, and container scan jobs in parallel matrices.
++- Docker images are built with cached layers and scanned via Docker Scout (fallback to Trivy).
++
++## Troubleshooting
++
++- **Node version errors**: Ensure `node --version` reports 20.11+; run `corepack enable pnpm`.
++- **Playwright missing browsers**: Execute `pnpm test:e2e --filter apps/frontend... -- --install-deps`.
++- **Backend env validation failures**: Check `apps/backend/.env` matches `BaseSettings` schema described in `research.md`.
++- **Docker build cache misses**: Verify `COMPOSE_PROJECT_NAME` is consistent and pruning has not removed named volumes (`docker volume ls`).
+*** End Patch
+[2m2025-10-29T21:32:51.617833Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/update-agent-context.sh codex"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:32:54.252561Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat AGENTS.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-10-29T21:33:01.884382Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-bootstrap-monorepo/plan.md
+@@
+ - **Consistent Experience Every Time**: Tailwind tokens seeded from design primitives doc, base `app/layout.tsx` enforces global styles, and accessibility smoke included via Playwright axe plugin. Quickstart documents WCAG 2.2 AA checks for the landing page (focus order, contrast, semantics).
+ - **Performance and Reliability Budgets**: Capture metrics through Next.js build output (TTI proxy), Playwright performance traces, and Uvicorn startup timings in pytest. Document budgets (TTI ≤2s, LCP ≤2.5s, API p95 ≤200ms) and validate via smoke tests and CI logs; compose includes healthcheck intervals to monitor latency.
++
++**Post-Phase-1 Review**: Design outputs (data model, contracts, quickstart) align with the above controls. No constitution violations identified; all gates remain in-force for implementation.
+*** End Patch
+[2m2025-10-29T21:33:05.017467Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to retrieve feature spec metadata"},{"status":"completed","step":"Load required context files and review existing plan template"},{"status":"completed","step":"Populate IMPL_PLAN through Phase 0 research outputs"},{"status":"completed","step":"Complete Phase 1 design artifacts and agent context update"},{"status":"in_progress","step":"Summarize results with required reporting"}], "explanation":"Generated data model, API contracts, quickstart guide, and refreshed Codex agent context per Phase 1 instructions."}
+[2m2025-10-29T21:33:11.307287Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to retrieve feature spec metadata"},{"status":"completed","step":"Load required context files and review existing plan template"},{"status":"completed","step":"Populate IMPL_PLAN through Phase 0 research outputs"},{"status":"completed","step":"Complete Phase 1 design artifacts and agent context update"},{"status":"completed","step":"Summarize results with required reporting"}], "explanation":"Documented outputs and ready to report branch, plan location, and artefacts per instructions."}

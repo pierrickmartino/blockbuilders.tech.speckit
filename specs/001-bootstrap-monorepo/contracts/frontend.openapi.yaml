@@ -1,0 +1,48 @@
+openapi: 3.1.0
+info:
+  title: Blockbuilders Frontend Skeleton
+  version: 0.1.0
+  description: >
+    Contract for the baseline web client delivered in iteration 001. The landing page
+    renders build metadata required by smoke tests and manual verification.
+servers:
+  - url: http://localhost:3000
+    description: Local development via `pnpm dev`
+  - url: http://frontend:3000
+    description: Docker Compose service hostname
+paths:
+  /:
+    get:
+      summary: Render root landing page with build metadata
+      description: >
+        Serves the Next.js App Router root layout. Response includes data attributes
+        exposing build snapshot values for automated smoketests:
+        `data-app-version`, `data-app-commit`, `data-app-environment`, and
+        `data-app-timestamp`.
+      operationId: getLandingPage
+      tags:
+        - landing-page
+      responses:
+        "200":
+          description: Landing page rendered successfully
+          content:
+            text/html:
+              schema:
+                type: string
+              examples:
+                default:
+                  summary: Sample landing page snippet
+                  value: |
+                    <!doctype html>
+                    <html lang="en">
+                      <body data-app-version="0.1.0-dev"
+                            data-app-commit="abc1234"
+                            data-app-environment="local"
+                            data-app-timestamp="2025-10-29T12:34:56Z">
+                        <main>
+                          <h1>Blockbuilders Mono-Repo Skeleton</h1>
+                        </main>
+                      </body>
+                    </html>
+        "500":
+          description: Server error during render. Handler logs structured error and Playwright smoke blocks release.
