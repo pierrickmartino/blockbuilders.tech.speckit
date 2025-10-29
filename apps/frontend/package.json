@@ -1,0 +1,41 @@
+{
+  "name": "@blockbuilders/frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "next": "15.5.6",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.9.0",
+    "@next/eslint-plugin-next": "^15.5.6",
+    "@playwright/test": "^1.48.0",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^15.0.0",
+    "@types/node": "^20.16.5",
+    "@types/react": "^19.0.0-rc.1",
+    "@types/react-dom": "^19.0.0-rc.1",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.13",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.1"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  }
+}

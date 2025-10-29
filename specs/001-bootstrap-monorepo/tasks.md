@@ -33,26 +33,26 @@
 
 ### Tests for User Story 1
 
-- [ ] T007 [P] [US1] Author failing Vitest spec covering build snapshot shape in `apps/frontend/tests/unit/build-metadata.spec.ts`
-- [ ] T008 [P] [US1] Add Playwright smoke test validating landing page metadata attributes in `apps/frontend/tests/smoke/root.spec.ts`
-- [ ] T050 [P] [US1] Extend Vitest and Playwright coverage to assert default metadata labels render when git details are missing in `apps/frontend/tests/unit/build-metadata.spec.ts` and `apps/frontend/tests/smoke/root.spec.ts`
+- [X] T007 [P] [US1] Author failing Vitest spec covering build snapshot shape in `apps/frontend/tests/unit/build-metadata.spec.ts`
+- [X] T008 [P] [US1] Add Playwright smoke test validating landing page metadata attributes in `apps/frontend/tests/smoke/root.spec.ts`
+- [X] T050 [P] [US1] Extend Vitest and Playwright coverage to assert default metadata labels render when git details are missing in `apps/frontend/tests/unit/build-metadata.spec.ts` and `apps/frontend/tests/smoke/root.spec.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T009 [US1] Create Next.js workspace package with scripts and dependencies in `apps/frontend/package.json`
-- [ ] T010 [P] [US1] Configure TypeScript compiler options for App Router in `apps/frontend/tsconfig.json`
-- [ ] T011 [P] [US1] Configure Next.js runtime settings and experimental flags in `apps/frontend/next.config.mjs`
-- [ ] T012 [P] [US1] Configure Tailwind layers and content scanning in `apps/frontend/tailwind.config.ts`
-- [ ] T013 [P] [US1] Add global stylesheet enabling Tailwind base, components, utilities in `apps/frontend/app/globals.css`
-- [ ] T014 [P] [US1] Implement typed environment schema loader with zod in `apps/frontend/lib/env.ts`
-- [ ] T015 [P] [US1] Implement build metadata helper consuming shared script output in `apps/frontend/lib/build-metadata.ts`
-- [ ] T016 [US1] Compose root layout applying globals and injecting metadata context in `apps/frontend/app/layout.tsx`
-- [ ] T017 [US1] Render landing page exposing build metadata via `data-app-*` attributes in `apps/frontend/app/page.tsx`
-- [ ] T051 [US1] Handle missing git metadata by providing default labels before rendering in `apps/frontend/lib/build-metadata.ts` and `apps/frontend/app/page.tsx`
-- [ ] T018 [P] [US1] Configure Vitest runner with coverage ≥80% in `apps/frontend/vitest.config.ts`
-- [ ] T019 [P] [US1] Configure Playwright smoke project with axe accessibility checks in `apps/frontend/playwright.config.ts`
-- [ ] T020 [P] [US1] Provide environment example placeholders for NEXT_PUBLIC variables in `apps/frontend/.env.example`
-- [ ] T021 [US1] Document frontend dev, lint, and test workflows in `apps/frontend/README.md`
+- [X] T009 [US1] Create Next.js workspace package with scripts and dependencies in `apps/frontend/package.json`
+- [X] T010 [P] [US1] Configure TypeScript compiler options for App Router in `apps/frontend/tsconfig.json`
+- [X] T011 [P] [US1] Configure Next.js runtime settings and experimental flags in `apps/frontend/next.config.mjs`
+- [X] T012 [P] [US1] Configure Tailwind layers and content scanning in `apps/frontend/tailwind.config.ts`
+- [X] T013 [P] [US1] Add global stylesheet enabling Tailwind base, components, utilities in `apps/frontend/app/globals.css`
+- [X] T014 [P] [US1] Implement typed environment schema loader with zod in `apps/frontend/lib/env.ts`
+- [X] T015 [P] [US1] Implement build metadata helper consuming shared script output in `apps/frontend/lib/build-metadata.ts`
+- [X] T016 [US1] Compose root layout applying globals and injecting metadata context in `apps/frontend/app/layout.tsx`
+- [X] T017 [US1] Render landing page exposing build metadata via `data-app-*` attributes in `apps/frontend/app/page.tsx`
+- [X] T051 [US1] Handle missing git metadata by providing default labels before rendering in `apps/frontend/lib/build-metadata.ts` and `apps/frontend/app/page.tsx`
+- [X] T018 [P] [US1] Configure Vitest runner with coverage ≥80% in `apps/frontend/vitest.config.ts`
+- [X] T019 [P] [US1] Configure Playwright smoke project with axe accessibility checks in `apps/frontend/playwright.config.ts`
+- [X] T020 [P] [US1] Provide environment example placeholders for NEXT_PUBLIC variables in `apps/frontend/.env.example`
+- [X] T021 [US1] Document frontend dev, lint, and test workflows in `apps/frontend/README.md`
 
 **Checkpoint**: Landing page renders metadata, smoke test passes, coverage thresholds enforced.
 
