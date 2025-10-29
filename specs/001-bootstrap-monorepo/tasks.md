@@ -8,9 +8,9 @@
 
 **Purpose**: Establish repo-level tooling so apps can be bootstrapped consistently.
 
-- [ ] T001 Create root workspace manifest with metadata and pnpm toolchain scripts in `package.json`
-- [ ] T002 Declare workspace package locations for frontend and backend in `pnpm-workspace.yaml`
-- [ ] T003 Pin Node.js 20.11 runtime for contributors in `.nvmrc`
+- [X] T001 Create root workspace manifest with metadata and pnpm toolchain scripts in `package.json`
+- [X] T002 Declare workspace package locations for frontend and backend in `pnpm-workspace.yaml`
+- [X] T003 Pin Node.js 20.11 runtime for contributors in `.nvmrc`
 
 ---
 
@@ -18,9 +18,9 @@
 
 **Purpose**: Shared prerequisites required before implementing any user story.
 
-- [ ] T004 Define ignore patterns for Node, Python, and Docker artefacts in `.gitignore`
-- [ ] T005 Create reusable git metadata collector script emitting version/commit/timestamp in `shared/scripts/collect-build-metadata.sh`
-- [ ] T006 Document environment variable contract spanning both services in `configs/ENVIRONMENT.md`
+- [X] T004 Define ignore patterns for Node, Python, and Docker artefacts in `.gitignore`
+- [X] T005 Create reusable git metadata collector script emitting version/commit/timestamp in `shared/scripts/collect-build-metadata.sh`
+- [X] T006 Document environment variable contract spanning both services in `configs/ENVIRONMENT.md`
 
 **Checkpoint**: Shared tooling in place—frontend and backend implementation can now proceed.
 

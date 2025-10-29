@@ -1,0 +1,21 @@
+{
+  "name": "blockbuilders-tech-speckit",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Mono-repo skeleton for Next.js frontend and FastAPI backend.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blockbuilders/mono.git"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "packageManager": "pnpm@9.10.0",
+  "scripts": {
+    "setup": "pnpm install && uv sync",
+    "dev": "pnpm run dev:frontend",
+    "dev:frontend": "pnpm --filter apps/frontend... dev",
+    "dev:backend": "uv run fastapi dev apps/backend/app/main.py --reload"
+  }
+}
