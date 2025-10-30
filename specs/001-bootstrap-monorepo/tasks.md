@@ -65,19 +65,19 @@
 
 ### Tests for User Story 2
 
-- [ ] T022 [P] [US2] Add pytest integration test for GET /health happy path in `apps/backend/tests/integration/test_health_endpoint.py`
-- [ ] T023 [P] [US2] Add unit test asserting HealthStatus schema serialization in `apps/backend/tests/unit/test_health_status.py`
+- [X] T022 [P] [US2] Add pytest integration test for GET /health happy path in `apps/backend/tests/integration/test_health_endpoint.py`
+- [X] T023 [P] [US2] Add unit test asserting HealthStatus schema serialization in `apps/backend/tests/unit/test_health_status.py`
 
 ### Implementation for User Story 2
 
-- [ ] T024 [US2] Create uv-managed project manifest with FastAPI, Pydantic, and test dependencies in `apps/backend/pyproject.toml`
-- [ ] T025 [P] [US2] Implement typed settings loader with validation in `apps/backend/app/core/settings.py`
-- [ ] T026 [P] [US2] Define Pydantic HealthStatus model enforcing contract in `apps/backend/app/schemas/health.py`
-- [ ] T027 [P] [US2] Implement health router returning contract-compliant payload in `apps/backend/app/api/routers/health.py`
-- [ ] T028 [US2] Build FastAPI application factory wiring routers in `apps/backend/app/factory.py`
-- [ ] T029 [US2] Provide ASGI entrypoint for uvicorn and CLI execution in `apps/backend/app/main.py`
-- [ ] T030 [P] [US2] Provide backend environment example covering required settings in `apps/backend/.env.example`
-- [ ] T031 [US2] Document backend dev, lint, and test workflows in `apps/backend/README.md`
+- [X] T024 [US2] Create uv-managed project manifest with FastAPI, Pydantic, and test dependencies in `apps/backend/pyproject.toml`
+- [X] T025 [P] [US2] Implement typed settings loader with validation in `apps/backend/app/core/settings.py`
+- [X] T026 [P] [US2] Define Pydantic HealthStatus model enforcing contract in `apps/backend/app/schemas/health.py`
+- [X] T027 [P] [US2] Implement health router returning contract-compliant payload in `apps/backend/app/api/routers/health.py`
+- [X] T028 [US2] Build FastAPI application factory wiring routers in `apps/backend/app/factory.py`
+- [X] T029 [US2] Provide ASGI entrypoint for uvicorn and CLI execution in `apps/backend/app/main.py`
+- [X] T030 [P] [US2] Provide backend environment example covering required settings in `apps/backend/.env.example`
+- [X] T031 [US2] Document backend dev, lint, and test workflows in `apps/backend/README.md`
 
 **Checkpoint**: Health endpoint satisfies tests, schema, and documentation requirements.
 
