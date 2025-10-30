@@ -26,12 +26,6 @@ export default defineConfig({
     },
     {
       name: 'smoke-fallback',
-      use: {
-        env: {
-          ...process.env,
-          PLAYWRIGHT_EXPECT_UNKNOWN_COMMIT: '1',
-        },
-      },
       metadata: {
         description: 'Ensures default labels render when git metadata missing',
       },

@@ -1,0 +1,26 @@
+line-length = 100
+target-version = "py312"
+src = ["app", "tests"]
+
+[lint]
+select = [
+  "E",
+  "F",
+  "I",
+  "B",
+  "Q",
+  "UP",
+  "PL",
+  "RUF",
+]
+ignore = [
+  "E501", # rely on formatter for line-length
+]
+[lint.isort]
+combine-as-imports = true
+known-first-party = ["app"]
+section-order = ["future", "standard-library", "first-party", "third-party", "local-folder"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

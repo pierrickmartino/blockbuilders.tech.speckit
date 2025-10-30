@@ -22,9 +22,9 @@ test.describe('Landing page metadata', () => {
     expect(accessibilityScan.violations).toEqual([]);
   });
 
-  test('renders default metadata labels when git details are unavailable', async ({ page }) => {
+  test('renders default metadata labels when git details are unavailable', async ({ page }, testInfo) => {
     test.skip(
-      process.env.PLAYWRIGHT_EXPECT_UNKNOWN_COMMIT !== '1',
+      testInfo.project.name !== 'smoke-fallback',
       'Fallback scenario runs in a dedicated Playwright project',
     );
 

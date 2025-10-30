@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
-
-import pytest
+from datetime import UTC, datetime
 
 from app.schemas.health import HealthStatus
 
+import pytest
+
 
 def test_health_status_ok_serialisation_excludes_null_details() -> None:
-    timestamp = datetime(2025, 1, 1, 12, 30, tzinfo=timezone.utc)
+    timestamp = datetime(2025, 1, 1, 12, 30, tzinfo=UTC)
 
     status = HealthStatus(status="ok", version="0.1.0-dev", timestamp=timestamp)
 
@@ -20,7 +20,7 @@ def test_health_status_ok_serialisation_excludes_null_details() -> None:
 
 
 def test_health_status_error_serialisation_includes_details() -> None:
-    timestamp = datetime(2025, 1, 1, 12, 30, tzinfo=timezone.utc)
+    timestamp = datetime(2025, 1, 1, 12, 30, tzinfo=UTC)
 
     status = HealthStatus(
         status="error",

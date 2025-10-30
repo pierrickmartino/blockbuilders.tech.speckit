@@ -21,12 +21,14 @@ venv/
 # Tooling and coverage
 coverage/
 playwright-report/
+**/test-results/
 .ruff_cache/
 
 # Environment and Docker
 .env
 .env.*
 Dockerfile.local
+*.tsbuildinfo
 
 # Editors and OS junk
 .DS_Store

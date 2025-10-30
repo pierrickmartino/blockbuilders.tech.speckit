@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import './globals.css';
 import { loadBuildMetadata, metadataToAttributes } from '@/lib/build-metadata';
 
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 type RootLayoutProps = {
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 export default async function RootLayout({ children }: RootLayoutProps) {

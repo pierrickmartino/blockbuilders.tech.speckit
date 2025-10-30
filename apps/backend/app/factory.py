@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from fastapi import FastAPI
-
 from app.api.routers.health import router as health_router
 from app.core.settings import Settings, get_settings
+
+from fastapi import FastAPI
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:

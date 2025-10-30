@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -21,14 +21,14 @@ class HealthStatus(BaseModel):
     )
 
     model_config = ConfigDict(
-        json_encoders={datetime: lambda value: value.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")},
+        json_encoders={datetime: lambda value: value.astimezone(UTC).isoformat().replace("+00:00", "Z")},
     )
 
 
 def build_health_status(version: str | None = None) -> HealthStatus:
     """Helper constructing a healthy response with the provided version."""
 
-    return HealthStatus(status="ok", version=version, timestamp=datetime.now(timezone.utc))
+    return HealthStatus(status="ok", version=version, timestamp=datetime.now(UTC))
 
 
 __all__ = ["HealthStatus", "build_health_status"]

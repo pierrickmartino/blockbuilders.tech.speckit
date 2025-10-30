@@ -90,21 +90,21 @@
 
 ### Implementation for User Story 3
 
-- [ ] T032 [P] [US3] Add root lint/test scripts orchestrating both apps in `package.json`
-- [ ] T033 [P] [US3] Configure ESLint with Next.js, Tailwind, and testing presets in `apps/frontend/eslint.config.mjs`
-- [ ] T034 [P] [US3] Configure Ruff linting rules and isort settings in `apps/backend/ruff.toml`
-- [ ] T035 [US3] Enforce pytest coverage thresholds and tooling scripts in `apps/backend/pyproject.toml`
-- [ ] T036 [P] [US3] Author Node-based development Dockerfile with pnpm cache mounts in `configs/docker/frontend.Dockerfile`
-- [ ] T037 [P] [US3] Author Python development Dockerfile with uv cache mounts in `configs/docker/backend.Dockerfile`
-- [ ] T038 [US3] Define docker-compose.dev stack with service healthchecks in `configs/compose/docker-compose.dev.yml`
-- [ ] T039 [P] [US3] Add GitHub Actions workflow running lint, type-check, and tests in `configs/ci/workflows/ci.yml`
-- [ ] T040 [P] [US3] Add GitHub Actions workflow building containers and running vulnerability scans in `configs/ci/workflows/containers.yml`
-- [ ] T041 [US3] Create Makefile targets for dev, lint, test, and compose operations in `Makefile`
-- [ ] T042 [US3] Update root README with CI matrices, container usage, troubleshooting, and links to recorded performance metrics in `README.md`
-- [ ] T046 [P] [US3] Record lint/test execution time in CI runs and store evidence referenced by quickstart (SC-TEST)
-- [ ] T047 [P] [US3] Instrument pytest to log `/health` latency across five CI runs and persist the aggregated report (SC-OPS)
-- [ ] T048 [P] [US3] Collect Next.js build metrics and Playwright performance trace verifying TTI ≤2s and LCP ≤2.5s; publish runbook in `configs/ci/reports/frontend-performance.md`
-- [ ] T049 [P] [US3] Capture frontend/backend container cold start timings in CI and store artifact summary in `configs/ci/reports/container-start-times.md`
+- [X] T032 [P] [US3] Add root lint/test scripts orchestrating both apps in `package.json`
+- [X] T033 [P] [US3] Configure ESLint with Next.js, Tailwind, and testing presets in `apps/frontend/eslint.config.mjs`
+- [X] T034 [P] [US3] Configure Ruff linting rules and isort settings in `apps/backend/ruff.toml`
+- [X] T035 [US3] Enforce pytest coverage thresholds and tooling scripts in `apps/backend/pyproject.toml`
+- [X] T036 [P] [US3] Author Node-based development Dockerfile with pnpm cache mounts in `configs/docker/frontend.Dockerfile`
+- [X] T037 [P] [US3] Author Python development Dockerfile with uv cache mounts in `configs/docker/backend.Dockerfile`
+- [X] T038 [US3] Define docker-compose.dev stack with service healthchecks in `configs/compose/docker-compose.dev.yml`
+- [X] T039 [P] [US3] Add GitHub Actions workflow running lint, type-check, and tests in `configs/ci/workflows/ci.yml`
+- [X] T040 [P] [US3] Add GitHub Actions workflow building containers and running vulnerability scans in `configs/ci/workflows/containers.yml`
+- [X] T041 [US3] Create Makefile targets for dev, lint, test, and compose operations in `Makefile`
+- [X] T042 [US3] Update root README with CI matrices, container usage, troubleshooting, and links to recorded performance metrics in `README.md`
+- [X] T046 [P] [US3] Record lint/test execution time in CI runs and store evidence referenced by quickstart (SC-TEST)
+- [X] T047 [P] [US3] Instrument pytest to log `/health` latency across five CI runs and persist the aggregated report (SC-OPS)
+- [X] T048 [P] [US3] Collect Next.js build metrics and Playwright performance trace verifying TTI ≤2s and LCP ≤2.5s; publish runbook in `configs/ci/reports/frontend-performance.md`
+- [X] T049 [P] [US3] Capture frontend/backend container cold start timings in CI and store artifact summary in `configs/ci/reports/container-start-times.md`
 
 **Checkpoint**: Tooling parity confirmed—local and CI workflows enforce guardrails for both services.
 

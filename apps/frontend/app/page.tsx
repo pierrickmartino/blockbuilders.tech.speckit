@@ -1,3 +1,4 @@
+import type { Route } from 'next';
 import Link from 'next/link';
 import { loadBuildMetadata } from '@/lib/build-metadata';
 
@@ -34,7 +35,10 @@ export default async function HomePage() {
           <h3 className="text-xl font-semibold text-slate-900">Helpful links</h3>
           <ul className="mt-4 space-y-2 text-sm text-slate-600">
             <li>
-              <Link className="text-brand-700 hover:text-brand-500" href="/docs/quickstart">
+              <Link
+                className="text-brand-700 hover:text-brand-500"
+                href={'/docs/quickstart' as Route}
+              >
                 Quickstart guide
               </Link>
             </li>

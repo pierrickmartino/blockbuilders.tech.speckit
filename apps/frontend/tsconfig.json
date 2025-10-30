@@ -1,9 +1,10 @@
 {
-  "extends": "next/core-web-vitals",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     },
     "strict": true,
     "noImplicitOverride": true,
@@ -11,16 +12,35 @@
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "moduleResolution": "bundler",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
-    "next-env.d.ts",
+    "**/*.cts",
+    "**/*.mts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.mts",
-    "**/*.cts",
+    "next-env.d.ts",
+    "playwright.config.ts",
     "vitest.config.ts",
-    "playwright.config.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

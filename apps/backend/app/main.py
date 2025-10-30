@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import uvicorn
-
 from app.core.settings import get_settings
 from app.factory import create_app
+
+import uvicorn
 
 app = create_app()
 

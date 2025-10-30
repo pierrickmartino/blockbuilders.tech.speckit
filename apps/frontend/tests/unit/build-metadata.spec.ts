@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type * as BuildMetadataModule from '../../lib/build-metadata';
 
-const execFileSync = vi.fn<Buffer, [string, string[]]>();
+const execFileSync = vi.fn<(scriptPath: string, args: string[]) => Buffer>();
 
 vi.mock('node:child_process', () => ({
   execFileSync,
@@ -30,8 +31,11 @@ describe('loadBuildMetadata', () => {
     );
     process.env.NEXT_PUBLIC_APP_ENV = 'ci';
 
-    const { loadBuildMetadata } = await import('../../lib/build-metadata');
-    const snapshot = await loadBuildMetadata();
+    const module = await vi.importActual<typeof BuildMetadataModule>(
+      '../../lib/build-metadata',
+    );
+    const snapshot: BuildMetadataModule.BuildMetadataSnapshot =
+      await module.loadBuildMetadata();
 
     expect(execFileSync).toHaveBeenCalledWith(
       expect.stringContaining('collect-build-metadata.sh'),
@@ -44,10 +48,10 @@ describe('loadBuildMetadata', () => {
       environment: 'ci',
       timestamp: '2024-05-01T12:00:00Z',
       labels: {
-        version: '1.2.3',
-        commit: 'abc1234',
-        environment: 'ci',
-        timestamp: '2024-05-01T12:00:00Z',
+        version: 'Version 1.2.3',
+        commit: 'Commit abc1234',
+        environment: 'Continuous Integration',
+        timestamp: '2024-05-01T12:00:00Z (Wed, 01 May 2024 12:00:00 GMT)',
       },
     });
   });
@@ -61,15 +65,16 @@ describe('loadBuildMetadata', () => {
       }),
     );
 
-    const { loadBuildMetadata } = await import('../../lib/build-metadata');
-    const snapshot = await loadBuildMetadata();
+    const module = await vi.importActual<typeof BuildMetadataModule>(
+      '../../lib/build-metadata',
+    );
+    const snapshot: BuildMetadataModule.BuildMetadataSnapshot =
+      await module.loadBuildMetadata();
 
     expect(snapshot.environment).toBe('local');
-    expect(snapshot.labels).toMatchObject({
-      commit: 'Unknown commit',
-      version: expect.stringContaining('0.1.0-dev'),
-      environment: 'Local',
-    });
+    expect(snapshot.labels.commit).toBe('Unknown commit');
+    expect(snapshot.labels.version).toContain('0.1.0-dev');
+    expect(snapshot.labels.environment).toBe('Local');
     expect(snapshot.labels.timestamp).toMatch(/2024-05-01/);
   });
 });

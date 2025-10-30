@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadEnv, envNameToLabel } from './env';
 
@@ -17,7 +17,7 @@ export interface BuildMetadataSnapshot {
   };
 }
 
-const moduleDir = resolve(fileURLToPath(new URL('.', import.meta.url)));
+const moduleDir = dirname(fileURLToPath(import.meta.url));
 
 const resolveScriptPath = (): string => {
   const candidates = [
@@ -34,7 +34,7 @@ const resolveScriptPath = (): string => {
     }
   }
 
-  return candidates[0];
+  return candidates[0]!;
 };
 
 const METADATA_SCRIPT_PATH = resolveScriptPath();
@@ -62,20 +62,19 @@ const toCommitLabel = (commit: string) =>
  * Executes the shared metadata script. Returns undefined when execution fails,
  * allowing callers to gracefully fall back to defaults.
  */
-const executeMetadataScript = (): {
-  version?: string;
-  commit?: string;
-  timestamp?: string;
-} | null => {
+type ScriptMetadata = Partial<Pick<BuildMetadataSnapshot, 'version' | 'commit' | 'timestamp'>>;
+
+const executeMetadataScript = (): ScriptMetadata | null => {
   try {
     const buffer = execFileSync(METADATA_SCRIPT_PATH, ['--fallback-version', DEFAULT_VERSION]);
-    return JSON.parse(buffer.toString('utf8'));
+    const parsed = JSON.parse(buffer.toString('utf8')) as ScriptMetadata;
+    return parsed;
   } catch {
     return null;
   }
 };
 
-export const loadBuildMetadata = async (): Promise<BuildMetadataSnapshot> => {
+export const loadBuildMetadata = (): Promise<BuildMetadataSnapshot> => {
   const result = executeMetadataScript() ?? {};
   const env = loadEnv();
 
@@ -84,7 +83,7 @@ export const loadBuildMetadata = async (): Promise<BuildMetadataSnapshot> => {
   const timestamp = result.timestamp?.trim() || DEFAULT_TIMESTAMP;
   const environment = env.NEXT_PUBLIC_APP_ENV ?? 'local';
 
-  return {
+  return Promise.resolve({
     version,
     commit,
     timestamp,
@@ -95,7 +94,7 @@ export const loadBuildMetadata = async (): Promise<BuildMetadataSnapshot> => {
       environment: envNameToLabel(environment),
       timestamp: formatTimestampLabel(timestamp),
     },
-  };
+  });
 };
 
 export const metadataToAttributes = (
@@ -107,5 +106,5 @@ export const metadataToAttributes = (
   'data-app-timestamp': metadata.timestamp,
 });
 
-export const buildMetadataAttributes = async () =>
+export const buildMetadataAttributes = async (): Promise<Record<string, string>> =>
   metadataToAttributes(await loadBuildMetadata());

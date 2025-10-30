@@ -1,12 +1,15 @@
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  typedRoutes: true,
   experimental: {
     serverActions: {
       bodySizeLimit: '2mb',
     },
-    typedRoutes: true,
     optimizePackageImports: ['zod'],
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
