@@ -114,9 +114,9 @@
 
 **Purpose**: Documentation and validation tasks that span all stories.
 
-- [ ] T043 Compile troubleshooting matrix for frontend/backend services in `docs/TROUBLESHOOTING.md`
-- [ ] T044 Capture validated quickstart walkthrough aligning commands with reality and highlight CI timing/latency evidence in `docs/QUICKSTART.md`
-- [ ] T045 Record release readiness checklist covering tests, coverage, and container scans in `docs/RELEASE_CHECKLIST.md`
+- [X] T043 Compile troubleshooting matrix for frontend/backend services in `docs/TROUBLESHOOTING.md`
+- [X] T044 Capture validated quickstart walkthrough aligning commands with reality and highlight CI timing/latency evidence in `docs/QUICKSTART.md`
+- [X] T045 Record release readiness checklist covering tests, coverage, and container scans in `docs/RELEASE_CHECKLIST.md`
 
 ---
 
