@@ -1,0 +1,42 @@
+# VCS
+.git/
+.gitignore
+
+# Node/TypeScript artefacts
+node_modules/
+.pnpm-store/
+dist/
+build/
+.next/
+out/
+pnpm-debug.log*
+npm-debug.log*
+
+# Python artefacts
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.ruff_cache/
+.pytest_cache/
+
+# Coverage and test outputs
+coverage/
+playwright-report/
+
+# Environment files
+.env
+.env.*
+
+# Docker meta
+.dockerignore
+Dockerfile.local
+
+# OS junk
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.idea/
+.vscode/

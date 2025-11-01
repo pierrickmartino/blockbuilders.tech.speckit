@@ -1,0 +1,15 @@
+# Generated dependencies and build artefacts
+node_modules/
+dist/
+build/
+.next/
+out/
+
+# Test and coverage outputs
+coverage/
+playwright-report/
+**/test-results/
+
+# Bundled/minified assets
+*.min.js
+pnpm-debug.log*

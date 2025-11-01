@@ -1,0 +1,73 @@
+openapi: 3.1.0
+info:
+  title: Blockbuilders Backend Skeleton
+  version: 0.1.0
+  description: FastAPI health contract required for CI, docker-compose, and future probes.
+servers:
+  - url: http://localhost:8000
+    description: Local Uvicorn development server (`uv run fastapi dev` or `make dev`)
+  - url: http://backend:8000
+    description: Docker Compose service hostname
+paths:
+  /health:
+    get:
+      summary: Service readiness check
+      description: Returns current health status and version metadata. Endpoint must respond within 1 second.
+      operationId: getHealth
+      tags:
+        - health
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+              examples:
+                default:
+                  summary: Healthy response
+                  value:
+                    status: ok
+                    version: 0.1.0-dev
+                    timestamp: 2025-10-29T12:34:56Z
+        "503":
+          description: Service failed dependency or startup check
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+              examples:
+                failure:
+                  summary: Error payload
+                  value:
+                    status: error
+                    timestamp: 2025-10-29T12:34:56Z
+                    details:
+                      message: Environment validation failed
+                      checks:
+                        - name: DATABASE_URL
+                          status: missing
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+            - error
+        version:
+          type: string
+          description: Optional semantic version or git SHA exposed when available
+        timestamp:
+          type: string
+          format: date-time
+        details:
+          type: object
+          nullable: true
+          additionalProperties: true
+          description: Omitted on success; populated with diagnostics on error

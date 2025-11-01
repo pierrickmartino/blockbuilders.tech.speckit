@@ -1,0 +1,82 @@
+name: blockbuilders-dev
+
+services:
+  backend:
+    build:
+      context: ../..
+      dockerfile: ../docker/backend.Dockerfile
+    env_file:
+      - ../../apps/backend/.env
+    command:
+      - uv
+      - run
+      - --directory
+      - apps/backend
+      - fastapi
+      - dev
+      - app/main.py
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+    working_dir: /workspace
+    volumes:
+      - ../../:/workspace
+      - backend_uv_cache:/root/.cache/uv
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8000/health
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: ../docker/frontend.Dockerfile
+    env_file:
+      - ../../apps/frontend/.env.local
+    command:
+      - pnpm
+      - --filter
+      - apps/frontend...
+      - dev
+      - --hostname
+      - 0.0.0.0
+    working_dir: /workspace
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - ../../:/workspace
+      - frontend_pnpm_store:/root/.local/share/pnpm/store
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:3000
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - app-network
+
+volumes:
+  backend_uv_cache:
+  frontend_pnpm_store:
+
+networks:
+  app-network:
+    driver: bridge
