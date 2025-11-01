@@ -1,11 +1,14 @@
-# /speckit.constitution 
+# Global
+
+## /speckit.constitution 
 
 Create principles focused on code quality, simplicity (KISS - Keep It Simple, Stupid / YAGNI - You Aren't Gonna Need It), testing standards, user experience consistency, and performance requirements. 
 Include governance for how these principles should guide technical decisions and implementation choices. 
 Use standard and best-practices for NextJS 15, React 19, TailwindCSS, Python.
 
+# Iteration 1
 
-# /speckit.specify
+## /speckit.specify
 
 Title: Initial technical skeleton (mono-repo)
 Why: Establish fast iteration loop with tests & CI; no product features yet.
@@ -21,11 +24,9 @@ Acceptance Criteria:
 - `pnpm test` and `pytest` green in CI.
 - Repo READMEs document how to run locally.
 
+## /speckit.clarify
 
-# /speckit.clarify
-
-
-# /speckit.plan
+## /speckit.plan
 
 Stack decisions & architecture:
 - Frontend: Next.js 15 + Tailwind; directory layout, env handling, base layout.tsx.
@@ -35,11 +36,52 @@ Stack decisions & architecture:
 - CI: GHA workflows matrix for Frontend/Backend.
 Risks: version pinning, caching in CI, docker layer caching.
 
+## /speckit.tasks
+## /speckit.analyze
+## /speckit.implement Phase 1
 
-# /speckit.tasks
+# Iteration 2
 
+## Local Chat with Codex-Medium
 
-# /speckit.analyze
+With the context of my blockbuilders.tech.speckit project, I want to implement an iteration in order to add email authentication thanks to Supabase with sign in / sign up page.
+Please output what you would give to speckit.specify with the following format :
+Title: xxxxx
+Why: xxxxx
+Scope:
 
+Frontend: xxxx
+Backend: xxxx
+Infra: xxxx
+Acceptance Criteria:
+AC1 : xxxx
+AC2: xxx
+AC3 : xxx
 
-# /speckit.implement Phase 1
+## /speckit.specify
+
+Title: Supabase Email Auth Integration
+Why: Enable users to create and access personalized accounts securely, unlocking gated functionality and paving the way for future profile-driven features.
+Scope:
+
+Frontend: Add dedicated sign-up/sign-in UI, handle Supabase auth flows, surface error/loading states, and persist user session across navigation.
+Backend: Configure Supabase email auth (redirect URLs, password settings), expose server-side session validation helpers, and ensure RLS policies allow authenticated reads/writes only where intended.
+Infra: Store Supabase keys/env vars in project secrets, document local env setup, and update deployment config to supply the same values.
+Acceptance Criteria:
+AC1: Users can create an account and sign in via Supabase email/password forms, with clear feedback for success and common failure states.
+AC2: Authenticated users remain signed in across page reloads, can sign out, and protected routes redirect unauthenticated visitors to the auth page.
+AC3: Supabase project configuration (auth settings, RLS policies, env vars) is documented and applied in all environments so deployments succeed without manual tweaks.
+
+## /speckit.clarify
+
+## /speckit.plan
+
+- Frontend: Use Route Handlers for server actions that need session; set up Supabase client in server & client contexts; auth middleware.
+- Backend: Add JWT verification dependency; cache JWKS; 401 on invalid; sample protected route /me.
+- Testing: Mock Supabase in unit tests; Playwright e2e for login.
+- Security: httpOnly cookies; CSRF considerations; .env.example updates.
+
+## /speckit.tasks
+## /speckit.analyze
+## /speckit.implement Phase 1
+
