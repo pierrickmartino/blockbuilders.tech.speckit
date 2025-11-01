@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-supabase-email-auth`  
 **Created**: 2025-11-01  
-**Status**: Draft  
+**Status**: Approved  
 **Input**: The “Supabase Email Auth Integration” initiative will let users create secure, personalized accounts that unlock gated functionality and set the stage for future profile-driven features. We will build dedicated sign-up and sign-in screens on the frontend that manage Supabase authentication flows, display clear loading and error states, and maintain sessions across navigation. On the backend, we will configure Supabase email authentication—including redirect URLs and password policies—while exposing helpers for server-side session validation and tightening RLS policies so authenticated actions happen only where intended. Infrastructure updates will store Supabase keys in project secrets, document the local environment setup, and align deployment configurations with those same values.
 
 ## Overview/Context

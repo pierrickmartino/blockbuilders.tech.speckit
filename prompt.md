@@ -99,6 +99,6 @@ The “Supabase Email Auth Integration” initiative will let users create secur
 The stack centers on Next.js with Supabase integration, requiring frontend route handlers that share Supabase clients across server and client contexts while enforcing auth middleware. Backend work adds Supabase JWT verification with cached JWKS, returning 401 responses when tokens fail, plus a sample protected /me route. Tests need Supabase mocks in unit coverage and Playwright end-to-end checks for the login journey. Security hinges on httpOnly cookies, CSRF-aware flows, and .env.example updates to reflect the required secrets. **DO NOT USE** prompt.md and iteration.md files. 
 
 ## /speckit.tasks
-## /speckit.analyze
+## /speckit.analyze (>> multiple loop)
 ## /speckit.implement Phase 1
 
