@@ -1,0 +1,69 @@
+openapi: 3.1.0
+info:
+  title: FastAPI Supabase Protected Routes
+  version: 0.1.0
+  description: JWT-protected backend endpoints that validate Supabase-issued tokens via cached JWKS.
+servers:
+  - url: https://{apiHost}
+    description: FastAPI deployment for backend services.
+    variables:
+      apiHost:
+        default: localhost:8000
+components:
+  securitySchemes:
+    supabaseBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /me:
+    get:
+      tags:
+        - Profile
+      summary: Fetch the authenticated user's profile details.
+      description: >
+        Returns minimal profile attributes for the current Supabase user. Requires a valid
+        Supabase access token in the `Authorization` header. JWTs are verified against Supabase
+        JWKS and must include `email_confirmed_at`.
+      security:
+        - supabaseBearer: []
+      responses:
+        "200":
+          description: Authenticated user profile.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - email
+                  - email_confirmed_at
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  email:
+                    type: string
+                    format: email
+                  email_confirmed_at:
+                    type: string
+                    format: date-time
+                  last_sign_in_at:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  metadata:
+                    type: object
+                    additionalProperties: true
+        "401":
+          description: JWT missing, expired, or verification failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - detail
+                properties:
+                  detail:
+                    type: string
+                    description: Safe failure message (e.g., "authentication required").

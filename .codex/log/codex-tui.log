@@ -5920,3 +5920,765 @@
 [2m2025-11-01T12:53:56.207848Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python3 - <<'PY'\nfrom pathlib import Path\nspec = Path('/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/spec.md').read_text().splitlines()\nstart = 0\nfor idx, line in enumerate(spec):\n    if line.strip() == '## User Scenarios & Testing *(mandatory)*':\n        start = idx\n        break\nsection = spec[start:]\nprint('FR-102a present:', any('FR-102a' in line for line in section))\nprint('FR-105a present:', any('FR-105a' in line for line in section))\nprint('SC-VERIFY present:', any('SC-VERIFY' in line for line in section))\nprint('SC-PASS present:', any('SC-PASS' in line for line in section))\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
 [2m2025-11-01T12:53:56.207924Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-11-01T12:53:56.207931Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:15.634429Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-01T13:02:18.262330Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-01T13:02:18.362943Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-01T13:02:27.399251Z[0m [32m INFO[0m ToolCall: update_plan {
+  "plan": [
+    {
+      "status": "in_progress",
+      "step": "Run setup script to gather planning metadata"
+    },
+    {
+      "status": "pending",
+      "step": "Load required context files (feature spec, constitution, impl plan template)"
+    },
+    {
+      "status": "pending",
+      "step": "Execute plan workflow through Phase 2 planning, generating required artifacts"
+    }
+  ]
+}
+[2m2025-11-01T13:02:27.399324Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:27.399331Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:29.272127Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/setup-plan.sh --json"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:29.272196Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:29.272201Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:32.360856Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather planning metadata"},{"status":"in_progress","step":"Load required context files (feature spec, constitution, impl plan template)"},{"status":"pending","step":"Execute plan workflow through Phase 2 planning, generating required artifacts"}]}
+[2m2025-11-01T13:02:32.360893Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:32.360898Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:34.029374Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .specify/memory/constitution.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:34.029408Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:34.029410Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:36.594770Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/002-supabase-email-auth/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:36.594882Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:36.594888Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:40.282555Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' specs/002-supabase-email-auth/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:40.282667Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:40.282678Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:43.927617Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '60,124p' specs/002-supabase-email-auth/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:43.927698Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:43.927701Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:48.142140Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '124,200p' specs/002-supabase-email-auth/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:48.142213Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:48.142217Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:49.939369Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/002-supabase-email-auth/plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:49.939400Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:49.939404Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:52.072345Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather planning metadata"},{"status":"completed","step":"Load required context files (feature spec, constitution, impl plan template)"},{"status":"in_progress","step":"Execute plan workflow through Phase 2 planning, generating required artifacts"}]}
+[2m2025-11-01T13:02:52.072464Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:52.072469Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:55.667236Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:55.667327Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:55.667333Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:02:57.965337Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:02:57.965362Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:02:57.965366Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:03:02.263823Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/backend"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:03:02.264029Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:03:02.264036Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:03:03.935431Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/backend/pyproject.toml"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:03:03.935452Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:03:03.935455Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:03:13.790019Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:03:13.790188Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:03:13.790196Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:03:15.471440Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/frontend/package.json"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:03:15.471496Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:03:15.471503Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:03:19.756381Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls tests"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:03:19.756426Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:03:19.756429Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:03:26.272276Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","date +%Y-%m-%d"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:03:26.272330Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:03:26.272335Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:04:02.653204Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/plan.md
+@@
+-# Implementation Plan: [FEATURE]
+-
+-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+-
+-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+-
+-## Summary
+-
+-[Extract from feature spec: primary requirement + technical approach from research]
+-
+-## Technical Context
+-
+-<!--
+-  ACTION REQUIRED: Replace the content in this section with the technical details
+-  for the project. The structure here is presented in advisory capacity to guide
+-  the iteration process.
+--->
+-
+-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+-**Project Type**: [single/web/mobile - determines source structure]  
+-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+-
+-## Constitution Check
+-
+-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+-
+-- **Code Quality Without Compromise**: List the linting, type-checking, security, and review gates (Next.js: `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`; Python: `ruff check`, `uv run pytest`) that will run before implementation.
+-- **Simplicity Over Speculation**: Map every planned deliverable to approved requirements in `/specs/.../spec.md`; flag and remove scope without traceability or document the governance exception.
+-- **Test Evidence First**: Identify the failing tests that will be written before implementation (unit, integration, accessibility, API contract) and how ≥80% coverage will be maintained.
+-- **Consistent Experience Every Time**: Reference Tailwind tokens, shared components, and UX acceptance checks that ensure WCAG 2.2 AA compliance for the affected flows.
+-- **Performance and Reliability Budgets**: Capture the target metrics (e.g., TTI ≤2s, LCP ≤2.5s, API p95 ≤200ms) and the telemetry or load validation that will prove compliance.
+-
+-## Project Structure
+-
+-### Documentation (this feature)
+-
+-```text
+-specs/[###-feature]/
+-├── plan.md              # This file (/speckit.plan command output)
+-├── research.md          # Phase 0 output (/speckit.plan command)
+-├── data-model.md        # Phase 1 output (/speckit.plan command)
+-├── quickstart.md        # Phase 1 output (/speckit.plan command)
+-├── contracts/           # Phase 1 output (/speckit.plan command)
+-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+-```
+-
+-### Source Code (repository root)
+-<!--
+-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+-  for this feature. Delete unused options and expand the chosen structure with
+-  real paths (e.g., apps/admin, packages/something). The delivered plan must
+-  not include Option labels.
+--->
+-
+-```text
+-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+-src/
+-├── models/
+-├── services/
+-├── cli/
+-└── lib/
+-
+-tests/
+-├── contract/
+-├── integration/
+-└── unit/
+-
+-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+-backend/
+-├── src/
+-│   ├── models/
+-│   ├── services/
+-│   └── api/
+-└── tests/
+-
+-frontend/
+-├── src/
+-│   ├── components/
+-│   ├── pages/
+-│   └── services/
+-└── tests/
+-
+-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+-api/
+-└── [same as backend above]
+-
+-ios/ or android/
+-└── [platform-specific structure: feature modules, UI flows, platform tests]
+-```
+-
+-**Structure Decision**: [Document the selected structure and reference the real
+-directories captured above]
+-
+-## Complexity Tracking
+-
+-> **Fill ONLY if Constitution Check has violations that must be justified**
+-
+-| Violation | Why Needed | Simpler Alternative Rejected Because |
+-|-----------|------------|-------------------------------------|
+-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
+-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
++# Implementation Plan: Supabase Email Auth Integration
++
++**Branch**: `002-supabase-email-auth` | **Date**: 2025-11-01 | **Spec**: specs/002-supabase-email-auth/spec.md  
++**Input**: Feature specification from `specs/002-supabase-email-auth/spec.md`
++
++**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
++
++## Summary
++
++Implement Supabase email/password authentication across the Next.js 15 frontend and FastAPI backend, providing dedicated sign-up/sign-in flows, shared Supabase clients for server and client contexts, JWT-protected APIs, and environment onboarding docs so protected routes enforce email verification and persist sessions.
++
++## Technical Context
++
++**Language/Version**: TypeScript (Node.js 20 LTS), Python 3.12  
++**Primary Dependencies**: Next.js 15 App Router, React 19, Supabase JavaScript client with Next.js auth helpers, FastAPI, Pydantic v2, planned Supabase Python/JWT tooling  
++**Storage**: Supabase Postgres (hosted)  
++**Testing**: Vitest unit tests, Playwright smoke/a11y flows, pnpm test:coverage, ruff check, uv run pytest with httpx, future Supabase client mocks  
++**Target Platform**: Next.js 15 server-side rendering on Node 20 (Vercel-style runtime) and FastAPI served via Uvicorn workers  
++**Project Type**: Web application with separate frontend (`apps/frontend`) and backend (`apps/backend`) services  
++**Performance Goals**: Auth pages TTI ≤2s and LCP ≤2.5s; FastAPI `/me` and auth helpers p95 ≤200ms with cached JWKS lookups  
++**Constraints**: Enforce httpOnly Supabase cookies, CSRF-aware form submits, email confirmation gating, cached JWKS validation, zero PII logging, environment secrets documented in `.env.example`  
++**Scale/Scope**: Initial internal users and CI automation validating core auth flows across local, preview, and production environments
++
++## Constitution Check
++
++*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
++
++- **Code Quality Without Compromise**: Frontend work will gate on `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, and `pnpm test:e2e`; backend changes run `ruff check .`, `uv run pytest`, and enforce ≥80% coverage. Security scan coverage includes dependency review of Supabase keys and lint rules from `claude-nextjs-15.md` and `claude-python.md`. Peer review will confirm adherence.
++- **Simplicity Over Speculation**: Planned deliverables map directly to FR-101 through FR-110 and SC metrics in the spec. No new abstractions or dependencies will ship without documented ties to Supabase auth, JWT verification, or env onboarding; any out-of-scope ideas will be deferred.
++- **Test Evidence First**: New failing tests include Vitest schemas for password policy (FR-102/102a), Playwright journeys for sign-up/sign-in/session persistence (FR-101, FR-104, FR-105a), and pytest suites for JWKS verification plus `/me` authorization (FR-106). Coverage thresholds remain ≥80%, and accessibility assertions run via `@axe-core/playwright`.
++- **Consistent Experience Every Time**: Tailwind tokens and shared components guided by `claude-nextjs-15.md` will structure the `(auth)` routes; forms will satisfy WCAG 2.2 AA, keyboard navigation, focus management, and screen-reader labels validated during Playwright + axe checks and manual UX acceptance.
++- **Performance and Reliability Budgets**: Auth flows target TTI ≤2s/LCP ≤2.5s measured with Next.js Web Vitals tooling; Supabase session helpers instrumented with telemetry ensure p95 ≤200ms for backend verification. Cached JWKS fetches prevent latency spikes, and CI smoke tests monitor regression.
++
++## Project Structure
++
++### Documentation (this feature)
++
++```text
++specs/002-supabase-email-auth/
++├── plan.md
++├── research.md
++├── data-model.md
++├── quickstart.md
++└── contracts/
++    └── [Phase 1 API contracts]
++```
++
++### Source Code (repository root)
++
++```text
++apps/
++├── frontend/
++│   ├── app/(auth)/                 # Sign-up, sign-in, verify email routes
++│   ├── app/(protected)/            # Example protected page leveraging middleware
++│   ├── app/api/                    # Route handlers sharing Supabase server client
++│   ├── lib/supabase/               # Client/server helpers & auth middleware
++│   ├── middleware.ts               # Next.js middleware enforcing auth redirect
++│   └── tests/                      # Vitest unit and Playwright e2e suites
++├── backend/
++│   ├── app/api/auth/               # FastAPI router with `/me` protected endpoint
++│   ├── app/services/supabase/      # JWT verification + JWKS cache utilities
++│   └── tests/                      # Pytest unit/integration with Supabase mocks
++shared/
++└── configs/                        # Centralized env and secret templates
++```
++
++**Structure Decision**: Feature spans the existing web stack: Next.js resides at `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend`, FastAPI lives at `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend`, and supporting docs remain under `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth`.
++
++## Complexity Tracking
++
++> **Fill ONLY if Constitution Check has violations that must be justified**
++
++| Violation | Why Needed | Simpler Alternative Rejected Because |
++|-----------|------------|-------------------------------------|
+*** End Patch
+[2m2025-11-01T13:04:02.653700Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:04:02.653719Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:04:23.363159Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/002-supabase-email-auth/research.md
++# Research Log — Supabase Email Auth Integration
++
++## Decision: Use `@supabase/ssr` helpers to share clients in Next.js 15
++- Rationale: The `createServerClient`/`createBrowserClient` utilities hydrate Supabase with the correct fetch and cookie adapters for the App Router, ensuring httpOnly cookie storage, singleton-per-request behavior, and compatibility with React 19 Server Components. Wrapping these helpers in a thin factory allows route handlers, layouts, and client hooks to consume the same configuration without manually wiring headers or environment variables.
++- Alternatives considered: Instantiating `@supabase/supabase-js` directly inside each route (risking duplicated clients and missing cookies) and using the legacy `@supabase/auth-helpers-nextjs` package (not updated for Next.js 15 server actions).
++
++## Decision: Persist sessions with Supabase-managed httpOnly cookies plus CSRF-safe form handling
++- Rationale: Relying on Supabase cookie storage keeps access/refresh tokens out of `localStorage`, satisfying the HTTP-only requirement and enabling middleware access during SSR. CSRF protection is handled by letting Supabase set the cookie via POST/PKCE flows while frontend forms use fetch requests that include the existing CSRF tokens; replay protection is reinforced by disabling double-submits and resetting forms only on success.
++- Alternatives considered: Storing the session in `localStorage` (violates security guidance) and building custom cookie middleware (duplicates Supabase’s maintained approach and complicates refresh logic).
++
++## Decision: Implement FastAPI JWT verification with cached Supabase JWKS
++- Rationale: Supabase issues GoTrue JWTs signed by a rotating JWK set available at `${SUPABASE_URL}/auth/v1/jwks`. Using `httpx` with an in-memory TTL cache keeps the keys fresh while avoiding per-request fetches. Validation will use `python-jose` to handle RSA signatures and enforce claims (`aud`, `exp`, `iss`, `email_confirmed_at`). Negative outcomes will raise `HTTPException(status_code=401)` with no body data and structured logging for observability.
++- Alternatives considered: Verifying JWTs with the shared secret (not available when GoTrue rotates keys) and proxying verification through Supabase REST (adds latency and availability risk).
++
++## Decision: Mock Supabase clients in unit tests and exercise Playwright login journeys end-to-end
++- Rationale: Vitest will mock `@supabase/ssr` factories to simulate success/error states without network calls, allowing form validation and session guards to fail first. Pytest will use `httpx.MockTransport` to emulate JWKS responses and token verification outcomes. Playwright runs under `pnpm test:e2e` with seeded Supabase test credentials to assert the complete sign-up/sign-in/logout journey, email verification gate, and middleware redirects.
++- Alternatives considered: Bypassing Supabase in tests (forfeits coverage on critical auth paths) and standing up a full Supabase emulator for unit tests (slower, higher maintenance; reserved for integration stages if needed).
++
++## Decision: Document required secrets and bootstrap steps in `.env.example` and `quickstart.md`
++- Rationale: Listing `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_JWT_AUDIENCE`, and email template IDs keeps environments aligned. `quickstart.md` will detail how to generate redirect URLs, enforce the 12-character password policy, and configure email confirmation requirements, reducing onboarding risk.
++- Alternatives considered: Relying on ad-hoc README updates (easy to drift) or delegating to external runbooks (breaks repository-single-source expectations).
+*** End Patch
+[2m2025-11-01T13:04:23.363244Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:04:23.363249Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:04:42.137063Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/002-supabase-email-auth/data-model.md
++# Data Model — Supabase Email Auth Integration
++
++## Entity: Auth Session
++- **Purpose**: Represents the Supabase-issued access/refresh tokens required for authenticated requests on both frontend and backend surfaces.
++- **Fields**:
++  - `access_token` (string, JWT) — short-lived token used for API requests; must validate against Supabase JWKS.
++  - `refresh_token` (string) — long-lived token stored in httpOnly cookie for session renewal.
++  - `expires_at` (UTC epoch) — numeric expiry timestamp used to trigger refresh operations.
++  - `token_type` (enum: `bearer`) — Supabase GoTrue fixed type.
++  - `user_id` (UUID) — Supabase user identifier; foreign key to **User Account**.
++  - `aud` (string) — expected audience, defaults to `authenticated`; enforced in backend JWT check.
++  - `email_confirmed` (boolean) — derived flag from `email_confirmed_at` to block protected routes until true.
++- **Relationships**: Each Auth Session belongs to one **User Account**; a user can have multiple active sessions (e.g., across devices).
++- **Validation Rules**:
++  - `expires_at` must be in the future when issued; refresh flow runs when <5 minutes remain.
++  - Tokens must be stored in Supabase-managed httpOnly cookies; no localStorage persistence allowed.
++- **State Transitions**:
++  - `pending` → `active` once Supabase returns a valid session and email confirmed.
++  - `active` → `revalidate` when `expires_at` is near; Supabase refresh endpoint renews tokens.
++  - `active` → `blocked` when `email_confirmed` is false; guards redirect to verification route.
++  - Any state → `terminated` upon sign-out or JWT verification failure (invalid/expired/tempered).
++
++## Entity: User Account
++- **Purpose**: Captures identity and verification metadata for authenticated users.
++- **Fields**:
++  - `id` (UUID) — Supabase primary key.
++  - `email` (string) — unique, case-insensitive, used for login; requires confirmation.
++  - `password_hash` (string) — managed by Supabase GoTrue; never exposed to application.
++  - `email_confirmed_at` (timestamp) — set when user verifies email; null blocks protected routes.
++  - `created_at` / `updated_at` (timestamps) — lifecycle tracking.
++  - `last_sign_in_at` (timestamp) — used for session analytics and access policy audits.
++  - `app_metadata` (JSON) — Supabase-managed roles/audience data.
++  - `user_metadata` (JSON) — extensible profile attributes for future iterations.
++- **Relationships**: One-to-many with **Auth Session**; referenced by **Access Policy** for RLS checks.
++- **Validation Rules**:
++  - Password policy: minimum 12 characters, at least one uppercase, lowercase, number, and symbol.
++  - Email uniqueness enforced at Supabase; UI must surface duplicate errors.
++  - Email confirmation required before `email_confirmed_at` is non-null.
++- **State Transitions**:
++  - `invited` → `registered` when sign-up completes.
++  - `registered` → `verified` when email confirmation link clicked.
++  - `verified` → `suspended` if manually disabled via Supabase (out-of-scope but supported).
++
++## Entity: Access Policy
++- **Purpose**: Defines row-level security (RLS) rules that restrict database operations to authenticated principals.
++- **Fields**:
++  - `policy_name` (string) — identifier stored in Supabase SQL migrations.
++  - `table` (string) — targeted table schema.
++  - `condition` (SQL expression) — boolean predicate referencing `auth.uid()` or role checks.
++  - `action` (enum) — `SELECT`, `INSERT`, `UPDATE`, `DELETE`.
++  - `role` (string) — Supabase role the policy applies to, typically `authenticated`.
++- **Relationships**: Bound to Supabase tables; references **User Account** implicitly via `auth.uid()`.
++- **Validation Rules**:
++  - Must deny by default; policies explicitly allow permitted operations.
++  - Protected tables must include `tenant_id` or `user_id` columns for policy checks.
++- **State Transitions**:
++  - Policy drafts stored in migrations → deployed → enforced in Supabase environments.
++
++## Entity: Supabase Configuration
++- **Purpose**: Centralizes environment secrets and operational settings shared by frontend and backend services.
++- **Fields**:
++  - `SUPABASE_URL` (string) — base URL for API calls (server-side only).
++  - `NEXT_PUBLIC_SUPABASE_URL` (string) — public URL for frontend.
++  - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (string) — anonymous key for client initialization.
++  - `SUPABASE_SERVICE_ROLE_KEY` (string) — service-role key restricted to secure contexts.
++  - `SUPABASE_JWT_AUDIENCE` (string) — expected JWT audience (defaults to `authenticated`).
++  - `SUPABASE_JWT_ISSUER` (string) — derived from Supabase project ID; used in JWT validation.
++  - `SUPABASE_REDIRECT_URLS` (list) — allowed redirect origins (local, preview, production).
++  - `SUPABASE_EMAIL_TEMPLATE_VERIFY` (string) — identifier for verification email template.
++- **Relationships**: Consumed by both frontend (`createServerClient`/`createBrowserClient`) and backend JWKS validator; referenced in documentation and GitHub Actions secrets.
++- **Validation Rules**:
++  - Keys must be present in `.env.example` and validated during bootstrap scripts.
++  - Service role key must never be exposed to frontend bundles.
++- **State Transitions**:
++  - `unset` → `configured` when bootstrap steps populate `.env`.
++  - `configured` → `rotated` when Supabase keys change; quickstart documents rotation steps.
+*** End Patch
+[2m2025-11-01T13:04:42.137184Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:04:42.137187Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:04:55.591466Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","mkdir -p specs/002-supabase-email-auth/contracts"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:04:55.591598Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:04:55.591603Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:08.020966Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/002-supabase-email-auth/contracts/frontend-auth.openapi.yaml
++openapi: 3.1.0
++info:
++  title: Next.js Supabase Auth Route Handlers
++  version: 0.1.0
++  description: >
++    Route handlers executed within the Next.js 15 App Router for Supabase email/password
++    authentication. All endpoints rely on Supabase-managed httpOnly cookies and are consumed
++    by the sign-up/sign-in forms described in FR-101 through FR-105a.
++servers:
++  - url: https://{domain}
++    description: Next.js frontend deployment
++    variables:
++      domain:
++        default: localhost:3000
++        description: Local dev server; replace with preview/production domains.
++components:
++  securitySchemes:
++    supabaseCookie:
++      type: apiKey
++      in: cookie
++      name: sb-access-token
++paths:
++  /api/auth/sign-up:
++    post:
++      tags:
++        - Email Auth
++      summary: Register a new Supabase user with email verification enforced.
++      description: >
++        Creates a Supabase account using email/password and starts an authenticated session
++        if email confirmation is enabled. Returns session payload mirroring Supabase GoTrue
++        responses; verification-required users receive `email_confirmed: false`.
++      requestBody:
++        required: true
++        content:
++          application/json:
++            schema:
++              type: object
++              required:
++                - email
++                - password
++              properties:
++                email:
++                  type: string
++                  format: email
++                password:
++                  type: string
++                  minLength: 12
++                  pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$'
++                redirectTo:
++                  type: string
++                  format: uri
++                  description: Optional email confirmation redirect override.
++      responses:
++        "201":
++          description: Account created; session cookie set when verification not required.
++          headers:
++            Set-Cookie:
++              description: Supabase session cookies (`sb-access-token` and `sb-refresh-token`) with httpOnly/secure flags.
++              schema:
++                type: string
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/AuthSession'
++        "400":
++          description: Validation failed (password policy, duplicate email, etc.).
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/AuthError'
++  /api/auth/sign-in:
++    post:
++      tags:
++        - Email Auth
++      summary: Authenticate an existing Supabase user with email/password.
++      requestBody:
++        required: true
++        content:
++          application/json:
++            schema:
++              type: object
++              required:
++                - email
++                - password
++              properties:
++                email:
++                  type: string
++                  format: email
++                password:
++                  type: string
++      responses:
++        "200":
++          description: Sign-in succeeded; Supabase session cookies updated.
++          headers:
++            Set-Cookie:
++              description: Supabase session cookies refreshed with httpOnly/secure flags.
++              schema:
++                type: string
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/AuthSession'
++        "401":
++          description: Invalid credentials or email not confirmed.
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/AuthError'
++  /api/auth/sign-out:
++    post:
++      tags:
++        - Email Auth
++      summary: Terminate the current Supabase session across cookies and client cache.
++      security:
++        - supabaseCookie: []
++      responses:
++        "204":
++          description: Session terminated; cookies cleared.
++        "401":
++          description: No active session found.
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/AuthError'
++  /api/auth/session:
++    get:
++      tags:
++        - Email Auth
++      summary: Retrieve the active Supabase session for server components or middleware.
++      security:
++        - supabaseCookie: []
++      responses:
++        "200":
++          description: Active session data.
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/AuthSession'
++        "401":
++          description: Session missing or expired.
++          content:
++            application/json:
++              schema:
++                $ref: '#/components/schemas/AuthError'
++components:
++  schemas:
++    AuthSession:
++      type: object
++      required:
++        - access_token
++        - refresh_token
++        - expires_at
++        - token_type
++        - user
++      properties:
++        access_token:
++          type: string
++          description: Supabase JWT access token.
++        refresh_token:
++          type: string
++        expires_at:
++          type: integer
++          format: int64
++        token_type:
++          type: string
++          enum:
++            - bearer
++        email_confirmed:
++          type: boolean
++        user:
++          type: object
++          required:
++            - id
++            - email
++            - email_confirmed_at
++          properties:
++            id:
++              type: string
++              format: uuid
++            email:
++              type: string
++              format: email
++            email_confirmed_at:
++              type: string
++              format: date-time
++              nullable: true
++            app_metadata:
++              type: object
++              additionalProperties: true
++            user_metadata:
++              type: object
++              additionalProperties: true
++    AuthError:
++      type: object
++      required:
++        - code
++        - message
++      properties:
++        code:
++          type: string
++          description: Supabase error code (e.g., `invalid_credentials`, `email_not_confirmed`).
++        message:
++          type: string
++          description: User-facing copy mapped from Supabase error.
+*** End Patch
+[2m2025-11-01T13:05:08.021255Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:08.021297Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:16.065958Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/002-supabase-email-auth/contracts/backend-auth.openapi.yaml
++openapi: 3.1.0
++info:
++  title: FastAPI Supabase Protected Routes
++  version: 0.1.0
++  description: JWT-protected backend endpoints that validate Supabase-issued tokens via cached JWKS.
++servers:
++  - url: https://{apiHost}
++    description: FastAPI deployment for backend services.
++    variables:
++      apiHost:
++        default: localhost:8000
++components:
++  securitySchemes:
++    supabaseBearer:
++      type: http
++      scheme: bearer
++      bearerFormat: JWT
++paths:
++  /me:
++    get:
++      tags:
++        - Profile
++      summary: Fetch the authenticated user's profile details.
++      description: >
++        Returns minimal profile attributes for the current Supabase user. Requires a valid
++        Supabase access token in the `Authorization` header. JWTs are verified against Supabase
++        JWKS and must include `email_confirmed_at`.
++      security:
++        - supabaseBearer: []
++      responses:
++        "200":
++          description: Authenticated user profile.
++          content:
++            application/json:
++              schema:
++                type: object
++                required:
++                  - id
++                  - email
++                  - email_confirmed_at
++                properties:
++                  id:
++                    type: string
++                    format: uuid
++                  email:
++                    type: string
++                    format: email
++                  email_confirmed_at:
++                    type: string
++                    format: date-time
++                  last_sign_in_at:
++                    type: string
++                    format: date-time
++                    nullable: true
++                  metadata:
++                    type: object
++                    additionalProperties: true
++        "401":
++          description: JWT missing, expired, or verification failed.
++          content:
++            application/json:
++              schema:
++                type: object
++                required:
++                  - detail
++                properties:
++                  detail:
++                    type: string
++                    description: Safe failure message (e.g., "authentication required").
+*** End Patch
+[2m2025-11-01T13:05:16.066173Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:16.066184Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:26.382943Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/002-supabase-email-auth/quickstart.md
++# Quickstart — Supabase Email Auth Integration
++
++## Prerequisites
++- Node.js 20 LTS with `pnpm` installed.
++- Python 3.12 with `uv` installed.
++- Supabase project with email auth enabled and custom SMTP verified (for production).
++- Access to project secrets (anon key, service role key, JWT settings, email template IDs).
++
++## Environment Setup
++1. Copy `.env.example` to `.env` at the repository root and populate:
++   - `NEXT_PUBLIC_SUPABASE_URL` — found in Supabase project settings.
++   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` — anon public key.
++   - `SUPABASE_URL` — same as public URL but consumed server-side.
++   - `SUPABASE_SERVICE_ROLE_KEY` — keep private; used by FastAPI and migrations.
++   - `SUPABASE_JWT_AUDIENCE` — usually `authenticated`.
++   - `SUPABASE_JWT_ISSUER` — `https://<project>.supabase.co/auth/v1`.
++   - `SUPABASE_JWT_CACHE_TTL` — optional override (default 15 minutes).
++   - `SUPABASE_EMAIL_VERIFY_TEMPLATE_ID` — optional custom template reference.
++   - `NEXTAUTH_URL` (if required) and any redirect origins for local/preview/prod.
++2. Run `pnpm install` from repository root to install workspace dependencies.
++3. Run `uv sync` inside `apps/backend` to install FastAPI dependencies.
++4. In Supabase dashboard:
++   - Enable email confirmation and enforce the 12-character complexity policy.
++   - Register redirect URLs for `http://localhost:3000/auth/callback` and production domains.
++   - Customize verification emails or record template IDs for documentation.
++   - Confirm RLS policies default to deny and create placeholders for upcoming secured tables.
++
++## Local Development
++### Frontend (Next.js 15)
++```bash
++cd apps/frontend
++pnpm dev
++```
++- Sign-up and sign-in pages live under `/auth/sign-up` and `/auth/sign-in`.
++- Protected routes should redirect to `/auth/verify` until `email_confirmed_at` exists.
++- Middleware automatically reads Supabase cookies; use Chrome's Application tab to inspect httpOnly flags.
++
++### Backend (FastAPI)
++```bash
++cd apps/backend
++uv run uvicorn app.main:app --reload
++```
++- The `/me` endpoint validates Supabase JWTs; call with `Authorization: Bearer <access_token>`.
++- Observe logs for JWKS cache hits/misses and 401 responses on invalid tokens.
++
++## Testing
++1. **Unit & Integration**:
++   - Frontend: `cd apps/frontend && pnpm test` (Vitest) then `pnpm test:coverage`.
++   - Backend: `cd apps/backend && uv run pytest`.
++2. **Linting & Type Checks**:
++   - Frontend: `pnpm lint --max-warnings 0`, `pnpm type-check`.
++   - Backend: `uv run ruff check .`.
++3. **End-to-End**:
++   - Start both services, seed a test user (or leverage Supabase CLI), then run `cd apps/frontend && pnpm test:e2e`.
++   - Playwright scripts cover sign-up, sign-in, verify flow, session persistence, and protected-route redirects.
++4. **Accessibility**:
++   - `pnpm test:e2e` includes `@axe-core/playwright` assertions; inspect reports under `apps/frontend/playwright-report`.
++
++## Deployment Notes
++- Ensure production secrets are stored in the deployment platform (e.g., Vercel, Render) matching `.env.example`.
++- Rotate Supabase keys periodically; update secrets, redeploy backend, and invalidate cached JWKS.
++- Monitor Supabase auth logs and application telemetry for 401/403 spikes; treat as security incidents.
++- Document any deviations from password policy or email gating as governance exceptions per the constitution.
+*** End Patch
+[2m2025-11-01T13:05:26.383120Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:26.383125Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:29.826168Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/update-agent-context.sh codex"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:05:29.826206Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:29.826210Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:34.407128Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/plan.md
+@@
+ - **Consistent Experience Every Time**: Tailwind tokens and shared components guided by `claude-nextjs-15.md` will structure the `(auth)` routes; forms will satisfy WCAG 2.2 AA, keyboard navigation, focus management, and screen-reader labels validated during Playwright + axe checks and manual UX acceptance.
+ - **Performance and Reliability Budgets**: Auth flows target TTI ≤2s/LCP ≤2.5s measured with Next.js Web Vitals tooling; Supabase session helpers instrumented with telemetry ensure p95 ≤200ms for backend verification. Cached JWKS fetches prevent latency spikes, and CI smoke tests monitor regression.
++
++*Post-Design Review (2025-11-01): PASS — Phase 0/1 artifacts confirm gates remain satisfied; no exceptions required.*
+*** End Patch
+[2m2025-11-01T13:05:34.407168Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:34.407172Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:36.893446Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather planning metadata"},{"status":"completed","step":"Load required context files (feature spec, constitution, impl plan template)"},{"status":"completed","step":"Execute plan workflow through Phase 2 planning, generating required artifacts"}]}
+[2m2025-11-01T13:05:36.893503Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:36.893507Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:39.815225Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status --short"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:05:39.815247Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:39.815251Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:45.852744Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/002-supabase-email-auth/plan.md | sed -n '1,200p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:05:45.852775Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:45.852778Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:47.890201Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/002-supabase-email-auth/research.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:05:47.890228Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:47.890234Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:50.506903Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/002-supabase-email-auth/data-model.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:05:50.506947Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:50.506952Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:54.672404Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/002-supabase-email-auth/quickstart.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:05:54.672442Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:54.672447Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:05:57.870041Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/002-supabase-email-auth/contracts/frontend-auth.openapi.yaml | sed -n '1,200p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:05:57.870092Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:05:57.870094Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:06:00.792053Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/002-supabase-email-auth/contracts/backend-auth.openapi.yaml"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:06:00.792107Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:06:00.792112Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T13:06:07.887072Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","tail -n 40 AGENTS.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T13:06:07.887108Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T13:06:07.887110Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T19:43:08.740690Z[0m [32m INFO[0m Shutting down Codex instance
