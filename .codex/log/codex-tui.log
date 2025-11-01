@@ -5796,3 +5796,127 @@
 [2m2025-11-01T12:50:10.960984Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --paths-only"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
 [2m2025-11-01T12:50:10.961030Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-11-01T12:50:10.961035Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:51:32.061055Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --paths-only"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:51:32.061117Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:51:32.061123Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:17.430800Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python - <<'PY'\nfrom pathlib import Path\npath = Path('/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/spec.md')\ntext = path.read_text()\nprint(text.find('## Clarifications'))\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:52:17.430840Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:17.430844Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:20.016016Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python3 - <<'PY'\nfrom pathlib import Path\npath = Path('/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/spec.md')\ntext = path.read_text()\nprint(text.find('## Clarifications'))\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:52:20.016045Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:20.016049Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:27.284775Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,60p' specs/002-supabase-email-auth/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:52:27.284884Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:27.284889Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:33.311929Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+ **Status**: Draft  
+ **Input**: The “Supabase Email Auth Integration” initiative will let users create secure, personalized accounts that unlock gated functionality and set the stage for future profile-driven features. We will build dedicated sign-up and sign-in screens on the frontend that manage Supabase authentication flows, display clear loading and error states, and maintain sessions across navigation. On the backend, we will configure Supabase email authentication—including redirect URLs and password policies—while exposing helpers for server-side session validation and tightening RLS policies so authenticated actions happen only where intended. Infrastructure updates will store Supabase keys in project secrets, document the local environment setup, and align deployment configurations with those same values.
+ 
++## Clarifications
++
++### Session 2025-11-01
++
++- Q: Should protected routes remain blocked until the user verifies their email address? → A: Require email confirmation before protected access.
++
+ ## User Scenarios & Testing *(mandatory)*
+ 
+ ### User Story 1 - Complete email registration and sign-in (Priority: P1)
+@@
+ **Acceptance Scenarios**:
+ 
+ 1. **Given** Supabase env vars are configured and the sign-up form has client and server validation, **When** a user submits a new email and password meeting policy requirements, **Then** the account is created, an authenticated session starts, and the UI routes to the configured post-auth destination with a success toast.
+ 2. **Given** a user enters invalid credentials or reuses an existing email, **When** they submit either the sign-up or sign-in form, **Then** the UI surfaces the Supabase error code mapped to user-friendly copy, disables the primary action while awaiting the response, and re-enables it for correction.
++3. **Given** a newly created account awaiting email confirmation, **When** the user attempts to access protected content, **Then** the app routes them to a “Verify your email” screen and blocks access until Supabase reports the email as confirmed.
+*** End Patch
+[2m2025-11-01T12:52:33.312001Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:33.312005Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:35.663627Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg \"FR-105\" -n specs/002-supabase-email-auth/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:52:35.663665Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:35.663672Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:37.752776Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '80,140p' specs/002-supabase-email-auth/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:52:37.752800Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:37.752803Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:46.088789Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+ - **FR-104**: Application MUST persist Supabase sessions across reloads using the recommended auth helpers and broadcast updates on sign-in/sign-out events (Principles: experience, reliability). Verified by Playwright persistence test and manual reload checks.
+ - **FR-105**: Protected routes MUST enforce authentication via Next.js middleware and layout guards that redirect unauthenticated visitors with return path metadata (Principles: security, experience). Verified by Playwright tests exercising protected pages and middleware unit tests.
++- **FR-105a**: Users MUST confirm their email address before gaining access to protected routes, with the UI routing unverified sessions to a verification screen and retrying once Supabase marks the email as confirmed (Principles: security, compliance). Verified by Playwright scenarios covering unverified accounts and unit tests of session guard logic.
+ - **FR-106**: Backend FastAPI services MUST include a Supabase session validation helper that enforces JWT verification, surfaces typed user context, and fails closed on errors (Principles: security, quality). Verified by pytest unit and integration suites with valid/invalid tokens.
+*** End Patch
+[2m2025-11-01T12:52:46.088849Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:46.088854Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:50.201142Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+-- Provide clear messaging for email confirmation required flows if policies enforce verified emails before gated access.
++- Provide clear messaging for the mandatory email confirmation gate, including retry/resend actions while keeping protected content inaccessible until verified.
+*** End Patch
+[2m2025-11-01T12:52:50.201181Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:50.201186Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:53.339672Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+ - **SC-AUTH**: 95% of sign-up and sign-in attempts complete successfully under automated Playwright coverage, with error cases mapping to documented copy and no unhandled rejections.
+ - **SC-SESSION**: Authenticated sessions persist across at least three browser reloads and 30 minutes of inactivity during automated testing without forced reauthentication.
++- **SC-VERIFY**: 100% of automated tests confirm that unverified accounts are blocked from protected routes and redirected to the verification screen until Supabase reports `email_confirmed_at` set.
+ - **SC-RLS**: RLS enforcement blocks 100% of cross-tenant data access attempts in automated Supabase policy tests, and backend responses stay within <250 ms for authorized queries.
+*** End Patch
+[2m2025-11-01T12:52:53.339709Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:53.339713Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:52:59.539448Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+-- Email delivery via Supabase-managed SMTP or custom provider is reliable enough for verification flows, with local development allowed to bypass email confirmation when necessary.
++- Email delivery via Supabase-managed SMTP or custom provider is reliable enough for verification flows, with local development allowed to bypass the protected-route gate only via a documented override when necessary.
+*** End Patch
+[2m2025-11-01T12:52:59.539496Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:52:59.539498Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:53:30.668179Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+ ### Session 2025-11-01
+ 
+ - Q: Should protected routes remain blocked until the user verifies their email address? → A: Require email confirmation before protected access.
++- Q: What password policy should we enforce during sign-up? → A: Minimum 12 chars with upper/lower/number/symbol.
+*** End Patch
+[2m2025-11-01T12:53:30.668222Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:53:30.668227Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:53:33.541203Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+ - **FR-102**: Auth forms MUST perform client-side validation aligned with Supabase password policies and display mapped error copy for all Supabase auth error codes (Principles: quality, simplicity). Verified by Vitest unit coverage of the validation schema and mocked Supabase responses.
++- **FR-102a**: Password validation MUST enforce a minimum length of 12 characters and require uppercase, lowercase, numeric, and symbol characters, rejecting inputs that fail any rule with actionable error copy (Principles: security, usability). Verified by unit tests covering each rule and Supabase config inspection.
+*** End Patch
+[2m2025-11-01T12:53:33.541260Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:53:33.541265Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:53:36.371197Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+ - **SC-AUTH**: 95% of sign-up and sign-in attempts complete successfully under automated Playwright coverage, with error cases mapping to documented copy and no unhandled rejections.
++- **SC-PASS**: Automated validation rejects 100% of passwords missing length or required character categories while allowing ≥99% of compliant submissions on first attempt.
+*** End Patch
+[2m2025-11-01T12:53:36.371251Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:53:36.371256Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:53:39.448093Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/spec.md
+@@
+-- Ensure password policy changes roll out without locking existing users out by requesting resets only when required.
++- Ensure password policy changes roll out without locking existing users out by requesting resets only when required and mapping tighter complexity messaging to the updated 12-character rule set.
+*** End Patch
+[2m2025-11-01T12:53:39.449355Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:53:39.449367Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:53:43.421492Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat <<'EOF'\n# coverage map\nFunctional Scope & Behavior: partial\nDomain & Data Model: clear\nInteraction & UX Flow: partial\nNon-Functional Quality Attributes: partial\nIntegration & External Dependencies: clear\nEdge Cases & Failure Handling: partial\nConstraints & Tradeoffs: partial\nTerminology & Consistency: clear\nCompletion Signals: clear\nMisc / Placeholders: clear\nEOF"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:53:43.421593Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:53:43.421599Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:53:45.557883Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' specs/002-supabase-email-auth/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:53:45.557914Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:53:45.557918Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:53:51.406524Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python3 - <<'PY'\nfrom pathlib import Path\nspec = Path('/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/spec.md').read_text().splitlines()\ncounts = sum(1 for line in spec if line.startswith('- Q: '))\nprint('clarification bullets:', counts)\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:53:51.406588Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:53:51.406592Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T12:53:56.207848Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python3 - <<'PY'\nfrom pathlib import Path\nspec = Path('/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/spec.md').read_text().splitlines()\nstart = 0\nfor idx, line in enumerate(spec):\n    if line.strip() == '## User Scenarios & Testing *(mandatory)*':\n        start = idx\n        break\nsection = spec[start:]\nprint('FR-102a present:', any('FR-102a' in line for line in section))\nprint('FR-105a present:', any('FR-105a' in line for line in section))\nprint('SC-VERIFY present:', any('SC-VERIFY' in line for line in section))\nprint('SC-PASS present:', any('SC-PASS' in line for line in section))\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T12:53:56.207924Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T12:53:56.207931Z[0m [32m INFO[0m tool gate released
