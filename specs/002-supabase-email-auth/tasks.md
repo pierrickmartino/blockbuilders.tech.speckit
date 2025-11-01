@@ -7,8 +7,8 @@
 
 **Purpose**: Bring Supabase dependencies into the mono-repo so authentication work can compile and run.
 
-- [ ] T001 Add Supabase client packages (`@supabase/supabase-js`, `@supabase/ssr`) to apps/frontend/package.json
-- [ ] T002 [P] Add Supabase JWT verification dependencies (`python-jose[cryptography]`, `cachetools`, runtime `httpx`) to apps/backend/pyproject.toml
+- [X] T001 Add Supabase client packages (`@supabase/supabase-js`, `@supabase/ssr`) to apps/frontend/package.json
+- [X] T002 [P] Add Supabase JWT verification dependencies (`python-jose[cryptography]`, `cachetools`, runtime `httpx`) to apps/backend/pyproject.toml
 
 ---
 
@@ -185,4 +185,3 @@
 3. **Server Authorization (US3)**: Implement backend verification and `/me` endpoint, coordinating with Supabase policy migrations and pytest suites.
 4. **Operational Readiness (US4)**: Finalize env templates, CI secrets, and quickstart so onboarding and deployments are repeatable.
 5. **Polish**: Execute analytics, metrics, and quickstart validation to satisfy constitution-level quality gates.
-
