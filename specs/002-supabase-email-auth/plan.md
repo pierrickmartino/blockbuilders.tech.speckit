@@ -59,7 +59,7 @@ apps/
 │   ├── middleware.ts               # Next.js middleware enforcing auth redirect
 │   └── tests/                      # Vitest unit and Playwright e2e suites
 ├── backend/
-│   ├── app/api/auth/               # FastAPI router with `/me` protected endpoint
+│   ├── app/api/routes/             # `/me` router registered here for Supabase auth
 │   ├── app/services/supabase/      # JWT verification + JWKS cache utilities
 │   └── tests/                      # Pytest unit/integration with Supabase mocks
 shared/

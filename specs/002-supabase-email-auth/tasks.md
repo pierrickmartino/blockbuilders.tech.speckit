@@ -14,6 +14,11 @@
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
+### Tests for Phase 2 ⚠️
+    - [ ] T002a [P] Validate Supabase env schema helper via Vitest, asserting required keys and failure modes in apps/frontend/tests/unit/supabase/envSchema.spec.ts
+    - [ ] T004a [P] Add Next.js server/client integration test proving per-request Supabase singleton behavior in apps/frontend/tests/integration/supabaseClientSingleton.spec.ts
+    - [ ] T006a [P] Exercise middleware/server cookie parity with Playwright or node-test harness in apps/frontend/tests/integration/supabaseCookies.spec.ts
+
 **Purpose**: Establish shared Supabase configuration, client factories, and settings that every story relies on.
 
 - [ ] T003 Create Supabase environment schema helper in apps/frontend/lib/supabase/env.ts reading validated `process.env`
@@ -35,10 +40,16 @@
 
 - [ ] T009 [P] [US1] Add Vitest password policy and error-state coverage in apps/frontend/tests/unit/auth/passwordPolicy.spec.ts
 - [ ] T010 [P] [US1] Record Playwright sign-up/sign-in journey with verification gate in apps/frontend/tests/e2e/auth-sign-up.spec.ts
+- [ ] T010a [P] [US1] Run Playwright + @axe-core accessibility sweeps and manual keyboard walkthroughs across /auth/sign-up, /auth/sign-in, and /auth/verify to document WCAG 2.2 AA compliance
+- [ ] T010b [P] [US1] Simulate rapid double-submit of sign-up/sign-in forms in Playwright and assert only a single Supabase request is issued per action
+- [ ] T010c [US1] Add Playwright negative cases that submit sign-up/sign-in without CSRF tokens and assert rejection
+- [ ] T010d [US1] Publish Playwright run stats (≥20 executions) to CI artifacts to evidence SC-AUTH threshold
+- [ ] T010e [P] [US1] Capture password policy Playwright stats (artifact `artifacts/auth-password-policy.json`) and fail when <95% compliant submissions succeed
 
 ### Implementation for User Story 1
 
 - [ ] T011 [US1] Implement password policy validator enforcing 12+ mixed characters in apps/frontend/lib/auth/passwordPolicy.ts
+- [ ] T011a [US1] Provide legacy-user safeguards for tighter password rules (grace period, targeted reset prompts, copy updates) with unit coverage that preserves existing logins until reset
 - [ ] T012 [P] [US1] Map Supabase auth error codes to friendly copy in apps/frontend/lib/auth/errorMap.ts
 - [ ] T013 [US1] Create Supabase-backed sign-up route handler with redirect support in apps/frontend/app/api/auth/sign-up/route.ts
 - [ ] T014 [US1] Create Supabase-backed sign-in route handler in apps/frontend/app/api/auth/sign-in/route.ts
@@ -49,6 +60,8 @@
 - [ ] T019 [US1] Implement verify-email screen with resend flow in apps/frontend/app/(auth)/verify/page.tsx
 - [ ] T020 [US1] Add shared auth form UI components (inputs, submit button) in apps/frontend/components/auth/AuthForm.tsx
 - [ ] T021 [US1] Surface Supabase auth toast + routing helpers in apps/frontend/components/auth/AuthStatusToaster.tsx
+- [ ] T013a [US1] Add client/server guards to prevent duplicate Supabase auth submissions and document retry behavior
+- [ ] T014a [US1] Inject CSRF tokens into auth forms and enforce validation in sign-up/sign-in route handlers
 
 **Checkpoint**: Sign-up/sign-in flows, error handling, and verification gate work end-to-end with automated coverage.
 
@@ -64,6 +77,8 @@
 
 - [ ] T022 [P] [US2] Add Playwright session persistence + expiry coverage in apps/frontend/tests/e2e/auth-session.spec.ts
 - [ ] T023 [P] [US2] Add Vitest coverage for Supabase session broadcast helpers in apps/frontend/tests/unit/auth/sessionChannel.spec.ts
+- [ ] T022a [P] [US2] Simulate 30-minute inactivity (token aging/time travel) and capture Next.js Web Vitals plus FastAPI p95 latency to prove SC-SESSION and performance budgets hold
+- [ ] T022b [P] [US2] Run session persistence Playwright flow with third-party cookies disabled and confirm fallback storage keeps users signed in
 
 ### Implementation for User Story 2
 
@@ -74,6 +89,9 @@
 - [ ] T028 [P] [US2] Hydrate protected dashboard sample with session-aware data in apps/frontend/app/(protected)/dashboard/page.tsx
 - [ ] T029 [US2] Provide sign-out control wired to API in apps/frontend/components/auth/SignOutButton.tsx
 - [ ] T030 [US2] Implement Supabase broadcast channel listener for multi-tab sync in apps/frontend/lib/auth/sessionChannel.ts
+- [ ] T024a [US2] Configure Supabase auth storage fallback for cookie-restricted browsers and document toggle locations
+- [ ] T024b [US2] Implement Supabase outage fallback messaging, retry/backoff logic, and operator alert hooks; cover the negative path in Playwright + documentation
+- [ ] T030a [P] [US2] Instrument session integration test verifying singleton client reuse and no cross-request leakage in apps/frontend/tests/integration/sessionSingleton.spec.ts
 
 **Checkpoint**: Authenticated sessions persist, guards redirect unauthenticated or unverified users, and APIs respect return paths.
 
@@ -89,7 +107,9 @@
 
 - [ ] T031 [P] [US3] Add JWKS cache + negative token unit tests in apps/backend/tests/unit/test_supabase_jwks.py
 - [ ] T032 [P] [US3] Add `/me` integration tests covering 200/401 cases in apps/backend/tests/integration/test_me_endpoint.py
+- [ ] T032a [US3] Ensure FastAPI `/me` rejects requests missing CSRF token when session cookies are present
 - [ ] T033 [P] [US3] Track RLS policy assertions via Supabase SQL fixtures in apps/backend/tests/integration/test_supabase_policies.sql
+- [ ] T033a [US3] Record `/me` endpoint latency during pytest load run and fail CI if p95 exceeds 200 ms, attaching metrics to the build artifacts
 
 ### Implementation for User Story 3
 
@@ -100,6 +120,7 @@
 - [ ] T038 [US3] Register auth router in apps/backend/app/factory.py and expose under `/me`
 - [ ] T039 [US3] Version Supabase RLS policies for protected tables in apps/backend/app/db/policies/auth_access.sql
 - [ ] T040 [US3] Emit structured auth logging hooks in apps/backend/app/services/supabase/logging.py
+- [ ] T035a [US3] Wire CSRF validation middleware or dependency into Supabase JWT verifier pipeline
 
 **Checkpoint**: Backend rejects invalid tokens, returns typed profiles for valid sessions, and RLS policies live in version control.
 
@@ -119,6 +140,10 @@
 - [ ] T044 [US4] Extend docs/QUICKSTART.md with Supabase bootstrap and password policy checklist
 - [ ] T045 [US4] Add CI secrets template for Supabase keys in configs/ci/supabase.env.tpl
 - [ ] T046 [US4] Document key rotation and resend procedures in docs/TROUBLESHOOTING.md
+- [ ] T045a [US4] Script Supabase secret sync to Vercel/GitHub Actions and archive run logs in configs/scripts/sync_supabase_secrets.sh
+- [ ] T045b [US4] Add CI parity check ensuring runtime secrets match templates, failing build when drift detected
+- [ ] T046a [US4] Run timed Supabase bootstrap drill on clean machine, documenting duration <20 minutes in docs/RELEASE_CHECKLIST.md
+- [ ] T046b [US4] Execute two consecutive CI deployments with shared secrets and attach verification logs to pipeline artifacts
 
 **Checkpoint**: Any teammate can configure Supabase across environments using the documented templates and scripts.
 
@@ -131,6 +156,8 @@
 - [ ] T047 [P] Emit structured auth analytics events for sign-in/out in apps/frontend/lib/telemetry/authEvents.ts
 - [ ] T048 Capture backend auth metrics and redaction safeguards in apps/backend/app/main.py
 - [ ] T049 [P] Validate quickstart by executing specs/002-supabase-email-auth/quickstart.md and log gaps in docs/RELEASE_CHECKLIST.md
+- [ ] T047a [P] Capture auth telemetry fixture validating schema and PII redaction in apps/frontend/tests/unit/telemetry/authEvents.spec.ts
+- [ ] T048a Ensure backend auth logging emits approved fields only by adding schema enforcement test in apps/backend/tests/unit/test_auth_logging.py
 
 ---
 
