@@ -28,8 +28,8 @@ Populate the environment files with:
 ## 3. Run the Services
 
 ```bash
-pnpm dev --filter apps/frontend...          # http://localhost:3000
-uv run fastapi dev apps/backend/app/main.py --reload  # http://localhost:8000/health
+pnpm --filter @blockbuilders/frontend... dev             # http://localhost:3000
+uv run fastapi dev apps/backend/app/main.py --reload     # http://localhost:8000/health
 ```
 
 For a containerized experience:
@@ -43,10 +43,10 @@ Use `docker compose ... logs <service>` if health checks fail; see `docs/TROUBLE
 ## 4. Quality Gates
 
 ```bash
-pnpm lint --filter apps/frontend...
-pnpm type-check --filter apps/frontend...
-pnpm test:coverage --filter apps/frontend...
-pnpm test:e2e --filter apps/frontend... --project smoke
+pnpm --filter @blockbuilders/frontend... lint
+pnpm --filter @blockbuilders/frontend... type-check
+pnpm --filter @blockbuilders/frontend... test:coverage
+pnpm --filter @blockbuilders/frontend... test:e2e -- --project smoke
 
 uv run ruff check apps/backend
 uv run pytest --cov=app --cov-report=term-missing

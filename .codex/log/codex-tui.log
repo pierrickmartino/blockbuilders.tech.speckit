@@ -5456,3 +5456,4 @@
 [2m2025-10-31T04:59:59.793598Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status -sb"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit","timeout_ms":120000}
 [2m2025-10-31T04:59:59.793637Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-10-31T04:59:59.793642Z[0m [32m INFO[0m tool gate released
+[2m2025-10-31T05:03:02.897864Z[0m [32m INFO[0m Shutting down Codex instance
