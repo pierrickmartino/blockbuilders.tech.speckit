@@ -5,13 +5,15 @@ from app.factory import create_app
 
 import uvicorn
 
+settings = get_settings()
+_ = settings.supabase
+
 app = create_app()
 
 
 def main() -> None:
     """Run the FastAPI development server via uvicorn."""
 
-    settings = get_settings()
     uvicorn.run(
         "app.main:app",
         host=settings.service_host,

@@ -7754,3 +7754,1207 @@
 [2m2025-11-01T21:15:04.964239Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-11-01T21:15:04.964245Z[0m [32m INFO[0m tool gate released
 [2m2025-11-01T21:15:24.252166Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-01T21:15:35.971915Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-01T21:15:36.073115Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-01T21:15:46.233069Z[0m [32m INFO[0m ToolCall: update_plan {"explanation":"Following the multi-step outline to prepare for implementation phase 2.","plan":[{"status":"in_progress","step":"Run prerequisite check script and capture FEATURE_DIR and AVAILABLE_DOCS."},{"status":"pending","step":"Inspect checklist completion status and handle gating decision if needed."},{"status":"pending","step":"Load required planning and specification documents."},{"status":"pending","step":"Verify ignore files per detected tooling."},{"status":"pending","step":"Parse tasks.md for phase structure and dependencies before proceeding with implementation."}]}
+[2m2025-11-01T21:15:46.233154Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:15:46.233159Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:15:47.894041Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:15:47.894106Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:15:47.894111Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:15:50.262365Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite check script and capture FEATURE_DIR and AVAILABLE_DOCS."},{"status":"in_progress","step":"Inspect checklist completion status and handle gating decision if needed."},{"status":"pending","step":"Load required planning and specification documents."},{"status":"pending","step":"Verify ignore files per detected tooling."},{"status":"pending","step":"Parse tasks.md for phase structure and dependencies before proceeding with implementation."}]}
+[2m2025-11-01T21:15:50.262383Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:15:50.262385Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:15:52.462118Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls -1 /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:15:52.462134Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:15:52.462136Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:15:55.463718Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite check script and capture FEATURE_DIR and AVAILABLE_DOCS."},{"status":"completed","step":"Inspect checklist completion status and handle gating decision if needed."},{"status":"in_progress","step":"Load required planning and specification documents."},{"status":"pending","step":"Verify ignore files per detected tooling."},{"status":"pending","step":"Parse tasks.md for phase structure and dependencies before proceeding with implementation."}]}
+[2m2025-11-01T21:15:55.463751Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:15:55.463754Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:15:57.862098Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/tasks.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:15:57.862140Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:15:57.862145Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:00.581285Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/plan.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:00.581345Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:00.581351Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:02.826524Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/data-model.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:02.826582Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:02.826588Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:05.132567Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/research.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:05.132600Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:05.132605Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:07.055657Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/quickstart.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:07.055694Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:07.055699Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:10.135655Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls -R /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/contracts"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:10.135699Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:10.135704Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:12.558342Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/contracts/frontend-auth.openapi.yaml"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:12.558408Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:12.558414Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:14.546682Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/contracts/backend-auth.openapi.yaml"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:14.546723Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:14.546728Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:16.779877Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite check script and capture FEATURE_DIR and AVAILABLE_DOCS."},{"status":"completed","step":"Inspect checklist completion status and handle gating decision if needed."},{"status":"completed","step":"Load required planning and specification documents."},{"status":"in_progress","step":"Verify ignore files per detected tooling."},{"status":"pending","step":"Parse tasks.md for phase structure and dependencies before proceeding with implementation."}]}
+[2m2025-11-01T21:16:16.779947Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:16.779953Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:20.022480Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git rev-parse --git-dir"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:20.022514Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:20.022520Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:23.029381Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls Dockerfile*"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:23.029469Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:23.029475Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:26.483985Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g'Dockerfile*'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:26.484026Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:26.484032Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:29.841926Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g'.eslintrc*'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:29.841948Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:29.841951Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:32.986517Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g'eslint.config.*'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:32.986560Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:32.986566Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:35.074578Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g'.prettierrc*'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:35.074608Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:35.074612Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:37.526224Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g'prettier.config.*'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:37.526286Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:37.526292Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:41.850171Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g'*.tf'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:41.850214Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:41.850219Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:44.023277Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls -a"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:44.023318Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:44.023323Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:47.784446Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat package.json"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:47.784495Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:47.784500Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:50.288961Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .gitignore"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:50.288987Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:50.288990Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:53.117660Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .dockerignore"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:53.117688Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:53.117693Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:55.145367Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .eslintignore"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:55.145405Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:55.145410Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:16:57.652150Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g'*prettier*'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:16:57.652210Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:16:57.652215Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:17:03.451852Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite check script and capture FEATURE_DIR and AVAILABLE_DOCS."},{"status":"completed","step":"Inspect checklist completion status and handle gating decision if needed."},{"status":"completed","step":"Load required planning and specification documents."},{"status":"completed","step":"Verify ignore files per detected tooling."},{"status":"in_progress","step":"Parse tasks.md for phase structure and dependencies before proceeding with implementation."}]}
+[2m2025-11-01T21:17:03.451930Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:17:03.451936Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:17:10.557650Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite check script and capture FEATURE_DIR and AVAILABLE_DOCS."},{"status":"completed","step":"Inspect checklist completion status and handle gating decision if needed."},{"status":"completed","step":"Load required planning and specification documents."},{"status":"completed","step":"Verify ignore files per detected tooling."},{"status":"completed","step":"Parse tasks.md for phase structure and dependencies before proceeding with implementation."}]}
+[2m2025-11-01T21:17:10.557694Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:17:10.557699Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:15.401476Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:15.401591Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:15.401598Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:18.547721Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/002-supabase-email-auth/checklists"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:18.547751Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:18.547756Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:25.501940Z[0m [32m INFO[0m ToolCall: update_plan {"explanation":"Executing Phase 2 tasks with TDD, covering frontend helpers and backend settings integration.","plan":[{"status":"in_progress","step":"Author failing frontend tests: env schema helper, client singleton integration, cookie parity (T002a, T004a, T006a)."},{"status":"pending","step":"Implement frontend supabase helpers: env schema, client factories, types, cookies (T003-T006)."},{"status":"pending","step":"Implement backend Supabase settings and wiring (T007-T008)."},{"status":"pending","step":"Run appropriate test suites and update tasks.md completions."},{"status":"pending","step":"Summarize Phase 2 progress and next steps."}]}
+[2m2025-11-01T21:19:25.501992Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:25.501997Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:28.154463Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend/lib"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:28.154512Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:28.154517Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:31.359993Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend/tests"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:31.360017Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:31.360021Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:35.276389Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend/tests/unit"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:35.276421Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:35.276426Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:37.593460Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend/tests/smoke"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:37.593495Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:37.593500Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:40.659641Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/frontend/package.json"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:40.659687Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:40.659693Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:43.812972Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g'vitest.config.*' -0"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:43.813060Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:43.813066Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:45.628435Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/frontend/vitest.config.ts"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:45.628471Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:45.628476Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:54.833916Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg \"env schema\" -n specs/002-supabase-email-auth -g '*.md'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:54.833971Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:54.833976Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:19:57.649365Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/002-supabase-email-auth/spec.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:19:57.649412Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:19:57.649418Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:20:00.237926Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/frontend/lib/env.ts"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:20:00.237956Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:20:00.237961Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:20:06.342375Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg \"Supabase\" -n"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:20:06.342440Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:20:06.342446Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:20:48.245127Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","node -p \"require('@supabase/ssr')\""],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:20:48.245193Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:20:48.245198Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:21:09.524883Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","find node_modules -path '*@supabase*' | head"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:21:09.524952Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:21:09.524958Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:21:27.446105Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/frontend/tsconfig.json"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:21:27.446165Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:21:27.446169Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:21:32.995463Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","mkdir -p apps/frontend/tests/unit/supabase"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:21:32.995516Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:21:32.995522Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:21:42.426257Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","mkdir -p apps/frontend/tests/integration"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:21:42.426336Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:21:42.426341Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:22:08.961666Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: apps/frontend/tests/unit/supabase/envSchema.spec.ts
++import { afterEach, beforeEach, describe, expect, it } from 'vitest';
++
++import {
++  getBrowserSupabaseConfig,
++  getServerSupabaseConfig,
++  resetSupabaseEnvCache,
++} from '@/lib/supabase/env';
++
++const ORIGINAL_ENV = { ...process.env };
++
++describe('Supabase env schema helper', () => {
++  beforeEach(() => {
++    resetSupabaseEnvCache();
++    process.env.NEXT_PUBLIC_SUPABASE_URL =
++      'https://example-project.supabase.co';
++    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key';
++    process.env.SUPABASE_URL = 'https://secure-project.supabase.co';
++  });
++
++  afterEach(() => {
++    resetSupabaseEnvCache();
++    Object.assign(process.env, ORIGINAL_ENV);
++  });
++
++  it('returns sanitized config for browser and server clients when vars exist', () => {
++    const browserConfig = getBrowserSupabaseConfig();
++    const serverConfig = getServerSupabaseConfig();
++
++    expect(browserConfig).toEqual({
++      url: 'https://example-project.supabase.co',
++      anonKey: 'anon-key',
++    });
++    expect(serverConfig).toEqual({
++      url: 'https://secure-project.supabase.co',
++      anonKey: 'anon-key',
++    });
++  });
++
++  it('falls back to the public URL when SUPABASE_URL is missing', () => {
++    delete process.env.SUPABASE_URL;
++
++    const serverConfig = getServerSupabaseConfig();
++
++    expect(serverConfig.url).toBe('https://example-project.supabase.co');
++    expect(serverConfig.anonKey).toBe('anon-key');
++  });
++
++  it('throws a descriptive error when required values are absent', () => {
++    delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
++
++    expect(() => getBrowserSupabaseConfig()).toThrowError(
++      /NEXT_PUBLIC_SUPABASE_ANON_KEY/i,
++    );
++  });
++
++  it('caches validated values to avoid repeated parsing', () => {
++    const first = getBrowserSupabaseConfig();
++    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://mutated.supabase.co';
++
++    const second = getBrowserSupabaseConfig();
++
++    expect(second).toBe(first);
++  });
++});
+*** End Patch
+[2m2025-11-01T21:22:08.961750Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:22:08.961755Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:22:22.115649Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/frontend/tests/unit/supabase/envSchema.spec.ts
+@@
+-const ORIGINAL_ENV = { ...process.env };
++const ORIGINAL_ENV = { ...process.env };
++const MUTATED_KEYS = [
++  'NEXT_PUBLIC_SUPABASE_URL',
++  'NEXT_PUBLIC_SUPABASE_ANON_KEY',
++  'SUPABASE_URL',
++] as const;
+@@
+   afterEach(() => {
+     resetSupabaseEnvCache();
+-    Object.assign(process.env, ORIGINAL_ENV);
++    for (const key of MUTATED_KEYS) {
++      if (ORIGINAL_ENV[key] === undefined) {
++        delete process.env[key];
++      } else {
++        process.env[key] = ORIGINAL_ENV[key]!;
++      }
++    }
+   });
+*** End Patch
+[2m2025-11-01T21:22:22.115732Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:22:22.115737Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:22:54.678313Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: apps/frontend/tests/integration/supabaseClientSingleton.spec.ts
++import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
++
++import {
++  createServerSupabaseClient,
++  getBrowserSupabaseClient,
++  resetSupabaseClientCache,
++} from '@/lib/supabase/clients';
++import { resetSupabaseEnvCache } from '@/lib/supabase/env';
++
++const ORIGINAL_ENV = { ...process.env };
++const MUTATED_KEYS = [
++  'NEXT_PUBLIC_SUPABASE_URL',
++  'NEXT_PUBLIC_SUPABASE_ANON_KEY',
++  'SUPABASE_URL',
++] as const;
++
++const mockBrowserFactory = vi.fn(
++  (url: string, key: string, _options?: unknown) => ({
++    kind: 'browser',
++    url,
++    key,
++    instance: Symbol('browser'),
++  }),
++);
++
++const mockServerFactory = vi.fn(
++  (url: string, key: string, options: unknown) => ({
++    kind: 'server',
++    url,
++    key,
++    options,
++    instance: Symbol('server'),
++  }),
++);
++
++vi.mock('@supabase/ssr', () => ({
++  createBrowserClient: mockBrowserFactory,
++  createServerClient: mockServerFactory,
++}));
++
++class MemoryRequestCookies {
++  private readonly store = new Map<string, string>();
++
++  setCalls: Array<{
++    name: string;
++    value: string;
++    options?: Record<string, unknown>;
++    action: 'set' | 'delete';
++  }> = [];
++
++  get(name: string) {
++    if (!this.store.has(name)) {
++      return undefined;
++    }
++    return { name, value: this.store.get(name)! };
++  }
++
++  set(name: string, value: string, options?: Record<string, unknown>) {
++    this.store.set(name, value);
++    this.setCalls.push({ name, value, options, action: 'set' });
++  }
++
++  delete(name: string, options?: Record<string, unknown>) {
++    this.store.delete(name);
++    this.setCalls.push({ name, value: '', options, action: 'delete' });
++  }
++}
++
++describe('Supabase client factories', () => {
++  beforeEach(() => {
++    resetSupabaseEnvCache();
++    resetSupabaseClientCache();
++    mockBrowserFactory.mockClear();
++    mockServerFactory.mockClear();
++    process.env.NEXT_PUBLIC_SUPABASE_URL =
++      'https://example-project.supabase.co';
++    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon-key';
++    process.env.SUPABASE_URL = 'https://secure-project.supabase.co';
++  });
++
++  afterEach(() => {
++    resetSupabaseEnvCache();
++    resetSupabaseClientCache();
++    for (const key of MUTATED_KEYS) {
++      if (ORIGINAL_ENV[key] === undefined) {
++        delete process.env[key];
++      } else {
++        process.env[key] = ORIGINAL_ENV[key]!;
++      }
++    }
++  });
++
++  it('reuses a single browser client instance', () => {
++    const first = getBrowserSupabaseClient();
++    const second = getBrowserSupabaseClient();
++
++    expect(first).toBe(second);
++    expect(mockBrowserFactory).toHaveBeenCalledTimes(1);
++  });
++
++  it('creates one server client per request context', () => {
++    const cookies = new MemoryRequestCookies();
++    const headers = new Headers();
++
++    const clientA = createServerSupabaseClient({ cookies, headers });
++    const clientB = createServerSupabaseClient({ cookies, headers });
++
++    expect(clientA).toBe(clientB);
++    expect(mockServerFactory).toHaveBeenCalledTimes(1);
++  });
++
++  it('creates a new server client for different cookie stores', () => {
++    const requestOne = new MemoryRequestCookies();
++    const requestTwo = new MemoryRequestCookies();
++    const headers = new Headers();
++
++    const clientOne = createServerSupabaseClient({
++      cookies: requestOne,
++      headers,
++    });
++    const clientTwo = createServerSupabaseClient({
++      cookies: requestTwo,
++      headers,
++    });
++
++    expect(clientOne).not.toBe(clientTwo);
++    expect(mockServerFactory).toHaveBeenCalledTimes(2);
++  });
++
++  it('passes validated env config to the factory', () => {
++    const cookies = new MemoryRequestCookies();
++    const headers = new Headers();
++
++    createServerSupabaseClient({ cookies, headers });
++    getBrowserSupabaseClient();
++
++    expect(mockServerFactory).toHaveBeenCalledWith(
++      'https://secure-project.supabase.co',
++      'anon-key',
++      expect.objectContaining({
++        cookies: expect.any(Object),
++      }),
++    );
++
++    expect(mockBrowserFactory).toHaveBeenCalledWith(
++      'https://example-project.supabase.co',
++      'anon-key',
++      expect.any(Object),
++    );
++  });
++});
+*** End Patch
+[2m2025-11-01T21:22:54.678496Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:22:54.678501Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:23:24.446466Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: apps/frontend/tests/integration/supabaseCookies.spec.ts
++import { afterEach, beforeEach, describe, expect, it } from 'vitest';
++
++import {
++  SUPABASE_ACCESS_TOKEN_COOKIE,
++  SUPABASE_REFRESH_TOKEN_COOKIE,
++  createMiddlewareSupabaseCookies,
++  createServerSupabaseCookies,
++} from '@/lib/supabase/cookies';
++import { resetSupabaseEnvCache } from '@/lib/supabase/env';
++
++class MemoryRequestCookies {
++  private readonly store = new Map<string, string>();
++
++  setCalls: Array<{
++    name: string;
++    value: string;
++    options?: Record<string, unknown>;
++    action: 'set';
++  }> = [];
++
++  get(name: string) {
++    if (!this.store.has(name)) {
++      return undefined;
++    }
++    return { name, value: this.store.get(name)! };
++  }
++
++  set(name: string, value: string, options?: Record<string, unknown>) {
++    this.store.set(name, value);
++    this.setCalls.push({ name, value, options, action: 'set' });
++  }
++}
++
++class MemoryResponseCookies {
++  readonly setCalls: Array<{
++    name: string;
++    value: string;
++    options?: Record<string, unknown>;
++  }> = [];
++
++  set(name: string, value: string, options?: Record<string, unknown>) {
++    this.setCalls.push({ name, value, options });
++  }
++}
++
++describe('Supabase cookie adapters', () => {
++  beforeEach(() => {
++    resetSupabaseEnvCache();
++  });
++
++  afterEach(() => {
++    resetSupabaseEnvCache();
++  });
++
++  it('keeps server and middleware cookie options in sync', () => {
++    const serverCookies = new MemoryRequestCookies();
++    const middlewareRequest = new MemoryRequestCookies();
++    const middlewareResponse = new MemoryResponseCookies();
++
++    const serverAdapter = createServerSupabaseCookies(serverCookies);
++    const middlewareAdapter = createMiddlewareSupabaseCookies({
++      request: middlewareRequest,
++      response: middlewareResponse,
++    });
++
++    serverAdapter.set(SUPABASE_ACCESS_TOKEN_COOKIE, 'token');
++    middlewareAdapter.set(SUPABASE_ACCESS_TOKEN_COOKIE, 'token');
++
++    expect(serverCookies.setCalls[0]).toBeDefined();
++    expect(middlewareResponse.setCalls[0]).toBeDefined();
++    expect(serverCookies.setCalls[0]?.options).toEqual(
++      middlewareResponse.setCalls[0]?.options,
++    );
++
++    serverAdapter.remove(SUPABASE_ACCESS_TOKEN_COOKIE);
++    middlewareAdapter.remove(SUPABASE_ACCESS_TOKEN_COOKIE);
++
++    expect(serverCookies.setCalls[1]?.options).toEqual(
++      middlewareResponse.setCalls[1]?.options,
++    );
++  });
++
++  it('reads and writes refresh cookies consistently', () => {
++    const serverCookies = new MemoryRequestCookies();
++    const middlewareRequest = new MemoryRequestCookies();
++    const middlewareResponse = new MemoryResponseCookies();
++
++    const serverAdapter = createServerSupabaseCookies(serverCookies);
++    const middlewareAdapter = createMiddlewareSupabaseCookies({
++      request: middlewareRequest,
++      response: middlewareResponse,
++    });
++
++    serverAdapter.set(SUPABASE_REFRESH_TOKEN_COOKIE, 'server-refresh');
++    middlewareAdapter.set(SUPABASE_REFRESH_TOKEN_COOKIE, 'middleware-refresh');
++
++    expect(
++      serverAdapter.get(SUPABASE_REFRESH_TOKEN_COOKIE),
++    ).toBe('server-refresh');
++    expect(
++      middlewareAdapter.get(SUPABASE_REFRESH_TOKEN_COOKIE),
++    ).toBe('middleware-refresh');
++
++    expect(serverCookies.setCalls).toHaveLength(1);
++    expect(middlewareResponse.setCalls).toHaveLength(2);
++  });
++});
+*** End Patch
+[2m2025-11-01T21:23:24.446679Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:23:24.446687Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:23:32.435529Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/frontend/tests/integration/supabaseCookies.spec.ts
+@@
+-    expect(serverCookies.setCalls).toHaveLength(1);
+-    expect(middlewareResponse.setCalls).toHaveLength(2);
++    expect(serverCookies.setCalls).toHaveLength(1);
++    expect(middlewareResponse.setCalls).toHaveLength(1);
+   });
+ });
+*** End Patch
+[2m2025-11-01T21:23:32.435627Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:23:32.435633Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:23:36.631132Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/frontend/vitest.config.ts
+@@
+ export default defineConfig({
+   test: {
+     environment: 'node',
+     globals: true,
+-    include: ['tests/unit/**/*.spec.ts'],
++    include: ['tests/{unit,integration}/**/*.spec.ts'],
+*** End Patch
+[2m2025-11-01T21:23:36.631199Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:23:36.631205Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:23:40.789861Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","mkdir -p apps/frontend/lib/supabase"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:23:40.789916Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:23:40.789922Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:23:51.723480Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: apps/frontend/lib/supabase/env.ts
++import { z } from 'zod';
++
++const SupabaseEnvSchema = z
++  .object({
++    NEXT_PUBLIC_SUPABASE_URL: z
++      .string({
++        required_error: 'NEXT_PUBLIC_SUPABASE_URL is required.',
++      })
++      .trim()
++      .url('NEXT_PUBLIC_SUPABASE_URL must be a valid URL.'),
++    NEXT_PUBLIC_SUPABASE_ANON_KEY: z
++      .string({
++        required_error: 'NEXT_PUBLIC_SUPABASE_ANON_KEY is required.',
++      })
++      .trim()
++      .min(1, 'NEXT_PUBLIC_SUPABASE_ANON_KEY is required.'),
++    SUPABASE_URL: z
++      .string()
++      .trim()
++      .url('SUPABASE_URL must be a valid URL.')
++      .optional(),
++  })
++  .transform((value) => ({
++    ...value,
++    NEXT_PUBLIC_SUPABASE_URL: value.NEXT_PUBLIC_SUPABASE_URL.trim(),
++    NEXT_PUBLIC_SUPABASE_ANON_KEY: value.NEXT_PUBLIC_SUPABASE_ANON_KEY.trim(),
++    SUPABASE_URL: value.SUPABASE_URL?.trim(),
++  }));
++
++type SupabaseEnv = z.infer<typeof SupabaseEnvSchema>;
++
++let cachedEnv: SupabaseEnv | null = null;
++
++const getValidatedEnv = (): SupabaseEnv => {
++  if (cachedEnv) {
++    return cachedEnv;
++  }
++
++  const parsedEnv = SupabaseEnvSchema.parse(process.env);
++  cachedEnv = parsedEnv;
++  return parsedEnv;
++};
++
++export const getBrowserSupabaseConfig = () => {
++  const env = getValidatedEnv();
++
++  return {
++    url: env.NEXT_PUBLIC_SUPABASE_URL,
++    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
++  } as const;
++};
++
++export const getServerSupabaseConfig = () => {
++  const env = getValidatedEnv();
++
++  return {
++    url: env.SUPABASE_URL ?? env.NEXT_PUBLIC_SUPABASE_URL,
++    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
++  } as const;
++};
++
++export const resetSupabaseEnvCache = () => {
++  cachedEnv = null;
++};
++
++export type BrowserSupabaseConfig = ReturnType<typeof getBrowserSupabaseConfig>;
++export type ServerSupabaseConfig = ReturnType<typeof getServerSupabaseConfig>;
+*** End Patch
+[2m2025-11-01T21:23:51.723575Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:23:51.723579Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:24:05.980485Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/frontend/lib/supabase/env.ts
+@@
+-type SupabaseEnv = z.infer<typeof SupabaseEnvSchema>;
+-
+-let cachedEnv: SupabaseEnv | null = null;
+-
+-const getValidatedEnv = (): SupabaseEnv => {
+-  if (cachedEnv) {
+-    return cachedEnv;
+-  }
+-
+-  const parsedEnv = SupabaseEnvSchema.parse(process.env);
+-  cachedEnv = parsedEnv;
+-  return parsedEnv;
+-};
+-
+-export const getBrowserSupabaseConfig = () => {
+-  const env = getValidatedEnv();
+-
+-  return {
+-    url: env.NEXT_PUBLIC_SUPABASE_URL,
+-    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+-  } as const;
+-};
+-
+-export const getServerSupabaseConfig = () => {
+-  const env = getValidatedEnv();
+-
+-  return {
+-    url: env.SUPABASE_URL ?? env.NEXT_PUBLIC_SUPABASE_URL,
+-    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+-  } as const;
+-};
+-
+-export const resetSupabaseEnvCache = () => {
+-  cachedEnv = null;
+-};
+-
+-export type BrowserSupabaseConfig = ReturnType<typeof getBrowserSupabaseConfig>;
+-export type ServerSupabaseConfig = ReturnType<typeof getServerSupabaseConfig>;
++type SupabaseEnv = z.infer<typeof SupabaseEnvSchema>;
++
++let cachedEnv: SupabaseEnv | null = null;
++let cachedBrowserConfig: BrowserSupabaseConfig | null = null;
++let cachedServerConfig: ServerSupabaseConfig | null = null;
++
++const getValidatedEnv = (): SupabaseEnv => {
++  if (cachedEnv) {
++    return cachedEnv;
++  }
++
++  const parsedEnv = SupabaseEnvSchema.parse(process.env);
++  cachedEnv = parsedEnv;
++  return parsedEnv;
++};
++
++export const getBrowserSupabaseConfig = (): BrowserSupabaseConfig => {
++  if (cachedBrowserConfig) {
++    return cachedBrowserConfig;
++  }
++
++  const env = getValidatedEnv();
++  cachedBrowserConfig = {
++    url: env.NEXT_PUBLIC_SUPABASE_URL,
++    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
++  };
++
++  return cachedBrowserConfig;
++};
++
++export const getServerSupabaseConfig = (): ServerSupabaseConfig => {
++  if (cachedServerConfig) {
++    return cachedServerConfig;
++  }
++
++  const env = getValidatedEnv();
++  cachedServerConfig = {
++    url: env.SUPABASE_URL ?? env.NEXT_PUBLIC_SUPABASE_URL,
++    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
++  };
++
++  return cachedServerConfig;
++};
++
++export const resetSupabaseEnvCache = () => {
++  cachedEnv = null;
++  cachedBrowserConfig = null;
++  cachedServerConfig = null;
++};
++
++export type BrowserSupabaseConfig = {
++  url: string;
++  anonKey: string;
++};
++
++export type ServerSupabaseConfig = {
++  url: string;
++  anonKey: string;
++};
+*** End Patch
+[2m2025-11-01T21:24:05.980637Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:24:05.980643Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:24:13.168793Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/frontend/lib/supabase/env.ts
+@@
+-const SupabaseEnvSchema = z
++const SupabaseEnvSchema = z
+@@
+-type SupabaseEnv = z.infer<typeof SupabaseEnvSchema>;
+-
+-let cachedEnv: SupabaseEnv | null = null;
+-let cachedBrowserConfig: BrowserSupabaseConfig | null = null;
+-let cachedServerConfig: ServerSupabaseConfig | null = null;
++type SupabaseEnv = z.infer<typeof SupabaseEnvSchema>;
++
++export type BrowserSupabaseConfig = {
++  url: string;
++  anonKey: string;
++};
++
++export type ServerSupabaseConfig = {
++  url: string;
++  anonKey: string;
++};
++
++let cachedEnv: SupabaseEnv | null = null;
++let cachedBrowserConfig: BrowserSupabaseConfig | null = null;
++let cachedServerConfig: ServerSupabaseConfig | null = null;
+@@
+-export type BrowserSupabaseConfig = {
+-  url: string;
+-  anonKey: string;
+-};
+-
+-export type ServerSupabaseConfig = {
+-  url: string;
+-  anonKey: string;
+-};
+*** End Patch
+[2m2025-11-01T21:24:13.168879Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:24:13.168884Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:24:22.817059Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: apps/frontend/lib/supabase/types.ts
++import type { SupabaseClient } from '@supabase/supabase-js';
++
++export type { SupabaseClient };
++
++export interface SupabaseAuthUser {
++  id: string;
++  email: string;
++  email_confirmed_at: string | null;
++  last_sign_in_at?: string | null;
++  app_metadata: Record<string, unknown>;
++  user_metadata: Record<string, unknown>;
++}
++
++export interface SupabaseAuthSession {
++  access_token: string;
++  refresh_token: string;
++  expires_at: number;
++  token_type: 'bearer';
++  email_confirmed: boolean;
++  user: SupabaseAuthUser;
++}
+*** End Patch
+[2m2025-11-01T21:24:22.817142Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:24:22.817149Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:24:46.337452Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: apps/frontend/lib/supabase/cookies.ts
++export const SUPABASE_ACCESS_TOKEN_COOKIE = 'sb-access-token';
++export const SUPABASE_REFRESH_TOKEN_COOKIE = 'sb-refresh-token';
++
++export type CookieSameSite = 'lax' | 'strict' | 'none';
++
++export interface CookieAttributes {
++  domain?: string;
++  expires?: Date;
++  httpOnly?: boolean;
++  maxAge?: number;
++  path?: string;
++  sameSite?: CookieSameSite;
++  secure?: boolean;
++}
++
++export interface SupabaseCookieAdapter {
++  get: (name: string) => string | undefined;
++  set: (name: string, value: string, attributes?: Partial<CookieAttributes>) => void;
++  remove: (name: string, attributes?: Partial<CookieAttributes>) => void;
++}
++
++type RequestCookieStore = {
++  get: (name: string) => { value: string } | undefined;
++  set: (...args: unknown[]) => unknown;
++};
++
++type MiddlewareCookieStores = {
++  request: {
++    get: (name: string) => { value: string } | undefined;
++  };
++  response: {
++    set: (...args: unknown[]) => unknown;
++  };
++};
++
++const BASE_COOKIE_OPTIONS: CookieAttributes = {
++  httpOnly: true,
++  sameSite: 'lax',
++  secure: process.env.NODE_ENV === 'production',
++  path: '/',
++};
++
++const buildCookieOptions = (
++  overrides?: Partial<CookieAttributes>,
++): CookieAttributes => ({
++  ...BASE_COOKIE_OPTIONS,
++  ...overrides,
++  // Ensure secure flag respects runtime changes to NODE_ENV (use latest value).
++  secure:
++    overrides?.secure ?? (process.env.NODE_ENV === 'production' ? true : false),
++});
++
++const buildRemovalOptions = (
++  overrides?: Partial<CookieAttributes>,
++): CookieAttributes => ({
++  ...buildCookieOptions(overrides),
++  maxAge: 0,
++  expires: overrides?.expires ?? new Date(0),
++});
++
++const callSet = (
++  target: { set: (...args: unknown[]) => unknown },
++  name: string,
++  value: string,
++  options: CookieAttributes,
++) => {
++  if (typeof target.set !== 'function') {
++    return;
++  }
++
++  if (target.set.length >= 2) {
++    target.set(name, value, options);
++  } else {
++    target.set({ name, value, ...options });
++  }
++};
++
++export const createServerSupabaseCookies = (
++  cookieStore: RequestCookieStore,
++): SupabaseCookieAdapter => ({
++  get: (name) => cookieStore.get(name)?.value,
++  set: (name, value, overrides) => {
++    const options = buildCookieOptions(overrides);
++    callSet(cookieStore, name, value, options);
++  },
++  remove: (name, overrides) => {
++    const options = buildRemovalOptions(overrides);
++    callSet(cookieStore, name, '', options);
++  },
++});
++
++export const createMiddlewareSupabaseCookies = ({
++  request,
++  response,
++}: MiddlewareCookieStores): SupabaseCookieAdapter => {
++  const localMutations = new Map<string, string | undefined>();
++
++  return {
++    get: (name) => {
++      if (localMutations.has(name)) {
++        return localMutations.get(name);
++      }
++      return request.get(name)?.value;
++    },
++    set: (name, value, overrides) => {
++      const options = buildCookieOptions(overrides);
++      callSet(response, name, value, options);
++      localMutations.set(name, value);
++    },
++    remove: (name, overrides) => {
++      const options = buildRemovalOptions(overrides);
++      callSet(response, name, '', options);
++      localMutations.set(name, undefined);
++    },
++  };
++};
+*** End Patch
+[2m2025-11-01T21:24:46.337608Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:24:46.337614Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:25:08.343762Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/frontend/tests/integration/supabaseClientSingleton.spec.ts
+@@
+-    expect(mockBrowserFactory).toHaveBeenCalledWith(
+-      'https://example-project.supabase.co',
+-      'anon-key',
+-      expect.any(Object),
+-    );
++    expect(mockBrowserFactory).toHaveBeenCalledWith(
++      'https://example-project.supabase.co',
++      'anon-key',
++      undefined,
++    );
+*** End Patch
+[2m2025-11-01T21:25:08.343877Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:25:08.343895Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:25:21.857443Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: apps/frontend/lib/supabase/clients.ts
++import { createBrowserClient, createServerClient } from '@supabase/ssr';
++
++import type { SupabaseClient } from './types';
++import {
++  getBrowserSupabaseConfig,
++  getServerSupabaseConfig,
++} from './env';
++import {
++  createServerSupabaseCookies,
++  type SupabaseCookieAdapter,
++} from './cookies';
++
++type RequestCookieStore = Parameters<typeof createServerSupabaseCookies>[0];
++
++export interface ServerClientContext {
++  cookies: RequestCookieStore;
++  headers: Headers;
++}
++
++let browserClient: SupabaseClient | null = null;
++let serverClientCache = new WeakMap<RequestCookieStore, SupabaseClient>();
++
++export const getBrowserSupabaseClient = <Database = unknown>(): SupabaseClient<Database> => {
++  if (browserClient) {
++    return browserClient as SupabaseClient<Database>;
++  }
++
++  const { url, anonKey } = getBrowserSupabaseConfig();
++  browserClient = createBrowserClient<Database>(url, anonKey);
++  return browserClient as SupabaseClient<Database>;
++};
++
++export const createServerSupabaseClient = <Database = unknown>({
++  cookies,
++  headers,
++}: ServerClientContext): SupabaseClient<Database> => {
++  const cachedClient = serverClientCache.get(cookies);
++  if (cachedClient) {
++    return cachedClient as SupabaseClient<Database>;
++  }
++
++  const { url, anonKey } = getServerSupabaseConfig();
++  const supabase = createServerClient<Database>(url, anonKey, {
++    cookies: createServerSupabaseCookies(cookies) as SupabaseCookieAdapter,
++    headers,
++  });
++
++  serverClientCache.set(cookies, supabase as SupabaseClient);
++  return supabase;
++};
++
++export const resetSupabaseClientCache = () => {
++  browserClient = null;
++  serverClientCache = new WeakMap();
++};
+*** End Patch
+[2m2025-11-01T21:25:21.857553Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:25:21.857559Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:25:28.610299Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/frontend/lib/supabase/clients.ts
+@@
+-import {
+-  createServerSupabaseCookies,
+-  type SupabaseCookieAdapter,
+-} from './cookies';
++import { createServerSupabaseCookies } from './cookies';
+@@
+   const { url, anonKey } = getServerSupabaseConfig();
+   const supabase = createServerClient<Database>(url, anonKey, {
+-    cookies: createServerSupabaseCookies(cookies) as SupabaseCookieAdapter,
++    cookies: createServerSupabaseCookies(cookies),
+     headers,
+   });
+*** End Patch
+[2m2025-11-01T21:25:28.610362Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:25:28.610367Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:25:34.922699Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/backend/app"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:25:34.922773Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:25:34.922779Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:25:37.500853Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/backend/app/core"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:25:37.500886Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:25:37.500890Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:25:41.459897Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/backend/app/core/settings.py"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:25:41.460141Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:25:41.460146Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:25:48.093483Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg \"JWKS\" -n"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:25:48.093525Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:25:48.093532Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:25:52.477715Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/backend/app/main.py"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:25:52.477754Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:25:52.477759Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:26:30.734228Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: apps/backend/app/core/settings_supabase.py
++from __future__ import annotations
++
++from pydantic import AnyHttpUrl, BaseModel, PositiveInt, SecretStr
++
++
++class SupabaseSettings(BaseModel):
++    """Supabase configuration shared across backend services."""
++
++    url: AnyHttpUrl
++    service_role_key: SecretStr
++    jwt_audience: str
++    jwt_issuer: AnyHttpUrl
++    jwks_url: AnyHttpUrl
++    jwks_cache_ttl_seconds: PositiveInt
++
++    model_config = {
++        "frozen": True,
++    }
++
++
++__all__ = ["SupabaseSettings"]
+*** End Patch
+[2m2025-11-01T21:26:30.734310Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:26:30.734316Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:26:34.374839Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/backend/app/core/settings_supabase.py
+@@
+-from pydantic import AnyHttpUrl, BaseModel, PositiveInt, SecretStr
++from pydantic import AnyHttpUrl, BaseModel, ConfigDict, PositiveInt, SecretStr
+@@
+-    model_config = {
+-        "frozen": True,
+-    }
++    model_config = ConfigDict(frozen=True)
+*** End Patch
+[2m2025-11-01T21:26:34.374869Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:26:34.374873Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:26:51.431944Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/backend/app/core/settings.py
+@@
+-from functools import lru_cache
+-
+-from pydantic_settings import BaseSettings, SettingsConfigDict
++from functools import lru_cache
++from urllib.parse import urljoin
++
++from pydantic import AnyHttpUrl, Field, PositiveInt, SecretStr, TypeAdapter, computed_field
++from pydantic_settings import BaseSettings, SettingsConfigDict
++
++from app.core.settings_supabase import SupabaseSettings
+@@
+ class Settings(BaseSettings):
+     """Application runtime configuration with environment-backed overrides."""
+ 
+     app_name: str = "blockbuilders-backend"
+     app_version: str = "0.1.0-dev"
+     service_host: str = "0.0.0.0"
+     service_port: int = 8000
++    supabase_url: AnyHttpUrl = Field(alias="SUPABASE_URL")
++    supabase_service_role_key: SecretStr = Field(alias="SUPABASE_SERVICE_ROLE_KEY")
++    supabase_jwt_audience: str = Field(default="authenticated", alias="SUPABASE_JWT_AUDIENCE")
++    supabase_jwt_issuer: AnyHttpUrl = Field(alias="SUPABASE_JWT_ISSUER")
++    supabase_jwks_url: AnyHttpUrl | None = Field(default=None, alias="SUPABASE_JWKS_URL")
++    supabase_jwks_path: str = Field(default="/auth/v1/jwks", alias="SUPABASE_JWKS_PATH")
++    supabase_jwt_cache_ttl_seconds: PositiveInt = Field(
++        default=900,
++        alias="SUPABASE_JWT_CACHE_TTL",
++        description="JWKS cache TTL in seconds for Supabase public keys.",
++    )
+ 
+     model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True, extra="ignore")
+ 
++    @computed_field(return_type=SupabaseSettings)
++    @property
++    def supabase(self) -> SupabaseSettings:
++        """Supabase integration settings derived from environment variables."""
++
++        return SupabaseSettings(
++            url=self.supabase_url,
++            service_role_key=self.supabase_service_role_key,
++            jwt_audience=self.supabase_jwt_audience,
++            jwt_issuer=self.supabase_jwt_issuer,
++            jwks_url=self._resolve_jwks_url(),
++            jwks_cache_ttl_seconds=self.supabase_jwt_cache_ttl_seconds,
++        )
++
++    def _resolve_jwks_url(self) -> AnyHttpUrl:
++        adapter = TypeAdapter(AnyHttpUrl)
++        if self.supabase_jwks_url is not None:
++            return self.supabase_jwks_url
++
++        base = str(self.supabase_url).rstrip("/")
++        path = self.supabase_jwks_path.lstrip("/")
++        return adapter.validate_python(urljoin(f"{base}/", path))
++
+ 
+ @lru_cache(maxsize=1)
+ def get_settings() -> Settings:
+*** End Patch
+[2m2025-11-01T21:26:51.432056Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:26:51.432061Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:26:59.120852Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/backend/app/core/settings.py
+@@
+-from functools import lru_cache
+-from urllib.parse import urljoin
+-
+-from pydantic import AnyHttpUrl, Field, PositiveInt, SecretStr, TypeAdapter, computed_field
++from functools import lru_cache
++from urllib.parse import urljoin
++
++from pydantic import AnyHttpUrl, Field, PositiveInt, SecretStr, TypeAdapter, computed_field
+ from pydantic_settings import BaseSettings, SettingsConfigDict
+ 
+ from app.core.settings_supabase import SupabaseSettings
++
++HTTP_URL_ADAPTER = TypeAdapter(AnyHttpUrl)
+@@
+-        adapter = TypeAdapter(AnyHttpUrl)
+         if self.supabase_jwks_url is not None:
+             return self.supabase_jwks_url
+ 
+         base = str(self.supabase_url).rstrip("/")
+         path = self.supabase_jwks_path.lstrip("/")
+-        return adapter.validate_python(urljoin(f"{base}/", path))
++        return HTTP_URL_ADAPTER.validate_python(urljoin(f"{base}/", path))
+*** End Patch
+[2m2025-11-01T21:26:59.121019Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:26:59.121026Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:27:10.745402Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: apps/backend/app/main.py
+@@
+-from app.core.settings import get_settings
++from app.core.settings import get_settings
+ from app.factory import create_app
+ 
+ import uvicorn
+ 
+-app = create_app()
++settings = get_settings()
++_ = settings.supabase
++
++app = create_app()
+ 
+ 
+ def main() -> None:
+     """Run the FastAPI development server via uvicorn."""
+ 
+-    settings = get_settings()
+     uvicorn.run(
+         "app.main:app",
+         host=settings.service_host,
+         port=settings.service_port,
+         reload=True,
+*** End Patch
+[2m2025-11-01T21:27:10.745501Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:27:10.745508Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:27:27.946137Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","pnpm --filter @blockbuilders/frontend... test"],"timeout_ms":300000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:27:27.954059Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:27:27.954069Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:27:36.507229Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,120p' specs/002-supabase-email-auth/tasks.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:27:36.507361Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:27:36.507371Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:27:48.326376Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/002-supabase-email-auth/tasks.md
+@@
+-    - [ ] T002a [P] Validate Supabase env schema helper via Vitest, asserting required keys and failure modes in apps/frontend/tests/unit/supabase/envSchema.spec.ts
+-    - [ ] T004a [P] Add Next.js server/client integration test proving per-request Supabase singleton behavior in apps/frontend/tests/integration/supabaseClientSingleton.spec.ts
+-    - [ ] T006a [P] Exercise middleware/server cookie parity with Playwright or node-test harness in apps/frontend/tests/integration/supabaseCookies.spec.ts
++    - [X] T002a [P] Validate Supabase env schema helper via Vitest, asserting required keys and failure modes in apps/frontend/tests/unit/supabase/envSchema.spec.ts
++    - [X] T004a [P] Add Next.js server/client integration test proving per-request Supabase singleton behavior in apps/frontend/tests/integration/supabaseClientSingleton.spec.ts
++    - [X] T006a [P] Exercise middleware/server cookie parity with Playwright or node-test harness in apps/frontend/tests/integration/supabaseCookies.spec.ts
+@@
+-- [ ] T003 Create Supabase environment schema helper in apps/frontend/lib/supabase/env.ts reading validated `process.env`
+-- [ ] T004 [P] Implement Supabase client factories (browser/server) in apps/frontend/lib/supabase/clients.ts using `@supabase/ssr`
+-- [ ] T005 [P] Define typed Supabase auth session and profile interfaces in apps/frontend/lib/supabase/types.ts
+-- [ ] T006 Add Supabase cookie utilities for middleware/server parity in apps/frontend/lib/supabase/cookies.ts
+-- [ ] T007 Introduce Supabase settings model with JWKS fields in apps/backend/app/core/settings_supabase.py
+-- [ ] T008 [P] Wire Supabase settings into apps/backend/app/core/settings.py and ensure app/main.py loads them at startup
++- [X] T003 Create Supabase environment schema helper in apps/frontend/lib/supabase/env.ts reading validated `process.env`
++- [X] T004 [P] Implement Supabase client factories (browser/server) in apps/frontend/lib/supabase/clients.ts using `@supabase/ssr`
++- [X] T005 [P] Define typed Supabase auth session and profile interfaces in apps/frontend/lib/supabase/types.ts
++- [X] T006 Add Supabase cookie utilities for middleware/server parity in apps/frontend/lib/supabase/cookies.ts
++- [X] T007 Introduce Supabase settings model with JWKS fields in apps/backend/app/core/settings_supabase.py
++- [X] T008 [P] Wire Supabase settings into apps/backend/app/core/settings.py and ensure app/main.py loads them at startup
+*** End Patch
+[2m2025-11-01T21:27:48.326486Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:27:48.326490Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:27:54.188604Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Author failing frontend tests: env schema helper, client singleton integration, cookie parity (T002a, T004a, T006a)."},{"status":"completed","step":"Implement frontend supabase helpers: env schema, client factories, types, cookies (T003-T006)."},{"status":"completed","step":"Implement backend Supabase settings and wiring (T007-T008)."},{"status":"completed","step":"Run appropriate test suites and update tasks.md completions."},{"status":"in_progress","step":"Summarize Phase 2 progress and next steps."}]}
+[2m2025-11-01T21:27:54.188712Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:27:54.188718Z[0m [32m INFO[0m tool gate released
+[2m2025-11-01T21:27:58.481053Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status -sb"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-01T21:27:58.481166Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-01T21:27:58.481176Z[0m [32m INFO[0m tool gate released

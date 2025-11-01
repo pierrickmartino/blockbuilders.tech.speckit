@@ -15,18 +15,18 @@
 ## Phase 2: Foundational (Blocking Prerequisites)
 
 ### Tests for Phase 2 ⚠️
-    - [ ] T002a [P] Validate Supabase env schema helper via Vitest, asserting required keys and failure modes in apps/frontend/tests/unit/supabase/envSchema.spec.ts
-    - [ ] T004a [P] Add Next.js server/client integration test proving per-request Supabase singleton behavior in apps/frontend/tests/integration/supabaseClientSingleton.spec.ts
-    - [ ] T006a [P] Exercise middleware/server cookie parity with Playwright or node-test harness in apps/frontend/tests/integration/supabaseCookies.spec.ts
+    - [X] T002a [P] Validate Supabase env schema helper via Vitest, asserting required keys and failure modes in apps/frontend/tests/unit/supabase/envSchema.spec.ts
+    - [X] T004a [P] Add Next.js server/client integration test proving per-request Supabase singleton behavior in apps/frontend/tests/integration/supabaseClientSingleton.spec.ts
+    - [X] T006a [P] Exercise middleware/server cookie parity with Playwright or node-test harness in apps/frontend/tests/integration/supabaseCookies.spec.ts
 
 **Purpose**: Establish shared Supabase configuration, client factories, and settings that every story relies on.
 
-- [ ] T003 Create Supabase environment schema helper in apps/frontend/lib/supabase/env.ts reading validated `process.env`
-- [ ] T004 [P] Implement Supabase client factories (browser/server) in apps/frontend/lib/supabase/clients.ts using `@supabase/ssr`
-- [ ] T005 [P] Define typed Supabase auth session and profile interfaces in apps/frontend/lib/supabase/types.ts
-- [ ] T006 Add Supabase cookie utilities for middleware/server parity in apps/frontend/lib/supabase/cookies.ts
-- [ ] T007 Introduce Supabase settings model with JWKS fields in apps/backend/app/core/settings_supabase.py
-- [ ] T008 [P] Wire Supabase settings into apps/backend/app/core/settings.py and ensure app/main.py loads them at startup
+- [X] T003 Create Supabase environment schema helper in apps/frontend/lib/supabase/env.ts reading validated `process.env`
+- [X] T004 [P] Implement Supabase client factories (browser/server) in apps/frontend/lib/supabase/clients.ts using `@supabase/ssr`
+- [X] T005 [P] Define typed Supabase auth session and profile interfaces in apps/frontend/lib/supabase/types.ts
+- [X] T006 Add Supabase cookie utilities for middleware/server parity in apps/frontend/lib/supabase/cookies.ts
+- [X] T007 Introduce Supabase settings model with JWKS fields in apps/backend/app/core/settings_supabase.py
+- [X] T008 [P] Wire Supabase settings into apps/backend/app/core/settings.py and ensure app/main.py loads them at startup
 
 ---
 
