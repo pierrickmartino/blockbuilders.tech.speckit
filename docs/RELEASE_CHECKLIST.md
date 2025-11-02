@@ -29,6 +29,12 @@ Run through every item before tagging a release. Capture links to CI runs or art
 - [ ] GitHub Actions `Containers` workflow green on target commit
 - [ ] `configs/ci/reports/container-start-times.md` updated with latest timings or annotated as pending
 
+## Supabase Operations
+
+- [ ] Supabase bootstrap drill executed on a clean machine (<20 minutes) with duration noted here and supporting log uploaded (`configs/scripts/logs/supabase-bootstrap-*.log` or equivalent CI artifact)
+- [ ] Two consecutive CI deployments verified with shared Supabase secrets; attach `supabase-sync-*.log` artifact IDs for both runs
+- [ ] Latest Supabase secret sync log stored under `configs/scripts/logs/` and parity check step green (`supabase_env` job)
+
 ## Security & Compliance
 
 - [ ] Container scan (Docker Scout or Trivy) passes with no blocking CVEs

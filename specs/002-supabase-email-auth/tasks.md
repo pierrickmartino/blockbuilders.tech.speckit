@@ -134,16 +134,16 @@
 
 ### Implementation for User Story 4
 
-- [ ] T041 [P] [US4] Create frontend Supabase `.env.example` documenting public vars in apps/frontend/.env.example
-- [ ] T042 [P] [US4] Create backend Supabase `.env.example` documenting server vars in apps/backend/.env.example
-- [ ] T043 [US4] Update configs/ENVIRONMENT.md with Supabase auth, JWT, and email settings contracts
-- [ ] T044 [US4] Extend docs/QUICKSTART.md with Supabase bootstrap and password policy checklist
-- [ ] T045 [US4] Add CI secrets template for Supabase keys in configs/ci/supabase.env.tpl
-- [ ] T046 [US4] Document key rotation and resend procedures in docs/TROUBLESHOOTING.md
-- [ ] T045a [US4] Script Supabase secret sync to Vercel/GitHub Actions and archive run logs in configs/scripts/sync_supabase_secrets.sh
-- [ ] T045b [US4] Add CI parity check ensuring runtime secrets match templates, failing build when drift detected
-- [ ] T046a [US4] Run timed Supabase bootstrap drill on clean machine, documenting duration <20 minutes in docs/RELEASE_CHECKLIST.md
-- [ ] T046b [US4] Execute two consecutive CI deployments with shared secrets and attach verification logs to pipeline artifacts
+- [X] T041 [P] [US4] Create frontend Supabase `.env.example` documenting public vars in apps/frontend/.env.example
+- [X] T042 [P] [US4] Create backend Supabase `.env.example` documenting server vars in apps/backend/.env.example
+- [X] T043 [US4] Update configs/ENVIRONMENT.md with Supabase auth, JWT, and email settings contracts
+- [X] T044 [US4] Extend docs/QUICKSTART.md with Supabase bootstrap and password policy checklist
+- [X] T045 [US4] Add CI secrets template for Supabase keys in configs/ci/supabase.env.tpl
+- [X] T046 [US4] Document key rotation and resend procedures in docs/TROUBLESHOOTING.md
+- [X] T045a [US4] Script Supabase secret sync to Vercel/GitHub Actions and archive run logs in configs/scripts/sync_supabase_secrets.sh
+- [X] T045b [US4] Add CI parity check ensuring runtime secrets match templates, failing build when drift detected
+- [X] T046a [US4] Run timed Supabase bootstrap drill on clean machine, documenting duration <20 minutes in docs/RELEASE_CHECKLIST.md
+- [X] T046b [US4] Execute two consecutive CI deployments with shared secrets and attach verification logs to pipeline artifacts
 
 **Checkpoint**: Any teammate can configure Supabase across environments using the documented templates and scripts.
 
