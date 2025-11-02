@@ -12,8 +12,8 @@ Run through every item before tagging a release. Capture links to CI runs or art
 
 - [x] `pnpm lint --filter apps/frontend...` succeeds
 - [ ] `pnpm type-check` succeeds
-- [ ] `pnpm test:coverage --filter apps/frontend...` meets ≥80% thresholds
-- [ ] `pnpm test:e2e --filter apps/frontend... --project smoke` passes and Playwright trace archived
+- [x] `pnpm test:coverage --filter apps/frontend...` meets ≥80% thresholds
+- [x] `pnpm test:e2e --filter apps/frontend... --project smoke` passes and Playwright trace archived
 - [ ] Performance report (`configs/ci/reports/frontend-performance.md`) updated with latest build/trace metrics
 
 ## Backend Verification

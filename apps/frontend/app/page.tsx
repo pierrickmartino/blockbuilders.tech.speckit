@@ -1,9 +1,18 @@
 import type { Route } from 'next';
 import Link from 'next/link';
-import { loadBuildMetadata } from '@/lib/build-metadata';
+import { headers } from 'next/headers';
+import {
+  SMOKE_FALLBACK_TEST_SUITE,
+  loadBuildMetadata,
+} from '@/lib/build-metadata';
 
 export default async function HomePage() {
-  const metadata = await loadBuildMetadata();
+  const requestHeaders = await headers();
+  const testSuiteHeader =
+    requestHeaders.get('x-test-suite')?.toLowerCase() ?? '';
+  const metadata = await loadBuildMetadata({
+    forceFallback: testSuiteHeader === SMOKE_FALLBACK_TEST_SUITE,
+  });
 
   return (
     <section className="mx-auto flex max-w-4xl flex-col gap-8 px-6 py-16">

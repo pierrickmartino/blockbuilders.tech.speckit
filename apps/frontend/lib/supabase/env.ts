@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { ZodError, z } from 'zod';
 
 const SupabaseEnvSchema = z
   .object({
@@ -43,14 +43,45 @@ let cachedEnv: SupabaseEnv | null = null;
 let cachedBrowserConfig: BrowserSupabaseConfig | null = null;
 let cachedServerConfig: ServerSupabaseConfig | null = null;
 
+const FALLBACK_SUPABASE_URL = 'http://localhost:54321';
+const FALLBACK_SUPABASE_ANON_KEY = 'local-test-anon-key-placeholder';
+
 const getValidatedEnv = (): SupabaseEnv => {
   if (cachedEnv) {
     return cachedEnv;
   }
 
-  const parsedEnv = SupabaseEnvSchema.parse(process.env);
-  cachedEnv = parsedEnv;
-  return parsedEnv;
+  try {
+    const parsedEnv = SupabaseEnvSchema.parse(process.env);
+    cachedEnv = parsedEnv;
+    return parsedEnv;
+  } catch (error) {
+    const isProduction = process.env.NODE_ENV === 'production';
+    if (isProduction || !(error instanceof ZodError)) {
+      throw error;
+    }
+
+    const requiredKeys: Array<keyof SupabaseEnv> = [
+      'NEXT_PUBLIC_SUPABASE_URL',
+      'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+    ];
+    const shouldUseFallback = requiredKeys.every(
+      (key) => process.env[key] === undefined,
+    );
+
+    if (!shouldUseFallback) {
+      throw error;
+    }
+
+    const fallbackEnv = SupabaseEnvSchema.parse({
+      NEXT_PUBLIC_SUPABASE_URL: FALLBACK_SUPABASE_URL,
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: FALLBACK_SUPABASE_ANON_KEY,
+      SUPABASE_URL: FALLBACK_SUPABASE_URL,
+    });
+
+    cachedEnv = fallbackEnv;
+    return fallbackEnv;
+  }
 };
 
 export const getBrowserSupabaseConfig = (): BrowserSupabaseConfig => {

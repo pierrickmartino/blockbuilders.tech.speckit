@@ -25,6 +25,6 @@
     "test:coverage": "node ./scripts/test-coverage.mjs",
     "test:frontend": "pnpm run test:coverage",
     "test:backend": "uv run --directory apps/backend pytest",
-    "test:e2e": "pnpm --filter @blockbuilders/frontend... test:e2e"
+    "test:e2e": "node ./scripts/test-e2e.mjs"
   }
 }

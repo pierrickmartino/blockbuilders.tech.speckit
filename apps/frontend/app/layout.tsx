@@ -1,8 +1,13 @@
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import './globals.css';
 import { SupabaseSessionProvider } from '@/components/auth/SupabaseSessionProvider';
-import { loadBuildMetadata, metadataToAttributes } from '@/lib/build-metadata';
+import {
+  SMOKE_FALLBACK_TEST_SUITE,
+  loadBuildMetadata,
+  metadataToAttributes,
+} from '@/lib/build-metadata';
 
 export const metadata: Metadata = {
   title: 'Blockbuilders Mono-Repo Skeleton',
@@ -15,7 +20,12 @@ type RootLayoutProps = {
 };
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const snapshot = await loadBuildMetadata();
+  const requestHeaders = await headers();
+  const testSuiteHeader =
+    requestHeaders.get('x-test-suite')?.toLowerCase() ?? '';
+  const snapshot = await loadBuildMetadata({
+    forceFallback: testSuiteHeader === SMOKE_FALLBACK_TEST_SUITE,
+  });
   const bodyAttributes = metadataToAttributes(snapshot);
 
   return (
