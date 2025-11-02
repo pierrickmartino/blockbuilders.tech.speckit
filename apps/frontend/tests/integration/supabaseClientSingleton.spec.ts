@@ -137,23 +137,26 @@ describe('Supabase client factories', () => {
     createServerSupabaseClient({ cookies, headers });
     getBrowserSupabaseClient();
 
-    expect(mockServerFactory).toHaveBeenCalledWith(
-      'https://secure-project.supabase.co',
-      'anon-key',
-      expect.objectContaining({
-        cookies: expect.any(Object),
-      }),
-    );
+    const serverCall = mockServerFactory.mock.calls.at(-1);
+    expect(serverCall).toBeDefined();
+    const [serverUrl, serverKey, serverOptions] = serverCall ?? [];
+    expect(serverUrl).toBe('https://secure-project.supabase.co');
+    expect(serverKey).toBe('anon-key');
+    expect(serverOptions && typeof serverOptions).toBe('object');
+    const cookiesOption = (serverOptions as { cookies?: { get?: unknown } } | undefined)?.cookies;
+    expect(cookiesOption).toBeDefined();
+    expect(typeof cookiesOption?.get).toBe('function');
 
-    expect(mockBrowserFactory).toHaveBeenCalledWith(
-      'https://example-project.supabase.co',
-      'anon-key',
-      expect.objectContaining({
-        auth: expect.objectContaining({
-          persistSession: true,
-          detectSessionInUrl: true,
-        }),
-      }),
-    );
+    const browserCall = mockBrowserFactory.mock.calls.at(-1);
+    expect(browserCall).toBeDefined();
+    const [browserUrl, browserKey, browserOptions] = browserCall ?? [];
+    expect(browserUrl).toBe('https://example-project.supabase.co');
+    expect(browserKey).toBe('anon-key');
+    const authOptions = (browserOptions as {
+      auth?: { persistSession?: unknown; detectSessionInUrl?: unknown };
+    } | null)?.auth;
+    expect(authOptions).toBeDefined();
+    expect(authOptions?.persistSession).toBe(true);
+    expect(authOptions?.detectSessionInUrl).toBe(true);
   });
 });

@@ -150,7 +150,12 @@ export const VerifyEmailPrompt = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form
+      onSubmit={(event) => {
+        void handleSubmit(event);
+      }}
+      className="space-y-6"
+    >
       <div>
         <label className="block text-sm font-medium text-slate-700" htmlFor="verification-email">
           Email address
@@ -161,7 +166,7 @@ export const VerifyEmailPrompt = ({
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          className="focus:ring-brand-200 mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2"
           autoComplete="email"
         />
       </div>

@@ -17,7 +17,7 @@
     "dev": "pnpm run dev:frontend",
     "dev:frontend": "pnpm --filter @blockbuilders/frontend... dev",
     "dev:backend": "uv run --directory apps/backend fastapi dev app/main.py --reload",
-    "lint": "pnpm run lint:frontend && pnpm run lint:backend",
+    "lint": "node ./scripts/run-lint.mjs",
     "lint:frontend": "pnpm --filter @blockbuilders/frontend... lint",
     "lint:backend": "uv run --directory apps/backend ruff check app tests",
     "type-check": "pnpm --filter @blockbuilders/frontend... type-check",

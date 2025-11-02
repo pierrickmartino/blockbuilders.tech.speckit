@@ -4,11 +4,11 @@ import { NextResponse } from 'next/server';
 import { mapSupabaseAuthError } from '@/lib/auth/errorMap';
 import { clearCsrfToken } from '@/lib/auth/csrf';
 import { createServerSupabaseClient } from '@/lib/supabase/clients';
-import type { CookieStoreAdapter } from '@/lib/supabase/cookies';
+import { adaptToCookieStore } from '@/lib/supabase/cookies';
 import { emitAuthSignOutEvent } from '@/lib/telemetry/authEvents';
 
 export async function POST() {
-  const cookieStore = (await nextCookies()) as unknown as CookieStoreAdapter;
+  const cookieStore = adaptToCookieStore(await nextCookies());
   const headerStore = await nextHeaders();
   const supabase = createServerSupabaseClient({
     cookies: cookieStore,
@@ -16,7 +16,7 @@ export async function POST() {
   });
 
   const { error } = await supabase.auth.signOut();
-  clearCsrfToken();
+  await clearCsrfToken();
 
   if (error) {
     const payload = mapSupabaseAuthError(error);

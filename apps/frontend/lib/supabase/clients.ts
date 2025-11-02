@@ -10,10 +10,11 @@ import { createServerSupabaseCookies } from './cookies';
 import type { CookieStoreAdapter } from './cookies';
 
 type RequestCookieStore = Parameters<typeof createServerSupabaseCookies>[0];
+type HeaderInit = ConstructorParameters<typeof Headers>[0];
 
 export interface ServerClientContext {
   cookies: CookieStoreAdapter;
-  headers: Headers | ReadonlyHeaders;
+  headers?: HeaderInit;
 }
 
 let browserClient: SupabaseClient | null = null;
@@ -73,9 +74,7 @@ export const createServerSupabaseClient = <Database = unknown>({
 
   const { url, anonKey } = getServerSupabaseConfig();
   const normalizedHeaders =
-    typeof Headers !== 'undefined'
-      ? new Headers(headers as HeadersInit)
-      : headers;
+    typeof Headers !== 'undefined' ? new Headers(headers) : headers;
   const supabase = createServerClient<Database>(url, anonKey, {
     cookies: createServerSupabaseCookies(cookies),
     headers: normalizedHeaders,

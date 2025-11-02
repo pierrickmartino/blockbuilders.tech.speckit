@@ -220,7 +220,9 @@ export const AuthForm = ({
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(event) => {
+        void handleSubmit(event);
+      }}
       className="space-y-6"
       aria-describedby={submissionError ? 'auth-form-error' : undefined}
     >
@@ -240,7 +242,7 @@ export const AuthForm = ({
           required
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          className="focus:ring-brand-200 mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2"
         />
       </div>
 
@@ -259,7 +261,7 @@ export const AuthForm = ({
           required
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          className="focus:ring-brand-200 mt-2 w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-2"
           aria-describedby={mode === 'sign-up' ? 'password-guidance' : undefined}
         />
         {mode === 'sign-up' ? (

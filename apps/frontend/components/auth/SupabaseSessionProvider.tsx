@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use client';
 
 import {
@@ -51,8 +50,8 @@ const SupabaseSessionContext = createContext<SupabaseSessionContextValue>({
   storageMode: 'cookies',
   lastError: null,
   outage: null,
-  refreshSession: async () => undefined,
-  signOut: async () => undefined,
+  refreshSession: () => Promise.resolve(),
+  signOut: () => Promise.resolve(),
 });
 
 interface SupabaseSessionProviderProps {
@@ -369,7 +368,7 @@ export const SupabaseSessionProvider = ({
     navigatingRef.current = false;
   }, [pathname]);
 
-  const collectMetrics = useCallback(async () => {
+  const collectMetrics = useCallback((): Promise<SupabaseSessionMetricSnapshot> => {
     const navigationEntries = (
       performance?.getEntriesByType?.('navigation') ?? []
     ) as PerformanceNavigationTiming[];
@@ -403,7 +402,7 @@ export const SupabaseSessionProvider = ({
 
     metricsRef.current = snapshot;
     freezeDurationRef.current = 0;
-    return snapshot;
+    return Promise.resolve(snapshot);
   }, []);
 
   const logMetrics = useCallback((snapshot: SupabaseSessionMetricSnapshot) => {

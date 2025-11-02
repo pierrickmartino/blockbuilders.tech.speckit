@@ -10,7 +10,7 @@ Run through every item before tagging a release. Capture links to CI runs or art
 
 ## Frontend Verification
 
-- [ ] `pnpm lint --filter apps/frontend...` succeeds
+- [x] `pnpm lint --filter apps/frontend...` succeeds
 - [ ] `pnpm type-check --filter apps/frontend...` succeeds
 - [ ] `pnpm test:coverage --filter apps/frontend...` meets ≥80% thresholds
 - [ ] `pnpm test:e2e --filter apps/frontend... --project smoke` passes and Playwright trace archived

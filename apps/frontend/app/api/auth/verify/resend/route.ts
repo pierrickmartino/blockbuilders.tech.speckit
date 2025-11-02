@@ -6,7 +6,7 @@ import { buildClientError, mapSupabaseAuthError } from '@/lib/auth/errorMap';
 import { extractCsrfToken, validateCsrfToken } from '@/lib/auth/csrf';
 import { registerSubmission } from '@/lib/auth/submissionGuard';
 import { createServerSupabaseClient } from '@/lib/supabase/clients';
-import type { CookieStoreAdapter } from '@/lib/supabase/cookies';
+import { adaptToCookieStore } from '@/lib/supabase/cookies';
 
 const resendSchema = z
   .object({
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
   }
 
   const csrfToken = await extractCsrfToken(request, rawBody);
-  if (!validateCsrfToken(csrfToken)) {
+  if (!(await validateCsrfToken(csrfToken))) {
     return jsonResponse(
       buildClientError(
         'invalid_csrf_token',
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const cookieStore = (await nextCookies()) as unknown as CookieStoreAdapter;
+  const cookieStore = adaptToCookieStore(await nextCookies());
   const headerStore = await nextHeaders();
   const supabase = createServerSupabaseClient({
     cookies: cookieStore,

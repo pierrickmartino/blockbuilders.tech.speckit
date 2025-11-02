@@ -18,25 +18,45 @@ const buildCookieOptions = (maxAge = CSRF_TOKEN_TTL_SECONDS) => ({
   maxAge,
 });
 
-export const issueCsrfToken = (): string => {
+type CookieStore = Awaited<ReturnType<typeof nextCookies>>;
+
+const setCookie = (store: CookieStore, value: string, maxAge?: number) => {
+  const options = buildCookieOptions(maxAge);
+  if (typeof store.set !== 'function') {
+    throw new Error('Unable to set CSRF cookie: store is not mutable in this context.');
+  }
+  store.set({
+    name: CSRF_COOKIE_NAME,
+    value,
+    httpOnly: options.httpOnly,
+    sameSite: options.sameSite,
+    secure: options.secure,
+    path: options.path,
+    maxAge: options.maxAge,
+  });
+};
+
+export const issueCsrfToken = async (): Promise<string> => {
   const token = encodeToken(randomBytes(CSRF_TOKEN_BYTES));
   const hashedToken = hashToken(token);
-  const cookieStore = nextCookies();
-  cookieStore.set(CSRF_COOKIE_NAME, hashedToken, buildCookieOptions());
+  const cookieStore = await nextCookies();
+  setCookie(cookieStore, hashedToken);
   return token;
 };
 
-export const clearCsrfToken = () => {
-  const cookieStore = nextCookies();
-  cookieStore.set(CSRF_COOKIE_NAME, '', buildCookieOptions(0));
+export const clearCsrfToken = async () => {
+  const cookieStore = await nextCookies();
+  setCookie(cookieStore, '', 0);
 };
 
-export const validateCsrfToken = (providedToken: string | null | undefined): boolean => {
+export const validateCsrfToken = async (
+  providedToken: string | null | undefined,
+): Promise<boolean> => {
   if (!providedToken) {
     return false;
   }
 
-  const cookieStore = nextCookies();
+  const cookieStore = await nextCookies();
   const cookieValue = cookieStore.get(CSRF_COOKIE_NAME)?.value;
   if (!cookieValue) {
     return false;
@@ -88,9 +108,14 @@ export const extractCsrfToken = async (
   const contentType = request.headers.get('content-type') ?? '';
   if (contentType.includes('application/json')) {
     try {
-      const body = await request.clone().json();
-      if (body && typeof body.csrfToken === 'string') {
-        return body.csrfToken;
+      const body: unknown = await request.clone().json();
+      if (
+        body &&
+        typeof body === 'object' &&
+        'csrfToken' in body &&
+        typeof (body as { csrfToken: unknown }).csrfToken === 'string'
+      ) {
+        return (body as { csrfToken: string }).csrfToken;
       }
     } catch {
       // Intentionally swallow parse errors; validation will fail below.

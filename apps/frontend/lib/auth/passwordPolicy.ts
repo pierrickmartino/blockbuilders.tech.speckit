@@ -173,12 +173,12 @@ const buildLegacyGuidance = (
     };
   }
 
-  if (inGracePeriod) {
+  if (inGracePeriod && gracePeriod) {
     return {
       guidance: {
         status: 'grace-period',
         message: `You can keep working with your current password today, but please reset it before ${formatHumanDate(
-          gracePeriod!,
+          gracePeriod,
         )} to stay signed in.`,
         actionLabel: 'Reset password now',
         gracePeriodEndsAt: gracePeriod?.toISOString(),

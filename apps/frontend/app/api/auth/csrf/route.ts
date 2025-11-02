@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { issueCsrfToken } from '@/lib/auth/csrf';
 
 export async function GET() {
-  const token = issueCsrfToken();
+  const token = await issueCsrfToken();
 
   return new NextResponse(
     JSON.stringify({

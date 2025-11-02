@@ -8,17 +8,15 @@ export const SignOutButton = () => {
   const { signOut, status } = useSupabaseSession();
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleClick = useCallback(async () => {
+  const handleClick = useCallback(() => {
     if (isProcessing) {
       return;
     }
 
     setIsProcessing(true);
-    try {
-      await signOut();
-    } finally {
+    void signOut().finally(() => {
       setIsProcessing(false);
-    }
+    });
   }, [isProcessing, signOut]);
 
   const isDisabled = isProcessing || status === 'loading';
