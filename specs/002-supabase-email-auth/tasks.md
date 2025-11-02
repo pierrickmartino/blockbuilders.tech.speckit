@@ -38,30 +38,30 @@
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T009 [P] [US1] Add Vitest password policy and error-state coverage in apps/frontend/tests/unit/auth/passwordPolicy.spec.ts
-- [ ] T010 [P] [US1] Record Playwright sign-up/sign-in journey with verification gate in apps/frontend/tests/e2e/auth-sign-up.spec.ts
-- [ ] T010a [P] [US1] Run Playwright + @axe-core accessibility sweeps and manual keyboard walkthroughs across /auth/sign-up, /auth/sign-in, and /auth/verify to document WCAG 2.2 AA compliance
-- [ ] T010b [P] [US1] Simulate rapid double-submit of sign-up/sign-in forms in Playwright and assert only a single Supabase request is issued per action
-- [ ] T010c [US1] Add Playwright negative cases that submit sign-up/sign-in without CSRF tokens and assert rejection
-- [ ] T010d [US1] Publish Playwright run stats (≥20 executions) to CI artifacts to evidence SC-AUTH threshold
-- [ ] T010e [P] [US1] Capture password policy Playwright stats (artifact `artifacts/auth-password-policy.json`) and fail when <95% compliant submissions succeed
+- [X] T009 [P] [US1] Add Vitest password policy and error-state coverage in apps/frontend/tests/unit/auth/passwordPolicy.spec.ts
+- [X] T010 [P] [US1] Record Playwright sign-up/sign-in journey with verification gate in apps/frontend/tests/e2e/auth-sign-up.spec.ts
+- [X] T010a [P] [US1] Run Playwright + @axe-core accessibility sweeps and manual keyboard walkthroughs across /auth/sign-up, /auth/sign-in, and /auth/verify to document WCAG 2.2 AA compliance
+- [X] T010b [P] [US1] Simulate rapid double-submit of sign-up/sign-in forms in Playwright and assert only a single Supabase request is issued per action
+- [X] T010c [US1] Add Playwright negative cases that submit sign-up/sign-in without CSRF tokens and assert rejection
+- [X] T010d [US1] Publish Playwright run stats (≥20 executions) to CI artifacts to evidence SC-AUTH threshold
+- [X] T010e [P] [US1] Capture password policy Playwright stats (artifact `artifacts/auth-password-policy.json`) and fail when <95% compliant submissions succeed
 
 ### Implementation for User Story 1
 
-- [ ] T011 [US1] Implement password policy validator enforcing 12+ mixed characters in apps/frontend/lib/auth/passwordPolicy.ts
-- [ ] T011a [US1] Provide legacy-user safeguards for tighter password rules (grace period, targeted reset prompts, copy updates) with unit coverage that preserves existing logins until reset
-- [ ] T012 [P] [US1] Map Supabase auth error codes to friendly copy in apps/frontend/lib/auth/errorMap.ts
-- [ ] T013 [US1] Create Supabase-backed sign-up route handler with redirect support in apps/frontend/app/api/auth/sign-up/route.ts
-- [ ] T014 [US1] Create Supabase-backed sign-in route handler in apps/frontend/app/api/auth/sign-in/route.ts
-- [ ] T015 [P] [US1] Implement sign-out route clearing Supabase cookies in apps/frontend/app/api/auth/sign-out/route.ts
-- [ ] T016 [P] [US1] Expose `/api/auth/session` handler returning Supabase session payload in apps/frontend/app/api/auth/session/route.ts
-- [ ] T017 [US1] Build accessible sign-up page with loading/error states in apps/frontend/app/(auth)/sign-up/page.tsx
-- [ ] T018 [US1] Build accessible sign-in page with loading/error states in apps/frontend/app/(auth)/sign-in/page.tsx
-- [ ] T019 [US1] Implement verify-email screen with resend flow in apps/frontend/app/(auth)/verify/page.tsx
-- [ ] T020 [US1] Add shared auth form UI components (inputs, submit button) in apps/frontend/components/auth/AuthForm.tsx
-- [ ] T021 [US1] Surface Supabase auth toast + routing helpers in apps/frontend/components/auth/AuthStatusToaster.tsx
-- [ ] T013a [US1] Add client/server guards to prevent duplicate Supabase auth submissions and document retry behavior
-- [ ] T014a [US1] Inject CSRF tokens into auth forms and enforce validation in sign-up/sign-in route handlers
+- [X] T011 [US1] Implement password policy validator enforcing 12+ mixed characters in apps/frontend/lib/auth/passwordPolicy.ts
+- [X] T011a [US1] Provide legacy-user safeguards for tighter password rules (grace period, targeted reset prompts, copy updates) with unit coverage that preserves existing logins until reset
+- [X] T012 [P] [US1] Map Supabase auth error codes to friendly copy in apps/frontend/lib/auth/errorMap.ts
+- [X] T013 [US1] Create Supabase-backed sign-up route handler with redirect support in apps/frontend/app/api/auth/sign-up/route.ts
+- [X] T014 [US1] Create Supabase-backed sign-in route handler in apps/frontend/app/api/auth/sign-in/route.ts
+- [X] T015 [P] [US1] Implement sign-out route clearing Supabase cookies in apps/frontend/app/api/auth/sign-out/route.ts
+- [X] T016 [P] [US1] Expose `/api/auth/session` handler returning Supabase session payload in apps/frontend/app/api/auth/session/route.ts
+- [X] T017 [US1] Build accessible sign-up page with loading/error states in apps/frontend/app/(auth)/sign-up/page.tsx
+- [X] T018 [US1] Build accessible sign-in page with loading/error states in apps/frontend/app/(auth)/sign-in/page.tsx
+- [X] T019 [US1] Implement verify-email screen with resend flow in apps/frontend/app/(auth)/verify/page.tsx
+- [X] T020 [US1] Add shared auth form UI components (inputs, submit button) in apps/frontend/components/auth/AuthForm.tsx
+- [X] T021 [US1] Surface Supabase auth toast + routing helpers in apps/frontend/components/auth/AuthStatusToaster.tsx
+- [X] T013a [US1] Add client/server guards to prevent duplicate Supabase auth submissions and document retry behavior
+- [X] T014a [US1] Inject CSRF tokens into auth forms and enforce validation in sign-up/sign-in route handlers
 
 **Checkpoint**: Sign-up/sign-in flows, error handling, and verification gate work end-to-end with automated coverage.
 

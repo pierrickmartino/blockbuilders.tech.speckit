@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests/smoke',
+  testDir: './tests',
   fullyParallel: true,
   timeout: 60_000,
   expect: {
@@ -20,14 +20,24 @@ export default defineConfig({
   projects: [
     {
       name: 'smoke',
+      testDir: './tests/smoke',
       metadata: {
         description: 'Validates happy-path build metadata rendering',
       },
     },
     {
       name: 'smoke-fallback',
+      testDir: './tests/smoke',
       metadata: {
         description: 'Ensures default labels render when git metadata missing',
+      },
+    },
+    {
+      name: 'auth',
+      testDir: './tests/e2e',
+      metadata: {
+        description:
+          'Exercises Supabase email auth flows, accessibility gates, and password policy compliance',
       },
     },
   ],

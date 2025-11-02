@@ -14,24 +14,27 @@ const MUTATED_KEYS = [
   'SUPABASE_URL',
 ] as const;
 
-const mockBrowserFactory = vi.fn(
-  (url: string, key: string, _options?: unknown) => ({
-    kind: 'browser',
-    url,
-    key,
-    instance: Symbol('browser'),
-  }),
-);
-
-const mockServerFactory = vi.fn(
-  (url: string, key: string, options: unknown) => ({
-    kind: 'server',
-    url,
-    key,
-    options,
-    instance: Symbol('server'),
-  }),
-);
+const { mockBrowserFactory, mockServerFactory } = vi.hoisted(() => {
+  return {
+    mockBrowserFactory: vi.fn(
+      (url: string, key: string, _options?: unknown) => ({
+        kind: 'browser',
+        url,
+        key,
+        instance: Symbol('browser'),
+      }),
+    ),
+    mockServerFactory: vi.fn(
+      (url: string, key: string, options: unknown) => ({
+        kind: 'server',
+        url,
+        key,
+        options,
+        instance: Symbol('server'),
+      }),
+    ),
+  };
+});
 
 vi.mock('@supabase/ssr', () => ({
   createBrowserClient: mockBrowserFactory,
@@ -145,7 +148,6 @@ describe('Supabase client factories', () => {
     expect(mockBrowserFactory).toHaveBeenCalledWith(
       'https://example-project.supabase.co',
       'anon-key',
-      undefined,
     );
   });
 });
