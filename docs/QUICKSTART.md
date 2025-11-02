@@ -60,7 +60,13 @@ Timings and latencies captured during recent verification runs are recorded in:
 
 Compare your local output with the recorded metrics to catch regressions early. Playwright and container timing entries are currently marked `n/a`; update the reports after the first GitHub Actions executions populate artifacts.
 
-## 5. Next Steps
+## 5. Session Diagnostics & Recovery
+
+- **Cookie fallback**: The Supabase session layer defaults to httpOnly cookies. When testing browsers that block third-party cookies, switch the client to in-memory mode by calling `setBrowserSupabaseStorageMode('memory')` from `@/lib/supabase/clients`. Restore the default with `setBrowserSupabaseStorageMode('cookies')` after verifying behaviour. For ad-hoc debugging (e.g., in Playwright traces), you can also invoke `window.__supabaseSessionTestHooks?.setCookiesEnabled(false)` in the DevTools console.
+- **Outage signalling**: The session provider emits a `supabase-session-outage` `CustomEvent` with `{ delay, attempts, message }` while exponential backoff retries are queued. Listen to this event to surface operator toasts or forward diagnostics to your observability stack.
+- **Performance snapshots**: Use the exposed runtime hooks (`window.__supabaseSessionTestHooks?.collectMetrics()`, `.logMetrics()`, `.getLastMetrics()`) to capture time-to-first-byte, LCP, and Supabase latency metrics when reproducing expiry flows. The Playwright `auth-session` suite exercises the same helpers as evidence.
+
+## 6. Next Steps
 
 - Commit updated evidence files when metrics change materially.
 - Archive troubleshooting findings in `docs/TROUBLESHOOTING.md` to keep resolutions close to the workflows above.

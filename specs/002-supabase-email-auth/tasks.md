@@ -75,23 +75,23 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T022 [P] [US2] Add Playwright session persistence + expiry coverage in apps/frontend/tests/e2e/auth-session.spec.ts
-- [ ] T023 [P] [US2] Add Vitest coverage for Supabase session broadcast helpers in apps/frontend/tests/unit/auth/sessionChannel.spec.ts
-- [ ] T022a [P] [US2] Simulate 30-minute inactivity (token aging/time travel) and capture Next.js Web Vitals plus FastAPI p95 latency to prove SC-SESSION and performance budgets hold
-- [ ] T022b [P] [US2] Run session persistence Playwright flow with third-party cookies disabled and confirm fallback storage keeps users signed in
+- [X] T022 [P] [US2] Add Playwright session persistence + expiry coverage in apps/frontend/tests/e2e/auth-session.spec.ts
+- [X] T023 [P] [US2] Add Vitest coverage for Supabase session broadcast helpers in apps/frontend/tests/unit/auth/sessionChannel.spec.ts
+- [X] T022a [P] [US2] Simulate 30-minute inactivity (token aging/time travel) and capture Next.js Web Vitals plus FastAPI p95 latency to prove SC-SESSION and performance budgets hold
+- [X] T022b [P] [US2] Run session persistence Playwright flow with third-party cookies disabled and confirm fallback storage keeps users signed in
 
 ### Implementation for User Story 2
 
-- [ ] T024 [US2] Implement SupabaseSessionProvider to hydrate client context in apps/frontend/components/auth/SupabaseSessionProvider.tsx
-- [ ] T025 [US2] Ship `useSupabaseSession` hook for components in apps/frontend/lib/auth/useSupabaseSession.ts
-- [ ] T026 [US2] Enforce authentication and email verification redirect logic in apps/frontend/middleware.ts
-- [ ] T027 [US2] Guard protected layouts with server-side session checks in apps/frontend/app/(protected)/layout.tsx
-- [ ] T028 [P] [US2] Hydrate protected dashboard sample with session-aware data in apps/frontend/app/(protected)/dashboard/page.tsx
-- [ ] T029 [US2] Provide sign-out control wired to API in apps/frontend/components/auth/SignOutButton.tsx
-- [ ] T030 [US2] Implement Supabase broadcast channel listener for multi-tab sync in apps/frontend/lib/auth/sessionChannel.ts
-- [ ] T024a [US2] Configure Supabase auth storage fallback for cookie-restricted browsers and document toggle locations
-- [ ] T024b [US2] Implement Supabase outage fallback messaging, retry/backoff logic, and operator alert hooks; cover the negative path in Playwright + documentation
-- [ ] T030a [P] [US2] Instrument session integration test verifying singleton client reuse and no cross-request leakage in apps/frontend/tests/integration/sessionSingleton.spec.ts
+- [X] T024 [US2] Implement SupabaseSessionProvider to hydrate client context in apps/frontend/components/auth/SupabaseSessionProvider.tsx
+- [X] T025 [US2] Ship `useSupabaseSession` hook for components in apps/frontend/lib/auth/useSupabaseSession.ts
+- [X] T026 [US2] Enforce authentication and email verification redirect logic in apps/frontend/middleware.ts
+- [X] T027 [US2] Guard protected layouts with server-side session checks in apps/frontend/app/(protected)/layout.tsx
+- [X] T028 [P] [US2] Hydrate protected dashboard sample with session-aware data in apps/frontend/app/(protected)/dashboard/page.tsx
+- [X] T029 [US2] Provide sign-out control wired to API in apps/frontend/components/auth/SignOutButton.tsx
+- [X] T030 [US2] Implement Supabase broadcast channel listener for multi-tab sync in apps/frontend/lib/auth/sessionChannel.ts
+- [X] T024a [US2] Configure Supabase auth storage fallback for cookie-restricted browsers and document toggle locations
+- [X] T024b [US2] Implement Supabase outage fallback messaging, retry/backoff logic, and operator alert hooks; cover the negative path in Playwright + documentation
+- [X] T030a [P] [US2] Instrument session integration test verifying singleton client reuse and no cross-request leakage in apps/frontend/tests/integration/sessionSingleton.spec.ts
 
 **Checkpoint**: Authenticated sessions persist, guards redirect unauthenticated or unverified users, and APIs respect return paths.
 

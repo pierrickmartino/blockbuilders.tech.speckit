@@ -6,6 +6,7 @@ import {
   createMiddlewareSupabaseCookies,
   createServerSupabaseCookies,
 } from '@/lib/supabase/cookies';
+import type { CookieStoreAdapter } from '@/lib/supabase/cookies';
 import { resetSupabaseEnvCache } from '@/lib/supabase/env';
 
 class MemoryRequestCookies {
@@ -57,11 +58,13 @@ describe('Supabase cookie adapters', () => {
     const middlewareRequest = new MemoryRequestCookies();
     const middlewareResponse = new MemoryResponseCookies();
 
-    const serverAdapter = createServerSupabaseCookies(serverCookies);
+    const serverAdapter = createServerSupabaseCookies(
+      serverCookies as unknown as CookieStoreAdapter,
+    );
     const middlewareAdapter = createMiddlewareSupabaseCookies({
       request: middlewareRequest,
       response: middlewareResponse,
-    });
+    } as Parameters<typeof createMiddlewareSupabaseCookies>[0]);
 
     serverAdapter.set(SUPABASE_ACCESS_TOKEN_COOKIE, 'token');
     middlewareAdapter.set(SUPABASE_ACCESS_TOKEN_COOKIE, 'token');
@@ -85,11 +88,13 @@ describe('Supabase cookie adapters', () => {
     const middlewareRequest = new MemoryRequestCookies();
     const middlewareResponse = new MemoryResponseCookies();
 
-    const serverAdapter = createServerSupabaseCookies(serverCookies);
+    const serverAdapter = createServerSupabaseCookies(
+      serverCookies as unknown as CookieStoreAdapter,
+    );
     const middlewareAdapter = createMiddlewareSupabaseCookies({
       request: middlewareRequest,
       response: middlewareResponse,
-    });
+    } as Parameters<typeof createMiddlewareSupabaseCookies>[0]);
 
     serverAdapter.set(SUPABASE_REFRESH_TOKEN_COOKIE, 'server-refresh');
     middlewareAdapter.set(SUPABASE_REFRESH_TOKEN_COOKIE, 'middleware-refresh');

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { Route } from 'next';
 import { AuthForm } from '@/components/auth/AuthForm';
 
 export const metadata = {
@@ -21,7 +22,7 @@ export default function SignInPage() {
         <p>
           New here?{' '}
           <Link
-            href="/auth/sign-up"
+            href={'/auth/sign-up' as Route}
             className="font-semibold text-brand-500 hover:text-brand-700"
           >
             Create an account
@@ -31,7 +32,7 @@ export default function SignInPage() {
         <p>
           Missing the verification email?{' '}
           <Link
-            href="/auth/verify"
+            href={'/auth/verify' as Route}
             className="font-semibold text-brand-500 hover:text-brand-700"
           >
             Resend verification

@@ -57,7 +57,8 @@ export const AuthStatusProvider = ({ children }: { children: ReactNode }) => {
 
     const timer = setTimeout(() => {
       if (toast.redirect) {
-        router.push(toast.redirect);
+        const target = toast.redirect as Parameters<typeof router.push>[0];
+        router.push(target);
       }
       clear();
     }, AUTO_DISMISS_MS);
@@ -96,7 +97,7 @@ export const AuthStatusToaster = () => {
     return null;
   }
 
-  const variant = toast.status === 'idle' ? 'info' : toast.status;
+  const variant = toast.status;
   const className = STATUS_STYLES[variant] ?? STATUS_STYLES.info;
 
   return (

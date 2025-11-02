@@ -148,6 +148,12 @@ describe('Supabase client factories', () => {
     expect(mockBrowserFactory).toHaveBeenCalledWith(
       'https://example-project.supabase.co',
       'anon-key',
+      expect.objectContaining({
+        auth: expect.objectContaining({
+          persistSession: true,
+          detectSessionInUrl: true,
+        }),
+      }),
     );
   });
 });

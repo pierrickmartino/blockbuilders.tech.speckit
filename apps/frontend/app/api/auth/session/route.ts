@@ -3,12 +3,15 @@ import { NextResponse } from 'next/server';
 
 import { buildClientError, mapSupabaseAuthError } from '@/lib/auth/errorMap';
 import { createServerSupabaseClient } from '@/lib/supabase/clients';
+import type { CookieStoreAdapter } from '@/lib/supabase/cookies';
 import { toAuthSession } from '@/lib/auth/session';
 
 export async function GET() {
+  const cookieStore = (await nextCookies()) as unknown as CookieStoreAdapter;
+  const headerStore = await nextHeaders();
   const supabase = createServerSupabaseClient({
-    cookies: nextCookies(),
-    headers: nextHeaders(),
+    cookies: cookieStore,
+    headers: headerStore,
   });
 
   const { data, error } = await supabase.auth.getSession();

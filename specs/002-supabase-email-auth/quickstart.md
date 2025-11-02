@@ -56,6 +56,12 @@ uv run uvicorn app.main:app --reload
 4. **Accessibility**:
    - `pnpm test:e2e` includes `@axe-core/playwright` assertions; inspect reports under `apps/frontend/playwright-report`.
 
+## Session Diagnostics & Recovery
+- Switch the Supabase client to in-memory storage when browsers block cookies by calling `setBrowserSupabaseStorageMode('memory')` from `@/lib/supabase/clients`. Restore default behaviour with `setBrowserSupabaseStorageMode('cookies')`.
+- During manual testing or in Playwright, toggle the same behaviour via `window.__supabaseSessionTestHooks?.setCookiesEnabled(false)` and read the active mode with `.getStorageMode()`.
+- Listen for `supabase-session-outage` events on `window` to forward retry metadata (`delay`, `attempts`, `message`) to observability or incident channels. The dashboard UI also surfaces outage alerts from the same hook.
+- Collect latency and rendering metrics using `window.__supabaseSessionTestHooks` helpers (`collectMetrics`, `logMetrics`, `getLastMetrics`) to validate the 200 ms API and 2.5 s LCP budgets during session expiry drills.
+
 ## Deployment Notes
 - Ensure production secrets are stored in the deployment platform (e.g., Vercel, Render) matching `.env.example`.
 - Rotate Supabase keys periodically; update secrets, redeploy backend, and invalidate cached JWKS.

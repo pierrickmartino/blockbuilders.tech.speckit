@@ -19,10 +19,10 @@ export interface SupabaseCookieAdapter {
   remove: (name: string, attributes?: Partial<CookieAttributes>) => void;
 }
 
-type RequestCookieStore = {
+export interface CookieStoreAdapter {
   get: (name: string) => { value: string } | undefined;
-  set: (...args: unknown[]) => unknown;
-};
+  set?: (...args: any[]) => unknown; // eslint-disable-line @typescript-eslint/no-explicit-any
+}
 
 type MiddlewareCookieStores = {
   request: {
@@ -59,7 +59,7 @@ const buildRemovalOptions = (
 });
 
 const callSet = (
-  target: { set: (...args: unknown[]) => unknown },
+  target: { set?: (...args: any[]) => unknown }, // eslint-disable-line @typescript-eslint/no-explicit-any
   name: string,
   value: string,
   options: CookieAttributes,
@@ -76,7 +76,7 @@ const callSet = (
 };
 
 export const createServerSupabaseCookies = (
-  cookieStore: RequestCookieStore,
+  cookieStore: CookieStoreAdapter,
 ): SupabaseCookieAdapter => ({
   get: (name) => cookieStore.get(name)?.value,
   set: (name, value, overrides) => {
@@ -114,3 +114,13 @@ export const createMiddlewareSupabaseCookies = ({
     },
   };
 };
+
+export const adaptToCookieStore = (
+  store: {
+    get: (name: string) => { value: string } | undefined;
+    set?: (...args: any[]) => unknown; // eslint-disable-line @typescript-eslint/no-explicit-any
+  },
+): CookieStoreAdapter => ({
+  get: (name) => store.get(name),
+  set: typeof store.set === 'function' ? (...args: any[]) => store.set!(...args) : undefined,
+});

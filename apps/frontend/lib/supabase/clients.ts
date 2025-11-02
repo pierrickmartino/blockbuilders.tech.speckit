@@ -1,4 +1,5 @@
 import { createBrowserClient, createServerClient } from '@supabase/ssr';
+import type { SupportedStorage } from '@supabase/supabase-js';
 
 import type { SupabaseClient } from './types';
 import {
@@ -6,16 +7,43 @@ import {
   getServerSupabaseConfig,
 } from './env';
 import { createServerSupabaseCookies } from './cookies';
+import type { CookieStoreAdapter } from './cookies';
 
 type RequestCookieStore = Parameters<typeof createServerSupabaseCookies>[0];
 
 export interface ServerClientContext {
-  cookies: RequestCookieStore;
-  headers: Headers;
+  cookies: CookieStoreAdapter;
+  headers: Headers | ReadonlyHeaders;
 }
 
 let browserClient: SupabaseClient | null = null;
 let serverClientCache = new WeakMap<RequestCookieStore, SupabaseClient>();
+let browserStorageMode: 'cookies' | 'memory' = 'cookies';
+let browserStorage: SupportedStorage | null = null;
+
+const createMemoryStorage = (): SupportedStorage => {
+  const store = new Map<string, string>();
+  return {
+    getItem: (key) => store.get(key) ?? null,
+    setItem: (key, value) => {
+      store.set(key, value);
+      return value;
+    },
+    removeItem: (key) => {
+      store.delete(key);
+    },
+  };
+};
+
+const getBrowserStorage = (): SupportedStorage | null => {
+  if (browserStorageMode === 'cookies') {
+    return null;
+  }
+  if (!browserStorage) {
+    browserStorage = createMemoryStorage();
+  }
+  return browserStorage;
+};
 
 export const getBrowserSupabaseClient = <Database = unknown>(): SupabaseClient<Database> => {
   if (browserClient) {
@@ -23,7 +51,14 @@ export const getBrowserSupabaseClient = <Database = unknown>(): SupabaseClient<D
   }
 
   const { url, anonKey } = getBrowserSupabaseConfig();
-  browserClient = createBrowserClient<Database>(url, anonKey);
+  const storage = getBrowserStorage();
+  browserClient = createBrowserClient<Database>(url, anonKey, {
+    auth: {
+      persistSession: true,
+      storage: storage ?? undefined,
+      detectSessionInUrl: true,
+    },
+  });
   return browserClient as SupabaseClient<Database>;
 };
 
@@ -37,9 +72,13 @@ export const createServerSupabaseClient = <Database = unknown>({
   }
 
   const { url, anonKey } = getServerSupabaseConfig();
+  const normalizedHeaders =
+    typeof Headers !== 'undefined'
+      ? new Headers(headers as HeadersInit)
+      : headers;
   const supabase = createServerClient<Database>(url, anonKey, {
     cookies: createServerSupabaseCookies(cookies),
-    headers,
+    headers: normalizedHeaders,
   });
 
   serverClientCache.set(cookies, supabase as SupabaseClient);
@@ -48,5 +87,15 @@ export const createServerSupabaseClient = <Database = unknown>({
 
 export const resetSupabaseClientCache = () => {
   browserClient = null;
+  browserStorage = browserStorageMode === 'memory' ? createMemoryStorage() : null;
   serverClientCache = new WeakMap();
+};
+
+export const setBrowserSupabaseStorageMode = (mode: 'cookies' | 'memory') => {
+  if (browserStorageMode === mode) {
+    return;
+  }
+  browserStorageMode = mode;
+  browserStorage = mode === 'memory' ? createMemoryStorage() : null;
+  resetSupabaseClientCache();
 };

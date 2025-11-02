@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
 import type { FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import type { Route } from 'next';
 
 import { PASSWORD_POLICY_BULLET_POINTS, evaluatePasswordPolicy } from '@/lib/auth/passwordPolicy';
 import { useAuthStatus } from './AuthStatusToaster';
@@ -176,7 +177,7 @@ export const AuthForm = ({
           redirect: verifyRoute,
         });
         startTransition(() => {
-          router.push(verifyRoute);
+          router.push(verifyRoute as Route);
         });
         return;
       }
@@ -190,7 +191,10 @@ export const AuthForm = ({
             : 'Signed in successfully. Redirecting…',
       });
       startTransition(() => {
-        router.push('/');
+        const destination = (redirectTo ?? '/') as Parameters<
+          typeof router.push
+        >[0];
+        router.push(destination);
       });
     } catch (error) {
       console.error(error);

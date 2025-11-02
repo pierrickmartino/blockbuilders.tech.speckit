@@ -6,6 +6,7 @@ import { buildClientError, mapSupabaseAuthError } from '@/lib/auth/errorMap';
 import { extractCsrfToken, validateCsrfToken } from '@/lib/auth/csrf';
 import { registerSubmission } from '@/lib/auth/submissionGuard';
 import { createServerSupabaseClient } from '@/lib/supabase/clients';
+import type { CookieStoreAdapter } from '@/lib/supabase/cookies';
 import { toAuthSession } from '@/lib/auth/session';
 
 const signUpRequestSchema = z
@@ -36,6 +37,8 @@ const jsonResponse = (payload: unknown, status = 200) =>
   });
 
 export async function POST(request: Request) {
+  const cookieStore = (await nextCookies()) as unknown as CookieStoreAdapter;
+  const headerStore = await nextHeaders();
   let rawBody: unknown;
   try {
     rawBody = await request.json();
@@ -92,8 +95,8 @@ export async function POST(request: Request) {
   }
 
   const supabase = createServerSupabaseClient({
-    cookies: nextCookies(),
-    headers: nextHeaders(),
+    cookies: cookieStore,
+    headers: headerStore,
   });
 
   const { email, password, redirectTo } = parseResult.data;
