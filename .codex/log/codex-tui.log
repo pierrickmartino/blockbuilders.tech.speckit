@@ -1023,7 +1023,7 @@
 +### Frontend
 +
 +```bash
-+pnpm dev --filter apps/frontend...     # Next.js dev server on http://localhost:3000
++pnpm dev --filter ./apps/frontend...     # Next.js dev server on http://localhost:3000
 +```
 +
 +Landing page exposes build metadata via `data-app-*` attributes for smoke tests.
@@ -1049,10 +1049,10 @@
 +## Quality Gates
 +
 +```bash
-+pnpm lint --filter apps/frontend...
-+pnpm type-check --filter apps/frontend...
-+pnpm test:coverage --filter apps/frontend...      # Vitest unit coverage ≥80%
-+pnpm test:e2e --filter apps/frontend... --project smoke  # Playwright smoke + accessibility
++pnpm lint --filter ./apps/frontend...
++pnpm type-check --filter ./apps/frontend...
++pnpm test:coverage --filter ./apps/frontend...      # Vitest unit coverage ≥80%
++pnpm test:e2e --filter ./apps/frontend... --project smoke  # Playwright smoke + accessibility
 +
 +uv run ruff check apps/backend
 +uv run pytest --cov=app --cov-report=term-missing
@@ -1068,7 +1068,7 @@
 +## Troubleshooting
 +
 +- **Node version errors**: Ensure `node --version` reports 20.11+; run `corepack enable pnpm`.
-+- **Playwright missing browsers**: Execute `pnpm test:e2e --filter apps/frontend... -- --install-deps`.
++- **Playwright missing browsers**: Execute `pnpm test:e2e --filter ./apps/frontend... -- --install-deps`.
 +- **Backend env validation failures**: Check `apps/backend/.env` matches `BaseSettings` schema described in `research.md`.
 +- **Docker build cache misses**: Verify `COMPOSE_PROJECT_NAME` is consistent and pruning has not removed named volumes (`docker volume ls`).
 *** End Patch
@@ -1136,7 +1136,7 @@
 +## Phase 3: User Story 1 - Launch baseline web client (Priority: P1) 🎯 MVP
 +
 +**Goal**: Deliver a Next.js landing page that surfaces build metadata with Tailwind styling.  
-+**Independent Test**: Follow quickstart to run `pnpm dev --filter apps/frontend...` and verify the root route renders metadata attributes without console errors; Playwright smoke succeeds.
++**Independent Test**: Follow quickstart to run `pnpm dev --filter ./apps/frontend...` and verify the root route renders metadata attributes without console errors; Playwright smoke succeeds.
 +
 +### Tests for User Story 1
 +
@@ -1460,7 +1460,7 @@
 +  "scripts": {
 +    "setup": "pnpm install && uv sync",
 +    "dev": "pnpm run dev:frontend",
-+    "dev:frontend": "pnpm --filter apps/frontend... dev",
++    "dev:frontend": "pnpm --filter ./apps/frontend... dev",
 +    "dev:backend": "uv run fastapi dev apps/backend/app/main.py --reload"
 +  }
 +}
@@ -2445,11 +2445,11 @@
 +
 +```bash
 +pnpm install                # at repository root
-+pnpm dev --filter apps/frontend...
-+pnpm lint --filter apps/frontend...
-+pnpm type-check --filter apps/frontend...
-+pnpm test:coverage --filter apps/frontend...
-+pnpm test:e2e --filter apps/frontend... --project smoke
++pnpm dev --filter ./apps/frontend...
++pnpm lint --filter ./apps/frontend...
++pnpm type-check --filter ./apps/frontend...
++pnpm test:coverage --filter ./apps/frontend...
++pnpm test:e2e --filter ./apps/frontend... --project smoke
 +```
 +
 +All commands assume Node.js 20.11+ with `corepack enable` to expose pnpm 9.
@@ -3277,17 +3277,17 @@
    "scripts": {
      "setup": "pnpm install && uv sync",
      "dev": "pnpm run dev:frontend",
-     "dev:frontend": "pnpm --filter apps/frontend... dev",
+     "dev:frontend": "pnpm --filter ./apps/frontend... dev",
 -    "dev:backend": "uv run fastapi dev apps/backend/app/main.py --reload"
 +    "dev:backend": "uv run fastapi dev apps/backend/app/main.py --reload",
 +    "lint": "pnpm run lint:frontend && pnpm run lint:backend",
-+    "lint:frontend": "pnpm --filter apps/frontend... lint",
++    "lint:frontend": "pnpm --filter ./apps/frontend... lint",
 +    "lint:backend": "uv run --directory apps/backend ruff check app tests",
-+    "type-check": "pnpm --filter apps/frontend... type-check",
++    "type-check": "pnpm --filter ./apps/frontend... type-check",
 +    "test": "pnpm run test:frontend && pnpm run test:backend",
-+    "test:frontend": "pnpm --filter apps/frontend... test:coverage",
++    "test:frontend": "pnpm --filter ./apps/frontend... test:coverage",
 +    "test:backend": "uv run --directory apps/backend pytest",
-+    "test:e2e": "pnpm --filter apps/frontend... test:e2e"
++    "test:e2e": "pnpm --filter ./apps/frontend... test:e2e"
    }
  }
 *** End Patch
@@ -3604,7 +3604,7 @@
 +COPY apps/frontend/package.json apps/frontend/package.json
 +
 +RUN --mount=type=cache,id=frontend-pnpm-store,target=/root/.local/share/pnpm/store \
-+    pnpm install --frozen-lockfile --filter apps/frontend...
++    pnpm install --frozen-lockfile --filter ./apps/frontend...
 +
 +CMD ["pnpm", "--filter", "apps/frontend...", "dev", "--hostname", "0.0.0.0"]
 *** End Patch
@@ -3911,11 +3911,11 @@
    "scripts": {
      "setup": "pnpm install && uv sync",
      "dev": "pnpm run dev:frontend",
-     "dev:frontend": "pnpm --filter apps/frontend... dev",
+     "dev:frontend": "pnpm --filter ./apps/frontend... dev",
 -    "dev:backend": "uv run fastapi dev apps/backend/app/main.py --reload",
 +    "dev:backend": "uv run --directory apps/backend fastapi dev app/main.py --reload",
      "lint": "pnpm run lint:frontend && pnpm run lint:backend",
-     "lint:frontend": "pnpm --filter apps/frontend... lint",
+     "lint:frontend": "pnpm --filter ./apps/frontend... lint",
 *** End Patch
 [2m2025-10-30T21:17:53.954456Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-10-30T21:17:53.954462Z[0m [32m INFO[0m tool gate released
@@ -4142,7 +4142,7 @@
 +
 +## Next.js Build Metrics
 +
-+Collected via `pnpm --filter apps/frontend... build` (Next.js 15 production build). Update after significant UI or dependency changes.
++Collected via `pnpm --filter ./apps/frontend... build` (Next.js 15 production build). Update after significant UI or dependency changes.
 +
 +| Metric | Value | Source File | Notes |
 +|--------|-------|-------------|-------|
@@ -4268,19 +4268,19 @@
 [2m2025-10-30T21:23:29.249450Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
 *** Update File: package.json
 @@
--    "dev:frontend": "pnpm --filter apps/frontend... dev",
+-    "dev:frontend": "pnpm --filter ./apps/frontend... dev",
 +    "dev:frontend": "pnpm --filter @blockbuilders/frontend... dev",
 @@
--    "lint:frontend": "pnpm --filter apps/frontend... lint",
+-    "lint:frontend": "pnpm --filter ./apps/frontend... lint",
 +    "lint:frontend": "pnpm --filter @blockbuilders/frontend... lint",
 @@
--    "type-check": "pnpm --filter apps/frontend... type-check",
+-    "type-check": "pnpm --filter ./apps/frontend... type-check",
 +    "type-check": "pnpm --filter @blockbuilders/frontend... type-check",
 @@
--    "test:frontend": "pnpm --filter apps/frontend... test:coverage",
+-    "test:frontend": "pnpm --filter ./apps/frontend... test:coverage",
 +    "test:frontend": "pnpm --filter @blockbuilders/frontend... test:coverage",
 @@
--    "test:e2e": "pnpm --filter apps/frontend... test:e2e"
+-    "test:e2e": "pnpm --filter ./apps/frontend... test:e2e"
 +    "test:e2e": "pnpm --filter @blockbuilders/frontend... test:e2e"
 *** End Patch
 [2m2025-10-30T21:23:29.249574Z[0m [32m INFO[0m waiting for tool gate
@@ -5296,8 +5296,8 @@
 +| Service | Symptom | What to Check | Resolution |
 +|---------|---------|---------------|------------|
 +| Frontend (Next.js) | `pnpm dev` fails with Node version warning | Run `node --version` and confirm it is 20.11+ | Align with repository Node version by running `nvm use` or reinstalling via fnm/Volta, then retry `pnpm install` |
-+| Frontend (Next.js) | Landing page missing `data-app-*` attributes | Inspect logs for env parsing errors; run `pnpm test:coverage --filter apps/frontend...` to surface schema violations | Copy `apps/frontend/.env.example` to `.env.local`, populate `NEXT_PUBLIC_APP_ENV`, and regenerate build metadata |
-+| Frontend (Playwright) | `pnpm test:e2e --filter apps/frontend...` fails citing missing browsers | Verify Playwright dependencies via `npx playwright install --with-deps` | Install the required browsers (`pnpm test:e2e ... -- --install-deps`) and rerun tests |
++| Frontend (Next.js) | Landing page missing `data-app-*` attributes | Inspect logs for env parsing errors; run `pnpm test:coverage --filter ./apps/frontend...` to surface schema violations | Copy `apps/frontend/.env.example` to `.env.local`, populate `NEXT_PUBLIC_APP_ENV`, and regenerate build metadata |
++| Frontend (Playwright) | `pnpm test:e2e --filter ./apps/frontend...` fails citing missing browsers | Verify Playwright dependencies via `npx playwright install --with-deps` | Install the required browsers (`pnpm test:e2e ... -- --install-deps`) and rerun tests |
 +| Backend (FastAPI) | `uv run fastapi dev ...` exits due to env validation | Check `.env` against `apps/backend/app/core/settings.py` requirements | Copy `.env.example`, populate required vars (e.g., `SERVICE_PORT`), and restart the dev server |
 +| Backend (pytest) | `uv run pytest` reports coverage threshold failure | Ensure tests executed against latest code; confirm `uv sync` was run after dependency changes | Address failing tests, add coverage for new paths, and rerun `uv run pytest --cov=app --cov-report=term-missing` |
 +| Docker Compose | `docker compose ... up` fails on healthcheck timeout | Inspect container logs via `docker compose ... logs <service>` and confirm env files are mounted | Ensure `.env` files exist for both services, rebuild images with `docker compose -f configs/compose/docker-compose.dev.yml up --build` |
@@ -5353,7 +5353,7 @@
 +## 3. Run the Services
 +
 +```bash
-+pnpm dev --filter apps/frontend...          # http://localhost:3000
++pnpm dev --filter ./apps/frontend...          # http://localhost:3000
 +uv run fastapi dev apps/backend/app/main.py --reload  # http://localhost:8000/health
 +```
 +
@@ -5368,10 +5368,10 @@
 +## 4. Quality Gates
 +
 +```bash
-+pnpm lint --filter apps/frontend...
-+pnpm type-check --filter apps/frontend...
-+pnpm test:coverage --filter apps/frontend...
-+pnpm test:e2e --filter apps/frontend... --project smoke
++pnpm lint --filter ./apps/frontend...
++pnpm type-check --filter ./apps/frontend...
++pnpm test:coverage --filter ./apps/frontend...
++pnpm test:e2e --filter ./apps/frontend... --project smoke
 +
 +uv run ruff check apps/backend
 +uv run pytest --cov=app --cov-report=term-missing
@@ -5409,10 +5409,10 @@
 +
 +## Frontend Verification
 +
-+- [ ] `pnpm lint --filter apps/frontend...` succeeds
-+- [ ] `pnpm type-check --filter apps/frontend...` succeeds
-+- [ ] `pnpm test:coverage --filter apps/frontend...` meets ≥80% thresholds
-+- [ ] `pnpm test:e2e --filter apps/frontend... --project smoke` passes and Playwright trace archived
++- [ ] `pnpm lint --filter ./apps/frontend...` succeeds
++- [ ] `pnpm type-check --filter ./apps/frontend...` succeeds
++- [ ] `pnpm test:coverage --filter ./apps/frontend...` meets ≥80% thresholds
++- [ ] `pnpm test:e2e --filter ./apps/frontend... --project smoke` passes and Playwright trace archived
 +- [ ] Performance report (`configs/ci/reports/frontend-performance.md`) updated with latest build/trace metrics
 +
 +## Backend Verification

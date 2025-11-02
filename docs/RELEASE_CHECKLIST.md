@@ -10,11 +10,11 @@ Run through every item before tagging a release. Capture links to CI runs or art
 
 ## Frontend Verification
 
-- [x] `pnpm lint --filter apps/frontend...` succeeds
+- [x] `pnpm lint --filter ./apps/frontend...` succeeds
 - [ ] `pnpm type-check` succeeds
-- [x] `pnpm test:coverage --filter apps/frontend...` meets ≥80% thresholds
-- [x] `pnpm test:e2e --filter apps/frontend... --project smoke` passes and Playwright trace archived
-- [ ] Performance report (`configs/ci/reports/frontend-performance.md`) updated with latest build/trace metrics
+- [x] `pnpm test:coverage --filter ./apps/frontend...` meets ≥80% thresholds
+- [x] `pnpm test:e2e --filter ./apps/frontend... --project smoke` passes and Playwright trace archived
+- [x] Performance report (`configs/ci/reports/frontend-performance.md`) updated with latest build/trace metrics
 
 ## Backend Verification
 
@@ -24,7 +24,7 @@ Run through every item before tagging a release. Capture links to CI runs or art
 
 ## Containers & Automation
 
-- [ ] `docker compose -f configs/compose/docker-compose.dev.yml up --build` completes without failing health check
+- [x] `docker compose -f configs/compose/docker-compose.dev.yml up --build` completes without failing health check
 - [ ] GitHub Actions `CI` workflow green on target commit
 - [ ] GitHub Actions `Containers` workflow green on target commit
 - [ ] `configs/ci/reports/container-start-times.md` updated with latest timings or annotated as pending
