@@ -1,9 +1,18 @@
 from __future__ import annotations
 
+import hashlib
 import logging
 from typing import Any, Mapping
 
 LOGGER = logging.getLogger("app.auth.supabase")
+
+
+def _hash_identifier(value: str | None) -> str | None:
+    if not value:
+        return None
+
+    digest = hashlib.sha256(value.strip().lower().encode("utf-8")).hexdigest()
+    return f"sha256:{digest[:24]}"
 
 
 def log_auth_success(claims: Mapping[str, Any]) -> None:
@@ -13,8 +22,10 @@ def log_auth_success(claims: Mapping[str, Any]) -> None:
         "Supabase JWT verified",
         extra={
             "event": "supabase_auth_verified",
-            "user_id": claims.get("sub"),
-            "email": claims.get("email"),
+            "channel": "backend",
+            "user_id_hash": _hash_identifier(str(claims.get("sub"))) if claims.get("sub") else None,
+            "email_hash": _hash_identifier(str(claims.get("email"))) if claims.get("email") else None,
+            "pii": "redacted",
         },
     )
 
@@ -26,8 +37,10 @@ def log_auth_failure(reason: str, *, user_id: str | None = None) -> None:
         "Supabase JWT verification failed",
         extra={
             "event": "supabase_auth_failed",
+            "channel": "backend",
             "reason": reason,
-            "user_id": user_id,
+            "user_id_hash": _hash_identifier(user_id),
+            "pii": "redacted",
         },
     )
 

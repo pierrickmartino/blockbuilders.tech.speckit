@@ -8,6 +8,7 @@ import { registerSubmission } from '@/lib/auth/submissionGuard';
 import { createServerSupabaseClient } from '@/lib/supabase/clients';
 import type { CookieStoreAdapter } from '@/lib/supabase/cookies';
 import { toAuthSession } from '@/lib/auth/session';
+import { emitAuthSignInEvent } from '@/lib/telemetry/authEvents';
 
 const signInRequestSchema = z
   .object({
@@ -104,6 +105,19 @@ export async function POST(request: Request) {
 
   if (response.error) {
     const error = mapSupabaseAuthError(response.error);
+    emitAuthSignInEvent({
+      outcome: 'failure',
+      email,
+      errorCode: error.code,
+      errorReason: error.message,
+      correlationId: submissionKey ?? undefined,
+      route: request.url,
+      surface: 'api_route',
+      metadata: {
+        mechanism: 'password',
+        status: error.status,
+      },
+    });
     return jsonResponse(
       {
         code: error.code,
@@ -112,6 +126,19 @@ export async function POST(request: Request) {
       error.status,
     );
   }
+
+  emitAuthSignInEvent({
+    outcome: 'success',
+    email,
+    userId: response.data.user?.id ?? null,
+    correlationId: submissionKey ?? undefined,
+    route: request.url,
+    surface: 'api_route',
+    metadata: {
+      mechanism: 'password',
+      emailConfirmed: Boolean(response.data.user?.email_confirmed_at),
+    },
+  });
 
   return jsonResponse(
     {

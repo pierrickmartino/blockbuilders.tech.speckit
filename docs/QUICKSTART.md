@@ -14,7 +14,7 @@ Follow this validated flow to bootstrap the mono-repo, exercise both services, a
 
 ```bash
 pnpm install --frozen-lockfile
-uv sync
+uv sync --directory apps/backend
 cp apps/frontend/.env.example apps/frontend/.env.local
 cp apps/backend/.env.example apps/backend/.env
 ```

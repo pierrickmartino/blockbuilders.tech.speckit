@@ -153,11 +153,11 @@
 
 **Purpose**: Harden logging, analytics, accessibility, and documentation across the auth surface.
 
-- [ ] T047 [P] Emit structured auth analytics events for sign-in/out in apps/frontend/lib/telemetry/authEvents.ts
-- [ ] T048 Capture backend auth metrics and redaction safeguards in apps/backend/app/main.py
-- [ ] T049 [P] Validate quickstart by executing specs/002-supabase-email-auth/quickstart.md and log gaps in docs/RELEASE_CHECKLIST.md
-- [ ] T047a [P] Capture auth telemetry fixture validating schema and PII redaction in apps/frontend/tests/unit/telemetry/authEvents.spec.ts
-- [ ] T048a Ensure backend auth logging emits approved fields only by adding schema enforcement test in apps/backend/tests/unit/test_auth_logging.py
+- [X] T047 [P] Emit structured auth analytics events for sign-in/out in apps/frontend/lib/telemetry/authEvents.ts
+- [X] T048 Capture backend auth metrics and redaction safeguards in apps/backend/app/main.py
+- [X] T049 [P] Validate quickstart by executing specs/002-supabase-email-auth/quickstart.md and log gaps in docs/RELEASE_CHECKLIST.md
+- [X] T047a [P] Capture auth telemetry fixture validating schema and PII redaction in apps/frontend/tests/unit/telemetry/authEvents.spec.ts
+- [X] T048a Ensure backend auth logging emits approved fields only by adding schema enforcement test in apps/backend/tests/unit/test_auth_logging.py
 
 ---
 

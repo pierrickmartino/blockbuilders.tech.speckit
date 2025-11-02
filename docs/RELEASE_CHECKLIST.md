@@ -41,4 +41,10 @@ Run through every item before tagging a release. Capture links to CI runs or art
 - [ ] Dependency audits reviewed (`pnpm audit`, `uv pip audit` optional)
 - [ ] Access credentials rotated or validated per policy
 
+## Supabase Quickstart Validation Notes
+
+| Date | Operator | Status | Observations |
+|------|----------|--------|--------------|
+| 2025-11-02 | CLI review | Reviewed | Quickstart walkthrough confirms environment prerequisites; follow-up: add telemetry validation step to quickstart once analytics dashboards are wired. |
+
 Record the date, operator, and supporting CI run URLs once every box is checked.
