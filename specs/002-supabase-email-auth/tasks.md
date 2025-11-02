@@ -105,22 +105,22 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T031 [P] [US3] Add JWKS cache + negative token unit tests in apps/backend/tests/unit/test_supabase_jwks.py
-- [ ] T032 [P] [US3] Add `/me` integration tests covering 200/401 cases in apps/backend/tests/integration/test_me_endpoint.py
-- [ ] T032a [US3] Ensure FastAPI `/me` rejects requests missing CSRF token when session cookies are present
-- [ ] T033 [P] [US3] Track RLS policy assertions via Supabase SQL fixtures in apps/backend/tests/integration/test_supabase_policies.sql
-- [ ] T033a [US3] Record `/me` endpoint latency during pytest load run and fail CI if p95 exceeds 200 ms, attaching metrics to the build artifacts
+- [X] T031 [P] [US3] Add JWKS cache + negative token unit tests in apps/backend/tests/unit/test_supabase_jwks.py
+- [X] T032 [P] [US3] Add `/me` integration tests covering 200/401 cases in apps/backend/tests/integration/test_me_endpoint.py
+- [X] T032a [US3] Ensure FastAPI `/me` rejects requests missing CSRF token when session cookies are present
+- [X] T033 [P] [US3] Track RLS policy assertions via Supabase SQL fixtures in apps/backend/tests/integration/test_supabase_policies.sql
+- [X] T033a [US3] Record `/me` endpoint latency during pytest load run and fail CI if p95 exceeds 200 ms, attaching metrics to the build artifacts
 
 ### Implementation for User Story 3
 
-- [ ] T034 [US3] Implement JWKS cache utility with TTL refresh in apps/backend/app/services/supabase/jwks_cache.py
-- [ ] T035 [US3] Implement Supabase JWT verifier enforcing iss/aud/email in apps/backend/app/services/supabase/jwt_verifier.py
-- [ ] T036 [US3] Provide FastAPI dependency for authenticated user context in apps/backend/app/dependencies/supabase.py
-- [ ] T037 [US3] Implement `/me` router exposing profile payload in apps/backend/app/api/routes/me.py
-- [ ] T038 [US3] Register auth router in apps/backend/app/factory.py and expose under `/me`
-- [ ] T039 [US3] Version Supabase RLS policies for protected tables in apps/backend/app/db/policies/auth_access.sql
-- [ ] T040 [US3] Emit structured auth logging hooks in apps/backend/app/services/supabase/logging.py
-- [ ] T035a [US3] Wire CSRF validation middleware or dependency into Supabase JWT verifier pipeline
+- [X] T034 [US3] Implement JWKS cache utility with TTL refresh in apps/backend/app/services/supabase/jwks_cache.py
+- [X] T035 [US3] Implement Supabase JWT verifier enforcing iss/aud/email in apps/backend/app/services/supabase/jwt_verifier.py
+- [X] T036 [US3] Provide FastAPI dependency for authenticated user context in apps/backend/app/dependencies/supabase.py
+- [X] T037 [US3] Implement `/me` router exposing profile payload in apps/backend/app/api/routes/me.py
+- [X] T038 [US3] Register auth router in apps/backend/app/factory.py and expose under `/me`
+- [X] T039 [US3] Version Supabase RLS policies for protected tables in apps/backend/app/db/policies/auth_access.sql
+- [X] T040 [US3] Emit structured auth logging hooks in apps/backend/app/services/supabase/logging.py
+- [X] T035a [US3] Wire CSRF validation middleware or dependency into Supabase JWT verifier pipeline
 
 **Checkpoint**: Backend rejects invalid tokens, returns typed profiles for valid sessions, and RLS policies live in version control.
 
