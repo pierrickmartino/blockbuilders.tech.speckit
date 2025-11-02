@@ -15,7 +15,7 @@ from app.services.supabase import (
 from fastapi import Depends, Header, HTTPException, Request, status
 from pydantic import ValidationError
 
-AuthorizationHeader = Annotated[str | None, Header(default=None, alias="Authorization")]
+AuthorizationHeader = Annotated[str | None, Header(alias="Authorization")]
 
 
 @lru_cache(maxsize=1)
@@ -48,8 +48,8 @@ def get_jwt_verifier(
 
 async def get_current_supabase_user(
     request: Request,
-    authorization: AuthorizationHeader,
     verifier: Annotated[SupabaseJWTVerifier, Depends(get_jwt_verifier)],
+    authorization: AuthorizationHeader = None,
 ) -> SupabaseUserProfile:
     """Resolve the authenticated Supabase user from the incoming request."""
 

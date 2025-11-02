@@ -18,8 +18,8 @@ Run through every item before tagging a release. Capture links to CI runs or art
 
 ## Backend Verification
 
-- [ ] `uv tool run ruff check apps/backend` passes
-- [ ] `uv run pytest --cov=app --cov-report=term-missing` meets ≥80% thresholds
+- [x] `uv tool run ruff check apps/backend` passes
+- [x] `uv run pytest --cov=app --cov-report=term-missing` meets ≥80% thresholds (from apps/backend)
 - [ ] `/health` latency table in `configs/ci/reports/test-metrics.md` refreshed with most recent CI run
 
 ## Containers & Automation
