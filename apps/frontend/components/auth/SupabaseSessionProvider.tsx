@@ -11,6 +11,7 @@ import {
 } from 'react';
 import type { ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import type { Route } from 'next';
 import type { Session } from '@supabase/supabase-js';
 
 import {
@@ -207,7 +208,8 @@ export const SupabaseSessionProvider = ({
       });
 
       navigatingRef.current = true;
-      router.push(`/auth/sign-in?${params.toString()}`);
+      const redirectPath = `/auth/sign-in?${params.toString()}` as Route;
+      router.push(redirectPath);
     },
     [pathname, router],
   );

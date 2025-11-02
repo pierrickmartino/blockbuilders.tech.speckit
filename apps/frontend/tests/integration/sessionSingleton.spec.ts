@@ -29,8 +29,19 @@ class MemoryRequestCookies {
   }
 
   set(name: string, value: string, options?: Record<string, unknown>) {
-    this.store.set(name, value);
+    if (value === '' && options?.maxAge === 0) {
+      this.store.delete(name);
+    } else {
+      this.store.set(name, value);
+    }
     this.setCalls.push({ name, value, options });
+  }
+
+  getAll() {
+    return Array.from(this.store.entries()).map(([name, value]) => ({
+      name,
+      value,
+    }));
   }
 }
 

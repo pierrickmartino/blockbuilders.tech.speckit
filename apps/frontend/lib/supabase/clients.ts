@@ -17,8 +17,11 @@ export interface ServerClientContext {
   headers?: HeaderInit;
 }
 
-let browserClient: SupabaseClient | null = null;
-let serverClientCache = new WeakMap<RequestCookieStore, SupabaseClient>();
+let browserClient: SupabaseClient<unknown> | null = null;
+let serverClientCache = new WeakMap<
+  RequestCookieStore,
+  SupabaseClient<unknown>
+>();
 let browserStorageMode: 'cookies' | 'memory' = 'cookies';
 let browserStorage: SupportedStorage | null = null;
 
@@ -28,7 +31,6 @@ const createMemoryStorage = (): SupportedStorage => {
     getItem: (key) => store.get(key) ?? null,
     setItem: (key, value) => {
       store.set(key, value);
-      return value;
     },
     removeItem: (key) => {
       store.delete(key);
@@ -46,6 +48,27 @@ const getBrowserStorage = (): SupportedStorage | null => {
   return browserStorage;
 };
 
+const isHeadersInstance = (input: HeaderInit): input is Headers =>
+  typeof Headers !== 'undefined' && input instanceof Headers;
+
+const toHeaderRecord = (
+  input?: HeaderInit,
+): Record<string, string> | undefined => {
+  if (!input) {
+    return undefined;
+  }
+
+  if (isHeadersInstance(input)) {
+    return Object.fromEntries(input.entries());
+  }
+
+  if (Array.isArray(input)) {
+    return Object.fromEntries(input);
+  }
+
+  return Object.fromEntries(Object.entries(input));
+};
+
 export const getBrowserSupabaseClient = <Database = unknown>(): SupabaseClient<Database> => {
   if (browserClient) {
     return browserClient as SupabaseClient<Database>;
@@ -53,14 +76,15 @@ export const getBrowserSupabaseClient = <Database = unknown>(): SupabaseClient<D
 
   const { url, anonKey } = getBrowserSupabaseConfig();
   const storage = getBrowserStorage();
-  browserClient = createBrowserClient<Database>(url, anonKey, {
+  const client = createBrowserClient<Database>(url, anonKey, {
     auth: {
       persistSession: true,
       storage: storage ?? undefined,
       detectSessionInUrl: true,
     },
   });
-  return browserClient as SupabaseClient<Database>;
+  browserClient = client as SupabaseClient<unknown>;
+  return client;
 };
 
 export const createServerSupabaseClient = <Database = unknown>({
@@ -73,21 +97,23 @@ export const createServerSupabaseClient = <Database = unknown>({
   }
 
   const { url, anonKey } = getServerSupabaseConfig();
-  const normalizedHeaders =
-    typeof Headers !== 'undefined' ? new Headers(headers) : headers;
+  const headerRecord = toHeaderRecord(headers);
   const supabase = createServerClient<Database>(url, anonKey, {
     cookies: createServerSupabaseCookies(cookies),
-    headers: normalizedHeaders,
+    ...(headerRecord ? { global: { headers: headerRecord } } : {}),
   });
 
-  serverClientCache.set(cookies, supabase as SupabaseClient);
+  serverClientCache.set(cookies, supabase as SupabaseClient<unknown>);
   return supabase;
 };
 
 export const resetSupabaseClientCache = () => {
   browserClient = null;
   browserStorage = browserStorageMode === 'memory' ? createMemoryStorage() : null;
-  serverClientCache = new WeakMap();
+  serverClientCache = new WeakMap<
+    RequestCookieStore,
+    SupabaseClient<unknown>
+  >();
 };
 
 export const setBrowserSupabaseStorageMode = (mode: 'cookies' | 'memory') => {

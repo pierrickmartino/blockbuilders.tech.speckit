@@ -86,7 +86,7 @@ test.describe('Supabase session persistence', () => {
     sessionState = 'expired';
 
     await page.evaluate(async () => {
-      await window.__supabaseSessionTestHooks?.forceSessionRefresh();
+      await window.__supabaseSessionTestHooks?.forceSessionRefresh?.();
     });
 
     await page.waitForURL((url) => url.pathname === routes.signIn);
@@ -133,13 +133,17 @@ test.describe('Supabase session persistence', () => {
     sessionState = 'expired';
     await page.evaluate(async () => {
       const metrics = await window.__supabaseSessionTestHooks?.collectMetrics?.();
-      window.__supabaseSessionTestHooks?.logMetrics(metrics);
-      await window.__supabaseSessionTestHooks?.forceSessionRefresh();
+      if (metrics) {
+        window.__supabaseSessionTestHooks?.logMetrics?.(metrics);
+      }
+      await window.__supabaseSessionTestHooks?.forceSessionRefresh?.();
     });
 
     await page.waitForURL((url) => url.pathname === routes.signIn);
 
-    const report = await page.evaluate(() => window.__supabaseSessionTestHooks?.getLastMetrics?.());
+    const report = await page.evaluate(
+      () => window.__supabaseSessionTestHooks?.getLastMetrics?.(),
+    );
     expect(report).toBeDefined();
     expect(report?.navigationTimings?.timeToFirstByte).toBeLessThanOrEqual(2000);
     expect(report?.navigationTimings?.largestContentfulPaint).toBeLessThanOrEqual(2500);
@@ -161,7 +165,7 @@ test.describe('Supabase session persistence', () => {
     await page.waitForResponse('**/api/auth/csrf');
 
     await page.evaluate(() => {
-      window.__supabaseSessionTestHooks?.setCookiesEnabled(false);
+      window.__supabaseSessionTestHooks?.setCookiesEnabled?.(false);
     });
 
     await page.getByLabel('Email address').fill('fallback@example.com');

@@ -35,7 +35,7 @@ describe('auth telemetry events', () => {
     });
 
     expect(events).toHaveLength(1);
-    const event = events[0];
+    const event = events[0]!;
 
     expect(event.event).toBe('auth.sign_in');
     expect(event.outcome).toBe('success');
@@ -61,12 +61,12 @@ describe('auth telemetry events', () => {
       errorReason: 'Invalid credentials',
     });
 
-    const payload = JSON.stringify(events[0]);
+    const payload = JSON.stringify(events[0]!);
 
     expect(payload.includes(rawEmail)).toBe(false);
     expect(payload.includes(rawUserId)).toBe(false);
     expect(payload.includes('Invalid credentials')).toBe(true);
-    expect(events[0].error?.code).toBe('invalid_credentials');
+    expect(events[0]!.error?.code).toBe('invalid_credentials');
   });
 
   it('emits a sign-out event using hashed identifiers', () => {
@@ -79,7 +79,7 @@ describe('auth telemetry events', () => {
     });
 
     expect(events).toHaveLength(1);
-    const event = events[0];
+    const event = events[0]!;
 
     expect(event.event).toBe('auth.sign_out');
     expect(event.identifiers.emailHash).toMatch(/^fnv1a-/);
@@ -88,4 +88,3 @@ describe('auth telemetry events', () => {
     expect(event.pii).toBe('redacted');
   });
 });
-

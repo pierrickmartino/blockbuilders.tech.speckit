@@ -18,12 +18,13 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
   try {
     const { url, anonKey } = getServerSupabaseConfig();
+    const headerRecord = Object.fromEntries(request.headers.entries());
     const supabase = createServerClient(url, anonKey, {
       cookies: createMiddlewareSupabaseCookies({
         request: request.cookies,
         response: response.cookies,
       }),
-      headers: request.headers,
+      global: { headers: headerRecord },
     });
 
     const {

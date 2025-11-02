@@ -20,9 +20,10 @@
     "lint": "node ./scripts/run-lint.mjs",
     "lint:frontend": "pnpm --filter @blockbuilders/frontend... lint",
     "lint:backend": "uv run --directory apps/backend ruff check app tests",
-    "type-check": "pnpm --filter @blockbuilders/frontend... type-check",
+    "type-check": "node ./scripts/run-type-check.mjs",
     "test": "pnpm run test:frontend && pnpm run test:backend",
-    "test:frontend": "pnpm --filter @blockbuilders/frontend... test:coverage",
+    "test:coverage": "node ./scripts/test-coverage.mjs",
+    "test:frontend": "pnpm run test:coverage",
     "test:backend": "uv run --directory apps/backend pytest",
     "test:e2e": "pnpm --filter @blockbuilders/frontend... test:e2e"
   }
