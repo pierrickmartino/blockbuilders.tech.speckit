@@ -3,9 +3,6 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Annotated
 
-from fastapi import Depends, Header, HTTPException, Request, status
-from pydantic import ValidationError
-
 from app.core.settings import Settings, get_settings
 from app.schemas.auth import SupabaseUserProfile
 from app.services.supabase import (
@@ -15,6 +12,9 @@ from app.services.supabase import (
     log_auth_failure,
 )
 
+from fastapi import Depends, Header, HTTPException, Request, status
+from pydantic import ValidationError
+
 AuthorizationHeader = Annotated[str | None, Header(default=None, alias="Authorization")]
 
 
@@ -23,7 +23,9 @@ def _cached_jwks_cache(url: str, ttl_seconds: int) -> JWKSCache:
     return JWKSCache(url=url, ttl_seconds=ttl_seconds)
 
 
-def get_jwks_cache(settings: Settings = Depends(get_settings)) -> JWKSCache:
+def get_jwks_cache(
+    settings: Annotated[Settings, Depends(get_settings)],
+) -> JWKSCache:
     """Provide a shared JWKS cache for Supabase JWT verification."""
 
     supabase = settings.supabase
@@ -31,8 +33,8 @@ def get_jwks_cache(settings: Settings = Depends(get_settings)) -> JWKSCache:
 
 
 def get_jwt_verifier(
-    settings: Settings = Depends(get_settings),
-    jwks_cache: JWKSCache = Depends(get_jwks_cache),
+    settings: Annotated[Settings, Depends(get_settings)],
+    jwks_cache: Annotated[JWKSCache, Depends(get_jwks_cache)],
 ) -> SupabaseJWTVerifier:
     """Provide a Supabase JWT verifier using shared settings and JWKS cache."""
 
@@ -47,7 +49,7 @@ def get_jwt_verifier(
 async def get_current_supabase_user(
     request: Request,
     authorization: AuthorizationHeader,
-    verifier: SupabaseJWTVerifier = Depends(get_jwt_verifier),
+    verifier: Annotated[SupabaseJWTVerifier, Depends(get_jwt_verifier)],
 ) -> SupabaseUserProfile:
     """Resolve the authenticated Supabase user from the incoming request."""
 

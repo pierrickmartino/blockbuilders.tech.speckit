@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import Dict
+from functools import lru_cache
+from typing import ClassVar
 
 
 @dataclass
@@ -11,7 +12,7 @@ class AuthMetrics:
 
     successes: int = 0
     failures: int = 0
-    failure_reasons: Dict[str, int] = field(default_factory=dict)
+    failure_reasons: dict[str, int] = field(default_factory=dict)
 
     def record_success(self) -> None:
         self.successes += 1
@@ -20,7 +21,7 @@ class AuthMetrics:
         self.failures += 1
         self.failure_reasons[reason] = self.failure_reasons.get(reason, 0) + 1
 
-    def snapshot(self) -> Dict[str, object]:
+    def snapshot(self) -> dict[str, object]:
         return {
             "successes": self.successes,
             "failures": self.failures,
@@ -55,7 +56,7 @@ class AuthMetricsHandler(logging.Handler):
 class AuthRedactionFilter(logging.Filter):
     """Remove PII fields from Supabase auth log records before they emit."""
 
-    BLOCKED_ATTRIBUTES = {
+    BLOCKED_ATTRIBUTES: ClassVar[set[str]] = {
         "email",
         "user_email",
         "user",
@@ -71,16 +72,10 @@ class AuthRedactionFilter(logging.Filter):
         return True
 
 
-_AUTH_METRICS: AuthMetrics | None = None
-
-
 def get_auth_metrics() -> AuthMetrics:
     """Return the shared authentication metrics container."""
 
-    global _AUTH_METRICS
-    if _AUTH_METRICS is None:
-        _AUTH_METRICS = AuthMetrics()
-    return _AUTH_METRICS
+    return _get_auth_metrics_singleton()
 
 
 def reset_auth_metrics() -> None:
@@ -104,6 +99,11 @@ def configure_auth_logging(logger: logging.Logger) -> AuthMetrics:
         logger.setLevel(logging.INFO)
 
     return metrics
+
+
+@lru_cache(maxsize=1)
+def _get_auth_metrics_singleton() -> AuthMetrics:
+    return AuthMetrics()
 
 
 __all__ = [

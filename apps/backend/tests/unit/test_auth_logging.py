@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import logging
 
-import pytest
-
 from app.services.supabase.logging import LOGGER, log_auth_failure, log_auth_success
 from app.telemetry import configure_auth_logging, get_auth_metrics, reset_auth_metrics
+
+import pytest
 
 
 @pytest.fixture(autouse=True)

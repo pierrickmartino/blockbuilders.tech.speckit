@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import uvicorn
-
 from app.core.settings import get_settings
 from app.factory import create_app
 from app.services.supabase.logging import LOGGER as AUTH_LOGGER
 from app.telemetry import configure_auth_logging
+
+import uvicorn
 
 configure_auth_logging(AUTH_LOGGER)
 

@@ -3,17 +3,19 @@ from __future__ import annotations
 import asyncio
 import json
 import time
+from collections.abc import AsyncIterator
+from http import HTTPStatus
 from pathlib import Path
-from typing import AsyncIterator
+
+from app.core.settings import get_settings
+from app.dependencies.supabase import get_jwks_cache
+from app.factory import create_app
 
 import httpx
 import pytest
 from httpx import ASGITransport
 from jose import jwt
 from jose.utils import base64url_encode
-
-from app.core.settings import get_settings
-from app.factory import create_app
 
 TEST_SECRET = b"super-secret-signing-key"
 TEST_JWKS_RESPONSE = {
@@ -28,6 +30,7 @@ TEST_JWKS_RESPONSE = {
     ]
 }
 
+MAX_P95_LATENCY_SECONDS = 0.2
 
 @pytest.fixture
 def configure_settings(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -50,8 +53,6 @@ async def app_client(configure_settings: None) -> AsyncIterator[httpx.AsyncClien
             return TEST_JWKS_RESPONSE.copy()
 
     jwks_cache = _StaticJWKSCache()
-
-    from app.dependencies.supabase import get_jwks_cache
 
     app.dependency_overrides[get_jwks_cache] = lambda: jwks_cache
 
@@ -102,7 +103,7 @@ async def test_me_endpoint_returns_profile_payload(app_client: httpx.AsyncClient
         cookies=build_auth_cookies(),
     )
 
-    assert response.status_code == 200
+    assert response.status_code == HTTPStatus.OK
     payload = response.json()
     assert payload["id"] == "3b8b6480-9902-4a34-9dfd-64d3faefbe0e"
     assert payload["email"] == "user@example.com"
@@ -112,7 +113,7 @@ async def test_me_endpoint_returns_profile_payload(app_client: httpx.AsyncClient
 @pytest.mark.asyncio
 async def test_me_endpoint_requires_authorization_header(app_client: httpx.AsyncClient) -> None:
     response = await app_client.get("/me")
-    assert response.status_code == 401
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
     assert response.json()["detail"] == "authentication required"
 
 
@@ -125,7 +126,7 @@ async def test_me_endpoint_enforces_csrf_header(app_client: httpx.AsyncClient) -
         cookies=build_auth_cookies(),
     )
 
-    assert response.status_code == 403
+    assert response.status_code == HTTPStatus.FORBIDDEN
     assert response.json()["detail"] == "csrf token missing or invalid"
 
 
@@ -138,7 +139,7 @@ async def test_me_endpoint_rejects_unconfirmed_email(app_client: httpx.AsyncClie
         cookies=build_auth_cookies(),
     )
 
-    assert response.status_code == 401
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
     assert response.json()["detail"] == "authentication required"
 
 
@@ -167,4 +168,4 @@ async def test_me_endpoint_latency_under_budget(app_client: httpx.AsyncClient) -
     metrics_path = artifacts_dir / "backend_me_latency.json"
     metrics_path.write_text(json.dumps({"samples": durations, "p95": p95}), encoding="utf-8")
 
-    assert p95 < 0.2, "p95 latency must remain under 200ms"
+    assert p95 < MAX_P95_LATENCY_SECONDS, "p95 latency must remain under 200ms"

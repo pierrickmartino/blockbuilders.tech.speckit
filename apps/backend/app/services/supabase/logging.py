@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import logging
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 LOGGER = logging.getLogger("app.auth.supabase")
 

@@ -3,10 +3,10 @@ from __future__ import annotations
 from functools import lru_cache
 from urllib.parse import urljoin
 
+from app.core.settings_supabase import SupabaseSettings
+
 from pydantic import AnyHttpUrl, Field, PositiveInt, SecretStr, TypeAdapter, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
-from app.core.settings_supabase import SupabaseSettings
 
 HTTP_URL_ADAPTER = TypeAdapter(AnyHttpUrl)
 

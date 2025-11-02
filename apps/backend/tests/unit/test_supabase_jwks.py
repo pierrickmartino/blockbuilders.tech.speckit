@@ -1,12 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Callable
-
-import httpx
-import pytest
-from jose import jwt
-from jose.utils import base64url_encode
+from collections.abc import Callable
 
 from app.services.supabase.jwks_cache import JWKSCache, JWKSFetchError
 from app.services.supabase.jwt_verifier import (
@@ -14,6 +9,10 @@ from app.services.supabase.jwt_verifier import (
     SupabaseJWTVerifier,
 )
 
+import httpx
+import pytest
+from jose import jwt
+from jose.utils import base64url_encode
 
 TEST_JWKS_URL = "https://example.supabase.co/auth/v1/jwks"
 TEST_AUDIENCE = "authenticated"
@@ -30,6 +29,8 @@ TEST_JWKS_RESPONSE = {
         }
     ]
 }
+
+MIN_REFRESH_CALLS = 2
 
 
 def build_mock_transport(
@@ -90,7 +91,7 @@ async def test_jwks_cache_refreshes_after_ttl_expiry() -> None:
 
         assert first is not second
         assert first["keys"][0]["kid"] != second["keys"][0]["kid"]
-        assert call_count >= 2, "Cache should refresh after TTL expires"
+        assert call_count >= MIN_REFRESH_CALLS, "Cache should refresh after TTL expires"
 
 
 @pytest.mark.asyncio

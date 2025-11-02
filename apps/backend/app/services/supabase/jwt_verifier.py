@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from jose import JWTError, jwt
-
 from app.services.supabase.jwks_cache import JWKSCache, JWKSFetchError
 from app.services.supabase.logging import log_auth_failure, log_auth_success
+
+from jose import JWTError, jwt
 
 
 class SupabaseJWTVerificationError(RuntimeError):
