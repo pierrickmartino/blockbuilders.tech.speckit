@@ -18858,3 +18858,399 @@
 [2m2025-11-02T14:38:38.864199Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-11-02T14:38:38.864205Z[0m [32m INFO[0m tool gate released
 [2m2025-11-02T14:39:43.428300Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-04T20:55:20.426280Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-04T20:55:20.534051Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-04T20:55:39.417736Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"in_progress","step":"Review repository state and determine next feature number for new branch"},{"status":"pending","step":"Run feature creation script with generated metadata"},{"status":"pending","step":"Draft specification based on template and run validation checklist"},{"status":"pending","step":"Summarize results and next steps for the user"}]}
+[2m2025-11-04T20:55:39.417806Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:55:39.417811Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:55:43.680937Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git fetch --all --prune"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:55:43.682831Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:55:43.683230Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:55:47.495983Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git fetch --all --prune"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit","with_escalated_permissions":true,"justification":"Need to update local branch list to determine next feature number accurately"}
+[2m2025-11-04T20:55:47.496016Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:55:47.496021Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:56:28.998528Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git ls-remote --heads origin | grep -E 'refs/heads/[0-9]+-build-design-system$' || true"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:56:28.998559Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:56:28.998561Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:56:36.142740Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git for-each-ref --format='%(refname:short)' refs/remotes/origin | grep -E '^[0-9]+-build-design-system$' || true"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:56:36.142837Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:56:36.142843Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:56:39.227150Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git branch --format='%(refname:short)' | grep -E '^[0-9]+-build-design-system$' || true"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:56:39.227171Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:56:39.227174Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:56:43.039691Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls specs"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:56:43.039803Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:56:43.039811Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:56:49.131397Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,160p' .specify/scripts/bash/create-new-feature.sh"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:56:49.131432Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:56:49.131724Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:56:56.577081Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/create-new-feature.sh --json --number 1 --short-name \"build-design-system\" \"For the Design System & Tokens workstream, focus on establishing an accessible, consistent UI that accelerates delivery. On the frontend, define the core design tokens—covering color, typography, and spacing—alongside foundational components such as Button, Input, Select, Modal, and Toast, ensuring dark-mode support and WCAG AA defaults. On the backend, expose a feature flag that lets teams experiment with theme variations. Infrastructure should deliver a Storybook setup with built-in accessibility checks and Chromatic-powered visual regression tests wired into CI. Success looks like: Storybook listings of tokens and components passing their accessibility checks, the visual regression job blocking merges when diffs exceed the approved threshold, and keyboard navigation plus focus states on the key components meeting WCAG AA. **DO NOT USE** files in .pierrick folder.\""],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:56:56.577150Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:56:56.577155Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:57:03.370007Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/create-new-feature.sh --json --number 1 --short-name \"build-design-system\" \"For the Design System & Tokens workstream, focus on establishing an accessible, consistent UI that accelerates delivery. On the frontend, define the core design tokens—covering color, typography, and spacing—alongside foundational components such as Button, Input, Select, Modal, and Toast, ensuring dark-mode support and WCAG AA defaults. On the backend, expose a feature flag that lets teams experiment with theme variations. Infrastructure should deliver a Storybook setup with built-in accessibility checks and Chromatic-powered visual regression tests wired into CI. Success looks like: Storybook listings of tokens and components passing their accessibility checks, the visual regression job blocking merges when diffs exceed the approved threshold, and keyboard navigation plus focus states on the key components meeting WCAG AA. **DO NOT USE** files in .pierrick folder.\""],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit","with_escalated_permissions":true,"justification":"Script needs to create a new git branch and spec files requiring write access to git refs"}
+[2m2025-11-04T20:57:03.370083Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:57:03.370086Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:58:12.553469Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Review repository state and determine next feature number for new branch"},{"status":"completed","step":"Run feature creation script with generated metadata"},{"status":"in_progress","step":"Draft specification based on template and run validation checklist"},{"status":"pending","step":"Summarize results and next steps for the user"}]}
+[2m2025-11-04T20:58:12.553955Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:58:12.553962Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:58:17.762206Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,160p' .specify/templates/spec-template.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:58:17.762240Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:58:17.762242Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:58:21.460645Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' specs/001-build-design-system/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:58:21.460672Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:58:21.460676Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:58:26.735352Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '200,400p' .specify/templates/spec-template.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:58:26.735405Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:58:26.735410Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:58:40.573676Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","date +%Y-%m-%d"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:58:40.573721Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:58:40.573725Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:59:10.828994Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/001-build-design-system/spec.md
+@@
+-# Feature Specification: [FEATURE NAME]
+-
+-**Feature Branch**: `[###-feature-name]`  
+-**Created**: [DATE]  
++# Feature Specification: Design System Accessibility Foundations
++
++**Feature Branch**: `001-build-design-system`  
++**Created**: 2025-11-04  
+ **Status**: Draft  
+-**Input**: User description: "$ARGUMENTS"
++**Input**: User description: "For the Design System & Tokens workstream, focus on establishing an accessible, consistent UI that accelerates delivery. On the frontend, define the core design tokens—covering color, typography, and spacing—alongside foundational components such as Button, Input, Select, Modal, and Toast, ensuring dark-mode support and WCAG AA defaults. On the backend, expose a feature flag that lets teams experiment with theme variations. Infrastructure should deliver a Storybook setup with built-in accessibility checks and Chromatic-powered visual regression tests wired into CI. Success looks like: Storybook listings of tokens and components passing their accessibility checks, the visual regression job blocking merges when diffs exceed the approved threshold, and keyboard navigation plus focus states on the key components meeting WCAG AA. **DO NOT USE** files in .pierrick folder."
+ 
+ ## User Scenarios & Testing *(mandatory)*
+ 
+-<!--
+-  IMPORTANT: User stories should be PRIORITIZED as user journeys ordered by importance.
+-  Each user story/journey must be INDEPENDENTLY TESTABLE - meaning if you implement just ONE of them,
+-  you should still have a viable MVP (Minimum Viable Product) that delivers value.
+-  
+-  Assign priorities (P1, P2, P3, etc.) to each story, where P1 is the most critical.
+-  Think of each story as a standalone slice of functionality that can be:
+-  - Developed independently
+-  - Tested independently
+-  - Deployed independently
+-  - Demonstrated to users independently
+-
+-  Constitution alignment: For every story call out the principles it satisfies
+-  (quality, simplicity, testing, experience, performance) and the acceptance
+-  checks that will prove compliance.
+--->
+-
+-### User Story 1 - [Brief Title] (Priority: P1)
+-
+-[Describe this user journey in plain language]
+-
+-**Why this priority**: [Explain the value and why it has this priority level]
+-
+-**Independent Test**: [Describe how this can be tested independently - e.g., "Can be fully tested by [specific action] and delivers [specific value]"]
+-
+-**Acceptance Scenarios**:
+-
+-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
+-2. **Given** [initial state], **When** [action], **Then** [expected outcome]
++### User Story 1 - Browse Accessible Foundations (Priority: P1)
++
++Design system consumers can open the component library to review the canonical color, typography, and spacing tokens alongside Button, Input, Select, Modal, and Toast examples that already meet WCAG AA in light and dark themes.
++
++**Why this priority**: Without published, accessible tokens and core components, product teams cannot deliver consistent UI quickly or confidently.
++
++**Independent Test**: Open the component library, confirm tokens are documented with contrast ratios, and interact with each showcased component to validate keyboard and focus behavior across light and dark themes.
++
++**Acceptance Scenarios**:
++
++1. **Given** a product designer reviewing the design system, **When** they inspect the token listings, **Then** they see accessible color palettes with their intended use cases and contrast guidance spelled out.
++2. **Given** a frontend engineer previewing the Button, Input, Select, Modal, and Toast, **When** they tab through each state, **Then** focus indicators and messaging remain visible and compliant in both light and dark modes.
+ 
+ ---
+ 
+-### User Story 2 - [Brief Title] (Priority: P2)
+-
+-[Describe this user journey in plain language]
+-
+-**Why this priority**: [Explain the value and why it has this priority level]
+-
+-**Independent Test**: [Describe how this can be tested independently]
+-
+-**Acceptance Scenarios**:
+-
+-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
++### User Story 2 - Pilot Theme Experiments (Priority: P2)
++
++Product teams can opt into a theme variation using a feature flag so they can validate updated tokens or component styling with real users before wider rollout.
++
++**Why this priority**: Controlled rollout lowers risk when experimenting with alternate palettes or spacing, letting teams gather feedback without destabilizing the primary experience.
++
++**Independent Test**: Toggle the feature flag in a staging environment, observe the alternate theme applying only to the targeted audience, and verify it can be turned off instantly without side effects.
++
++**Acceptance Scenarios**:
++
++1. **Given** a product manager preparing a thematic experiment, **When** they enable the theme variation flag for a test audience, **Then** only that audience experiences the alternate tokens and components.
++2. **Given** feedback indicating the experiment should pause, **When** the flag is disabled, **Then** the experience immediately returns to the default theme without user disruption.
+ 
+ ---
+ 
+-### User Story 3 - [Brief Title] (Priority: P3)
+-
+-[Describe this user journey in plain language]
+-
+-**Why this priority**: [Explain the value and why it has this priority level]
+-
+-**Independent Test**: [Describe how this can be tested independently]
+-
+-**Acceptance Scenarios**:
+-
+-1. **Given** [initial state], **When** [action], **Then** [expected outcome]
++### User Story 3 - Enforce Quality Gates (Priority: P3)
++
++Quality and accessibility reviewers rely on automated accessibility audits and visual regression checks to block merges until issues are resolved, ensuring regressions cannot ship.
++
++**Why this priority**: Guardrails preserve trust in the design system by catching visual or accessibility regressions before they reach production.
++
++**Independent Test**: Run the automated checks on a component update, confirm the job fails when violations or visual diffs exceed thresholds, and verify the pipeline passes once issues are resolved or approved.
++
++**Acceptance Scenarios**:
++
++1. **Given** a regression introduced to focus styling, **When** the automated accessibility audit runs, **Then** the merge request is blocked with clear guidance on the violation until it is fixed.
++2. **Given** an intentional visual change to a token, **When** the visual regression job executes, **Then** it flags the difference for review and allows the merge only after approval is recorded.
+ 
+ ---
+ 
+-[Add more user stories as needed, each with an assigned priority]
+-
+ ### Edge Cases
+ 
+-<!--
+-  ACTION REQUIRED: The content in this section represents placeholders.
+-  Fill them out with the right edge cases.
+--->
+-
+-- What happens when [boundary condition]?
+-- How does system handle [error scenario]?
+-- Which UX or accessibility failures must be handled (keyboard traps, focus loss, missing alt text)?
+-- What happens if performance budgets are exceeded (e.g., TTI >2s, API p95 >200ms, job queue saturation)?
++- Dark theme backgrounds must maintain WCAG AA contrast even for warning or error states that lean on saturated colors.
++- Component focus rings must remain visible when placed inside dense layouts or over imagery, avoiding keyboard traps in modals.
++- Toast messaging needs to handle simultaneous notifications without obscuring primary actions or overlapping with screen-reader announcements.
++- Feature flag rollback must gracefully restore default tokens even if a user is mid-session to prevent partial theming.
++- Automated checks should surface actionable failures rather than timing out when Storybook fails to build or network snapshots cannot be captured.
+ 
+ ## Requirements *(mandatory)*
+ 
+-<!--
+-  ACTION REQUIRED: The content in this section represents placeholders.
+-  Fill them out with the right functional requirements.
+--->
+-
+ ### Functional Requirements
+ 
+-> Map each requirement to the relevant constitution principle. Explicitly list
+-> the tests, telemetry, or UX artefacts that will demonstrate compliance.
+-
+-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
+-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
+-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
+-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
+-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+-
+-*Example of marking unclear requirements:*
+-
+-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
+-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
++- **FR-001** (experience, quality): Publish a canonical set of color, typography, and spacing tokens with documented usage guidance and contrast ratios, validated through accessibility reviews recorded in the component library.
++- **FR-002** (experience, testing): Showcase Button, Input, Select, Modal, and Toast foundations with light and dark variants that support keyboard focus, error, loading, and disabled states, demonstrated via interactive scenarios.
++- **FR-003** (experience, performance): Ensure every showcased component maintains WCAG AA compliance for text, icons, and interactive states across light and dark themes, confirmed through scheduled accessibility audits.
++- **FR-004** (simplicity, testing): Provide Storybook-style documentation that lists tokens and components, automatically runs accessibility checks per story, and surfaces failures to contributors prior to merge approval.
++- **FR-005** (quality, simplicity): Integrate a visual regression gate that compares component snapshots against approved baselines and blocks merges until differences are reviewed or approved by design owners.
++- **FR-006** (testing, experience): Record the results of accessibility and visual regression checks within the continuous integration pipeline and ensure merge approvals require passing results or explicit waivers.
++- **FR-007** (experience, safety): Offer a feature flag that enables targeted audiences to experience alternative theme tokens and allows instant rollback, with change history auditable by product leadership.
++
++### Key Entities *(include if feature involves data)*
++
++- **Design Token**: Named definition for color, typography, or spacing that includes purpose, contrast guidance, and relationships to supported modes.
++- **Theme Variation**: Set of alternate token values associated with a feature flag audience and lifecycle status (draft, in pilot, sunset).
++- **Component Showcase**: Documented scenario combining tokens and component states, capturing accessibility audit results and baseline imagery for regression comparisons.
++- **Quality Gate Record**: Summary of automated accessibility and visual regression outcomes stored with timestamp, reviewer, and resolution status.
++
++## Assumptions
++
++- Existing continuous integration tooling can host accessibility and visual regression checks without requiring new vendor procurement.
++- Product teams have capacity to pilot theme variations and provide structured feedback within the release window.
++- Accessibility reviewers are available to spot-check keyboard navigation and focus management before sign-off.
+ 
+ ## Success Criteria *(mandatory)*
+ 
+-<!--
+-  ACTION REQUIRED: Define measurable success criteria.
+-  These must be technology-agnostic and measurable.
+--->
+-
+ ### Measurable Outcomes
+ 
+-- **SC-QLT**: Quality gates execute successfully (`pnpm lint`, `pnpm type-check`, `pnpm test:coverage`, `ruff check`, `uv run pytest`) with ≥80% coverage for affected code.
+-- **SC-UX**: Experience meets documented acceptance criteria, including WCAG 2.2 AA validation (axe audits, keyboard walkthrough, screen reader spot-check).
+-- **SC-PERF**: Performance budgets stay within target (e.g., TTI ≤2s, LCP ≤2.5s, API p95 ≤200ms) with telemetry instrumentation proving compliance.
+-- **SC-BIZ**: [Business metric, e.g., "Reduce support tickets related to onboarding by 50%"]
++- **SC-A11Y**: Accessibility audits of tokens and foundational components report zero unresolved WCAG AA violations across light and dark themes for two consecutive releases.
++- **SC-USG**: At least two product squads confirm they can deliver a production-ready flow using only the published tokens and components, with feedback captured in release notes.
++- **SC-REG**: Visual regression runs block 100% of merge attempts containing unreviewed diffs, and release readiness reports show no outstanding visual approvals at sign-off.
++- **SC-ADPT**: Feature flag metrics show that theme experiments can be enabled and rolled back within 15 minutes, with no customer-facing incidents recorded during pilots.
+*** End Patch
+[2m2025-11-04T20:59:10.829428Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:59:10.829436Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:59:15.084889Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Delete File: specs/001-build-design-system/spec.md
+*** End Patch
+[2m2025-11-04T20:59:15.084949Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:59:15.084954Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:59:32.973282Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-build-design-system/spec.md
++# Feature Specification: Design System Accessibility Foundations
++
++**Feature Branch**: `001-build-design-system`  
++**Created**: 2025-11-04  
++**Status**: Draft  
++**Input**: User description: "For the Design System & Tokens workstream, focus on establishing an accessible, consistent UI that accelerates delivery. On the frontend, define the core design tokens—covering color, typography, and spacing—alongside foundational components such as Button, Input, Select, Modal, and Toast, ensuring dark-mode support and WCAG AA defaults. On the backend, expose a feature flag that lets teams experiment with theme variations. Infrastructure should deliver a Storybook setup with built-in accessibility checks and Chromatic-powered visual regression tests wired into CI. Success looks like: Storybook listings of tokens and components passing their accessibility checks, the visual regression job blocking merges when diffs exceed the approved threshold, and keyboard navigation plus focus states on the key components meeting WCAG AA. **DO NOT USE** files in .pierrick folder."
++
++## User Scenarios & Testing *(mandatory)*
++
++### User Story 1 - Browse Accessible Foundations (Priority: P1)
++
++Design system consumers can open the component library to review the canonical color, typography, and spacing tokens alongside Button, Input, Select, Modal, and Toast examples that already meet WCAG AA in light and dark themes.
++
++**Why this priority**: Without published, accessible tokens and core components, product teams cannot deliver consistent UI quickly or confidently.
++
++**Independent Test**: Open the component library, confirm tokens are documented with contrast ratios, and interact with each showcased component to validate keyboard and focus behavior across light and dark themes.
++
++**Acceptance Scenarios**:
++
++1. **Given** a product designer reviewing the design system, **When** they inspect the token listings, **Then** they see accessible color palettes with their intended use cases and contrast guidance spelled out.
++2. **Given** a frontend engineer previewing the Button, Input, Select, Modal, and Toast, **When** they tab through each state, **Then** focus indicators and messaging remain visible and compliant in both light and dark modes.
++
++---
++
++### User Story 2 - Pilot Theme Experiments (Priority: P2)
++
++Product teams can opt into a theme variation using a feature flag so they can validate updated tokens or component styling with real users before wider rollout.
++
++**Why this priority**: Controlled rollout lowers risk when experimenting with alternate palettes or spacing, letting teams gather feedback without destabilizing the primary experience.
++
++**Independent Test**: Toggle the feature flag in a staging environment, observe the alternate theme applying only to the targeted audience, and verify it can be turned off instantly without side effects.
++
++**Acceptance Scenarios**:
++
++1. **Given** a product manager preparing a thematic experiment, **When** they enable the theme variation flag for a test audience, **Then** only that audience experiences the alternate tokens and components.
++2. **Given** feedback indicating the experiment should pause, **When** the flag is disabled, **Then** the experience immediately returns to the default theme without user disruption.
++
++---
++
++### User Story 3 - Enforce Quality Gates (Priority: P3)
++
++Quality and accessibility reviewers rely on automated accessibility audits and visual regression checks to block merges until issues are resolved, ensuring regressions cannot ship.
++
++**Why this priority**: Guardrails preserve trust in the design system by catching visual or accessibility regressions before they reach production.
++
++**Independent Test**: Run the automated checks on a component update, confirm the job fails when violations or visual diffs exceed thresholds, and verify the pipeline passes once issues are resolved or approved.
++
++**Acceptance Scenarios**:
++
++1. **Given** a regression introduced to focus styling, **When** the automated accessibility audit runs, **Then** the merge request is blocked with clear guidance on the violation until it is fixed.
++2. **Given** an intentional visual change to a token, **When** the visual regression job executes, **Then** it flags the difference for review and allows the merge only after approval is recorded.
++
++---
++
++### Edge Cases
++
++- Dark theme backgrounds must maintain WCAG AA contrast even for warning or error states that lean on saturated colors.
++- Component focus rings must remain visible when placed inside dense layouts or over imagery, avoiding keyboard traps in modals.
++- Toast messaging needs to handle simultaneous notifications without obscuring primary actions or overlapping with screen-reader announcements.
++- Feature flag rollback must gracefully restore default tokens even if a user is mid-session to prevent partial theming.
++- Automated checks should surface actionable failures rather than timing out when the component library fails to build or network snapshots cannot be captured.
++
++## Requirements *(mandatory)*
++
++### Functional Requirements
++
++- **FR-001** (experience, quality): Publish a canonical set of color, typography, and spacing tokens with documented usage guidance and contrast ratios, validated through accessibility reviews recorded in the component library.
++- **FR-002** (experience, testing): Showcase Button, Input, Select, Modal, and Toast foundations with light and dark variants that support keyboard focus, error, loading, and disabled states, demonstrated via interactive scenarios.
++- **FR-003** (experience, performance): Ensure every showcased component maintains WCAG AA compliance for text, icons, and interactive states across light and dark themes, confirmed through scheduled accessibility audits.
++- **FR-004** (simplicity, testing): Provide Storybook-style documentation that lists tokens and components, automatically runs accessibility checks per story, and surfaces failures to contributors prior to merge approval.
++- **FR-005** (quality, simplicity): Integrate a visual regression gate that compares component snapshots against approved baselines and blocks merges until differences are reviewed or approved by design owners.
++- **FR-006** (testing, experience): Record the results of accessibility and visual regression checks within the continuous integration pipeline and ensure merge approvals require passing results or explicit waivers.
++- **FR-007** (experience, safety): Offer a feature flag that enables targeted audiences to experience alternative theme tokens and allows instant rollback, with change history auditable by product leadership.
++
++### Key Entities *(include if feature involves data)*
++
++- **Design Token**: Named definition for color, typography, or spacing that includes purpose, contrast guidance, and relationships to supported modes.
++- **Theme Variation**: Set of alternate token values associated with a feature flag audience and lifecycle status (draft, in pilot, sunset).
++- **Component Showcase**: Documented scenario combining tokens and component states, capturing accessibility audit results and baseline imagery for regression comparisons.
++- **Quality Gate Record**: Summary of automated accessibility and visual regression outcomes stored with timestamp, reviewer, and resolution status.
++
++## Assumptions
++
++- Existing continuous integration tooling can host accessibility and visual regression checks without requiring new vendor procurement.
++- Product teams have capacity to pilot theme variations and provide structured feedback within the release window.
++- Accessibility reviewers are available to spot-check keyboard navigation and focus management before sign-off.
++
++## Success Criteria *(mandatory)*
++
++### Measurable Outcomes
++
++- **SC-A11Y**: Accessibility audits of tokens and foundational components report zero unresolved WCAG AA violations across light and dark themes for two consecutive releases.
++- **SC-USG**: At least two product squads confirm they can deliver a production-ready flow using only the published tokens and components, with feedback captured in release notes.
++- **SC-REG**: Visual regression runs block 100% of merge attempts containing unreviewed diffs, and release readiness reports show no outstanding visual approvals at sign-off.
++- **SC-ADPT**: Feature flag metrics show that theme experiments can be enabled and rolled back within 15 minutes, with no customer-facing incidents recorded during pilots.
+*** End Patch
+[2m2025-11-04T20:59:32.975665Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:59:32.975671Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:59:38.501675Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","mkdir -p specs/001-build-design-system/checklists"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:59:38.501717Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:59:38.501721Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:59:50.479586Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/001-build-design-system/checklists/requirements.md
++# Specification Quality Checklist: Design System Accessibility Foundations
++
++**Purpose**: Validate specification completeness and quality before proceeding to planning  
++**Created**: 2025-11-04  
++**Feature**: [Feature Specification](../spec.md)
++
++## Content Quality
++
++- [x] No implementation details (languages, frameworks, APIs)
++- [x] Focused on user value and business needs
++- [x] Written for non-technical stakeholders
++- [x] All mandatory sections completed
++
++## Requirement Completeness
++
++- [x] No [NEEDS CLARIFICATION] markers remain
++- [x] Requirements are testable and unambiguous
++- [x] Success criteria are measurable
++- [x] Success criteria are technology-agnostic (no implementation details)
++- [x] All acceptance scenarios are defined
++- [x] Edge cases are identified
++- [x] Scope is clearly bounded
++- [x] Dependencies and assumptions identified
++
++## Feature Readiness
++
++- [x] All functional requirements have clear acceptance criteria
++- [x] User scenarios cover primary flows
++- [x] Feature meets measurable outcomes defined in Success Criteria
++- [x] No implementation details leak into specification
++
++## Notes
++
++- Items marked incomplete require spec updates before `/speckit.clarify` or `/speckit.plan`
+*** End Patch
+[2m2025-11-04T20:59:50.479716Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:59:50.479723Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:59:54.352554Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Review repository state and determine next feature number for new branch"},{"status":"completed","step":"Run feature creation script with generated metadata"},{"status":"completed","step":"Draft specification based on template and run validation checklist"},{"status":"in_progress","step":"Summarize results and next steps for the user"}]}
+[2m2025-11-04T20:59:54.352662Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:59:54.352667Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T20:59:59.145075Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status -sb"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-04T20:59:59.145122Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-04T20:59:59.145127Z[0m [32m INFO[0m tool gate released
+[2m2025-11-04T21:03:43.540707Z[0m [32m INFO[0m Shutting down Codex instance
