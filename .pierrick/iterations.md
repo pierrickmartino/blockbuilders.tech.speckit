@@ -1,4 +1,5 @@
-Title: Bootstrap Monorepo with Spec-Kit & Foundations
+
+**Title: Bootstrap Monorepo with Spec-Kit & Foundations**
 Why: Establish a spec-driven baseline so all work flows from approved specs and CI.
 Scope:
 	•	Frontend: Initialize Next.js app shell with routing, layout scaffold, error boundary, and placeholder pages.
@@ -9,7 +10,7 @@ Acceptance Criteria:
 	•	AC2: /healthz returns 200 with version/hash; frontend renders base layout at /.
 	•	AC3 : Spec documents for Brief, PRD, Architecture, and Frontend Spec live in repo and are referenced in README.
 
-Title: Auth & Accounts (Supabase)
+**Title: Auth & Accounts (Supabase)**
 Why: Gate features, enable personalization, and enforce RLS/quotas.
 Scope:
 	•	Frontend: Sign up/in, magic link, OAuth, profile dropdown, protected route guard, basic settings page.
