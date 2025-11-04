@@ -19254,3 +19254,6 @@
 [2m2025-11-04T20:59:59.145122Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-11-04T20:59:59.145127Z[0m [32m INFO[0m tool gate released
 [2m2025-11-04T21:03:43.540707Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-04T21:29:50.680022Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-04T21:29:50.784677Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-04T21:30:01.070409Z[0m [32m INFO[0m Shutting down Codex instance

@@ -12,5 +12,5 @@ args = ["@playwright/mcp@latest"]
 args = ["-y", "@upstash/context7-mcp", "--api-key", "ctx7sk-7b167dbc-5284-4af5-b51d-431a0818dc12"]
 command = "npx"
 
-[tools]
-web_search = true
+[feature]
+web_search_request = true
