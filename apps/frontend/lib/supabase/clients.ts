@@ -69,6 +69,28 @@ const toHeaderRecord = (
   return Object.fromEntries(Object.entries(input));
 };
 
+const SUPABASE_HEADER_DENYLIST = new Set(['content-length', 'transfer-encoding']);
+
+const sanitizeSupabaseHeaders = (
+  input?: HeaderInit,
+): Record<string, string> | undefined => {
+  const record = toHeaderRecord(input);
+  if (!record) {
+    return undefined;
+  }
+
+  const entries = Object.entries(record).filter(([key]) => {
+    const normalized = key.trim().toLowerCase();
+    return !SUPABASE_HEADER_DENYLIST.has(normalized);
+  });
+
+  if (entries.length === 0) {
+    return undefined;
+  }
+
+  return Object.fromEntries(entries);
+};
+
 export const getBrowserSupabaseClient = <Database = unknown>(): SupabaseClient<Database> => {
   if (browserClient) {
     return browserClient as SupabaseClient<Database>;
@@ -97,7 +119,7 @@ export const createServerSupabaseClient = <Database = unknown>({
   }
 
   const { url, anonKey } = getServerSupabaseConfig();
-  const headerRecord = toHeaderRecord(headers);
+  const headerRecord = sanitizeSupabaseHeaders(headers);
   const supabase = createServerClient<Database>(url, anonKey, {
     cookies: createServerSupabaseCookies(cookies),
     ...(headerRecord ? { global: { headers: headerRecord } } : {}),
