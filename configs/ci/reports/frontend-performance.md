@@ -4,7 +4,7 @@ Artifacts demonstrating that the landing page meets performance budgets (TTI ≤
 
 ## Next.js Build Metrics
 
-Collected via `pnpm --filter apps/frontend... build` (Next.js 15 production build). Update after significant UI or dependency changes.
+Collected via `pnpm --filter ./apps/frontend... build` (Next.js 15 production build). Update after significant UI or dependency changes.
 
 | Metric | Value | Source File | Notes |
 |--------|-------|-------------|-------|

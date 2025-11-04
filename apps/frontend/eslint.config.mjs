@@ -8,6 +8,12 @@ import testingLibraryPlugin from 'eslint-plugin-testing-library';
 import globals from 'globals';
 
 const nextCoreWebVitals = nextPlugin.configs['core-web-vitals'];
+const tsConfigs = tsPlugin.configs;
+const tsRecommendedRules = tsConfigs.recommended?.rules ?? {};
+const tsRecommendedTypeCheckedRules =
+  tsConfigs.recommendedTypeChecked?.rules ??
+  tsConfigs['recommended-requiring-type-checking']?.rules ??
+  {};
 
 export default [
   {
@@ -56,8 +62,8 @@ export default [
     },
     rules: {
       ...nextCoreWebVitals.rules,
-      ...tsPlugin.configs.recommended.rules,
-      ...tsPlugin.configs['recommended-requiring-type-checking'].rules,
+      ...tsRecommendedRules,
+      ...tsRecommendedTypeCheckedRules,
       'tailwindcss/classnames-order': 'warn',
       'tailwindcss/no-custom-classname': 'off',
       'testing-library/await-async-queries': 'error',

@@ -2,8 +2,15 @@ from __future__ import annotations
 
 from app.core.settings import get_settings
 from app.factory import create_app
+from app.services.supabase.logging import LOGGER as AUTH_LOGGER
+from app.telemetry import configure_auth_logging
 
 import uvicorn
+
+configure_auth_logging(AUTH_LOGGER)
+
+settings = get_settings()
+_ = settings.supabase
 
 app = create_app()
 
@@ -11,7 +18,6 @@ app = create_app()
 def main() -> None:
     """Run the FastAPI development server via uvicorn."""
 
-    settings = get_settings()
     uvicorn.run(
         "app.main:app",
         host=settings.service_host,

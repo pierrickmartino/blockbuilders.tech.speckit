@@ -23,6 +23,7 @@ coverage/
 playwright-report/
 **/test-results/
 .ruff_cache/
+artifacts/
 
 # Environment and Docker
 .env

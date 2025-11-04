@@ -29,7 +29,7 @@ Populate `.env` files with required variables:
 ### Frontend
 
 ```bash
-pnpm dev --filter apps/frontend...     # Next.js dev server on http://localhost:3000
+pnpm dev --filter ./apps/frontend...     # Next.js dev server on http://localhost:3000
 ```
 
 Landing page exposes build metadata via `data-app-*` attributes for smoke tests.
@@ -55,10 +55,10 @@ Services share the `app-network` network and load environment variables from `.e
 ## Quality Gates
 
 ```bash
-pnpm lint --filter apps/frontend...
-pnpm type-check --filter apps/frontend...
-pnpm test:coverage --filter apps/frontend...      # Vitest unit coverage ≥80%
-pnpm test:e2e --filter apps/frontend... --project smoke  # Playwright smoke + accessibility
+pnpm lint --filter ./apps/frontend...
+pnpm type-check --filter ./apps/frontend...
+pnpm test:coverage --filter ./apps/frontend...      # Vitest unit coverage ≥80%
+pnpm test:e2e --filter ./apps/frontend... --project smoke  # Playwright smoke + accessibility
 
 uv run ruff check apps/backend
 uv run pytest --cov=app --cov-report=term-missing
@@ -74,6 +74,6 @@ Run all gates before opening a PR to satisfy Constitution Principle I.
 ## Troubleshooting
 
 - **Node version errors**: Ensure `node --version` reports 20.11+; run `corepack enable pnpm`.
-- **Playwright missing browsers**: Execute `pnpm test:e2e --filter apps/frontend... -- --install-deps`.
+- **Playwright missing browsers**: Execute `pnpm test:e2e --filter ./apps/frontend... -- --install-deps`.
 - **Backend env validation failures**: Check `apps/backend/.env` matches `BaseSettings` schema described in `research.md`.
 - **Docker build cache misses**: Verify `COMPOSE_PROJECT_NAME` is consistent and pruning has not removed named volumes (`docker volume ls`).

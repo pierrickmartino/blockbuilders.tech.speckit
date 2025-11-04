@@ -42,6 +42,7 @@ const METADATA_SCRIPT_PATH = resolveScriptPath();
 const DEFAULT_VERSION = '0.1.0-dev';
 const DEFAULT_COMMIT = 'unknown';
 const DEFAULT_TIMESTAMP = new Date(0).toISOString();
+export const SMOKE_FALLBACK_TEST_SUITE = 'frontend-smoke-fallback';
 
 const formatTimestampLabel = (timestamp: string): string => {
   const parsed = Date.parse(timestamp);
@@ -62,11 +63,25 @@ const toCommitLabel = (commit: string) =>
  * Executes the shared metadata script. Returns undefined when execution fails,
  * allowing callers to gracefully fall back to defaults.
  */
-type ScriptMetadata = Partial<Pick<BuildMetadataSnapshot, 'version' | 'commit' | 'timestamp'>>;
+type ScriptMetadata = Partial<
+  Pick<BuildMetadataSnapshot, 'version' | 'commit' | 'timestamp'>
+>;
 
-const executeMetadataScript = (): ScriptMetadata | null => {
+const shouldForceFallback = (forceFallback?: boolean) =>
+  forceFallback || process.env.PLAYWRIGHT_EXPECT_UNKNOWN_COMMIT === '1';
+
+const executeMetadataScript = (
+  forceFallback?: boolean,
+): ScriptMetadata | null => {
+  if (shouldForceFallback(forceFallback)) {
+    return null;
+  }
+
   try {
-    const buffer = execFileSync(METADATA_SCRIPT_PATH, ['--fallback-version', DEFAULT_VERSION]);
+    const buffer = execFileSync(METADATA_SCRIPT_PATH, [
+      '--fallback-version',
+      DEFAULT_VERSION,
+    ]);
     const parsed = JSON.parse(buffer.toString('utf8')) as ScriptMetadata;
     return parsed;
   } catch {
@@ -74,8 +89,14 @@ const executeMetadataScript = (): ScriptMetadata | null => {
   }
 };
 
-export const loadBuildMetadata = (): Promise<BuildMetadataSnapshot> => {
-  const result = executeMetadataScript() ?? {};
+export interface LoadBuildMetadataOptions {
+  forceFallback?: boolean;
+}
+
+export const loadBuildMetadata = (
+  options: LoadBuildMetadataOptions = {},
+): Promise<BuildMetadataSnapshot> => {
+  const result = executeMetadataScript(options.forceFallback) ?? {};
   const env = loadEnv();
 
   const version = result.version?.trim() || DEFAULT_VERSION;
@@ -106,5 +127,7 @@ export const metadataToAttributes = (
   'data-app-timestamp': metadata.timestamp,
 });
 
-export const buildMetadataAttributes = async (): Promise<Record<string, string>> =>
-  metadataToAttributes(await loadBuildMetadata());
+export const buildMetadataAttributes = async (
+  options?: LoadBuildMetadataOptions,
+): Promise<Record<string, string>> =>
+  metadataToAttributes(await loadBuildMetadata(options));

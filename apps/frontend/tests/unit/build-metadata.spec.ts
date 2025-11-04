@@ -15,10 +15,12 @@ describe('loadBuildMetadata', () => {
     vi.resetModules();
     execFileSync.mockReset();
     delete process.env.NEXT_PUBLIC_APP_ENV;
+    delete process.env.PLAYWRIGHT_EXPECT_UNKNOWN_COMMIT;
   });
 
   afterEach(() => {
     delete process.env.NEXT_PUBLIC_APP_ENV;
+    delete process.env.PLAYWRIGHT_EXPECT_UNKNOWN_COMMIT;
   });
 
   it('parses the shared build snapshot and annotates the runtime environment', async () => {
@@ -76,5 +78,31 @@ describe('loadBuildMetadata', () => {
     expect(snapshot.labels.version).toContain('0.1.0-dev');
     expect(snapshot.labels.environment).toBe('Local');
     expect(snapshot.labels.timestamp).toMatch(/2024-05-01/);
+  });
+
+  it('forces fallback values when instructed via options', async () => {
+    const module = await vi.importActual<typeof BuildMetadataModule>(
+      '../../lib/build-metadata',
+    );
+
+    const snapshot = await module.loadBuildMetadata({ forceFallback: true });
+
+    expect(execFileSync).not.toHaveBeenCalled();
+    expect(snapshot.commit).toBe('unknown');
+    expect(snapshot.labels.commit).toBe('Unknown commit');
+  });
+
+  it('forces fallback values when the environment flag is present', async () => {
+    process.env.PLAYWRIGHT_EXPECT_UNKNOWN_COMMIT = '1';
+
+    const module = await vi.importActual<typeof BuildMetadataModule>(
+      '../../lib/build-metadata',
+    );
+
+    const snapshot = await module.loadBuildMetadata();
+
+    expect(execFileSync).not.toHaveBeenCalled();
+    expect(snapshot.commit).toBe('unknown');
+    expect(snapshot.labels.commit).toBe('Unknown commit');
   });
 });

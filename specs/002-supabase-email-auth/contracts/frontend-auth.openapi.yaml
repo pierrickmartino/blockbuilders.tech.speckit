@@ -1,0 +1,204 @@
+openapi: 3.1.0
+info:
+  title: Next.js Supabase Auth Route Handlers
+  version: 0.1.0
+  description: >
+    Route handlers executed within the Next.js 15 App Router for Supabase email/password
+    authentication. All endpoints rely on Supabase-managed httpOnly cookies and are consumed
+    by the sign-up/sign-in forms described in FR-101 through FR-105a.
+servers:
+  - url: https://{domain}
+    description: Next.js frontend deployment
+    variables:
+      domain:
+        default: localhost:3000
+        description: Local dev server; replace with preview/production domains.
+components:
+  securitySchemes:
+    supabaseCookie:
+      type: apiKey
+      in: cookie
+      name: sb-access-token
+paths:
+  /api/auth/sign-up:
+    post:
+      tags:
+        - Email Auth
+      summary: Register a new Supabase user with email verification enforced.
+      description: >
+        Creates a Supabase account using email/password and starts an authenticated session
+        if email confirmation is enabled. Returns session payload mirroring Supabase GoTrue
+        responses; verification-required users receive `email_confirmed: false`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 12
+                  pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$'
+                redirectTo:
+                  type: string
+                  format: uri
+                  description: Optional email confirmation redirect override.
+      responses:
+        "201":
+          description: Account created; session cookie set when verification not required.
+          headers:
+            Set-Cookie:
+              description: Supabase session cookies (`sb-access-token` and `sb-refresh-token`) with httpOnly/secure flags.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSession'
+        "400":
+          description: Validation failed (password policy, duplicate email, etc.).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+  /api/auth/sign-in:
+    post:
+      tags:
+        - Email Auth
+      summary: Authenticate an existing Supabase user with email/password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Sign-in succeeded; Supabase session cookies updated.
+          headers:
+            Set-Cookie:
+              description: Supabase session cookies refreshed with httpOnly/secure flags.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSession'
+        "401":
+          description: Invalid credentials or email not confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+  /api/auth/sign-out:
+    post:
+      tags:
+        - Email Auth
+      summary: Terminate the current Supabase session across cookies and client cache.
+      security:
+        - supabaseCookie: []
+      responses:
+        "204":
+          description: Session terminated; cookies cleared.
+        "401":
+          description: No active session found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+  /api/auth/session:
+    get:
+      tags:
+        - Email Auth
+      summary: Retrieve the active Supabase session for server components or middleware.
+      security:
+        - supabaseCookie: []
+      responses:
+        "200":
+          description: Active session data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthSession'
+        "401":
+          description: Session missing or expired.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthError'
+components:
+  schemas:
+    AuthSession:
+      type: object
+      required:
+        - access_token
+        - refresh_token
+        - expires_at
+        - token_type
+        - user
+      properties:
+        access_token:
+          type: string
+          description: Supabase JWT access token.
+        refresh_token:
+          type: string
+        expires_at:
+          type: integer
+          format: int64
+        token_type:
+          type: string
+          enum:
+            - bearer
+        email_confirmed:
+          type: boolean
+        user:
+          type: object
+          required:
+            - id
+            - email
+            - email_confirmed_at
+          properties:
+            id:
+              type: string
+              format: uuid
+            email:
+              type: string
+              format: email
+            email_confirmed_at:
+              type: string
+              format: date-time
+              nullable: true
+            app_metadata:
+              type: object
+              additionalProperties: true
+            user_metadata:
+              type: object
+              additionalProperties: true
+    AuthError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Supabase error code (e.g., `invalid_credentials`, `email_not_confirmed`).
+        message:
+          type: string
+          description: User-facing copy mapped from Supabase error.

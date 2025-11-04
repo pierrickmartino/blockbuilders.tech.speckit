@@ -29,7 +29,7 @@
 ## Phase 3: User Story 1 - Launch baseline web client (Priority: P1) 🎯 MVP
 
 **Goal**: Deliver a Next.js landing page that surfaces build metadata with Tailwind styling.  
-**Independent Test**: Follow quickstart to run `pnpm dev --filter apps/frontend...` and verify the root route renders metadata attributes without console errors; Playwright smoke succeeds.
+**Independent Test**: Follow quickstart to run `pnpm dev --filter ./apps/frontend...` and verify the root route renders metadata attributes without console errors; Playwright smoke succeeds.
 
 ### Tests for User Story 1
 

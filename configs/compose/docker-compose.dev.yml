@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ../..
-      dockerfile: ../docker/backend.Dockerfile
+      dockerfile: configs/docker/backend.Dockerfile
     env_file:
       - ../../apps/backend/.env
     command:
@@ -41,13 +41,13 @@ services:
   frontend:
     build:
       context: ../..
-      dockerfile: ../docker/frontend.Dockerfile
+      dockerfile: configs/docker/frontend.Dockerfile
     env_file:
       - ../../apps/frontend/.env.local
     command:
       - pnpm
       - --filter
-      - apps/frontend...
+      - ./apps/frontend...
       - dev
       - --hostname
       - 0.0.0.0

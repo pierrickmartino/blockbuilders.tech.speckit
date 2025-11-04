@@ -18,6 +18,6 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/frontend/package.json apps/frontend/package.json
 
 RUN --mount=type=cache,id=frontend-pnpm-store,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile --filter apps/frontend...
+    pnpm install --frozen-lockfile --filter ./apps/frontend...
 
-CMD ["pnpm", "--filter", "apps/frontend...", "dev", "--hostname", "0.0.0.0"]
+CMD ["pnpm", "--filter", "./apps/frontend...", "dev", "--hostname", "0.0.0.0"]
