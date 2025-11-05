@@ -20079,3 +20079,209 @@
 [2m2025-11-05T21:03:02.733058Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-11-05T21:03:02.733067Z[0m [32m INFO[0m tool gate released
 [2m2025-11-05T21:06:39.561401Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-05T21:08:01.729349Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-05T21:08:01.837801Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-05T21:08:12.216603Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"in_progress","step":"Run prerequisite script to determine feature directory and available docs"},{"status":"pending","step":"Load required design documents for the feature"},{"status":"pending","step":"Generate tasks.md and validate structure"}]}
+[2m2025-11-05T21:08:12.217682Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:12.217700Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:15.223218Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:15.223280Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:15.223284Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:17.334220Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite script to determine feature directory and available docs"},{"status":"in_progress","step":"Load required design documents for the feature"},{"status":"pending","step":"Generate tasks.md and validate structure"}]}
+[2m2025-11-05T21:08:17.334246Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:17.334250Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:20.463988Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/003-design-system-tokens/plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:20.464002Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:20.464004Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:22.187144Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/003-design-system-tokens/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:22.187227Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:22.187233Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:24.810529Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/003-design-system-tokens/research.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:24.810552Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:24.810556Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:27.390990Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/003-design-system-tokens/data-model.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:27.391016Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:27.391019Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:29.822177Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/003-design-system-tokens/quickstart.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:29.822210Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:29.822215Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:32.201489Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls specs/003-design-system-tokens/contracts"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:32.201535Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:32.201540Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:34.363136Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat specs/003-design-system-tokens/contracts/design-system.yaml"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:34.363198Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:34.363202Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:37.155800Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite script to determine feature directory and available docs"},{"status":"completed","step":"Load required design documents for the feature"},{"status":"in_progress","step":"Generate tasks.md and validate structure"}]}
+[2m2025-11-05T21:08:37.155838Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:37.155843Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:40.374876Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .specify.specify/templates/tasks-template.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:40.374891Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:40.374894Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:43.416171Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg --files -g 'tasks-template.md'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:43.416219Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:43.416224Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:45.659289Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls .specify"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:45.659346Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:45.659349Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:47.684372Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls .specify/templates"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:47.684409Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:47.684415Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:08:50.097372Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .specify/templates/tasks-template.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:08:50.097406Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:08:50.097411Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:09:02.621449Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:09:02.621516Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:09:02.621522Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:09:05.490612Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls specs/003-design-system-tokens"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:09:05.490649Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:09:05.490651Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:09:31.338651Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:09:31.339311Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:09:31.340117Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:09:38.033404Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls configs"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:09:38.033518Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:09:38.033531Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:10:43.008705Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:10:43.009105Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:10:43.009566Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:11:21.416228Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/003-design-system-tokens/tasks.md
++# Tasks: Design System & Tokens
++
++**Input**: Design documents from `/specs/003-design-system-tokens/`  
++**Prerequisites**: plan.md (required), spec.md (required), research.md, data-model.md, contracts/, quickstart.md
++
++## Phase 1: Setup (Shared Infrastructure)
++
++**Purpose**: Establish shared documentation and workspace scaffolding for the design system initiative.
++
++- [ ] T001 Create Storybook workspace overview in configs/storybook/README.md to document a11y and testing workflows.
++- [ ] T002 Add design system onboarding guide in apps/frontend/components/design-system/README.md describing folder layout and token build commands.
++
++---
++
++## Phase 2: Foundational (Blocking Prerequisites)
++
++**Purpose**: Core infrastructure that MUST be complete before any user story work begins.
++
++- [ ] T003 Create Storybook base configuration for the Next.js frontend in configs/storybook/main.ts aligning with Storybook 8 builder settings.
++- [ ] T004 Configure Storybook preview globals to load Tailwind styles and theme context in configs/storybook/preview.ts.
++- [ ] T005 Register design system scripts (tokens:build, storybook, storybook:test) in apps/frontend/package.json to enable shared tooling.
++- [ ] T006 Scaffold ThemeProvider shell with light/dark toggles in apps/frontend/components/design-system/ThemeProvider.tsx for later story-specific logic.
++
++---
++
++## Phase 3: User Story 1 - Reference accessible design tokens (Priority: P1) 🎯 MVP
++
++**Goal**: Deliver a canonical token catalog with accessibility metadata that designers and engineers can consume without bespoke styling.
++
++**Independent Test**: Verify the token gallery exposes color, typography, and spacing tokens with WCAG annotations and can be applied to a new page without introducing custom values.
++
++### Tests for User Story 1 ⚠️
++
++- [ ] T007 [P] [US1] Add failing Vitest spec validating token contrast metadata in apps/frontend/tests/design-system/tokens.spec.ts.
++- [ ] T008 [P] [US1] Add Storybook test-runner scenario auditing token accessibility in configs/storybook/tests/tokens.a11y.spec.ts.
++
++### Implementation for User Story 1
++
++- [ ] T009 [P] [US1] Define typed token schema with accessibility metadata in apps/frontend/lib/design-system/tokens.ts.
++- [ ] T010 [US1] Implement token build script emitting CSS variables in apps/frontend/scripts/build-tokens.ts.
++- [ ] T011 [US1] Generate base token stylesheet consumed by Next.js in apps/frontend/styles/tokens.css.
++- [ ] T012 [US1] Extend Tailwind theme mappings to consume tokens in apps/frontend/tailwind.config.ts.
++- [ ] T013 [US1] Build token gallery component with contrast annotations in apps/frontend/components/design-system/TokenGallery.tsx.
++- [ ] T014 [US1] Document token usage in Storybook MDX at apps/frontend/components/design-system/stories/TokenCatalog.stories.mdx.
++- [ ] T015 [US1] Export token catalog entry point in apps/frontend/lib/design-system/index.ts.
++- [ ] T016 [US1] Implement DesignToken Pydantic schema aligned with contracts in apps/backend/app/schemas/design_system/tokens.py.
++- [ ] T017 [US1] Add FastAPI route for GET /design-system/tokens in apps/backend/app/api/routes/design_system/tokens.py.
++- [ ] T018 [US1] Create token service loader sourcing the schema data in apps/backend/app/services/design_system_tokens.py.
++- [ ] T019 [US1] Cover token listing endpoint with tests in apps/backend/tests/api/test_design_system_tokens.py.
++
++**Checkpoint**: User Story 1 provides a fully testable token catalog with documented consumption patterns.
++
++---
++
++## Phase 4: User Story 2 - Ship accessible foundation components (Priority: P2)
++
++**Goal**: Provide Button, Input, Select, Modal, and Toast components that consume the approved tokens and satisfy accessibility requirements in light and dark themes.
++
++**Independent Test**: Mount each foundation component, exercise keyboard-only flows, and confirm focus, error, and disabled states honor the documented tokens in both themes.
++
++### Tests for User Story 2 ⚠️
++
++- [ ] T020 [P] [US2] Add failing Vitest spec for Button interaction tokens in apps/frontend/tests/design-system/components/Button.spec.tsx.
++- [ ] T021 [P] [US2] Add failing Vitest spec for Input and Select state tokens in apps/frontend/tests/design-system/components/FormControls.spec.tsx.
++- [ ] T022 [P] [US2] Add Playwright accessibility walkthrough for Modal and Toast in apps/frontend/tests/e2e/design-system/components-accessibility.spec.ts.
++
++### Implementation for User Story 2
++
++- [ ] T023 [P] [US2] Implement token-aware Button component using shadcn primitives in apps/frontend/components/design-system/Button.tsx.
++- [ ] T024 [P] [US2] Implement token-aware Input component with error states in apps/frontend/components/design-system/Input.tsx.
++- [ ] T025 [P] [US2] Implement token-aware Select component with keyboard navigation in apps/frontend/components/design-system/Select.tsx.
++- [ ] T026 [P] [US2] Implement accessible Modal component with focus trapping in apps/frontend/components/design-system/Modal.tsx.
++- [ ] T027 [P] [US2] Implement Toast provider with announcement hooks in apps/frontend/components/design-system/Toast.tsx.
++- [ ] T028 [US2] Wire foundation component exports and variants in apps/frontend/components/design-system/index.ts.
++- [ ] T029 [US2] Author Storybook stories demonstrating components across themes in apps/frontend/components/design-system/stories/FoundationComponents.stories.tsx.
++- [ ] T030 [US2] Add Storybook MDX usage docs linking tokens to components in apps/frontend/components/design-system/stories/FoundationComponents.docs.mdx.
++- [ ] T031 [US2] Implement FoundationComponent schemas and list/detail handlers in apps/backend/app/api/routes/design_system/components.py.
++- [ ] T032 [US2] Implement ThemePreference schemas and GET/PATCH handlers in apps/backend/app/api/routes/design_system/theme_preference.py.
++- [ ] T033 [US2] Add backend services for component metadata and theme preference persistence in apps/backend/app/services/design_system_components.py.
++- [ ] T034 [US2] Extend Pydantic models for ComponentState and ThemePreference in apps/backend/app/schemas/design_system/components.py.
++- [ ] T035 [US2] Cover component and theme preference endpoints with tests in apps/backend/tests/api/test_design_system_components.py.
++- [ ] T036 [US2] Finalize ThemeProvider logic to sync Supabase preference in apps/frontend/components/design-system/ThemeProvider.tsx.
++- [ ] T037 [US2] Integrate ThemeProvider into Next.js root layout in apps/frontend/app/layout.tsx.
++- [ ] T038 [US2] Capture manual keyboard walkthrough checklist for components in specs/003-design-system-tokens/checklists/accessibility.md.
++
++**Checkpoint**: User Story 2 delivers accessible foundation components validated across automated and manual accessibility checks.
++
++---
++
++## Final Phase: Polish & Cross-Cutting Concerns
++
++**Purpose**: Quality, documentation, and CI follow-through once user stories land.
++
++- [ ] T039 [P] Add Storybook accessibility CI workflow for design system checks in .github/workflows/storybook-a11y.yml.
++- [ ] T040 Document adoption rollout guidelines in docs/design-system/adoption.md.
++- [ ] T041 Update quickstart commands for tokens and components in specs/003-design-system-tokens/quickstart.md.
++
++---
++
++## Dependencies & Execution Order
++
++- **Phase Dependencies**: Setup → Foundational → User Story phases (US1 → US2) → Polish.
++- **User Story Dependencies**: US1 depends on Phase 2 completion. US2 depends on US1 token exports and shared infrastructure; both must precede the Polish phase.
++- **Within Stories**: Tests (fail first) precede implementation; frontend artifacts must align before backend handlers expose data; documentation follows functional completion.
++
++---
++
++## Parallel Opportunities
++
++- **US1**: T007 and T008 can run in parallel; T009 and T010 can progress concurrently once schema decisions lock; backend tasks T016–T018 can run alongside frontend gallery work.
++- **US2**: Component implementations T023–T027 can be divided per engineer; backend endpoints T031–T033 run parallel to frontend Storybook tasks T029–T030; ThemeProvider integration T036–T037 can start after T028.
++
++---
++
++## Implementation Strategy
++
++### MVP First (User Story 1)
++
++1. Complete Phases 1–2 to ready shared tooling.  
++2. Deliver US1 tokens, ensuring Vitest and Storybook a11y checks pass.  
++3. Demo token gallery as standalone MVP before proceeding.
++
++### Incremental Delivery
++
++1. US1 tokens establish shared styling primitives.  
++2. US2 components consume tokens and extend backend contracts.  
++3. Polish phase finalizes rollout, documentation, and CI coverage.
++
++### Parallel Team Strategy
++
++1. Pair one engineer on Storybook infrastructure (T003–T005) while another scaffolds ThemeProvider (T006).  
++2. Split US1 between frontend token schema (T009–T014) and backend contract work (T016–T019).  
++3. For US2, distribute components (T023–T027) across engineers, dedicate backend specialist to T031–T035, and assign accessibility verification to T022 and T038.
+*** End Patch
+[2m2025-11-05T21:11:21.417850Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:11:21.418321Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:11:24.197458Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite script to determine feature directory and available docs"},{"status":"completed","step":"Load required design documents for the feature"},{"status":"completed","step":"Generate tasks.md and validate structure"}], "explanation":"Generated tasks file at specs/003-design-system-tokens/tasks.md with story-driven phases, checklist-formatted tasks, dependencies, and implementation strategy per instructions."}
+[2m2025-11-05T21:11:24.198821Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:11:24.199389Z[0m [32m INFO[0m tool gate released
