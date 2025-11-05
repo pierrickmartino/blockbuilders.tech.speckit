@@ -19361,3 +19361,720 @@
 [2m2025-11-05T06:01:27.608208Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Review current feature spec and assess ambiguity coverage by taxonomy"},{"status":"completed","step":"Run clarification Q&A loop as needed and capture answers"},{"status":"completed","step":"Integrate clarifications into spec, validate updates, and report results"}]}
 [2m2025-11-05T06:01:27.608246Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-11-05T06:01:27.608250Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T20:59:21.947409Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-05T20:59:26.677540Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-05T20:59:26.785961Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-05T20:59:36.568963Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"in_progress","step":"Run setup script to gather FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH values"},{"status":"pending","step":"Review FEATURE_SPEC, constitution, and IMPL_PLAN template"},{"status":"pending","step":"Populate Technical Context and Constitution Check in IMPL_PLAN"},{"status":"pending","step":"Conduct Phase 0 research and document findings in research.md"},{"status":"pending","step":"Complete Phase 1 design artifacts and update agent context"},{"status":"pending","step":"Summarize status through Phase 2 planning requirements"}]}
+[2m2025-11-05T20:59:36.569243Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T20:59:36.569250Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T20:59:38.863624Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/setup-plan.sh --json"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T20:59:38.863652Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T20:59:38.863657Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T20:59:42.082118Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH values"},{"status":"in_progress","step":"Review FEATURE_SPEC, constitution, and IMPL_PLAN template"},{"status":"pending","step":"Populate Technical Context and Constitution Check in IMPL_PLAN"},{"status":"pending","step":"Conduct Phase 0 research and document findings in research.md"},{"status":"pending","step":"Complete Phase 1 design artifacts and update agent context"},{"status":"pending","step":"Summarize status through Phase 2 planning requirements"}]}
+[2m2025-11-05T20:59:42.082139Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T20:59:42.082141Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T20:59:45.372160Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T20:59:45.372211Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T20:59:45.372214Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T20:59:48.158613Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .specify/memory/constitution.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T20:59:48.158637Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T20:59:48.158641Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T20:59:51.706594Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat /Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens/plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T20:59:51.706629Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T20:59:51.706632Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T20:59:54.934912Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH values"},{"status":"completed","step":"Review FEATURE_SPEC, constitution, and IMPL_PLAN template"},{"status":"in_progress","step":"Populate Technical Context and Constitution Check in IMPL_PLAN"},{"status":"pending","step":"Conduct Phase 0 research and document findings in research.md"},{"status":"pending","step":"Complete Phase 1 design artifacts and update agent context"},{"status":"pending","step":"Summarize status through Phase 2 planning requirements"}]}
+[2m2025-11-05T20:59:54.934974Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T20:59:54.934981Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:02.524548Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:02.524615Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:02.524620Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:04.826763Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat package.json"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:04.826802Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:04.826806Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:07.008215Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:07.008267Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:07.008271Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:12.724195Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","date +%Y-%m-%d"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:12.724233Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:12.724238Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:21.433595Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat apps/frontend/package.json"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:21.433642Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:21.433647Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:25.422676Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:25.423290Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:25.423299Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:40.071027Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls shared"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:40.071164Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:40.071170Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:44.666363Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend/components"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:44.666440Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:44.666445Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:47.308998Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls apps/frontend/styles"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:47.309052Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:47.309057Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:00:50.932510Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls -a apps/frontend/styles"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:00:50.932551Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:00:50.932556Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:01:13.664349Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/plan.md
+@@
+-# Implementation Plan: [FEATURE]
+-
+-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+-
+-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+-
+-## Summary
+-
+-[Extract from feature spec: primary requirement + technical approach from research]
+-
+-## Technical Context
+-
+-<!--
+-  ACTION REQUIRED: Replace the content in this section with the technical details
+-  for the project. The structure here is presented in advisory capacity to guide
+-  the iteration process.
+--->
+-
+-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+-**Project Type**: [single/web/mobile - determines source structure]  
+-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+-
+-## Constitution Check
+-
+-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+-
+-- **Code Quality Without Compromise**: List the linting, type-checking, security, and review gates (Next.js: `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`; Python: `ruff check`, `uv run pytest`) that will run before implementation.
+-- **Simplicity Over Speculation**: Map every planned deliverable to approved requirements in `/specs/.../spec.md`; flag and remove scope without traceability or document the governance exception.
+-- **Test Evidence First**: Identify the failing tests that will be written before implementation (unit, integration, accessibility, API contract) and how ≥80% coverage will be maintained.
+-- **Consistent Experience Every Time**: Reference Tailwind tokens, shared components, and UX acceptance checks that ensure WCAG 2.2 AA compliance for the affected flows.
+-- **Performance and Reliability Budgets**: Capture the target metrics (e.g., TTI ≤2s, LCP ≤2.5s, API p95 ≤200ms) and the telemetry or load validation that will prove compliance.
+-
+-## Project Structure
+-
+-### Documentation (this feature)
+-
+-```text
+-specs/[###-feature]/
+-├── plan.md              # This file (/speckit.plan command output)
+-├── research.md          # Phase 0 output (/speckit.plan command)
+-├── data-model.md        # Phase 1 output (/speckit.plan command)
+-├── quickstart.md        # Phase 1 output (/speckit.plan command)
+-├── contracts/           # Phase 1 output (/speckit.plan command)
+-└── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
+-```
+-
+-### Source Code (repository root)
+-<!--
+-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+-  for this feature. Delete unused options and expand the chosen structure with
+-  real paths (e.g., apps/admin, packages/something). The delivered plan must
+-  not include Option labels.
+--->
+-
+-```text
+-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+-src/
+-├── models/
+-├── services/
+-├── cli/
+-└── lib/
+-
+-tests/
+-├── contract/
+-├── integration/
+-└── unit/
+-
+-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+-backend/
+-├── src/
+-│   ├── models/
+-│   ├── services/
+-│   └── api/
+-└── tests/
+-
+-frontend/
+-├── src/
+-│   ├── components/
+-│   ├── pages/
+-│   └── services/
+-└── tests/
+-
+-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+-api/
+-└── [same as backend above]
+-
+-ios/ or android/
+-└── [platform-specific structure: feature modules, UI flows, platform tests]
+-```
+-
+-**Structure Decision**: [Document the selected structure and reference the real
+-directories captured above]
+-
+-## Complexity Tracking
+-
+-> **Fill ONLY if Constitution Check has violations that must be justified**
+-
+-| Violation | Why Needed | Simpler Alternative Rejected Because |
+-|-----------|------------|-------------------------------------|
+-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
+-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
++# Implementation Plan: Design System & Tokens
++
++**Branch**: `003-design-system-tokens` | **Date**: 2025-11-05 | **Spec**: specs/003-design-system-tokens/spec.md  
++**Input**: Feature specification from `/specs/003-design-system-tokens/spec.md`
++
++**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
++
++## Summary
++
++Create a shared design system inside the Next.js 15 frontend: centralize color/typography/spacing tokens as generated Tailwind + CSS variables, build shadcn-based foundation components (Button, Input, Select, Modal, Toast) that consume those tokens, and verify accessibility through Storybook a11y checks and keyboard walkthroughs.
++
++## Technical Context
++
++**Language/Version**: TypeScript (Next.js 15 App Router, React 19)  
++**Primary Dependencies**: Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 8 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3  
++**Storage**: N/A (tokens defined in JSON/TypeScript schema and emitted to CSS variables)  
++**Testing**: Vitest + Testing Library (unit), Playwright + @axe-core/playwright (smoke/a11y), Storybook test-runner for accessibility regressions  
++**Target Platform**: Web (Next.js 15, evergreen browsers, SSR + RSC hybrid)  
++**Project Type**: web  
++**Performance Goals**: Token gallery and component docs render ≤2.0s TTI / ≤2.5s LCP in CI reference profile; Storybook build completes within existing pipeline SLO (≤8 min)  
++**Constraints**: Maintain WCAG 2.2 AA contrast/focus, reuse Tailwind tokens + shadcn primitives, avoid new runtime deps without governance review, preserve Supabase auth compatibility  
++**Scale/Scope**: Shared library for all @blockbuilders/frontend surfaces; initial drop covers full token catalog + 5 foundation components + Storybook docs
++
++## Constitution Check
++
++- **Code Quality Without Compromise**: Run `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, and Storybook accessibility CI (`pnpm --filter @blockbuilders/frontend... storybook:test`) prior to implementation sign-off; peer review confirms adherence.
++- **Simplicity Over Speculation**: Deliverables map directly to FR-001 (token catalog generation), FR-002 (usage guidance + docs), FR-003 (foundation components), and FR-004 (dark theme parity). No additional components or tooling beyond shadcn/ui will ship without an exception.
++- **Test Evidence First**: Author failing Vitest suites for token utilities and component behaviors, Playwright keyboard smoke tests for each foundation component, and Storybook a11y snapshots before implementation to maintain ≥80% coverage and catch regressions.
++- **Consistent Experience Every Time**: Implement tokens via Tailwind config and CSS variables consumed by shadcn components, validate with Storybook + @storybook/addon-a11y, and record manual keyboard walkthrough logs against the acceptance scenarios.
++- **Performance and Reliability Budgets**: Measure Storybook build times, monitor Next.js route performance via existing telemetry dashboards, and capture LCP/TTI metrics in Playwright traces to ensure budgets stay within constitution thresholds.
++
++## Project Structure
++
++### Documentation (this feature)
++
++```text
++specs/003-design-system-tokens/
++├── plan.md
++├── research.md
++├── data-model.md
++├── quickstart.md
++├── contracts/
++└── tasks.md          # Created by /speckit.tasks after Phase 2
++```
++
++### Source Code (repository root)
++
++```text
++apps/
++├── backend/
++│   ├── app/
++│   └── tests/
++└── frontend/
++    ├── app/
++    ├── components/
++    │   ├── auth/
++    │   └── design-system/      # new slice for tokens + shadcn foundation components
++    ├── lib/
++    │   └── design-system/      # token schema + conversion utilities
++    ├── styles/
++    └── tests/
++
++configs/
++└── storybook/                  # central Storybook configuration for tokens/components
++```
++
++**Structure Decision**: Extend the existing Next.js app in `apps/frontend` with a dedicated `design-system` slice for tokens, components, and utilities while keeping backend scope untouched; Storybook config lives under `configs/storybook` for shared CI hooks.
++
++## Complexity Tracking
++
++| Violation | Why Needed | Simpler Alternative Rejected Because |
++|-----------|------------|-------------------------------------|
++| None | N/A | N/A |
+*** End Patch
+[2m2025-11-05T21:01:13.664634Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:01:13.664638Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:01:19.558808Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH values"},{"status":"completed","step":"Review FEATURE_SPEC, constitution, and IMPL_PLAN template"},{"status":"completed","step":"Populate Technical Context and Constitution Check in IMPL_PLAN"},{"status":"in_progress","step":"Conduct Phase 0 research and document findings in research.md"},{"status":"pending","step":"Complete Phase 1 design artifacts and update agent context"},{"status":"pending","step":"Summarize status through Phase 2 planning requirements"}]}
+[2m2025-11-05T21:01:19.558894Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:01:19.558900Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:01:45.929271Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/003-design-system-tokens/research.md
++# Research Notes
++
++### Token Schema & Generation
++- Decision: Define tokens in `apps/frontend/lib/design-system/tokens.ts` as typed maps (color, typography, spacing, radii) and emit CSS variables via a build script that writes to `apps/frontend/styles/tokens.css`.
++- Rationale: Keeps a single TypeScript source of truth that can power Tailwind theme extensions, Storybook docs, and runtime CSS variables without duplicating values.
++- Alternatives considered: Maintaining raw JSON with manual imports (higher drift risk), or relying solely on Tailwind config values (no strongly typed exports for components).
++
++### Tailwind Integration
++- Decision: Load the token maps inside `tailwind.config.ts`, extend `theme` with semantic aliases, and register a plugin that injects CSS variables with `addBase`.
++- Rationale: Allows Tailwind utility classes and shadcn component styles to stay aligned with tokens while supporting runtime theme toggles.
++- Alternatives considered: Hard-coding theme values inside Tailwind (blocks dynamic theming) or using arbitrary values per component (breaks consistency).
++
++### shadcn/ui Theming
++- Decision: Scaffold shadcn components and refactor their style tokens to reference the generated CSS variables, exposing variant props for stateful styles (focus, destructive, ghost, etc.).
++- Rationale: Leverages accessible Radix primitives while guaranteeing that component states consume the canonical tokens.
++- Alternatives considered: Building components from scratch with Radix (slower, duplicates shadcn work) or adopting another UI kit like Chakra (diverges from mandated stack).
++
++### Storybook Accessibility Coverage
++- Decision: Configure Storybook 8 with `@storybook/addon-a11y`, auto-generate token stories, and run `pnpm --filter @blockbuilders/frontend... storybook:test` in CI to execute axe-powered audits.
++- Rationale: Provides automated evidence for AC1 while keeping token/component docs in a single workspace.
++- Alternatives considered: Manual a11y review only (non-repeatable) or switching to Ladle (would add unsupported tooling).
++
++### Keyboard-Only Verification
++- Decision: Write Playwright specs that mount each foundation component via Storybook URLs, simulate keyboard navigation, and assert focus ring/ARIA announcements alongside screenshot diffs.
++- Rationale: Aligns with AC2 and constitution requirements for keyboard walkthrough evidence within existing Playwright stack.
++- Alternatives considered: Limiting checks to Vitest + Testing Library (misses browser-level focus traps) or trusting manual QA passes.
++
++### Dark Mode & Preference Sync
++- Decision: Implement a theme provider that reads `prefers-color-scheme`, syncs with a user toggle stored in Supabase session data, and maps tokens to `:root[data-theme]`.
++- Rationale: Guarantees parity between default and dark themes, supports SSR, and honors edge-case fallback rules from the spec.
++- Alternatives considered: CSS-only `@media` toggles (no user override) or storing theme in local storage without SSR support.
++
++### Supabase Auth Compatibility
++- Decision: Keep design system components presentation-only, ensure they consume auth context via existing hooks without adding awaitable side effects, and run Supabase smoke tests post-integration.
++- Rationale: Avoids coupling UI primitives to auth logic while confirming no regressions to existing Supabase flows.
++- Alternatives considered: Creating new auth-aware wrappers (would duplicate existing layouts) or skipping Supabase verification (risking regressions).
+*** End Patch
+[2m2025-11-05T21:01:45.929712Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:01:45.929722Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:01:49.101076Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH values"},{"status":"completed","step":"Review FEATURE_SPEC, constitution, and IMPL_PLAN template"},{"status":"completed","step":"Populate Technical Context and Constitution Check in IMPL_PLAN"},{"status":"completed","step":"Conduct Phase 0 research and document findings in research.md"},{"status":"in_progress","step":"Complete Phase 1 design artifacts and update agent context"},{"status":"pending","step":"Summarize status through Phase 2 planning requirements"}]}
+[2m2025-11-05T21:01:49.101122Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:01:49.101125Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:02:03.906653Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/003-design-system-tokens/data-model.md
++# Data Model
++
++## Entities
++
++### DesignToken
++- **Fields**
++  - `id`: string (unique semantic name, e.g., `color.background.default`)
++  - `category`: enum (`color`, `typography`, `spacing`, `radii`, `shadow`)
++  - `role`: enum (`background`, `foreground`, `border`, `content`, `layout`, `motion`)
++  - `value`: string (light theme value; color hex, rem scale, etc.)
++  - `darkValue`: string (optional override for dark theme; defaults to `value`)
++  - `description`: string (usage guidance + accessibility notes)
++  - `wcagRatio`: number (contrast ratio when applicable)
++  - `aliases`: string[] (semantic aliases consumed by components)
++  - `status`: enum (`draft`, `approved`, `deprecated`)
++  - `version`: string (semver to track updates)
++- **Relationships**
++  - Linked to one or more `FoundationComponent` instances through `aliases`.
++  - Referenced by `ComponentState` definitions to enforce accessibility defaults.
++- **Validation**
++  - `id` must be kebab-case and unique.
++  - `wcagRatio` ≥ 4.5 for text tokens and ≥ 3.0 for large text / UI tokens.
++  - `darkValue` must pass the same WCAG ratio checks when paired with corresponding light theme tokens.
++
++### ComponentState
++- **Fields**
++  - `id`: string (e.g., `button.focus.visible`)
++  - `componentId`: reference to `FoundationComponent.id`
++  - `interaction`: enum (`default`, `hover`, `focus`, `active`, `disabled`, `error`, `success`)
++  - `tokens`: array of `DesignToken.id` (one per semantic slot)
++  - `ariaAttributes`: record<string, string> (role-specific ARIA requirements)
++  - `announcements`: string[] (screen reader messaging)
++  - `focusOrder`: number (tab order expectation where applicable)
++- **Relationships**
++  - Belongs to a single `FoundationComponent`.
++  - Must reference approved `DesignToken` entries for every visual slot.
++- **Validation**
++  - `tokens` array cannot contain deprecated tokens.
++  - `focusOrder` increments sequentially within a component.
++  - `ariaAttributes` must match WAI-ARIA specs for the component role.
++
++### FoundationComponent
++- **Fields**
++  - `id`: string (e.g., `button`, `input`, `select`, `modal`, `toast`)
++  - `category`: enum (`form`, `overlay`, `feedback`)
++  - `description`: string (usage guidance + accessibility notes)
++  - `tokensBySlot`: record<string, `DesignToken.id`> (e.g., background, border)
++  - `states`: `ComponentState.id`[]
++  - `variants`: string[] (e.g., `primary`, `secondary`, `destructive`, `outline`)
++  - `dependencies`: string[] (Radix primitive + shadcn base component references)
++- **Relationships**
++  - Consumes many `DesignToken` instances via `tokensBySlot`.
++  - Owns multiple `ComponentState` entries.
++- **Validation**
++  - Each variant must map all required slots to approved tokens.
++  - `states` must include at least `default`, `focus`, `disabled`, and contextual states relevant to the component (error for Input, destructive for Button).
++
++### ThemePreference
++- **Fields**
++  - `id`: string (composite `userId` or `anonymous` + device fingerprint)
++  - `mode`: enum (`system`, `light`, `dark`)
++  - `source`: enum (`system`, `user-toggle`)
++  - `updatedAt`: datetime
++- **Relationships**
++  - Read by Next.js layout loader to choose CSS variable set.
++- **Validation**
++  - Defaults to `system` when no explicit choice is stored.
++  - `updatedAt` must refresh whenever a user override occurs.
++
++## Relationships & Flows
++- `DesignToken` defines the canonical styling options. Each `FoundationComponent` references these tokens through `tokensBySlot` and `ComponentState` definitions, guaranteeing consistent visuals and accessibility metadata.
++- `ComponentState` ensures keyboard/focus and ARIA requirements are tied directly to the tokens for each interaction, providing traceability between the spec and implementation.
++- `ThemePreference` selects which token values to hydrate on the client (light vs dark) and integrates with Supabase session data so that Storybook and the application behave consistently across devices.
+*** End Patch
+[2m2025-11-05T21:02:03.906871Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:02:03.906882Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:02:15.445655Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","mkdir -p specs/003-design-system-tokens/contracts"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:02:15.445715Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:02:15.445720Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:02:34.715923Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/003-design-system-tokens/contracts/design-system.yaml
++openapi: 3.1.0
++info:
++  title: Design System API
++  version: 0.1.0
++  description: |
++    Contracts supporting the shared design token catalog, foundation components,
++    and user theme preferences required by feature 003-design-system-tokens.
++servers:
++  - url: https://api.blockbuilders.internal
++paths:
++  /design-system/tokens:
++    get:
++      summary: List approved design tokens
++      operationId: listDesignTokens
++      parameters:
++        - in: query
++          name: category
++          schema:
++            $ref: '#/components/schemas/DesignTokenCategory'
++          description: Filter tokens by category (color, typography, spacing, radii, shadow)
++        - in: query
++          name: status
++          schema:
++            $ref: '#/components/schemas/DesignTokenStatus'
++          description: Filter tokens by lifecycle status
++      responses:
++        '200':
++          description: Tokens retrieved successfully
++          content:
++            application/json:
++              schema:
++                type: object
++                properties:
++                  data:
++                    type: array
++                    items:
++                      $ref: '#/components/schemas/DesignToken'
++  /design-system/components:
++    get:
++      summary: List foundation components with token bindings
++      operationId: listFoundationComponents
++      parameters:
++        - in: query
++          name: id
++          schema:
++            type: string
++            description: Filter to a single component id (e.g., button, input)
++        - in: query
++          name: includeStates
++          schema:
++            type: boolean
++            default: true
++          description: Include component state definitions in the payload
++      responses:
++        '200':
++          description: Components retrieved successfully
++          content:
++            application/json:
++              schema:
++                type: object
++                properties:
++                  data:
++                    type: array
++                    items:
++                      $ref: '#/components/schemas/FoundationComponent'
++  /design-system/components/{componentId}:
++    get:
++      summary: Fetch a single foundation component configuration
++      operationId: getFoundationComponent
++      parameters:
++        - in: path
++          name: componentId
++          required: true
++          schema:
++            type: string
++      responses:
++        '200':
++          description: Component retrieved successfully
++          content:
++            application/json:
++              schema:
++                type: object
++                properties:
++                  data:
++                    $ref: '#/components/schemas/FoundationComponent'
++        '404':
++          description: Component not found
++  /users/me/theme-preference:
++    get:
++      summary: Retrieve the authenticated user's theme preference
++      operationId: getThemePreference
++      security:
++        - supabaseAuth: []
++      responses:
++        '200':
++          description: Theme preference found
++          content:
++            application/json:
++              schema:
++                type: object
++                properties:
++                  data:
++                    $ref: '#/components/schemas/ThemePreference'
++        '404':
++          description: No preference stored; client should default to system setting
++    patch:
++      summary: Upsert the authenticated user's theme preference
++      operationId: updateThemePreference
++      security:
++        - supabaseAuth: []
++      requestBody:
++        required: true
++        content:
++          application/json:
++            schema:
++              type: object
++              properties:
++                mode:
++                  $ref: '#/components/schemas/ThemeMode'
++      responses:
++        '200':
++          description: Preference updated
++          content:
++            application/json:
++              schema:
++                type: object
++                properties:
++                  data:
++                    $ref: '#/components/schemas/ThemePreference'
++components:
++  securitySchemes:
++    supabaseAuth:
++      type: http
++      scheme: bearer
++      bearerFormat: JWT
++  schemas:
++    DesignTokenCategory:
++      type: string
++      enum:
++        - color
++        - typography
++        - spacing
++        - radii
++        - shadow
++    DesignTokenStatus:
++      type: string
++      enum:
++        - draft
++        - approved
++        - deprecated
++    DesignToken:
++      type: object
++      required:
++        - id
++        - category
++        - role
++        - value
++        - status
++      properties:
++        id:
++          type: string
++          example: color.background.default
++        category:
++          $ref: '#/components/schemas/DesignTokenCategory'
++        role:
++          type: string
++          example: background
++        value:
++          type: string
++          description: Light theme value (hex, rem, etc.)
++          example: '#0B172C'
++        darkValue:
++          type: string
++          description: Optional dark theme override
++          example: '#F3F6FC'
++        description:
++          type: string
++          description: Usage guidance plus accessibility notes
++        wcagRatio:
++          type: number
++          format: float
++          minimum: 0
++          description: Calculated contrast ratio where applicable
++          example: 4.6
++        aliases:
++          type: array
++          items:
++            type: string
++        status:
++          $ref: '#/components/schemas/DesignTokenStatus'
++        version:
++          type: string
++          example: 1.0.0
++    ComponentState:
++      type: object
++      required:
++        - id
++        - interaction
++        - tokens
++      properties:
++        id:
++          type: string
++          example: button.focus.visible
++        interaction:
++          type: string
++          enum:
++            - default
++            - hover
++            - focus
++            - active
++            - disabled
++            - error
++            - success
++        tokens:
++          type: object
++          additionalProperties:
++            type: string
++          description: Mapping of semantic slots to DesignToken ids
++        ariaAttributes:
++          type: object
++          additionalProperties:
++            type: string
++        announcements:
++          type: array
++          items:
++            type: string
++        focusOrder:
++          type: integer
++    FoundationComponent:
++      type: object
++      required:
++        - id
++        - category
++        - tokensBySlot
++        - states
++      properties:
++        id:
++          type: string
++          example: button
++        category:
++          type: string
++          enum:
++            - form
++            - overlay
++            - feedback
++        description:
++          type: string
++        tokensBySlot:
++          type: object
++          additionalProperties:
++            type: string
++          description: Mapping of semantic slots (background, border, etc.) to token ids
++        states:
++          type: array
++          items:
++            $ref: '#/components/schemas/ComponentState'
++        variants:
++          type: array
++          items:
++            type: string
++        dependencies:
++          type: array
++          items:
++            type: string
++          description: Upstream primitives (e.g., Radix components) required to build the component
++    ThemeMode:
++      type: string
++      enum:
++        - system
++        - light
++        - dark
++    ThemePreference:
++      type: object
++      required:
++        - mode
++        - updatedAt
++      properties:
++        mode:
++          $ref: '#/components/schemas/ThemeMode'
++        updatedAt:
++          type: string
++          format: date-time
++        source:
++          type: string
++          enum:
++            - system
++            - user-toggle
+*** End Patch
+[2m2025-11-05T21:02:34.716175Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:02:34.716183Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:02:47.172596Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/003-design-system-tokens/quickstart.md
++# Quickstart
++
++## Prerequisites
++- Node.js 20.11+ and pnpm (per repo toolchain)
++- uv (for backend tasks, required by repo setup script)
++- Storybook 8 telemetry opt-in handled by environment (`STORYBOOK_DISABLE_TELEMETRY=1`)
++
++## Environment Setup
++1. Install dependencies: `pnpm install && uv sync`
++2. Generate shadcn components (first-time only): `pnpm --filter @blockbuilders/frontend... exec shadcn init`
++3. Sync shared tokens to CSS variables: `pnpm --filter @blockbuilders/frontend... run tokens:build`
++
++## Working with Tokens
++- Edit token definitions in `apps/frontend/lib/design-system/tokens.ts`
++- Run `pnpm --filter @blockbuilders/frontend... run tokens:build` to emit `apps/frontend/styles/tokens.css`
++- Tailwind picks up changes automatically via `tailwind.config.ts` hot reload
++
++## Storybook Workflow
++1. Start Storybook locally: `pnpm --filter @blockbuilders/frontend... run storybook`
++2. Token stories live under `Design System / Tokens`; component stories under `Design System / Components`
++3. Accessibility addon highlights WCAG violations; check the "Accessibility" panel before marking stories ready
++4. Run automated checks in CI parity: `pnpm --filter @blockbuilders/frontend... run storybook:test`
++
++## Testing
++- Unit tests (Vitest): `pnpm --filter @blockbuilders/frontend... test`
++- Coverage: `pnpm --filter @blockbuilders/frontend... test:coverage`
++- Keyboard + a11y smoke tests (Playwright + axe): `pnpm --filter @blockbuilders/frontend... test:e2e --project=design-system`
++- Lint/type-check: `pnpm lint --max-warnings 0` and `pnpm type-check`
++
++## Adding a New Component
++1. Scaffold via shadcn (`pnpm --filter @blockbuilders/frontend... exec shadcn add <component>`)
++2. Replace default CSS classes with token-driven classes using `cn` helper and Tailwind theme extensions
++3. Document props and states in Storybook with MDX guidelines referencing the relevant tokens
++4. Extend Playwright spec to cover keyboard and a11y scenarios
++5. Update `tests/design-system` Vitest suites to assert token usage contracts
++
++## Theme Preference
++- Theme provider auto-reads `prefers-color-scheme`; use the UI toggle to persist overrides
++- Stored preferences flow through `/users/me/theme-preference`; ensure Supabase session includes the JWT when testing manually
+*** End Patch
+[2m2025-11-05T21:02:47.172942Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:02:47.172953Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:02:49.493987Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/update-agent-context.sh codex"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:02:49.494056Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:02:49.494062Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:02:54.453427Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH values"},{"status":"completed","step":"Review FEATURE_SPEC, constitution, and IMPL_PLAN template"},{"status":"completed","step":"Populate Technical Context and Constitution Check in IMPL_PLAN"},{"status":"completed","step":"Conduct Phase 0 research and document findings in research.md"},{"status":"completed","step":"Complete Phase 1 design artifacts and update agent context"},{"status":"in_progress","step":"Summarize status through Phase 2 planning requirements"}]}
+[2m2025-11-05T21:02:54.453621Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:02:54.453629Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:02:59.385485Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status --short"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:02:59.385534Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:02:59.385538Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:03:02.732925Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run setup script to gather FEATURE_SPEC, IMPL_PLAN, SPECS_DIR, BRANCH values"},{"status":"completed","step":"Review FEATURE_SPEC, constitution, and IMPL_PLAN template"},{"status":"completed","step":"Populate Technical Context and Constitution Check in IMPL_PLAN"},{"status":"completed","step":"Conduct Phase 0 research and document findings in research.md"},{"status":"completed","step":"Complete Phase 1 design artifacts and update agent context"},{"status":"completed","step":"Summarize status through Phase 2 planning requirements"}]}
+[2m2025-11-05T21:03:02.733058Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:03:02.733067Z[0m [32m INFO[0m tool gate released

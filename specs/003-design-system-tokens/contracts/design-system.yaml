@@ -1,0 +1,287 @@
+openapi: 3.1.0
+info:
+  title: Design System API
+  version: 0.1.0
+  description: |
+    Contracts supporting the shared design token catalog, foundation components,
+    and user theme preferences required by feature 003-design-system-tokens.
+servers:
+  - url: https://api.blockbuilders.internal
+paths:
+  /design-system/tokens:
+    get:
+      summary: List approved design tokens
+      operationId: listDesignTokens
+      parameters:
+        - in: query
+          name: category
+          schema:
+            $ref: '#/components/schemas/DesignTokenCategory'
+          description: Filter tokens by category (color, typography, spacing, radii, shadow)
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/DesignTokenStatus'
+          description: Filter tokens by lifecycle status
+      responses:
+        '200':
+          description: Tokens retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DesignToken'
+  /design-system/components:
+    get:
+      summary: List foundation components with token bindings
+      operationId: listFoundationComponents
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: string
+            description: Filter to a single component id (e.g., button, input)
+        - in: query
+          name: includeStates
+          schema:
+            type: boolean
+            default: true
+          description: Include component state definitions in the payload
+      responses:
+        '200':
+          description: Components retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FoundationComponent'
+  /design-system/components/{componentId}:
+    get:
+      summary: Fetch a single foundation component configuration
+      operationId: getFoundationComponent
+      parameters:
+        - in: path
+          name: componentId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Component retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FoundationComponent'
+        '404':
+          description: Component not found
+  /users/me/theme-preference:
+    get:
+      summary: Retrieve the authenticated user's theme preference
+      operationId: getThemePreference
+      security:
+        - supabaseAuth: []
+      responses:
+        '200':
+          description: Theme preference found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ThemePreference'
+        '404':
+          description: No preference stored; client should default to system setting
+    patch:
+      summary: Upsert the authenticated user's theme preference
+      operationId: updateThemePreference
+      security:
+        - supabaseAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mode:
+                  $ref: '#/components/schemas/ThemeMode'
+      responses:
+        '200':
+          description: Preference updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ThemePreference'
+components:
+  securitySchemes:
+    supabaseAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    DesignTokenCategory:
+      type: string
+      enum:
+        - color
+        - typography
+        - spacing
+        - radii
+        - shadow
+    DesignTokenStatus:
+      type: string
+      enum:
+        - draft
+        - approved
+        - deprecated
+    DesignToken:
+      type: object
+      required:
+        - id
+        - category
+        - role
+        - value
+        - status
+      properties:
+        id:
+          type: string
+          example: color.background.default
+        category:
+          $ref: '#/components/schemas/DesignTokenCategory'
+        role:
+          type: string
+          example: background
+        value:
+          type: string
+          description: Light theme value (hex, rem, etc.)
+          example: '#0B172C'
+        darkValue:
+          type: string
+          description: Optional dark theme override
+          example: '#F3F6FC'
+        description:
+          type: string
+          description: Usage guidance plus accessibility notes
+        wcagRatio:
+          type: number
+          format: float
+          minimum: 0
+          description: Calculated contrast ratio where applicable
+          example: 4.6
+        aliases:
+          type: array
+          items:
+            type: string
+        status:
+          $ref: '#/components/schemas/DesignTokenStatus'
+        version:
+          type: string
+          example: 1.0.0
+    ComponentState:
+      type: object
+      required:
+        - id
+        - interaction
+        - tokens
+      properties:
+        id:
+          type: string
+          example: button.focus.visible
+        interaction:
+          type: string
+          enum:
+            - default
+            - hover
+            - focus
+            - active
+            - disabled
+            - error
+            - success
+        tokens:
+          type: object
+          additionalProperties:
+            type: string
+          description: Mapping of semantic slots to DesignToken ids
+        ariaAttributes:
+          type: object
+          additionalProperties:
+            type: string
+        announcements:
+          type: array
+          items:
+            type: string
+        focusOrder:
+          type: integer
+    FoundationComponent:
+      type: object
+      required:
+        - id
+        - category
+        - tokensBySlot
+        - states
+      properties:
+        id:
+          type: string
+          example: button
+        category:
+          type: string
+          enum:
+            - form
+            - overlay
+            - feedback
+        description:
+          type: string
+        tokensBySlot:
+          type: object
+          additionalProperties:
+            type: string
+          description: Mapping of semantic slots (background, border, etc.) to token ids
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/ComponentState'
+        variants:
+          type: array
+          items:
+            type: string
+        dependencies:
+          type: array
+          items:
+            type: string
+          description: Upstream primitives (e.g., Radix components) required to build the component
+    ThemeMode:
+      type: string
+      enum:
+        - system
+        - light
+        - dark
+    ThemePreference:
+      type: object
+      required:
+        - mode
+        - updatedAt
+      properties:
+        mode:
+          $ref: '#/components/schemas/ThemeMode'
+        updatedAt:
+          type: string
+          format: date-time
+        source:
+          type: string
+          enum:
+            - system
+            - user-toggle
