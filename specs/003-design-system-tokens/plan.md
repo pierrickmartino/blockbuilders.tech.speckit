@@ -25,9 +25,9 @@ Create a shared design system inside the Next.js 15 frontend: centralize color/t
 
 - **Code Quality Without Compromise**: Run `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, and Storybook accessibility CI (`pnpm --filter @blockbuilders/frontend... storybook:test`) prior to implementation sign-off; peer review confirms adherence.
 - **Simplicity Over Speculation**: Deliverables map directly to FR-001 (token catalog generation), FR-002 (usage guidance + docs), FR-003 (foundation components), and FR-004 (dark theme parity). No additional components or tooling beyond shadcn/ui will ship without an exception.
-- **Test Evidence First**: Author failing Vitest suites for token utilities and component behaviors, Playwright keyboard smoke tests for each foundation component, and Storybook a11y snapshots before implementation to maintain ≥80% coverage and catch regressions.
+- **Test Evidence First**: Author failing Vitest suites for token utilities and component behaviors, Playwright keyboard smoke tests for each foundation component, and Storybook a11y snapshots before implementation so coverage stays ≥80% and regressions are caught early.
 - **Consistent Experience Every Time**: Implement tokens via Tailwind config and CSS variables consumed by shadcn components, validate with Storybook + @storybook/addon-a11y, and record manual keyboard walkthrough logs against the acceptance scenarios.
-- **Performance and Reliability Budgets**: Measure Storybook build times, monitor Next.js route performance via existing telemetry dashboards, and capture LCP/TTI metrics in Playwright traces to ensure budgets stay within constitution thresholds.
+- **Performance and Reliability Budgets**: Measure Storybook build times, capture LCP/TTI metrics for the token gallery in Playwright traces, and ensure component demos stay within constitution thresholds.
 
 ## Project Structure
 
@@ -47,9 +47,6 @@ specs/003-design-system-tokens/
 
 ```text
 apps/
-├── backend/
-│   ├── app/
-│   └── tests/
 └── frontend/
     ├── app/
     ├── components/
@@ -64,7 +61,7 @@ configs/
 └── storybook/                  # central Storybook configuration for tokens/components
 ```
 
-**Structure Decision**: Extend the existing Next.js app in `apps/frontend` with a dedicated `design-system` slice for tokens, components, and utilities while keeping backend scope untouched; Storybook config lives under `configs/storybook` for shared CI hooks.
+**Structure Decision**: Extend the existing Next.js app in `apps/frontend` with a dedicated `design-system` slice for tokens, components, and utilities, and keep Storybook configuration under `configs/storybook` for shared CI hooks.
 
 ## Complexity Tracking
 

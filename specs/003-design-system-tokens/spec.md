@@ -1,6 +1,6 @@
 # Feature Specification: Design System & Tokens
 
-**Feature Branch**: `001-design-system-tokens`  
+**Feature Branch**: `003-design-system-tokens`  
 **Created**: 2025-11-05  
 **Status**: Draft  
 **Input**: User description: "Title: 003-Design System & Tokens Why: Ensure accessible, consistent UI and faster delivery. Scope: • Frontend: Set design tokens (color/typography/spacing), base components (Button, Input, Select, Modal, Toast), dark mode, WCAG AA defaults. • Infra: Storybook with a11y coverage for tokens and components. Acceptance Criteria: • AC1: Storybook shows tokens and components with a11y checks passing. • AC2: Keyboard navigation and focus states meet WCAG AA on core components."
@@ -56,6 +56,13 @@ A front-end engineer adopting the design system can drop in the base Button, Inp
 - **FR-003**: Deliver foundation Button, Input, Select, Modal, and Toast components whose keyboard navigation, focus handling, and announcements meet accessibility expectations in both themes (Principles: quality, testing, experience). Evidence: manual keyboard walkthrough logs and automated accessibility reports showing zero critical issues.
 - **FR-004**: Provide a dark theme that can be toggled per user preference while maintaining readability and parity with default theme components (Principles: experience, performance). Evidence: visual review checklist confirming parity and accessibility across representative screens.
 
+## Non-Functional Requirements
+
+- **Accessibility Tooling**: Automated checks MUST include Storybook test-runner with @storybook/addon-a11y, Playwright + @axe-core/playwright runs for keyboard navigation, and manual keyboard walkthrough logs covering both themes.
+- **Documentation Quality**: Storybook MDX stories and README files MUST describe token usage, component variants, and dark-mode behaviors with examples linked to the acceptance scenarios.
+- **Operational Evidence**: Performance telemetry MUST record token gallery LCP/TTI metrics and Storybook build durations in `specs/003-design-system-tokens/checklists/performance.md`; any regression requires a follow-up task.
+- **Testing Standards**: Vitest suites, Playwright specs, and Storybook accessibility CI MUST execute before implementation sign-off, satisfying Constitution Principle I (`pnpm lint`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, `pnpm --filter @blockbuilders/frontend... storybook:test`).
+
 ### Key Entities *(include if feature involves data)*
 
 - **Design Token**: Named representation of brand-approved styling attributes (color, typography, spacing) including accessibility metadata such as contrast ratios and allowed usage contexts.
@@ -76,3 +83,7 @@ A front-end engineer adopting the design system can drop in the base Button, Inp
 
 - **SC-ACCESS**: All documented foundation components and token examples demonstrate zero critical accessibility violations and pass keyboard-only walkthroughs in both themes during launch review.
 - **SC-CONSISTENCY**: At least five core components (Button, Input, Select, Modal, Toast) and the full token catalog are published in the design system workspace with dual-theme previews and usage notes approved by design.
+
+### Non-Functional Guarantees
+
+- **SC-PERF**: Design-system docs and gallery meet ≤2.0s Time-to-Interactive and ≤2.5s Largest Contentful Paint in CI reference runs, validated via Playwright trace metrics and recorded in `specs/003-design-system-tokens/checklists/performance.md`.

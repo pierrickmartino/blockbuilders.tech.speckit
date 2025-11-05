@@ -20285,3 +20285,650 @@
 [2m2025-11-05T21:11:24.197458Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Run prerequisite script to determine feature directory and available docs"},{"status":"completed","step":"Load required design documents for the feature"},{"status":"completed","step":"Generate tasks.md and validate structure"}], "explanation":"Generated tasks file at specs/003-design-system-tokens/tasks.md with story-driven phases, checklist-formatted tasks, dependencies, and implementation strategy per instructions."}
 [2m2025-11-05T21:11:24.198821Z[0m [32m INFO[0m waiting for tool gate
 [2m2025-11-05T21:11:24.199389Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:16:33.902039Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:16:33.903002Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:16:33.903351Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:16:37.088124Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .specify/memory/constitution.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:16:37.088144Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:16:37.088147Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:16:54.424937Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls configs/storybook"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:16:54.424985Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:16:54.424987Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:17:14.865494Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/spec.md | sed -n '1,200p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:17:14.865549Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:17:14.865553Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:17:17.305758Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/plan.md | sed -n '1,200p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:17:17.305782Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:17:17.305787Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:17:20.299135Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/tasks.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:17:20.299179Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:17:20.299182Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:17:22.912970Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/tasks.md | sed -n '68,160p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:17:22.912991Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:17:22.912994Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:17:52.416741Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba .specify/memory/constitution.md | sed -n '10,120p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:17:52.417529Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:17:52.417775Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:18:57.668536Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"in_progress","step":"Update spec and plan to align feature branch and backend scope requirements"},{"status":"pending","step":"Add constitution-mandated tasks to tasks.md"},{"status":"pending","step":"Add dark mode fallback test task and performance validation tasks"}]}
+[2m2025-11-05T21:18:57.669267Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:18:57.669468Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:19:00.306054Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","grep -n \"Feature Branch\" -n specs/003-design-system-tokens/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:19:00.306078Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:19:00.306083Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:19:12.397823Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/spec.md
+@@
+-**Feature Branch**: `001-design-system-tokens`  
++**Feature Branch**: `003-design-system-tokens`  
+@@
+ - **FR-003**: Deliver foundation Button, Input, Select, Modal, and Toast components whose keyboard navigation, focus handling, and announcements meet accessibility expectations in both themes (Principles: quality, testing, experience). Evidence: manual keyboard walkthrough logs and automated accessibility reports showing zero critical issues.
+ - **FR-004**: Provide a dark theme that can be toggled per user preference while maintaining readability and parity with default theme components (Principles: experience, performance). Evidence: visual review checklist confirming parity and accessibility across representative screens.
++- **FR-005**: Expose design token catalogs, foundation component metadata, and theme preferences via backend APIs that conform to `specs/003-design-system-tokens/contracts/design-system.yaml` (Principles: quality, consistency). Evidence: contract tests demonstrating endpoints return approved schemas for tokens, components, and theme preference operations.
+*** End Patch
+[2m2025-11-05T21:19:12.398543Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:19:12.398750Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:19:17.140890Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/plan.md
+@@
+-Create a shared design system inside the Next.js 15 frontend: centralize color/typography/spacing tokens as generated Tailwind + CSS variables, build shadcn-based foundation components (Button, Input, Select, Modal, Toast) that consume those tokens, and verify accessibility through Storybook a11y checks and keyboard walkthroughs.
++Create a shared design system inside the Next.js 15 frontend: centralize color/typography/spacing tokens as generated Tailwind + CSS variables, build shadcn-based foundation components (Button, Input, Select, Modal, Toast) that consume those tokens, expose supporting design-system APIs on the FastAPI backend, and verify accessibility through Storybook a11y checks and keyboard walkthroughs.
+@@
+-**Structure Decision**: Extend the existing Next.js app in `apps/frontend` with a dedicated `design-system` slice for tokens, components, and utilities while keeping backend scope untouched; Storybook config lives under `configs/storybook` for shared CI hooks.
++**Structure Decision**: Extend the existing Next.js app in `apps/frontend` with a dedicated `design-system` slice for tokens, components, and utilities, and add matching FastAPI routes under `apps/backend/app/api/routes/design_system/` to serve contracts for tokens, components, and theme preferences; Storybook config lives under `configs/storybook` for shared CI hooks.
+*** End Patch
+[2m2025-11-05T21:19:17.141021Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:19:17.141030Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:19:32.939129Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","ls specs/003-design-system-tokens/checklists"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:19:32.939191Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:19:32.939196Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:20:14.560332Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Delete File: specs/003-design-system-tokens/tasks.md
+*** End Patch
+[2m2025-11-05T21:20:14.560548Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:20:14.561509Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:20:30.746513Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Add File: specs/003-design-system-tokens/tasks.md
++# Tasks: Design System & Tokens
++
++**Input**: Design documents from `/specs/003-design-system-tokens/`  
++**Prerequisites**: plan.md (required), spec.md (required), research.md, data-model.md, contracts/, quickstart.md
++
++## Phase 1: Setup (Shared Infrastructure)
++
++**Purpose**: Establish shared documentation and workspace scaffolding for the design system initiative.
++
++- [ ] T001 Create Storybook workspace overview in configs/storybook/README.md to document a11y and testing workflows.
++- [ ] T002 Add design system onboarding guide in apps/frontend/components/design-system/README.md describing folder layout and token build commands.
++
++---
++
++## Phase 2: Foundational (Blocking Prerequisites)
++
++**Purpose**: Core infrastructure that MUST be complete before any user story work begins.
++
++- [ ] T003 Create Storybook base configuration for the Next.js frontend in configs/storybook/main.ts aligning with Storybook 8 builder settings.
++- [ ] T004 Configure Storybook preview globals to load Tailwind styles and theme context in configs/storybook/preview.ts.
++- [ ] T005 Register design system scripts (tokens:build, storybook, storybook:test) in apps/frontend/package.json to enable shared tooling.
++- [ ] T006 Scaffold ThemeProvider shell with light/dark toggles in apps/frontend/components/design-system/ThemeProvider.tsx for later story-specific logic.
++- [ ] T007 Run repository quality gates via package.json scripts at package.json (pnpm lint --max-warnings 0, pnpm type-check, pnpm test:coverage, ruff check ., uv run pytest) before story implementation.
++
++---
++
++## Phase 3: User Story 1 - Reference accessible design tokens (Priority: P1) 🎯 MVP
++
++**Goal**: Deliver a canonical token catalog with accessibility metadata that designers and engineers can consume without bespoke styling.
++
++**Independent Test**: Verify the token gallery exposes color, typography, and spacing tokens with WCAG annotations and can be applied to a new page without introducing custom values.
++
++### Tests for User Story 1 ⚠️
++
++- [ ] T008 [P] [US1] Add failing Vitest spec validating token contrast metadata in apps/frontend/tests/design-system/tokens.spec.ts.
++- [ ] T009 [P] [US1] Add Storybook test-runner scenario auditing token accessibility in configs/storybook/tests/tokens.a11y.spec.ts.
++
++### Implementation for User Story 1
++
++- [ ] T010 [P] [US1] Define typed token schema with accessibility metadata in apps/frontend/lib/design-system/tokens.ts.
++- [ ] T011 [US1] Implement token build script emitting CSS variables in apps/frontend/scripts/build-tokens.ts.
++- [ ] T012 [US1] Generate base token stylesheet consumed by Next.js in apps/frontend/styles/tokens.css.
++- [ ] T013 [US1] Extend Tailwind theme mappings to consume tokens in apps/frontend/tailwind.config.ts.
++- [ ] T014 [US1] Build token gallery component with contrast annotations in apps/frontend/components/design-system/TokenGallery.tsx.
++- [ ] T015 [US1] Document token usage in Storybook MDX at apps/frontend/components/design-system/stories/TokenCatalog.stories.mdx.
++- [ ] T016 [US1] Export token catalog entry point in apps/frontend/lib/design-system/index.ts.
++- [ ] T017 [US1] Implement DesignToken Pydantic schema aligned with contracts in apps/backend/app/schemas/design_system/tokens.py.
++- [ ] T018 [US1] Add FastAPI route for GET /design-system/tokens in apps/backend/app/api/routes/design_system/tokens.py.
++- [ ] T019 [US1] Create token service loader sourcing the schema data in apps/backend/app/services/design_system_tokens.py.
++- [ ] T020 [US1] Cover token listing endpoint with tests in apps/backend/tests/api/test_design_system_tokens.py.
++- [ ] T021 [US1] Record token gallery LCP/TTI metrics via Playwright trace review and log results in specs/003-design-system-tokens/checklists/performance.md.
++
++**Checkpoint**: User Story 1 provides a fully testable token catalog with documented consumption patterns.
++
++---
++
++## Phase 4: User Story 2 - Ship accessible foundation components (Priority: P2)
++
++**Goal**: Provide Button, Input, Select, Modal, and Toast components that consume the approved tokens and satisfy accessibility requirements in light and dark themes.
++
++**Independent Test**: Mount each foundation component, exercise keyboard-only flows, and confirm focus, error, and disabled states honor the documented tokens in both themes.
++
++### Tests for User Story 2 ⚠️
++
++- [ ] T022 [P] [US2] Add failing Vitest spec for Button interaction tokens in apps/frontend/tests/design-system/components/Button.spec.tsx.
++- [ ] T023 [P] [US2] Add failing Vitest spec for Input and Select state tokens in apps/frontend/tests/design-system/components/FormControls.spec.tsx.
++- [ ] T024 [P] [US2] Add Playwright accessibility walkthrough for Modal and Toast in apps/frontend/tests/e2e/design-system/components-accessibility.spec.ts.
++- [ ] T025 [P] [US2] Add Playwright spec validating dark-mode fallback when tokens are missing in apps/frontend/tests/e2e/design-system/theme-fallback.spec.ts.
++
++### Implementation for User Story 2
++
++- [ ] T026 [P] [US2] Implement token-aware Button component using shadcn primitives in apps/frontend/components/design-system/Button.tsx.
++- [ ] T027 [P] [US2] Implement token-aware Input component with error states in apps/frontend/components/design-system/Input.tsx.
++- [ ] T028 [P] [US2] Implement token-aware Select component with keyboard navigation in apps/frontend/components/design-system/Select.tsx.
++- [ ] T029 [P] [US2] Implement accessible Modal component with focus trapping in apps/frontend/components/design-system/Modal.tsx.
++- [ ] T030 [P] [US2] Implement Toast provider with announcement hooks in apps/frontend/components/design-system/Toast.tsx.
++- [ ] T031 [US2] Wire foundation component exports and variants in apps/frontend/components/design-system/index.ts.
++- [ ] T032 [US2] Author Storybook stories demonstrating components across themes in apps/frontend/components/design-system/stories/FoundationComponents.stories.tsx.
++- [ ] T033 [US2] Add Storybook MDX usage docs linking tokens to components in apps/frontend/components/design-system/stories/FoundationComponents.docs.mdx.
++- [ ] T034 [US2] Implement FoundationComponent schemas and list/detail handlers in apps/backend/app/api/routes/design_system/components.py.
++- [ ] T035 [US2] Implement ThemePreference schemas and GET/PATCH handlers in apps/backend/app/api/routes/design_system/theme_preference.py.
++- [ ] T036 [US2] Add backend services for component metadata and theme preference persistence in apps/backend/app/services/design_system_components.py.
++- [ ] T037 [US2] Extend Pydantic models for ComponentState and ThemePreference in apps/backend/app/schemas/design_system/components.py.
++- [ ] T038 [US2] Cover component and theme preference endpoints with tests in apps/backend/tests/api/test_design_system_components.py.
++- [ ] T039 [US2] Finalize ThemeProvider logic to sync Supabase preference in apps/frontend/components/design-system/ThemeProvider.tsx.
++- [ ] T040 [US2] Integrate ThemeProvider into Next.js root layout in apps/frontend/app/layout.tsx.
++- [ ] T041 [US2] Measure Storybook build duration and component render metrics, logging results in specs/003-design-system-tokens/checklists/performance.md.
++- [ ] T042 [US2] Capture manual keyboard walkthrough checklist for components in specs/003-design-system-tokens/checklists/accessibility.md.
++
++**Checkpoint**: User Story 2 delivers accessible foundation components validated across automated and manual accessibility checks.
++
++---
++
++## Final Phase: Polish & Cross-Cutting Concerns
++
++**Purpose**: Quality, documentation, and CI follow-through once user stories land.
++
++- [ ] T043 [P] Add Storybook accessibility CI workflow for design system checks in .github/workflows/storybook-a11y.yml.
++- [ ] T044 Document adoption rollout guidelines in docs/design-system/adoption.md.
++- [ ] T045 Update quickstart commands for tokens and components in specs/003-design-system-tokens/quickstart.md.
++
++---
++
++## Dependencies & Execution Order
++
++- **Phase Dependencies**: Setup → Foundational → User Story phases (US1 → US2) → Polish.
++- **User Story Dependencies**: US1 depends on Phase 2 completion. US2 depends on US1 token exports and shared infrastructure; both must precede the Polish phase.
++- **Within Stories**: Tests (fail first) precede implementation; frontend artifacts must align before backend handlers expose data; documentation follows functional completion; performance validation tasks T021 and T041 require preceding implementations.
++
++---
++
++## Parallel Opportunities
++
++- **US1**: T008 and T009 can run in parallel; T010 and T011 can progress concurrently once schema decisions lock; backend tasks T017–T019 can run alongside frontend gallery work.
++- **US2**: Component implementations T026–T030 can be divided per engineer; backend endpoints T034–T036 run parallel to frontend Storybook tasks T032–T033; ThemeProvider integration T039–T040 can start after T031; dark-mode fallback validation T025 complements accessibility walkthrough T024.
++
++---
++
++## Implementation Strategy
++
++### MVP First (User Story 1)
++
++1. Complete Phases 1–2 to ready shared tooling.  
++2. Deliver US1 tokens, ensuring Vitest, Storybook a11y checks, and performance metrics are captured.  
++3. Demo token gallery as standalone MVP before proceeding.
++
++### Incremental Delivery
++
++1. US1 tokens establish shared styling primitives.  
++2. US2 components consume tokens, extend backend contracts, and close accessibility/performance validations.  
++3. Polish phase finalizes rollout, documentation, CI coverage, and quickstart updates.
++
++### Parallel Team Strategy
++
++1. Pair one engineer on Storybook infrastructure (T003–T005) while another scaffolds ThemeProvider (T006) and quality gates (T007).  
++2. Split US1 between frontend token schema (T010–T016) and backend contract work (T017–T020), with a dedicated run capturing performance metrics (T021).  
++3. For US2, distribute components (T026–T030) across engineers, assign backend specialist to T034–T038, and dedicate accessibility/performance reviewers to T024–T025 and T041–T042.
+*** End Patch
+[2m2025-11-05T21:20:30.747265Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:20:30.747725Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:20:34.037178Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Update spec and plan to align feature branch and backend scope requirements"},{"status":"completed","step":"Add constitution-mandated tasks to tasks.md"},{"status":"completed","step":"Add dark mode fallback test task and performance validation tasks"}]}
+[2m2025-11-05T21:20:34.037265Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:20:34.037275Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:23:08.900574Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-05T21:23:12.446562Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-05T21:23:12.542065Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-05T21:23:17.894865Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:23:17.896932Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:23:17.896944Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:23:22.368041Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg -n \"^## \" spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:23:22.368204Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:23:22.368211Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:23:25.328208Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,160p' spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:23:25.328233Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:23:25.328237Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:23:28.373576Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg -n \"^## \" plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:23:28.373669Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:23:28.373673Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:23:30.841563Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:23:30.841599Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:23:30.841604Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:23:32.996635Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' tasks.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:23:32.996674Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:23:32.996678Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:23:35.595204Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' .specify/memory/constitution.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:23:35.595268Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:23:35.595273Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:24:12.338206Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba tasks.md | sed -n '70,200p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:24:12.338310Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:24:12.338317Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:24:15.561030Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba tasks.md | sed -n '30,120p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:24:15.561064Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:24:15.561068Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:24:58.159171Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba spec.md | sed -n '40,140p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:24:58.159267Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:24:58.159278Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:25:01.625157Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba plan.md | sed -n '20,120p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:25:01.625199Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:25:01.625204Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:25:04.766785Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba .specify/memory/constitution.md | sed -n '1,160p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:25:04.766842Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:25:04.766848Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:21.020810Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"in_progress","step":"Add constitution-required performance/API budgets to spec.md success criteria."},{"status":"pending","step":"Insert failing-first backend contract test tasks into tasks.md before implementation blocks."},{"status":"pending","step":"Update plan.md constitution check to reference new contract test tasks."}]}
+[2m2025-11-05T21:27:21.021751Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:21.022053Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:26.119563Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/spec.md
+@@
+ ### Measurable Outcomes
+ 
+ - **SC-ACCESS**: All documented foundation components and token examples demonstrate zero critical accessibility violations and pass keyboard-only walkthroughs in both themes during launch review.
+ - **SC-CONSISTENCY**: At least five core components (Button, Input, Select, Modal, Toast) and the full token catalog are published in the design system workspace with dual-theme previews and usage notes approved by design.
++
++### Non-Functional Guarantees
++
++- **SC-PERF**: Design-system docs and gallery meet ≤2.0s Time-to-Interactive and ≤2.5s Largest Contentful Paint in CI reference runs, validated via Playwright trace metrics and recorded in `specs/003-design-system-tokens/checklists/performance.md`.
++- **SC-API**: Backend design-system endpoints sustain ≤200ms p95 latency in staging load checks with responses matching `specs/003-design-system-tokens/contracts/design-system.yaml`, evidenced by contract-test run output captured alongside plan sign-off notes.
+*** End Patch
+[2m2025-11-05T21:27:26.119689Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:26.119702Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:29.801906Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Add constitution-required performance/API budgets to spec.md success criteria."},{"status":"in_progress","step":"Insert failing-first backend contract test tasks into tasks.md before implementation blocks."},{"status":"pending","step":"Update plan.md constitution check to reference new contract test tasks."}]}
+[2m2025-11-05T21:27:29.801964Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:29.801968Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:35.620152Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/tasks.md
+@@
+ - [ ] T015 [US1] Document token usage in Storybook MDX at apps/frontend/components/design-system/stories/TokenCatalog.stories.mdx.
+ - [ ] T016 [US1] Export token catalog entry point in apps/frontend/lib/design-system/index.ts.
++- [ ] T017a [P] [US1] Add failing contract test for GET /design-system/tokens against specs/003-design-system-tokens/contracts/design-system.yaml in apps/backend/tests/api/test_design_system_tokens_contract.py.
+ - [ ] T017 [US1] Implement DesignToken Pydantic schema aligned with contracts in apps/backend/app/schemas/design_system/tokens.py.
+ - [ ] T018 [US1] Add FastAPI route for GET /design-system/tokens in apps/backend/app/api/routes/design_system/tokens.py.
+ - [ ] T019 [US1] Create token service loader sourcing the schema data in apps/backend/app/services/design_system_tokens.py.
+ - [ ] T020 [US1] Cover token listing endpoint with tests in apps/backend/tests/api/test_design_system_tokens.py.
+@@
+ - [ ] T031 [US2] Wire foundation component exports and variants in apps/frontend/components/design-system/index.ts.
+ - [ ] T032 [US2] Author Storybook stories demonstrating components across themes in apps/frontend/components/design-system/stories/FoundationComponents.stories.tsx.
+ - [ ] T033 [US2] Add Storybook MDX usage docs linking tokens to components in apps/frontend/components/design-system/stories/FoundationComponents.docs.mdx.
++- [ ] T034a [P] [US2] Add failing contract tests for component metadata endpoints against specs/003-design-system-tokens/contracts/design-system.yaml in apps/backend/tests/api/test_design_system_components_contract.py.
+ - [ ] T034 [US2] Implement FoundationComponent schemas and list/detail handlers in apps/backend/app/api/routes/design_system/components.py.
++- [ ] T035a [P] [US2] Add failing contract tests for theme preference endpoints against specs/003-design-system-tokens/contracts/design-system.yaml in apps/backend/tests/api/test_design_system_theme_preference_contract.py.
+ - [ ] T035 [US2] Implement ThemePreference schemas and GET/PATCH handlers in apps/backend/app/api/routes/design_system/theme_preference.py.
+ - [ ] T036 [US2] Add backend services for component metadata and theme preference persistence in apps/backend/app/services/design_system_components.py.
+*** End Patch
+[2m2025-11-05T21:27:35.620301Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:35.620307Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:38.669101Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Add constitution-required performance/API budgets to spec.md success criteria."},{"status":"completed","step":"Insert failing-first backend contract test tasks into tasks.md before implementation blocks."},{"status":"in_progress","step":"Update plan.md constitution check to reference new contract test tasks."}]}
+[2m2025-11-05T21:27:38.669186Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:38.669195Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:41.860507Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/plan.md
+@@
+-- **Test Evidence First**: Author failing Vitest suites for token utilities and component behaviors, Playwright keyboard smoke tests for each foundation component, and Storybook a11y snapshots before implementation to maintain ≥80% coverage and catch regressions.
++- **Test Evidence First**: Author failing Vitest suites for token utilities and component behaviors, Playwright keyboard smoke tests for each foundation component, Storybook a11y snapshots, and contract-first backend tests (Tasks T017a, T034a, T035a) before implementation so coverage stays ≥80% and schema regressions are caught early.
+*** End Patch
+[2m2025-11-05T21:27:41.860560Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:41.860565Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:44.530801Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Add constitution-required performance/API budgets to spec.md success criteria."},{"status":"completed","step":"Insert failing-first backend contract test tasks into tasks.md before implementation blocks."},{"status":"completed","step":"Update plan.md constitution check to reference new contract test tasks."}]}
+[2m2025-11-05T21:27:44.530842Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:44.530849Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:47.391858Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/spec.md | sed -n '70,130p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:27:47.391884Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:47.391887Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:50.823182Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/tasks.md | sed -n '30,110p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:27:50.823230Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:50.823234Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:27:53.668787Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/plan.md | sed -n '20,80p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:27:53.668824Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:27:53.668829Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:28:27.578237Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:28:27.578298Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:28:27.578304Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:15.321915Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/tasks.md
+@@
+ - [ ] T019 [US1] Create token service loader sourcing the schema data in apps/backend/app/services/design_system_tokens.py.
+ - [ ] T020 [US1] Cover token listing endpoint with tests in apps/backend/tests/api/test_design_system_tokens.py.
++- [ ] T020a [US1] Measure staging p95 latency for GET /design-system/tokens and record evidence in specs/003-design-system-tokens/checklists/performance.md.
+ - [ ] T021 [US1] Record token gallery LCP/TTI metrics via Playwright trace review and log results in specs/003-design-system-tokens/checklists/performance.md.
+@@
+ - [ ] T038 [US2] Cover component and theme preference endpoints with tests in apps/backend/tests/api/test_design_system_components.py.
++- [ ] T038a [US2] Measure staging p95 latency for design-system component and theme preference endpoints and record evidence in specs/003-design-system-tokens/checklists/performance.md.
+ - [ ] T039 [US2] Finalize ThemeProvider logic to sync Supabase preference in apps/frontend/components/design-system/ThemeProvider.tsx.
+*** End Patch
+[2m2025-11-05T21:29:15.323212Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:15.323512Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:18.101853Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/plan.md
+@@
+-- **Performance and Reliability Budgets**: Measure Storybook build times, monitor Next.js route performance via existing telemetry dashboards, and capture LCP/TTI metrics in Playwright traces to ensure budgets stay within constitution thresholds.
++- **Performance and Reliability Budgets**: Measure Storybook build times, monitor Next.js route performance via existing telemetry dashboards, capture LCP/TTI metrics in Playwright traces, and run staging latency checks for design-system APIs (Tasks T020a, T038a) to ensure budgets stay within constitution thresholds.
+*** End Patch
+[2m2025-11-05T21:29:18.101910Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:18.101919Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:27.099587Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-05T21:29:30.840922Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-05T21:29:30.948882Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-05T21:29:40.964000Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:29:40.964166Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:40.964321Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:46.402201Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg -n '^## ' spec.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:29:46.402286Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:46.402291Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:48.629552Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,120p' spec.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:29:48.629572Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:48.629575Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:51.559111Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg -n '^## ' plan.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:29:51.559143Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:51.559148Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:54.088771Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' plan.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:29:54.088843Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:54.088848Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:56.280797Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' tasks.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:29:56.280856Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:56.280862Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:29:58.932423Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '200,400p' tasks.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:29:58.932471Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:29:58.932476Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:30:03.220823Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '120,220p' tasks.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:30:03.220915Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:30:03.220920Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:30:05.808924Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","wc -l tasks.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:30:05.808943Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:30:05.808945Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:30:11.298031Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '60,120p' tasks.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:30:11.298106Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:30:11.298111Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:30:13.658599Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,200p' .specify/memory/constitution.md"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:30:13.658686Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:30:13.658691Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:31:35.846342Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba tasks.md | sed -n '30,90p'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:31:35.846398Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:31:35.846406Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:31:38.904490Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba tasks.md | sed -n '1,40p'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:31:38.904508Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:31:38.904509Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:31:41.548225Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba plan.md | sed -n '12,80p'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:31:41.548278Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:31:41.548283Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:31:44.410766Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba spec.md | sed -n '40,120p'"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:31:44.410800Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:31:44.410806Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:31:54.776134Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg \"- \\[ \\] T\" -n tasks.md | wc -l"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:31:54.776207Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:31:54.776211Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:31:57.754933Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg -- \"- \\[ \\] T\" tasks.md | wc -l"],"timeout_ms":120000,"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:31:57.754970Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:31:57.754974Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:34:07.925279Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/tasks.md
+@@
+-- [ ] T007 Run repository quality gates via package.json scripts at package.json (pnpm lint --max-warnings 0, pnpm type-check, pnpm test:coverage, ruff check ., uv run pytest) before story implementation.
++- [ ] T007 Run repository quality gates via package.json scripts at package.json (`pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, `pnpm --filter @blockbuilders/frontend... storybook:test`, `ruff check .`, `uv run pytest`) before story implementation.
+@@
+ - [ ] T039 [US2] Finalize ThemeProvider logic to sync Supabase preference in apps/frontend/components/design-system/ThemeProvider.tsx.
++- [ ] T040a [US2] Record light/dark visual parity review checklist for foundation components in specs/003-design-system-tokens/checklists/visual-parity.md with annotated evidence.
+ - [ ] T040 [US2] Integrate ThemeProvider into Next.js root layout in apps/frontend/app/layout.tsx.
+@@
+ - [ ] T045 Update quickstart commands for tokens and components in specs/003-design-system-tokens/quickstart.md.
++- [ ] T046 Capture design and accessibility approval for dual-theme previews in specs/003-design-system-tokens/checklists/approvals.md (include reviewer names, dates, and sign-off notes).
+*** End Patch
+[2m2025-11-05T21:34:07.925373Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:34:07.925379Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:34:10.238283Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/plan.md
+@@
+-**Storage**: N/A (tokens defined in JSON/TypeScript schema and emitted to CSS variables)  
++**Storage**: Supabase Postgres (existing instance) for theme preference and component metadata persistence; token definitions remain generated from the shared JSON/TypeScript schema emitting CSS variables  
+*** End Patch
+[2m2025-11-05T21:34:10.238340Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:34:10.238344Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:43:25.084217Z[0m [32m INFO[0m Shutting down Codex instance
+[2m2025-11-05T21:43:30.213724Z[0m [32m INFO[0m MCP server stderr (npx): Context7 Documentation MCP Server running on stdio
+[2m2025-11-05T21:43:30.320715Z[0m [32m INFO[0m aggregated 23 tools from 2 servers
+[2m2025-11-05T21:43:36.392253Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:43:36.392676Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:43:36.392687Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:43:40.694685Z[0m [32m INFO[0m ToolCall: update_plan {"explanation":"Prerequisites confirmed; proceeding with read-only analysis workflow.","plan":[{"status":"in_progress","step":"Load required sections from constitution, spec.md, plan.md, and tasks.md for analysis context."},{"status":"pending","step":"Synthesize requirement, story, and task inventories with coverage mapping and constitution alignment checks."},{"status":"pending","step":"Compile findings, coverage metrics, and next actions into the markdown report."}]}
+[2m2025-11-05T21:43:40.694734Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:43:40.694739Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:43:43.430925Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat .specify/memory/constitution.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:43:43.430975Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:43:43.430980Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:43:50.721600Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python - <<'PY'\nimport pathlib, json\nspec_path = pathlib.Path('/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens/spec.md')\nsections = {\n    'Overview/Context': ['overview', 'context'],\n    'Functional Requirements': ['functional requirements'],\n    'Non-Functional Requirements': ['non-functional requirements'],\n    'User Stories': ['user stories'],\n    'Edge Cases': ['edge cases']\n}\ntext = spec_path.read_text()\nlines = text.splitlines()\nresult = {}\ncurrent = None\nbuffer = []\ncurrent_heading = None\nfor line in lines:\n    if line.startswith('#'):\n        heading = line.strip('# ').lower()\n        if current_heading and buffer:\n            result.setdefault(current_heading, []).append('\\n'.join(buffer).strip())\n        current_heading = heading\n        buffer = []\n    else:\n        if current_heading is not None:\n            buffer.append(line)\nif current_heading and buffer:\n    result.setdefault(current_heading, []).append('\\n'.join(buffer).strip())\n\ndef find_section(target_keywords):\n    for heading, contents in result.items():\n        heading_lower = heading.lower()\n        if any(k in heading_lower for k in target_keywords):\n            return '\\n'.join(contents)\n    return ''\n\noutput = {key: find_section(keywords) for key, keywords in sections.items()}\nprint(json.dumps(output))\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:43:50.721781Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:43:50.721789Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:43:55.039351Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python3 - <<'PY'\nimport pathlib, json\nspec_path = pathlib.Path('/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens/spec.md')\nsections = {\n    'Overview/Context': ['overview', 'context'],\n    'Functional Requirements': ['functional requirements'],\n    'Non-Functional Requirements': ['non-functional requirements'],\n    'User Stories': ['user stories'],\n    'Edge Cases': ['edge cases']\n}\ntext = spec_path.read_text()\nlines = text.splitlines()\nresult = {}\ncurrent_heading = None\nbuffer = []\nfor line in lines:\n    if line.startswith('#'):\n        heading = line.strip('# ').lower()\n        if current_heading is not None:\n            result.setdefault(current_heading, []).append('\\n'.join(buffer).strip())\n        current_heading = heading\n        buffer = []\n    else:\n        if current_heading is not None:\n            buffer.append(line)\nif current_heading is not None:\n    result.setdefault(current_heading, []).append('\\n'.join(buffer).strip())\n\ndef find_section(target_keywords):\n    for heading, contents in result.items():\n        heading_lower = heading.lower()\n        if any(k in heading_lower for k in target_keywords):\n            return '\\n'.join(contents)\n    return ''\n\noutput = {key: find_section(keywords) for key, keywords in sections.items()}\nprint(json.dumps(output))\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:43:55.039463Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:43:55.039469Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:43:57.794343Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg '^## ' -n specs/003-design-system-tokens/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:43:57.794398Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:43:57.794405Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:00.747992Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '14,120p' specs/003-design-system-tokens/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:00.748135Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:00.748144Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:03.276501Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg '^## ' -n specs/003-design-system-tokens/plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:03.276581Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:03.276590Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:05.775519Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,160p' specs/003-design-system-tokens/plan.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:05.775558Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:05.775561Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:08.559559Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg '^## ' -n specs/003-design-system-tokens/tasks.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:08.559583Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:08.559592Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:13.139237Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,160p' specs/003-design-system-tokens/tasks.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:13.139324Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:13.139441Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:15.983239Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '160,320p' specs/003-design-system-tokens/tasks.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:15.983272Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:15.983277Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:23.189826Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '80,140p' specs/003-design-system-tokens/tasks.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:23.189892Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:23.189897Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:26.588730Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '60,110p' specs/003-design-system-tokens/tasks.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:26.588770Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:26.588777Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:29.947166Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Load required sections from constitution, spec.md, plan.md, and tasks.md for analysis context."},{"status":"in_progress","step":"Synthesize requirement, story, and task inventories with coverage mapping and constitution alignment checks."},{"status":"pending","step":"Compile findings, coverage metrics, and next actions into the markdown report."}]}
+[2m2025-11-05T21:44:29.947179Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:29.947180Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:44:51.828036Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '1,70p' specs/003-design-system-tokens/spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:44:51.828124Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:44:51.828135Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:45:20.778482Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python3 - <<'PY'\nimport pathlib, re, json\npath = pathlib.Path('specs/003-design-system-tokens/tasks.md')\nids = []\nfor line in path.read_text().splitlines():\n    m = re.match(r\"- \\[ \\] (T\\d+(?:[a-z])?)\", line)\n    if m:\n        ids.append(m.group(1))\nprint(json.dumps({'count': len(ids), 'ids': ids}, indent=2))\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:45:20.780412Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:45:20.781282Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:45:46.625407Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/plan.md | sed -n '10,70p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:45:46.625546Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:45:46.625562Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:45:49.871436Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/tasks.md | sed -n '1,160p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:45:49.871450Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:45:49.871452Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:45:53.462899Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/spec.md | sed -n '40,90p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:45:53.462954Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:45:53.462981Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:46:00.886698Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python3 - <<'PY'\nimport pathlib, re\npath = pathlib.Path('specs/003-design-system-tokens/tasks.md')\nbackend = []\nfor line in path.read_text().splitlines():\n    m = re.match(r\"- \\[ \\] (T\\d+(?:[a-z])?).*(apps/backend.*)\", line)\n    if m:\n        backend.append((m.group(1), m.group(2)))\nprint(backend)\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:46:00.886749Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:46:00.886754Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:46:03.928040Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Load required sections from constitution, spec.md, plan.md, and tasks.md for analysis context."},{"status":"completed","step":"Synthesize requirement, story, and task inventories with coverage mapping and constitution alignment checks."},{"status":"in_progress","step":"Compile findings, coverage metrics, and next actions into the markdown report."}]}
+[2m2025-11-05T21:46:03.928110Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:46:03.928115Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:46:15.325075Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/tasks.md | sed -n '90,140p'"]}
+[2m2025-11-05T21:46:15.325141Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:46:15.325150Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:46:18.357113Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/tasks.md | sed -n '70,100p'"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:46:18.357163Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:46:18.357168Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:46:30.397126Z[0m [32m INFO[0m ToolCall: update_plan {"plan":[{"status":"completed","step":"Load required sections from constitution, spec.md, plan.md, and tasks.md for analysis context."},{"status":"completed","step":"Synthesize requirement, story, and task inventories with coverage mapping and constitution alignment checks."},{"status":"completed","step":"Compile findings, coverage metrics, and next actions into the markdown report."}]}
+[2m2025-11-05T21:46:30.397205Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:46:30.397210Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:49:58.965762Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/plan.md
+@@
+-Create a shared design system inside the Next.js 15 frontend: centralize color/typography/spacing tokens as generated Tailwind + CSS variables, build shadcn-based foundation components (Button, Input, Select, Modal, Toast) that consume those tokens, expose supporting design-system APIs on the FastAPI backend, and verify accessibility through Storybook a11y checks and keyboard walkthroughs.
++Create a shared design system inside the Next.js 15 frontend: centralize color/typography/spacing tokens as generated Tailwind + CSS variables, build shadcn-based foundation components (Button, Input, Select, Modal, Toast) that consume those tokens, and verify accessibility through Storybook a11y checks and keyboard walkthroughs.
+@@
+-- **Code Quality Without Compromise**: Run `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, and Storybook accessibility CI (`pnpm --filter @blockbuilders/frontend... storybook:test`) prior to implementation sign-off; peer review confirms adherence.
+-- **Simplicity Over Speculation**: Deliverables map directly to FR-001 (token catalog generation), FR-002 (usage guidance + docs), FR-003 (foundation components), and FR-004 (dark theme parity). No additional components or tooling beyond shadcn/ui will ship without an exception.
+-- **Test Evidence First**: Author failing Vitest suites for token utilities and component behaviors, Playwright keyboard smoke tests for each foundation component, Storybook a11y snapshots, and contract-first backend tests (Tasks T017a, T034a, T035a) before implementation so coverage stays ≥80% and schema regressions are caught early.
+-- **Consistent Experience Every Time**: Implement tokens via Tailwind config and CSS variables consumed by shadcn components, validate with Storybook + @storybook/addon-a11y, and record manual keyboard walkthrough logs against the acceptance scenarios.
+-- **Performance and Reliability Budgets**: Measure Storybook build times, monitor Next.js route performance via existing telemetry dashboards, capture LCP/TTI metrics in Playwright traces, and run staging latency checks for design-system APIs (Tasks T020a, T038a) to ensure budgets stay within constitution thresholds.
++- **Code Quality Without Compromise**: Run `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, and Storybook accessibility CI (`pnpm --filter @blockbuilders/frontend... storybook:test`) prior to implementation sign-off; peer review confirms adherence.
++- **Simplicity Over Speculation**: Deliverables map directly to FR-001 (token catalog generation), FR-002 (usage guidance + docs), FR-003 (foundation components), and FR-004 (dark theme parity). No additional components or tooling beyond shadcn/ui will ship without an exception.
++- **Test Evidence First**: Author failing Vitest suites for token utilities and component behaviors, Playwright keyboard smoke tests for each foundation component, and Storybook a11y snapshots before implementation so coverage stays ≥80% and regressions are caught early.
++- **Consistent Experience Every Time**: Implement tokens via Tailwind config and CSS variables consumed by shadcn components, validate with Storybook + @storybook/addon-a11y, and record manual keyboard walkthrough logs against the acceptance scenarios.
++- **Performance and Reliability Budgets**: Measure Storybook build times, capture LCP/TTI metrics for the token gallery in Playwright traces, and ensure component demos stay within constitution thresholds.
+@@
+-apps/
+-├── backend/
+-│   ├── app/
+-│   └── tests/
+-└── frontend/
+-    ├── app/
+-    ├── components/
+-    │   ├── auth/
+-    │   └── design-system/      # new slice for tokens + shadcn foundation components
+-    ├── lib/
+-    │   └── design-system/      # token schema + conversion utilities
+-    ├── styles/
+-    └── tests/
++apps/
++└── frontend/
++    ├── app/
++    ├── components/
++    │   ├── auth/
++    │   └── design-system/      # new slice for tokens + shadcn foundation components
++    ├── lib/
++    │   └── design-system/      # token schema + conversion utilities
++    ├── styles/
++    └── tests/
+@@
+-**Structure Decision**: Extend the existing Next.js app in `apps/frontend` with a dedicated `design-system` slice for tokens, components, and utilities, and add matching FastAPI routes under `apps/backend/app/api/routes/design_system/` to serve contracts for tokens, components, and theme preferences; Storybook config lives under `configs/storybook` for shared CI hooks.
++**Structure Decision**: Extend the existing Next.js app in `apps/frontend` with a dedicated `design-system` slice for tokens, components, and utilities, and keep Storybook configuration under `configs/storybook` for shared CI hooks.
+*** End Patch
+[2m2025-11-05T21:49:58.966554Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:49:58.966732Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:50:06.292649Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/tasks.md
+@@
+-**Independent Test**: Verify the token gallery exposes color, typography, and spacing tokens with WCAG annotations and can be applied to a new page without introducing custom values.
++**Independent Test**: Verify the token gallery exposes color, typography, and spacing tokens with WCAG annotations, loads from the generated schema, and can be applied to a new page without introducing custom values.
+@@
+-- [ ] T017a [P] [US1] Add failing contract test for GET /design-system/tokens against specs/003-design-system-tokens/contracts/design-system.yaml in apps/backend/tests/api/test_design_system_tokens_contract.py.
+-- [ ] T017 [US1] Implement DesignToken Pydantic schema aligned with contracts in apps/backend/app/schemas/design_system/tokens.py.
+-- [ ] T018 [US1] Add FastAPI route for GET /design-system/tokens in apps/backend/app/api/routes/design_system/tokens.py.
+-- [ ] T019 [US1] Create token service loader sourcing the schema data in apps/backend/app/services/design_system_tokens.py.
+-- [ ] T020 [US1] Cover token listing endpoint with tests in apps/backend/tests/api/test_design_system_tokens.py.
+-- [ ] T020a [US1] Measure staging p95 latency for GET /design-system/tokens and record evidence in specs/003-design-system-tokens/checklists/performance.md.
+ - [ ] T021 [US1] Record token gallery LCP/TTI metrics via Playwright trace review and log results in specs/003-design-system-tokens/checklists/performance.md.
+@@
+-- [ ] T034a [P] [US2] Add failing contract tests for component metadata endpoints against specs/003-design-system-tokens/contracts/design-system.yaml in apps/backend/tests/api/test_design_system_components_contract.py.
+-- [ ] T034 [US2] Implement FoundationComponent schemas and list/detail handlers in apps/backend/app/api/routes/design_system/components.py.
+-- [ ] T035a [P] [US2] Add failing contract tests for theme preference endpoints against specs/003-design-system-tokens/contracts/design-system.yaml in apps/backend/tests/api/test_design_system_theme_preference_contract.py.
+-- [ ] T035 [US2] Implement ThemePreference schemas and GET/PATCH handlers in apps/backend/app/api/routes/design_system/theme_preference.py.
+-- [ ] T036 [US2] Add backend services for component metadata and theme preference persistence in apps/backend/app/services/design_system_components.py.
+-- [ ] T037 [US2] Extend Pydantic models for ComponentState and ThemePreference in apps/backend/app/schemas/design_system/components.py.
+-- [ ] T038 [US2] Cover component and theme preference endpoints with tests in apps/backend/tests/api/test_design_system_components.py.
+-- [ ] T038a [US2] Measure staging p95 latency for design-system component and theme preference endpoints and record evidence in specs/003-design-system-tokens/checklists/performance.md.
+ - [ ] T039 [US2] Finalize ThemeProvider logic to sync Supabase preference in apps/frontend/components/design-system/ThemeProvider.tsx.
+@@
+-- **Within Stories**: Tests (fail first) precede implementation; frontend artifacts must align before backend handlers expose data; documentation follows functional completion; performance validation tasks T021 and T041 require preceding implementations.
++- **Within Stories**: Tests (fail first) precede implementation; frontend artifacts must align before documentation; performance validation tasks T021 and T041 require preceding implementations.
+@@
+-- **US1**: T008 and T009 can run in parallel; T010 and T011 can progress concurrently once schema decisions lock; backend tasks T017–T019 can run alongside frontend gallery work.
+-- **US2**: Component implementations T026–T030 can be divided per engineer; backend endpoints T034–T036 run parallel to frontend Storybook tasks T032–T033; ThemeProvider integration T039–T040 can start after T031; dark-mode fallback validation T025 complements accessibility walkthrough T024.
++- **US1**: T008 and T009 can run in parallel; T010 and T011 can progress concurrently once schema decisions lock; gallery work T014–T015 can overlap with Tailwind integration T013.
++- **US2**: Component implementations T026–T030 can be divided per engineer; Storybook tasks T032–T033 run alongside component work; ThemeProvider integration T039–T040 can start after T031; dark-mode fallback validation T025 complements accessibility walkthrough T024.
+*** End Patch
+[2m2025-11-05T21:50:06.292850Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:50:06.292857Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:50:09.901166Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg 'backend' -n specs/003-design-system-tokens/plan.md specs/003-design-system-tokens/tasks.md"]}
+[2m2025-11-05T21:50:09.901203Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:50:09.901208Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:50:15.250734Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/tasks.md
+@@
+-1. US2 components consume tokens, extend backend contracts, and close accessibility/performance validations.  
++1. US2 components consume tokens, finalize ThemeProvider behavior, and close accessibility/performance validations.  
+@@
+-2. Split US1 between frontend token schema (T010–T016) and backend contract work (T017–T020), with a dedicated run capturing performance metrics (T021).  
+-3. For US2, distribute components (T026–T030) across engineers, assign backend specialist to T034–T038, and dedicate accessibility/performance reviewers to T024–T025 and T041–T042.
++2. Split US1 between frontend token schema (T010–T016) and gallery documentation (T014–T015), with a dedicated run capturing performance metrics (T021).  
++3. For US2, distribute components (T026–T030) across engineers, keep ThemeProvider integration (T039–T040) aligned with docs, and dedicate accessibility/performance reviewers to T024–T025 and T041–T042.
+*** End Patch
+[2m2025-11-05T21:50:15.250831Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:50:15.250838Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:50:19.503998Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","nl -ba specs/003-design-system-tokens/tasks.md | sed -n '120,140p'"]}
+[2m2025-11-05T21:50:19.504030Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:50:19.504034Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:50:23.597337Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/tasks.md
+@@
+-2. US2 components consume tokens, extend backend contracts, and close accessibility/performance validations.  
++2. US2 components consume tokens, finalize ThemeProvider behavior, and close accessibility/performance validations.  
+@@
+-2. Split US1 between frontend token schema (T010–T016) and backend contract work (T017–T020), with a dedicated run capturing performance metrics (T021).  
+-3. For US2, distribute components (T026–T030) across engineers, assign backend specialist to T034–T038, and dedicate accessibility/performance reviewers to T024–T025 and T041–T042.
++2. Split US1 between frontend token schema (T010–T016) and gallery documentation (T014–T015), with a dedicated run capturing performance metrics (T021).  
++3. For US2, distribute components (T026–T030) across engineers, keep ThemeProvider integration (T039–T040) aligned with docs, and dedicate accessibility/performance reviewers to T024–T025 and T041–T042.
+*** End Patch
+[2m2025-11-05T21:50:23.597853Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:50:23.598215Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:50:27.224309Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg 'backend' specs/003-design-system-tokens/plan.md specs/003-design-system-tokens/tasks.md"]}
+[2m2025-11-05T21:50:27.224443Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:50:27.224451Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:51:19.189669Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:51:19.189774Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:51:19.189781Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:51:38.203195Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","python3 - <<'PY'\nimport pathlib, re\nids=[]\nfor line in pathlib.Path('specs/003-design-system-tokens/tasks.md').read_text().splitlines():\n    m=re.match(r\"- \\[ \\] (T\\d+(?:[a-z])?)\", line)\n    if m:\n        ids.append(m.group(1))\nprint(len(ids))\nPY"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:51:38.203320Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:51:38.203327Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:52:50.871581Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","cat spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:52:50.872267Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:52:50.872471Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:52:55.930125Z[0m [32m INFO[0m ToolCall: apply_patch *** Begin Patch
+*** Update File: specs/003-design-system-tokens/spec.md
+@@
+ - **FR-003**: Deliver foundation Button, Input, Select, Modal, and Toast components whose keyboard navigation, focus handling, and announcements meet accessibility expectations in both themes (Principles: quality, testing, experience). Evidence: manual keyboard walkthrough logs and automated accessibility reports showing zero critical issues.
+ - **FR-004**: Provide a dark theme that can be toggled per user preference while maintaining readability and parity with default theme components (Principles: experience, performance). Evidence: visual review checklist confirming parity and accessibility across representative screens.
+ 
++## Non-Functional Requirements
++
++- **Accessibility Tooling**: Automated checks MUST include Storybook test-runner with @storybook/addon-a11y, Playwright + @axe-core/playwright runs for keyboard navigation, and manual keyboard walkthrough logs covering both themes.
++- **Documentation Quality**: Storybook MDX stories and README files MUST describe token usage, component variants, and dark-mode behaviors with examples linked to the acceptance scenarios.
++- **Operational Evidence**: Performance telemetry MUST record token gallery LCP/TTI metrics and Storybook build durations in `specs/003-design-system-tokens/checklists/performance.md`; any regression requires a follow-up task.
++- **Testing Standards**: Vitest suites, Playwright specs, and Storybook accessibility CI MUST execute before implementation sign-off, satisfying Constitution Principle I (`pnpm lint`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, `pnpm --filter @blockbuilders/frontend... storybook:test`).
++
+ ### Key Entities *(include if feature involves data)*
+ 
+ - **Design Token**: Named representation of brand-approved styling attributes (color, typography, spacing) including accessibility metadata such as contrast ratios and allowed usage contexts.
+ - **Foundation Component**: Reusable UI building block (Button, Input, Select, Modal, Toast) that consumes tokens and defines interaction states, accessibility affordances, and theming hooks.
+*** End Patch
+[2m2025-11-05T21:52:55.930270Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:52:55.930278Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:52:58.623139Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","sed -n '48,90p' spec.md"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/specs/003-design-system-tokens"}
+[2m2025-11-05T21:52:58.623166Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:52:58.623168Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:53:02.008629Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","git status -sb"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:53:02.008668Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:53:02.008670Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:53:39.921879Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc",".specify/scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks"],"workdir":"/Users/pierrickmartino/Developer/blockbuilders.tech.speckit"}
+[2m2025-11-05T21:53:39.921932Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:53:39.921937Z[0m [32m INFO[0m tool gate released
+[2m2025-11-05T21:53:50.658332Z[0m [32m INFO[0m ToolCall: shell {"command":["bash","-lc","rg 'FastAPI' specs/003-design-system-tokens/plan.md specs/003-design-system-tokens/tasks.md"]}
+[2m2025-11-05T21:53:50.659104Z[0m [32m INFO[0m waiting for tool gate
+[2m2025-11-05T21:53:50.659402Z[0m [32m INFO[0m tool gate released
