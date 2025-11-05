@@ -2,7 +2,7 @@
 
 **Feature Branch**: `003-design-system-tokens`  
 **Created**: 2025-11-05  
-**Status**: Draft  
+**Status**: Approved  
 **Input**: User description: "Title: 003-Design System & Tokens Why: Ensure accessible, consistent UI and faster delivery. Scope: • Frontend: Set design tokens (color/typography/spacing), base components (Button, Input, Select, Modal, Toast), dark mode, WCAG AA defaults. • Infra: Storybook with a11y coverage for tokens and components. Acceptance Criteria: • AC1: Storybook shows tokens and components with a11y checks passing. • AC2: Keyboard navigation and focus states meet WCAG AA on core components."
 
 ## Clarifications
