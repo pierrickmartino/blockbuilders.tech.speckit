@@ -7,8 +7,8 @@
 
 **Purpose**: Establish shared documentation and workspace scaffolding for the design system initiative.
 
-- [ ] T001 Create Storybook workspace overview in configs/storybook/README.md to document a11y and testing workflows.
-- [ ] T002 Add design system onboarding guide in apps/frontend/components/design-system/README.md describing folder layout and token build commands.
+- [X] T001 Create Storybook workspace overview in configs/storybook/README.md to document a11y and testing workflows.
+- [X] T002 Add design system onboarding guide in apps/frontend/components/design-system/README.md describing folder layout and token build commands.
 
 ---
 
