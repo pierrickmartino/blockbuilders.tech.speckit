@@ -1,17 +1,18 @@
 import { VerifyEmailPrompt } from '@/components/auth/VerifyEmailPrompt';
 
 type VerifyPageProps = {
-  searchParams?: {
+  searchParams?: Promise<{
     email?: string;
-  };
+  }>;
 };
 
 export const metadata = {
   title: 'Verify your email',
 };
 
-export default function VerifyEmailPage({ searchParams }: VerifyPageProps) {
-  const email = searchParams?.email ?? '';
+export default async function VerifyEmailPage({ searchParams }: VerifyPageProps) {
+  const params = (await searchParams) ?? {};
+  const email = params.email ?? '';
 
   return (
     <div className="space-y-8">

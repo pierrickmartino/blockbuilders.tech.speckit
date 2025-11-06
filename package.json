@@ -26,5 +26,10 @@
     "test:frontend": "pnpm run test:coverage",
     "test:backend": "uv run --directory apps/backend pytest",
     "test:e2e": "node ./scripts/test-e2e.mjs"
+  },
+  "pnpm": {
+    "overrides": {
+      "webpack": "5.101.2"
+    }
   }
 }

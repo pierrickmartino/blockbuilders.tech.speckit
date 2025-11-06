@@ -17,11 +17,10 @@ export interface ServerClientContext {
   headers?: HeaderInit;
 }
 
-let browserClient: SupabaseClient<unknown> | null = null;
-let serverClientCache = new WeakMap<
-  RequestCookieStore,
-  SupabaseClient<unknown>
->();
+type GenericSupabaseClient = SupabaseClient<any, any, any, any, any>;
+
+let browserClient: GenericSupabaseClient | null = null;
+let serverClientCache = new WeakMap<RequestCookieStore, GenericSupabaseClient>();
 let browserStorageMode: 'cookies' | 'memory' = 'cookies';
 let browserStorage: SupportedStorage | null = null;
 
@@ -91,7 +90,7 @@ const sanitizeSupabaseHeaders = (
   return Object.fromEntries(entries);
 };
 
-export const getBrowserSupabaseClient = <Database = unknown>(): SupabaseClient<Database> => {
+export const getBrowserSupabaseClient = <Database = unknown>() => {
   if (browserClient) {
     return browserClient as SupabaseClient<Database>;
   }
@@ -105,14 +104,14 @@ export const getBrowserSupabaseClient = <Database = unknown>(): SupabaseClient<D
       detectSessionInUrl: true,
     },
   });
-  browserClient = client as SupabaseClient<unknown>;
+  browserClient = client;
   return client;
 };
 
 export const createServerSupabaseClient = <Database = unknown>({
   cookies,
   headers,
-}: ServerClientContext): SupabaseClient<Database> => {
+}: ServerClientContext) => {
   const cachedClient = serverClientCache.get(cookies);
   if (cachedClient) {
     return cachedClient as SupabaseClient<Database>;
@@ -125,17 +124,14 @@ export const createServerSupabaseClient = <Database = unknown>({
     ...(headerRecord ? { global: { headers: headerRecord } } : {}),
   });
 
-  serverClientCache.set(cookies, supabase as SupabaseClient<unknown>);
+  serverClientCache.set(cookies, supabase);
   return supabase;
 };
 
 export const resetSupabaseClientCache = () => {
   browserClient = null;
   browserStorage = browserStorageMode === 'memory' ? createMemoryStorage() : null;
-  serverClientCache = new WeakMap<
-    RequestCookieStore,
-    SupabaseClient<unknown>
-  >();
+  serverClientCache = new WeakMap<RequestCookieStore, GenericSupabaseClient>();
 };
 
 export const setBrowserSupabaseStorageMode = (mode: 'cookies' | 'memory') => {

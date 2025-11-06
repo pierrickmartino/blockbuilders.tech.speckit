@@ -7,16 +7,16 @@ from collections.abc import AsyncIterator
 from http import HTTPStatus
 from pathlib import Path
 
-import httpx
-from httpx import ASGITransport
-import pytest
-import pytest_asyncio
-from jose import jwt
-from jose.utils import base64url_encode
-
 from app.core.settings import get_settings
 from app.dependencies.supabase import get_jwks_cache
 from app.factory import create_app
+
+import httpx
+import pytest
+import pytest_asyncio
+from httpx import ASGITransport
+from jose import jwt
+from jose.utils import base64url_encode
 
 TEST_SECRET = b"super-secret-signing-key"
 TEST_JWKS_RESPONSE = {
@@ -32,6 +32,7 @@ TEST_JWKS_RESPONSE = {
 }
 
 MAX_P95_LATENCY_SECONDS = 0.2
+
 
 @pytest.fixture
 def configure_settings(monkeypatch: pytest.MonkeyPatch) -> None:

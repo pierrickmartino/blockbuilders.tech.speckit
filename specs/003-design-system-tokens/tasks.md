@@ -16,11 +16,11 @@
 
 **Purpose**: Core infrastructure that MUST be complete before any user story work begins.
 
-- [ ] T003 Create Storybook base configuration for the Next.js frontend in configs/storybook/main.ts aligning with Storybook 8 builder settings.
-- [ ] T004 Configure Storybook preview globals to load Tailwind styles and theme context in configs/storybook/preview.ts.
-- [ ] T005 Register design system scripts (tokens:build, storybook, storybook:test) in apps/frontend/package.json to enable shared tooling.
-- [ ] T006 Scaffold ThemeProvider shell with light/dark toggles in apps/frontend/components/design-system/ThemeProvider.tsx for later story-specific logic.
-- [ ] T007 Run repository quality gates via package.json scripts at package.json (`pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, `pnpm --filter @blockbuilders/frontend... storybook:test`, `ruff check .`, `uv run pytest`) before story implementation.
+- [X] T003 Create Storybook base configuration for the Next.js frontend in configs/storybook/main.ts aligning with Storybook 8 builder settings.
+- [X] T004 Configure Storybook preview globals to load Tailwind styles and theme context in configs/storybook/preview.ts.
+- [X] T005 Register design system scripts (tokens:build, storybook, storybook:test) in apps/frontend/package.json to enable shared tooling.
+- [X] T006 Scaffold ThemeProvider shell with light/dark toggles in apps/frontend/components/design-system/ThemeProvider.tsx for later story-specific logic.
+- [X] T007 Run repository quality gates via package.json scripts at package.json (`pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm --filter @blockbuilders/frontend... test:e2e`, `pnpm --filter @blockbuilders/frontend... storybook:test`, `ruff check .`, `uv run pytest`) before story implementation.
 
 ---
 
