@@ -6,11 +6,13 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
-
-export type ThemeMode = 'system' | 'light' | 'dark';
+import { z } from 'zod';
+import type { ThemeMode } from '@/lib/design-system/theme';
+export type { ThemeMode } from '@/lib/design-system/theme';
 
 type ThemeProviderProps = {
   children: ReactNode;
@@ -56,6 +58,16 @@ const prefersDarkQuery = '(prefers-color-scheme: dark)';
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
+const ThemePreferenceResponseSchema = z.object({
+  mode: z.enum(['system', 'light', 'dark']).optional(),
+});
+
+const ThemePreferencePayloadSchema = z.object({
+  mode: z.enum(['system', 'light', 'dark']),
+});
+
+const PREFERENCE_ENDPOINT = '/api/design-system/theme-preference';
+
 const isBrowser = () => typeof window !== 'undefined';
 
 const readStoredMode = (storageKey: string): ThemeMode | null => {
@@ -88,6 +100,46 @@ const applyDocumentTheme = (mode: 'light' | 'dark') => {
   document.documentElement.style.colorScheme = mode;
 };
 
+const readRemotePreference = async (): Promise<ThemeMode | null> => {
+  if (typeof fetch === 'undefined') {
+    return null;
+  }
+  try {
+    const response = await fetch(PREFERENCE_ENDPOINT, { cache: 'no-store' });
+    if (!response.ok) {
+      return null;
+    }
+    const payload = ThemePreferenceResponseSchema.parse(await response.json());
+    return payload.mode ?? null;
+  } catch (error) {
+    console.warn('[ThemeProvider] Failed to load remote theme preference.', error);
+    return null;
+  }
+};
+
+const persistRemotePreference = async (
+  mode: ThemeMode,
+  signal?: AbortSignal,
+): Promise<void> => {
+  if (typeof fetch === 'undefined') {
+    return;
+  }
+  try {
+    const body = JSON.stringify(ThemePreferencePayloadSchema.parse({ mode }));
+    await fetch(PREFERENCE_ENDPOINT, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+      signal,
+    });
+  } catch (error) {
+    if (signal?.aborted) {
+      return;
+    }
+    console.warn('[ThemeProvider] Failed to persist theme preference.', error);
+  }
+};
+
 export const ThemeProvider = ({
   children,
   forcedTheme,
@@ -104,6 +156,7 @@ export const ThemeProvider = ({
     const stored = readStoredMode(storageKey);
     return stored ?? defaultMode;
   });
+  const remoteHydrationRef = useRef(false);
 
   const activeMode: ThemeMode = forcedTheme ?? internalMode;
   const [resolvedMode, setResolvedMode] = useState<'light' | 'dark'>(() =>
@@ -134,6 +187,28 @@ export const ThemeProvider = ({
   }, [isControlled, storageKey]);
 
   useEffect(() => {
+    if (!isBrowser() || isControlled) {
+      return;
+    }
+
+    let cancelled = false;
+
+    const hydrate = async () => {
+      const remoteMode = await readRemotePreference();
+      if (!cancelled && remoteMode) {
+        remoteHydrationRef.current = true;
+        setInternalMode(remoteMode);
+      }
+    };
+
+    void hydrate();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isControlled]);
+
+  useEffect(() => {
     if (!isBrowser()) {
       return;
     }
@@ -151,6 +226,24 @@ export const ThemeProvider = ({
       }
     }
   }, [activeMode, internalMode, isControlled, onThemeChange, storageKey]);
+
+  useEffect(() => {
+    if (!isBrowser() || isControlled) {
+      return;
+    }
+
+    if (remoteHydrationRef.current) {
+      remoteHydrationRef.current = false;
+      return;
+    }
+
+    const controller = new AbortController();
+    void persistRemotePreference(internalMode, controller.signal);
+
+    return () => {
+      controller.abort();
+    };
+  }, [internalMode, isControlled]);
 
   useEffect(() => {
     if (!isBrowser()) {

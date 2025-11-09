@@ -58,26 +58,26 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T022 [P] [US2] Add failing Vitest spec for Button interaction tokens in apps/frontend/tests/design-system/components/Button.spec.tsx.
-- [ ] T023 [P] [US2] Add failing Vitest spec for Input and Select state tokens in apps/frontend/tests/design-system/components/FormControls.spec.tsx.
-- [ ] T024 [P] [US2] Add Playwright accessibility walkthrough for Modal and Toast in apps/frontend/tests/e2e/design-system/components-accessibility.spec.ts.
-- [ ] T025 [P] [US2] Add Playwright spec validating dark-mode fallback when tokens are missing in apps/frontend/tests/e2e/design-system/theme-fallback.spec.ts.
+- [X] T022 [P] [US2] Add failing Vitest spec for Button interaction tokens in apps/frontend/tests/design-system/components/Button.spec.tsx.
+- [X] T023 [P] [US2] Add failing Vitest spec for Input and Select state tokens in apps/frontend/tests/design-system/components/FormControls.spec.tsx.
+- [X] T024 [P] [US2] Add Playwright accessibility walkthrough for Modal and Toast in apps/frontend/tests/e2e/design-system/components-accessibility.spec.ts.
+- [X] T025 [P] [US2] Add Playwright spec validating dark-mode fallback when tokens are missing in apps/frontend/tests/e2e/design-system/theme-fallback.spec.ts.
 
 ### Implementation for User Story 2
 
-- [ ] T026 [P] [US2] Implement token-aware Button component using shadcn primitives in apps/frontend/components/design-system/Button.tsx.
-- [ ] T027 [P] [US2] Implement token-aware Input component with error states in apps/frontend/components/design-system/Input.tsx.
-- [ ] T028 [P] [US2] Implement token-aware Select component with keyboard navigation in apps/frontend/components/design-system/Select.tsx.
-- [ ] T029 [P] [US2] Implement accessible Modal component with focus trapping in apps/frontend/components/design-system/Modal.tsx.
-- [ ] T030 [P] [US2] Implement Toast provider with announcement hooks in apps/frontend/components/design-system/Toast.tsx.
-- [ ] T031 [US2] Wire foundation component exports and variants in apps/frontend/components/design-system/index.ts.
-- [ ] T032 [US2] Author Storybook stories demonstrating components across themes in apps/frontend/components/design-system/stories/FoundationComponents.stories.tsx.
-- [ ] T033 [US2] Add Storybook MDX usage docs linking tokens to components in apps/frontend/components/design-system/stories/FoundationComponents.docs.mdx.
-- [ ] T039 [US2] Finalize ThemeProvider logic to sync Supabase preference in apps/frontend/components/design-system/ThemeProvider.tsx.
-- [ ] T040a [US2] Record light/dark visual parity review checklist for foundation components in specs/003-design-system-tokens/checklists/visual-parity.md with annotated evidence.
-- [ ] T040 [US2] Integrate ThemeProvider into Next.js root layout in apps/frontend/app/layout.tsx.
-- [ ] T041 [US2] Measure Storybook build duration and component render metrics, logging results in specs/003-design-system-tokens/checklists/performance.md.
-- [ ] T042 [US2] Capture manual keyboard walkthrough checklist for components in specs/003-design-system-tokens/checklists/accessibility.md.
+- [X] T026 [P] [US2] Implement token-aware Button component using shadcn primitives in apps/frontend/components/design-system/Button.tsx.
+- [X] T027 [P] [US2] Implement token-aware Input component with error states in apps/frontend/components/design-system/Input.tsx.
+- [X] T028 [P] [US2] Implement token-aware Select component with keyboard navigation in apps/frontend/components/design-system/Select.tsx.
+- [X] T029 [P] [US2] Implement accessible Modal component with focus trapping in apps/frontend/components/design-system/Modal.tsx.
+- [X] T030 [P] [US2] Implement Toast provider with announcement hooks in apps/frontend/components/design-system/Toast.tsx.
+- [X] T031 [US2] Wire foundation component exports and variants in apps/frontend/components/design-system/index.ts.
+- [X] T032 [US2] Author Storybook stories demonstrating components across themes in apps/frontend/components/design-system/stories/FoundationComponents.stories.tsx.
+- [X] T033 [US2] Add Storybook MDX usage docs linking tokens to components in apps/frontend/components/design-system/stories/FoundationComponents.docs.mdx.
+- [X] T039 [US2] Finalize ThemeProvider logic to sync Supabase preference in apps/frontend/components/design-system/ThemeProvider.tsx.
+- [X] T040a [US2] Record light/dark visual parity review checklist for foundation components in specs/003-design-system-tokens/checklists/visual-parity.md with annotated evidence.
+- [X] T040 [US2] Integrate ThemeProvider into Next.js root layout in apps/frontend/app/layout.tsx.
+- [X] T041 [US2] Measure Storybook build duration and component render metrics, logging results in specs/003-design-system-tokens/checklists/performance.md.
+- [X] T042 [US2] Capture manual keyboard walkthrough checklist for components in specs/003-design-system-tokens/checklists/accessibility.md.
 
 **Checkpoint**: User Story 2 delivers accessible foundation components validated across automated and manual accessibility checks.
 

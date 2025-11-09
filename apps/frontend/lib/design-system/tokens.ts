@@ -93,6 +93,18 @@ const colorTokens: DesignToken[] = [
     version: '1.0.0',
   },
   {
+    id: 'color.action.secondary',
+    category: 'color',
+    role: 'action',
+    value: '#E2E8F0',
+    darkValue: '#1F2A37',
+    description: 'Secondary actions and subtle surfaces for controls.',
+    wcagRatio: 4.8,
+    aliases: ['button.secondary.background'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
     id: 'color.border.subtle',
     category: 'color',
     role: 'border',
@@ -100,6 +112,17 @@ const colorTokens: DesignToken[] = [
     darkValue: '#1F2C46',
     description: 'Token cards and component dividers.',
     aliases: ['border.default'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
+    id: 'color.border.emphasis',
+    category: 'color',
+    role: 'border',
+    value: '#94A3B8',
+    darkValue: '#475569',
+    description: 'Interactive form field borders and keylines.',
+    aliases: ['border.emphasis'],
     status: 'approved',
     version: '1.0.0',
   },
@@ -112,6 +135,85 @@ const colorTokens: DesignToken[] = [
     description: 'Accessible focus outline with 3:1 contrast on surfaces.',
     wcagRatio: 3.5,
     aliases: ['focus.visible'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
+    id: 'color.overlay.scrim',
+    category: 'color',
+    role: 'surface',
+    value: 'rgba(15, 23, 42, 0.55)',
+    darkValue: 'rgba(2, 6, 23, 0.75)',
+    description: 'Modal and dialog overlay scrim.',
+    aliases: ['overlay.scrim'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
+    id: 'color.state.error.background',
+    category: 'color',
+    role: 'background',
+    value: '#FEF2F2',
+    darkValue: '#2F0D0D',
+    description: 'Error toasts and validation banners.',
+    aliases: ['state.error.surface'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
+    id: 'color.state.error.border',
+    category: 'color',
+    role: 'border',
+    value: '#F87171',
+    darkValue: '#993131',
+    description: 'Error-focused control outlines.',
+    aliases: ['state.error.border'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
+    id: 'color.state.error.content',
+    category: 'color',
+    role: 'content',
+    value: '#991B1B',
+    darkValue: '#FECACA',
+    description: 'Error text and iconography.',
+    wcagRatio: 5.4,
+    aliases: ['state.error.text'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
+    id: 'color.state.success.background',
+    category: 'color',
+    role: 'background',
+    value: '#ECFDF5',
+    darkValue: '#032016',
+    description: 'Success toasts and confirmations.',
+    aliases: ['state.success.surface'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
+    id: 'color.state.success.border',
+    category: 'color',
+    role: 'border',
+    value: '#34D399',
+    darkValue: '#047857',
+    description: 'Success-focused border accents.',
+    aliases: ['state.success.border'],
+    status: 'approved',
+    version: '1.0.0',
+  },
+  {
+    id: 'color.state.success.content',
+    category: 'color',
+    role: 'content',
+    value: '#065F46',
+    darkValue: '#A7F3D0',
+    description: 'Success text and icons.',
+    wcagRatio: 5.1,
+    aliases: ['state.success.text'],
     status: 'approved',
     version: '1.0.0',
   },
@@ -266,4 +368,16 @@ export function getCssVariableName(tokenOrId: string | DesignToken): string {
 
 export function findTokenById(id: string): DesignToken | undefined {
   return designTokens.find((token) => token.id === id);
+}
+
+export function getCssVariableWithFallback(
+  tokenId: string,
+  fallback?: string,
+): string {
+  const token = findTokenById(tokenId);
+  const defaultValue = fallback ?? token?.value;
+  if (defaultValue) {
+    return `var(${getCssVariableName(tokenId)}, ${defaultValue})`;
+  }
+  return `var(${getCssVariableName(tokenId)})`;
 }
