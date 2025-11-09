@@ -9,7 +9,7 @@
     "url": "https://github.com/blockbuilders/mono.git"
   },
   "engines": {
-    "node": ">=20.11.0"
+    "node": ">=20.19.0"
   },
   "packageManager": "pnpm@10.20.0",
   "scripts": {

@@ -5,7 +5,7 @@ Auto-generated from all feature plans. Last updated: 2025-10-29
 ## Active Technologies
 - TypeScript (Node.js 20 LTS), Python 3.12 + Next.js 15 App Router, React 19, Supabase JavaScript client with Next.js auth helpers, FastAPI, Pydantic v2, planned Supabase Python/JWT tooling (002-supabase-email-auth)
 - Supabase Postgres (hosted) (002-supabase-email-auth)
-- TypeScript (Next.js 15 App Router, React 19) + Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 8 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3 (003-design-system-tokens)
+- TypeScript (Next.js 15 App Router, React 19) + Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 10 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3 (003-design-system-tokens)
 - N/A (tokens defined in JSON/TypeScript schema and emitted to CSS variables) (003-design-system-tokens)
 
 - TypeScript (Node.js 20 LTS) + Python 3.12 + Next.js 15 (React 19), Tailwind CSS, FastAPI, Pydantic v2, pnpm, uv (001-bootstrap-monorepo)
@@ -27,7 +27,7 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 TypeScript (Node.js 20 LTS) + Python 3.12: Follow standard conventions
 
 ## Recent Changes
-- 003-design-system-tokens: Added TypeScript (Next.js 15 App Router, React 19) + Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 8 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3
+- 003-design-system-tokens: Added TypeScript (Next.js 15 App Router, React 19) + Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 10 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3
 - 002-supabase-email-auth: Added TypeScript (Node.js 20 LTS), Python 3.12 + Next.js 15 App Router, React 19, Supabase JavaScript client with Next.js auth helpers, FastAPI, Pydantic v2, planned Supabase Python/JWT tooling
 
 - 001-bootstrap-monorepo: Added TypeScript (Node.js 20 LTS) + Python 3.12 + Next.js 15 (React 19), Tailwind CSS, FastAPI, Pydantic v2, pnpm, uv

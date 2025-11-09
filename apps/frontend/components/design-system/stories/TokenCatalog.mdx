@@ -1,0 +1,40 @@
+import { Meta, Canvas } from '@storybook/blocks';
+import { TokenGallery } from '../TokenGallery';
+import { Gallery } from './TokenCatalog.stories';
+
+<Meta
+  title="Design System/Tokens/Catalog"
+  component={TokenGallery}
+  parameters={{
+    layout: 'fullscreen',
+    a11y: {
+      config: {
+        rules: [
+          { id: 'color-contrast', enabled: true },
+          { id: 'duplicate-id-aria', enabled: true },
+        ],
+      },
+    },
+  }}
+/>
+
+# Token Catalog
+
+The token catalog exposes the canonical color, typography, spacing, radii, and shadow tokens shared across the Next.js app and Storybook. Values are generated from `apps/frontend/lib/design-system/tokens.ts` and emitted to CSS variables via `pnpm --filter @blockbuilders/frontend... run tokens:build`.
+
+## How to consume tokens
+
+1. Update token values in `apps/frontend/lib/design-system/tokens.ts` and rerun `pnpm --filter @blockbuilders/frontend... run tokens:build`.
+2. Tailwind picks up the generated CSS variables automatically so utilities like `bg-background-canvas` or `shadow-elevation-low` always reference the latest values.
+3. Components can also import helpers from `@/lib/design-system/tokens` for typed access or reference the CSS variables directly (e.g. `var(--color-action-primary)`).
+4. Storybook consumers should verify contrast tooling in the "Accessibility" panel before marking tokens as ready.
+
+## Accessibility guarantees
+
+- Foreground/action tokens record WCAG ratios ≥ 4.5:1 and the Storybook test runner audits the `Token Catalog` story automatically.
+- Dark-mode fallbacks mirror the light values to avoid blank tokens when the system preference toggles.
+- Token cards expose alias metadata so implementers can trace each value back to components and regression tests quickly.
+
+## Gallery
+
+<Canvas of={Gallery} withToolbar />

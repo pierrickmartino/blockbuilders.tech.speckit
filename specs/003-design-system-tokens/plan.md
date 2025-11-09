@@ -12,7 +12,7 @@ Create a shared design system inside the Next.js 15 frontend: centralize color/t
 ## Technical Context
 
 **Language/Version**: TypeScript (Next.js 15 App Router, React 19)  
-**Primary Dependencies**: Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 8 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3  
+**Primary Dependencies**: Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 10 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3  
 **Storage**: N/A (tokens defined in JSON/TypeScript schema and emitted to CSS variables)  
 **Testing**: Vitest + Testing Library (unit), Playwright + @axe-core/playwright (smoke/a11y), Storybook test-runner for accessibility regressions  
 **Target Platform**: Web (Next.js 15, evergreen browsers, SSR + RSC hybrid)  

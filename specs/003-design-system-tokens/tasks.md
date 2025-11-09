@@ -16,7 +16,7 @@
 
 **Purpose**: Core infrastructure that MUST be complete before any user story work begins.
 
-- [X] T003 Create Storybook base configuration for the Next.js frontend in configs/storybook/main.ts aligning with Storybook 8 builder settings.
+- [X] T003 Create Storybook base configuration for the Next.js frontend in configs/storybook/main.ts aligning with Storybook 10 builder settings.
 - [X] T004 Configure Storybook preview globals to load Tailwind styles and theme context in configs/storybook/preview.ts.
 - [X] T005 Register design system scripts (tokens:build, storybook, storybook:test) in apps/frontend/package.json to enable shared tooling.
 - [X] T006 Scaffold ThemeProvider shell with light/dark toggles in apps/frontend/components/design-system/ThemeProvider.tsx for later story-specific logic.
@@ -32,19 +32,19 @@
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T008 [P] [US1] Add failing Vitest spec validating token contrast metadata in apps/frontend/tests/design-system/tokens.spec.ts.
-- [ ] T009 [P] [US1] Add Storybook test-runner scenario auditing token accessibility in configs/storybook/tests/tokens.a11y.spec.ts.
+- [X] T008 [P] [US1] Add failing Vitest spec validating token contrast metadata in apps/frontend/tests/design-system/tokens.spec.ts.
+- [X] T009 [P] [US1] Add Storybook test-runner scenario auditing token accessibility in configs/storybook/tests/tokens.a11y.spec.ts.
 
 ### Implementation for User Story 1
 
-- [ ] T010 [P] [US1] Define typed token schema with accessibility metadata in apps/frontend/lib/design-system/tokens.ts.
-- [ ] T011 [US1] Implement token build script emitting CSS variables in apps/frontend/scripts/build-tokens.ts.
-- [ ] T012 [US1] Generate base token stylesheet consumed by Next.js in apps/frontend/styles/tokens.css.
-- [ ] T013 [US1] Extend Tailwind theme mappings to consume tokens in apps/frontend/tailwind.config.ts.
-- [ ] T014 [US1] Build token gallery component with contrast annotations in apps/frontend/components/design-system/TokenGallery.tsx.
-- [ ] T015 [US1] Document token usage in Storybook MDX at apps/frontend/components/design-system/stories/TokenCatalog.stories.mdx.
-- [ ] T016 [US1] Export token catalog entry point in apps/frontend/lib/design-system/index.ts.
-- [ ] T021 [US1] Record token gallery LCP/TTI metrics via Playwright trace review and log results in specs/003-design-system-tokens/checklists/performance.md.
+- [X] T010 [P] [US1] Define typed token schema with accessibility metadata in apps/frontend/lib/design-system/tokens.ts.
+- [X] T011 [US1] Implement token build script emitting CSS variables in apps/frontend/scripts/build-tokens.ts.
+- [X] T012 [US1] Generate base token stylesheet consumed by Next.js in apps/frontend/styles/tokens.css.
+- [X] T013 [US1] Extend Tailwind theme mappings to consume tokens in apps/frontend/tailwind.config.ts.
+- [X] T014 [US1] Build token gallery component with contrast annotations in apps/frontend/components/design-system/TokenGallery.tsx.
+- [X] T015 [US1] Document token usage in Storybook MDX at apps/frontend/components/design-system/stories/TokenCatalog.mdx.
+- [X] T016 [US1] Export token catalog entry point in apps/frontend/lib/design-system/index.ts.
+- [X] T021 [US1] Record token gallery LCP/TTI metrics via Playwright trace review and log results in specs/003-design-system-tokens/checklists/performance.md.
 
 **Checkpoint**: User Story 1 provides a fully testable token catalog with documented consumption patterns.
 

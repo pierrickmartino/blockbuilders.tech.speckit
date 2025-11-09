@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1.7
 
-FROM node:20.11-bullseye AS base
+FROM node:20.19-bullseye AS base
 
 ENV PNPM_HOME=/usr/local/share/pnpm
 ENV PATH="${PNPM_HOME}:${PATH}"

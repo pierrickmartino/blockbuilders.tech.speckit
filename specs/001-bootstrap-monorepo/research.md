@@ -3,7 +3,7 @@
 ## Decisions
 
 Decision: Standardize on Node.js 20 LTS for the Next.js workspace managed via pnpm  
-Rationale: Next.js 15 and React 19 target Node 18+, but Node 20 LTS aligns with current Vercel defaults, includes the latest V8 features required by Turbopack, and remains supported by pnpm without additional flags. Pinning Node 20.11+ avoids cross-platform inconsistencies and simplifies Docker base images.  
+Rationale: Next.js 15 and React 19 target Node 18+, but Node 20 LTS aligns with current Vercel defaults, includes the latest V8 features required by Turbopack, and remains supported by pnpm without additional flags. Pinning Node 20.19+ avoids cross-platform inconsistencies and simplifies Docker base images.  
 Alternatives considered: Node 18 LTS (kept for long-term support but lacks some V8 optimizations and would require future upgrade), Node 22 (too new for stable CI tooling and increases risk of ecosystem incompatibilities).
 
 Decision: Scaffold Next.js App Router with a global `app/layout.tsx` that wires Tailwind base styles and injects build metadata via server components  

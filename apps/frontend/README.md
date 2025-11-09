@@ -14,7 +14,7 @@ pnpm test:coverage --filter ./apps/frontend...
 pnpm test:e2e --filter ./apps/frontend... --project smoke
 ```
 
-All commands assume Node.js 20.11+ with `corepack enable` to expose pnpm 9.
+All commands assume Node.js 20.19+ with `corepack enable` to expose pnpm 9.
 
 ## Environment
 

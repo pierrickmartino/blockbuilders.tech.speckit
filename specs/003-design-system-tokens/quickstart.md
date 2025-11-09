@@ -1,9 +1,9 @@
 # Quickstart
 
 ## Prerequisites
-- Node.js 20.11+ and pnpm (per repo toolchain)
+- Node.js 20.19+ and pnpm (per repo toolchain)
 - uv (for backend tasks, required by repo setup script)
-- Storybook 8 telemetry opt-in handled by environment (`STORYBOOK_DISABLE_TELEMETRY=1`)
+- Storybook 10 telemetry opt-in handled by environment (`STORYBOOK_DISABLE_TELEMETRY=1`)
 
 ## Environment Setup
 1. Install dependencies: `pnpm install && uv sync`

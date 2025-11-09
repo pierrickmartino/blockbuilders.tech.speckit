@@ -16,7 +16,7 @@
 - Alternatives considered: Building components from scratch with Radix (slower, duplicates shadcn work) or adopting another UI kit like Chakra (diverges from mandated stack).
 
 ### Storybook Accessibility Coverage
-- Decision: Configure Storybook 8 with `@storybook/addon-a11y`, auto-generate token stories, and run `pnpm --filter @blockbuilders/frontend... storybook:test` in CI to execute axe-powered audits.
+- Decision: Configure Storybook 10 with `@storybook/addon-a11y`, auto-generate token stories, and run `pnpm --filter @blockbuilders/frontend... storybook:test` in CI to execute axe-powered audits.
 - Rationale: Provides automated evidence for AC1 while keeping token/component docs in a single workspace.
 - Alternatives considered: Manual a11y review only (non-repeatable) or switching to Ladle (would add unsupported tooling).
 

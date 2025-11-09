@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js 20.11+ (install via `fnm`, `nvm`, or Volta); pnpm 9.x globally (`corepack enable`)
+- Node.js 20.19+ (install via `fnm`, `nvm`, or Volta); pnpm 9.x globally (`corepack enable`)
 - Python 3.12 with [`uv`](https://github.com/astral-sh/uv) (`pip install uv`)
 - Docker Desktop (>= 4.33) or compatible runtime with Compose V2
 - Git 2.44+, make, and Playwright dependencies (`npx playwright install --with-deps`)
@@ -73,7 +73,7 @@ Run all gates before opening a PR to satisfy Constitution Principle I.
 
 ## Troubleshooting
 
-- **Node version errors**: Ensure `node --version` reports 20.11+; run `corepack enable pnpm`.
+- **Node version errors**: Ensure `node --version` reports 20.19+; run `corepack enable pnpm`.
 - **Playwright missing browsers**: Execute `pnpm test:e2e --filter ./apps/frontend... -- --install-deps`.
 - **Backend env validation failures**: Check `apps/backend/.env` matches `BaseSettings` schema described in `research.md`.
 - **Docker build cache misses**: Verify `COMPOSE_PROJECT_NAME` is consistent and pruning has not removed named volumes (`docker volume ls`).
