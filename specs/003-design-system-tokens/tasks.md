@@ -87,9 +87,9 @@
 
 **Purpose**: Quality, documentation, and CI follow-through once user stories land.
 
-- [ ] T043 [P] Add Storybook accessibility CI workflow for design system checks in .github/workflows/storybook-a11y.yml.
-- [ ] T044 Document adoption rollout guidelines in docs/design-system/adoption.md.
-- [ ] T045 Update quickstart commands for tokens and components in specs/003-design-system-tokens/quickstart.md.
+- [X] T043 [P] Add Storybook accessibility CI workflow for design system checks in .github/workflows/storybook-a11y.yml.
+- [X] T044 Document adoption rollout guidelines in docs/design-system/adoption.md.
+- [X] T045 Update quickstart commands for tokens and components in specs/003-design-system-tokens/quickstart.md.
 
 ---
 
