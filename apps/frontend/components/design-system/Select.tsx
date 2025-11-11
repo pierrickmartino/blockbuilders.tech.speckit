@@ -9,6 +9,8 @@ import type {
 import { cn } from '@/lib/cn';
 import { getCssVariableWithFallback } from '@/lib/design-system/tokens';
 
+type CSSVarStyle = CSSProperties & Record<`--${string}`, string>;
+
 export interface SelectOption {
   label: string;
   value: string;
@@ -23,6 +25,7 @@ export interface SelectProps
   options: SelectOption[];
   placeholder?: string;
   onValueChange?: (value: string) => void;
+  onChange?: SelectHTMLAttributes<HTMLSelectElement>['onChange'];
 }
 
 const selectSlots = {
@@ -43,6 +46,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       options,
       placeholder,
       onValueChange,
+      onChange,
       value,
       defaultValue,
       'aria-describedby': ariaDescribedBy,
@@ -58,7 +62,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       .filter(Boolean)
       .join(' ');
 
-    const selectStyle: CSSProperties & Record<string, string> = {
+    const selectStyle: CSSVarStyle = {
       ...(style as CSSProperties),
       '--ds-select-background': getCssVariableWithFallback(selectSlots.background),
       '--ds-select-border': getCssVariableWithFallback(selectSlots.border),
@@ -67,7 +71,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
       onValueChange?.(event.target.value);
-      rest.onChange?.(event);
+      onChange?.(event);
     };
 
     const controlProps =
