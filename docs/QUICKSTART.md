@@ -4,7 +4,7 @@ Follow this validated flow to bootstrap the mono-repo, exercise both services, a
 
 ## 1. Prerequisites
 
-- Node.js 20.11+ (`node --version`)
+- Node.js 20.19+ (`node --version`)
 - pnpm 9.x (`corepack enable pnpm`)
 - Python 3.12 with [`uv`](https://github.com/astral-sh/uv)
 - Docker Desktop ≥ 4.33 (Compose V2)

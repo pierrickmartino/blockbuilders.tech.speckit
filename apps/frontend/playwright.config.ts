@@ -63,10 +63,18 @@ export default defineConfig({
     },
     {
       name: 'auth',
-      testDir: './tests/e2e',
+      testDir: './tests/e2e/auth',
       metadata: {
         description:
           'Exercises Supabase email auth flows, accessibility gates, and password policy compliance',
+      },
+    },
+    {
+      name: 'design-system',
+      testDir: './tests/e2e/design-system',
+      metadata: {
+        description:
+          'Validates foundation components for accessibility, theming, and keyboard fallbacks',
       },
     },
   ],

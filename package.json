@@ -9,7 +9,7 @@
     "url": "https://github.com/blockbuilders/mono.git"
   },
   "engines": {
-    "node": ">=20.11.0"
+    "node": ">=20.19.0"
   },
   "packageManager": "pnpm@10.20.0",
   "scripts": {
@@ -26,5 +26,10 @@
     "test:frontend": "pnpm run test:coverage",
     "test:backend": "uv run --directory apps/backend pytest",
     "test:e2e": "node ./scripts/test-e2e.mjs"
+  },
+  "pnpm": {
+    "overrides": {
+      "webpack": "5.101.2"
+    }
   }
 }

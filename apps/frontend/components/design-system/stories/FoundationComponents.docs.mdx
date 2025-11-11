@@ -1,0 +1,40 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta
+  title="Design System/Docs/Foundation Components"
+  parameters={{
+    layout: 'fullscreen',
+    previewTabs: {
+      canvas: { hidden: false },
+      docs: { hidden: false },
+    },
+  }}
+/>
+
+# Foundation Components
+
+Buttons, Inputs, Selects, Modals, and Toasts pull directly from the token schema in `apps/frontend/lib/design-system/tokens.ts`. Every state (default, hover, focus, error, success) broadcasts which tokens it consumes through `data-slot-*` attributes so audits can trace values back to the catalog.
+
+## Token Mapping
+
+| Component | Slots | Tokens |
+|-----------|-------|--------|
+| Button (primary) | background, text, focus, progress | `color.action.primary`, `color.content.inverse`, `color.focus.ring` |
+| Button (secondary) | background, border | `color.action.secondary`, `color.border.emphasis` |
+| Input | background, border, focus, error | `color.surface.card`, `color.border.emphasis`, `color.focus.ring`, `color.state.error.border` |
+| Select | background, border, focus | `color.surface.card`, `color.border.emphasis`, `color.focus.ring` |
+| Modal | surface, border, overlay | `color.surface.card`, `color.border.subtle`, `color.overlay.scrim` |
+| Toast (success) | surface, border, text | `color.state.success.background`, `color.state.success.border`, `color.state.success.content` |
+
+## Accessibility Workflow
+
+1. **Storybook** – run `pnpm --filter @blockbuilders/frontend... run storybook:test` to execute axe audits against the `Foundation` story. The story covers light/dark themes via the toolbar control.
+2. **Unit tests** – `apps/frontend/tests/design-system/components/*.spec.tsx` assert that each control exposes the correct token identifiers for focus/error states.
+3. **Playwright** – `apps/frontend/tests/e2e/design-system/components-accessibility.spec.ts` opens the live playground, traps focus in the modal, and validates toast announcements. `theme-fallback.spec.ts` forces missing CSS variables and confirms the built-in fallbacks render legible colors.
+4. **Manual review** – log keyboard walkthroughs in `specs/003-design-system-tokens/checklists/accessibility.md` and capture visual parity evidence in `specs/003-design-system-tokens/checklists/visual-parity.md`.
+
+## Usage Notes
+
+- Wrap application surfaces with `<ThemeProvider>` so token variables stay in sync with Supabase-backed preferences.
+- Use `<ToastProvider>` whenever toasts need to announce status updates; the provider manages live regions automatically.
+- Token changes require rerunning `pnpm --filter @blockbuilders/frontend... run tokens:build` so Storybook and Next.js share the same CSS variables.

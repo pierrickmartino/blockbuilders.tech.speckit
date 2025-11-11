@@ -8,7 +8,10 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
-    include: ['tests/{unit,integration}/**/*.spec.ts'],
+    include: [
+      'tests/{unit,integration}/**/*.spec.ts',
+      'tests/design-system/**/*.spec.ts',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],

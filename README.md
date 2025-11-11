@@ -10,7 +10,7 @@ Mono-repo baseline housing a Next.js 15 frontend and FastAPI backend with shared
 
 ## Prerequisites
 
-Follow the detailed [quickstart guide](specs/001-bootstrap-monorepo/quickstart.md) to install Node.js 20.11+, pnpm, Python 3.12, uv, and Docker. Then bootstrap dependencies:
+Follow the detailed [quickstart guide](specs/001-bootstrap-monorepo/quickstart.md) to install Node.js 20.19+, pnpm, Python 3.12, uv, and Docker. Then bootstrap dependencies:
 
 ```bash
 pnpm install

@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import './globals.css';
 import { SupabaseSessionProvider } from '@/components/auth/SupabaseSessionProvider';
+import { ThemeProvider } from '@/components/design-system/ThemeProvider';
 import {
   SMOKE_FALLBACK_TEST_SUITE,
   loadBuildMetadata,
@@ -35,8 +36,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         className="min-h-screen bg-slate-50 text-slate-900 antialiased"
       >
         <SupabaseSessionProvider>
-          <div className="flex min-h-screen flex-col">
-            <header className="border-b border-slate-200 bg-white/75 backdrop-blur">
+          <ThemeProvider>
+            <div className="flex min-h-screen flex-col">
+              <header className="border-b border-slate-200 bg-white/75 backdrop-blur">
               <div className="mx-auto flex max-w-5xl flex-col gap-2 px-6 py-6 sm:flex-row sm:items-baseline sm:justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-widest text-slate-500">
@@ -87,13 +89,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
               </div>
             </header>
             <main className="flex-1">{children}</main>
-            <footer className="border-t border-slate-200 bg-white/60 py-4 text-center text-xs text-slate-500">
-              <p>
-                Node.js 20 • Next.js 15 • React 19 • Fast API Skeleton – generated{' '}
-                {snapshot.labels.timestamp}
-              </p>
-            </footer>
-          </div>
+              <footer className="border-t border-slate-200 bg-white/60 py-4 text-center text-xs text-slate-500">
+                <p>
+                  Node.js 20 • Next.js 15 • React 19 • Fast API Skeleton – generated{' '}
+                  {snapshot.labels.timestamp}
+                </p>
+              </footer>
+            </div>
+          </ThemeProvider>
         </SupabaseSessionProvider>
       </body>
     </html>

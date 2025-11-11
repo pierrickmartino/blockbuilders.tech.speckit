@@ -9,7 +9,7 @@ Establish a mono-repo baseline that hosts a Next.js 15 + Tailwind frontend and a
 
 ## Technical Context
 
-The workspace ships as a pnpm + uv mono-repo: Node.js 20.11 LTS powers the Next.js frontend while Python 3.12 powers the FastAPI backend. Docker Compose orchestrates both services with shared build metadata surfaced through the `shared/` tooling. Frontend runtime configuration is validated with Zod to satisfy Simplicity Over Speculation (leveraging a dependency already standard for the team), and backend settings rely on Pydantic v2. CI guardrails mirror local scripts so lint, type-check, and test evidence stay consistent across environments.
+The workspace ships as a pnpm + uv mono-repo: Node.js 20.19 LTS powers the Next.js frontend while Python 3.12 powers the FastAPI backend. Docker Compose orchestrates both services with shared build metadata surfaced through the `shared/` tooling. Frontend runtime configuration is validated with Zod to satisfy Simplicity Over Speculation (leveraging a dependency already standard for the team), and backend settings rely on Pydantic v2. CI guardrails mirror local scripts so lint, type-check, and test evidence stay consistent across environments.
 
 **Language/Version**: TypeScript (Node.js 20 LTS) + Python 3.12  
 **Primary Dependencies**: Next.js 15 (React 19), Tailwind CSS, FastAPI, Pydantic v2, pnpm, uv, Zod (frontend env loader)  

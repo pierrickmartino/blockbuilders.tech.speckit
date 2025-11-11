@@ -10,7 +10,7 @@
 
 - [X] T001 Create root workspace manifest with metadata and pnpm toolchain scripts in `package.json`
 - [X] T002 Declare workspace package locations for frontend and backend in `pnpm-workspace.yaml`
-- [X] T003 Pin Node.js 20.11 runtime for contributors in `.nvmrc`
+- [X] T003 Pin Node.js 20.19 runtime for contributors in `.nvmrc`
 
 ---
 

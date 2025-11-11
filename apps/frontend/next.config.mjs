@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isStorybook = Boolean(globalThis?.process?.env?.STORYBOOK);
+
 const config = {
   reactStrictMode: true,
   typedRoutes: true,
@@ -12,5 +14,10 @@ const config = {
     ignoreDuringBuilds: true,
   },
 };
+
+if (isStorybook) {
+  config.typedRoutes = false;
+  delete config.experimental?.optimizePackageImports;
+}
 
 export default config;

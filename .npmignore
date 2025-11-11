@@ -1,0 +1,31 @@
+# Node/TypeScript artefacts
+node_modules/
+dist/
+build/
+.next/
+out/
+*.tsbuildinfo
+
+# Tests and coverage
+coverage/
+playwright-report/
+**/test-results/
+
+# Logs and debug output
+*.log
+pnpm-debug.log*
+npm-debug.log*
+
+# Environment and tooling
+.env
+.env.*
+artifacts/
+Dockerfile.local
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
