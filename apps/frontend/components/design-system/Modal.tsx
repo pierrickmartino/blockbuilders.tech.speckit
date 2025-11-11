@@ -13,6 +13,8 @@ import { createPortal } from 'react-dom';
 import { cn } from '@/lib/cn';
 import { getCssVariableWithFallback } from '@/lib/design-system/tokens';
 
+type CSSVarStyle = CSSProperties & Record<`--${string}`, string>;
+
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
@@ -94,6 +96,9 @@ export const Modal = ({
 
       const first = currentFocusables[0];
       const last = currentFocusables[currentFocusables.length - 1];
+      if (!first || !last) {
+        return;
+      }
       if (event.shiftKey) {
         if (document.activeElement === first) {
           event.preventDefault();
@@ -121,8 +126,9 @@ export const Modal = ({
     if (typeof window !== 'undefined') {
       focusTimeout = window.setTimeout(() => {
         const currentFocusables = focusables();
-        if (currentFocusables.length > 0) {
-          currentFocusables[0].focus();
+        const first = currentFocusables[0];
+        if (first) {
+          first.focus();
         }
       }, 0);
     }
@@ -138,7 +144,7 @@ export const Modal = ({
     };
   }, [focusables, onOpenChange, open, previouslyFocusedElement]);
 
-  const styleWithVars: CSSProperties & Record<string, string> = useMemo(
+  const styleWithVars: CSSVarStyle = useMemo(
     () => ({
       '--ds-modal-surface': getCssVariableWithFallback('color.surface.card'),
       '--ds-modal-border': getCssVariableWithFallback('color.border.subtle'),

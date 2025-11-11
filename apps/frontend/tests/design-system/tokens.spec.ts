@@ -27,7 +27,10 @@ describe('design-system tokens', () => {
   });
 
   it('exposes CSS variable handles for each token', () => {
-    const [colorToken] = tokenCatalog.color;
+    const colorToken = tokenCatalog.color[0];
+    if (!colorToken) {
+      throw new Error('tokenCatalog.color is empty');
+    }
     expect(getCssVariableName(colorToken.id)).toMatch(/^--color-/);
   });
 

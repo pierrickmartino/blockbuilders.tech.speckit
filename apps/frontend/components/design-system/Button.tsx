@@ -7,6 +7,8 @@ import {
   getCssVariableWithFallback,
 } from '@/lib/design-system/tokens';
 
+type CSSVarStyle = CSSProperties & Record<`--${string}`, string>;
+
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
@@ -104,7 +106,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       progress: slots.progress,
     });
 
-    const styleWithVars: CSSProperties & Record<string, string> = {
+    const styleWithVars: CSSVarStyle = {
       ...(style as CSSProperties),
       '--ds-button-bg': getCssVariableWithFallback(slots.background),
       '--ds-button-text': getCssVariableWithFallback(slots.foreground),

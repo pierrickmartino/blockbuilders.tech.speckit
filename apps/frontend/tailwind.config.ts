@@ -6,7 +6,9 @@ import {
   type DesignToken,
 } from './lib/design-system/tokens';
 
-type NestedScale = Record<string, string | NestedScale>;
+interface NestedScale {
+  [key: string]: string | NestedScale;
+}
 
 const setNestedValue = (
   scale: NestedScale,

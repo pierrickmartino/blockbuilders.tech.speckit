@@ -5,6 +5,8 @@ import type { CSSProperties, InputHTMLAttributes } from 'react';
 import { cn } from '@/lib/cn';
 import { getCssVariableWithFallback } from '@/lib/design-system/tokens';
 
+type CSSVarStyle = CSSProperties & Record<`--${string}`, string>;
+
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   helperText?: string;
@@ -28,7 +30,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       .filter(Boolean)
       .join(' ');
 
-    const inputStyle: CSSProperties & Record<string, string> = {
+    const inputStyle: CSSVarStyle = {
       ...(style as CSSProperties),
       '--ds-input-background': getCssVariableWithFallback(slotAttributes.background),
       '--ds-input-border': getCssVariableWithFallback(slotAttributes.border),
