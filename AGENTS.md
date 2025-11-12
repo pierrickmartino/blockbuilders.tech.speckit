@@ -7,6 +7,8 @@ Auto-generated from all feature plans. Last updated: 2025-10-29
 - Supabase Postgres (hosted) (002-supabase-email-auth)
 - TypeScript (Next.js 15 App Router, React 19) + Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 10 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3 (003-design-system-tokens)
 - N/A (tokens defined in JSON/TypeScript schema and emitted to CSS variables) (003-design-system-tokens)
+- TypeScript (Node.js 20 LTS) for Next.js 15 App Router + React 19; Python 3.12 for FastAPI services + Next.js 15, React 19, Tailwind CSS 3.4, shadcn/ui, React Flow for canvas priming, Supabase JS client + auth helpers, FastAPI, Pydantic v2, Datadog Dashboards + event forwarder (004-onboarding-checklist)
+- Supabase Postgres (checklist state, template selections, overrides) with Datadog metrics fed from the Supabase event forwarder for funnel dashboards (004-onboarding-checklist)
 
 - TypeScript (Node.js 20 LTS) + Python 3.12 + Next.js 15 (React 19), Tailwind CSS, FastAPI, Pydantic v2, pnpm, uv (001-bootstrap-monorepo)
 
@@ -27,10 +29,10 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 TypeScript (Node.js 20 LTS) + Python 3.12: Follow standard conventions
 
 ## Recent Changes
+- 004-onboarding-checklist: Added TypeScript (Node.js 20 LTS) for Next.js 15 App Router + React 19; Python 3.12 for FastAPI services + Next.js 15, React 19, Tailwind CSS 3.4, shadcn/ui, React Flow for canvas priming, Supabase JS client + auth helpers, FastAPI, Pydantic v2, Datadog Dashboards + event forwarder
 - 003-design-system-tokens: Added TypeScript (Next.js 15 App Router, React 19) + Tailwind CSS 3.4, shadcn/ui (Radix primitives), Storybook 10 with @storybook/addon-a11y, Supabase client (existing auth plumbing), Zod 3
 - 002-supabase-email-auth: Added TypeScript (Node.js 20 LTS), Python 3.12 + Next.js 15 App Router, React 19, Supabase JavaScript client with Next.js auth helpers, FastAPI, Pydantic v2, planned Supabase Python/JWT tooling
 
-- 001-bootstrap-monorepo: Added TypeScript (Node.js 20 LTS) + Python 3.12 + Next.js 15 (React 19), Tailwind CSS, FastAPI, Pydantic v2, pnpm, uv
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
