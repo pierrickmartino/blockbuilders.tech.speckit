@@ -21,7 +21,7 @@ Acceptance Criteria:
 	•	AC2: RLS prevents cross-tenant reads/writes in staging; automated tests validate policies.
 	•	AC3 : Auth events captured in audit log table and visible in admin console.
 
-Title: 003-Design System & Tokens
+**Title: 003-Design System & Tokens**
 Why: Ensure accessible, consistent UI and faster delivery.
 Scope:
 	•	Frontend: Set design tokens (color/typography/spacing), base components (Button, Input, Select, Modal, Toast), dark mode, WCAG AA defaults.
@@ -32,7 +32,7 @@ Acceptance Criteria:
 	•	AC2: Visual regression job runs in CI and fails on diffs above threshold.
 	•	AC3 : Keyboard navigation and focus states meet WCAG AA on core components.
 
-Title: Onboarding & First-Run Checklist
+Title: 004-Onboarding & First-Run Checklist
 Why: Drive time-to-first-backtest under 15 minutes.
 Scope:
 	•	Frontend: Guided checklist, progress tracker, starter template selection, inline disclosures.
