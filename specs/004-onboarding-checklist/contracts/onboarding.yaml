@@ -1,49 +1,28 @@
 openapi: 3.1.0
 info:
-  title: Onboarding & First-Run Checklist API
-  version: 1.0.0
-  description: REST contracts for checklist progress, template priming, telemetry, and funnel analytics.
+  title: Onboarding Checklist API
+  version: 0.1.0
 servers:
-  - url: https://api.blockbuilders.tech
-    description: Production
-  - url: https://staging.api.blockbuilders.tech
-    description: Staging
-security:
-  - supabaseAuth: []
+  - url: /api
 paths:
   /onboarding/checklist:
     get:
-      summary: Fetch the ordered checklist definition for the authenticated user/workspace.
-      operationId: getChecklist
-      parameters:
-        - in: query
-          name: workspaceId
-          schema:
-            type: string
-            format: uuid
-          required: true
-        - in: query
-          name: version
-          schema:
-            type: integer
-          required: false
+      summary: Fetch active checklist for current user
+      tags: [Checklist]
       responses:
         '200':
-          description: Checklist definition with user progress snapshot.
+          description: Checklist payload with per-step progress
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChecklistResponse'
-        '404':
-          description: Checklist not found for the workspace.
   /onboarding/steps/{stepId}/status:
     post:
-      summary: Update the status of a checklist step (complete, skip, acknowledge).
-      operationId: updateStepStatus
+      summary: Update progress for a checklist step
+      tags: [Checklist]
       parameters:
-        - $ref: '#/components/parameters/WorkspaceId'
-        - name: stepId
-          in: path
+        - in: path
+          name: stepId
           required: true
           schema:
             type: string
@@ -52,280 +31,191 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StepStatusUpdate'
+              $ref: '#/components/schemas/StepStatusRequest'
       responses:
         '200':
-          description: Step state after mutation.
+          description: Updated step record
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChecklistStepProgress'
         '409':
-          description: Ordering or acknowledgement rules violated.
+          description: Missing disclosure acknowledgement or template edit
   /onboarding/templates/{templateId}/select:
     post:
-      summary: Select a starter template and prime the React Flow canvas.
-      operationId: selectTemplate
+      summary: Prime the strategy canvas from a template and persist selection
+      tags: [Templates]
       parameters:
-        - $ref: '#/components/parameters/WorkspaceId'
-        - name: templateId
-          in: path
+        - in: path
+          name: templateId
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TemplateSelectionRequest'
+              $ref: '#/components/schemas/TemplateSelectRequest'
       responses:
         '201':
-          description: Template selection persisted and primed draft returned.
+          description: Draft strategy created and checklist step advanced
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TemplateSelectionResponse'
-        '422':
-          description: Template unavailable or missing disclosures.
-  /onboarding/events:
+                $ref: '#/components/schemas/TemplateSelectResponse'
+  /onboarding/overrides/mark-as-done:
     post:
-      summary: Record telemetry events for checklist interactions.
-      operationId: ingestOnboardingEvents
+      summary: Support-triggered override that marks checklist complete for user/workspace
+      tags: [Overrides]
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/OnboardingEvent'
+              $ref: '#/components/schemas/OverrideRequest'
       responses:
         '202':
-          description: Events accepted for processing.
-  /analytics/onboarding-funnel:
-    get:
-      summary: Retrieve funnel metrics aggregated by cohort/step.
-      operationId: getOnboardingFunnel
-      parameters:
-        - name: cohort
-          in: query
-          schema:
-            type: string
-          description: Cohort filter (e.g., channel:paid, plan:pro).
-        - name: dateRangeStart
-          in: query
-          required: true
-          schema:
-            type: string
-            format: date
-        - name: dateRangeEnd
-          in: query
-          required: true
-          schema:
-            type: string
-            format: date
-        - name: groupBy
-          in: query
-          schema:
-            type: string
-            enum: [cohort, step]
-            default: step
+          description: Override accepted and audited
+  /onboarding/events:
+    post:
+      summary: Record onboarding telemetry server-side (used by frontend Server Actions)
+      tags: [Telemetry]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelemetryEvent'
       responses:
-        '200':
-          description: Funnel metrics data set powering dashboards.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/FunnelMetric'
+        '202':
+          description: Event enqueued for Supabase→Datadog forwarder
 components:
-  securitySchemes:
-    supabaseAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-  parameters:
-    WorkspaceId:
-      name: workspaceId
-      in: query
-      required: true
-      schema:
-        type: string
-        format: uuid
   schemas:
     ChecklistResponse:
       type: object
-      properties:
-        checklist:
-          $ref: '#/components/schemas/OnboardingChecklist'
-        progress:
-          type: array
-          items:
-            $ref: '#/components/schemas/ChecklistStepProgress'
-    OnboardingChecklist:
-      type: object
-      required: [checklistId, version, title, steps]
       properties:
         checklistId:
           type: string
           format: uuid
         version:
           type: integer
-        title:
-          type: string
         steps:
           type: array
           items:
             $ref: '#/components/schemas/ChecklistStep'
     ChecklistStep:
       type: object
-      required: [stepId, sequence, title, cta, requiresAck]
       properties:
         stepId:
           type: string
-        sequence:
-          type: integer
         title:
           type: string
         description:
           type: string
-        disclosure:
-          type: string
-        cta:
-          type: string
-          enum: [connect_data, select_template, run_backtest, acknowledge]
-        requiresAck:
+        requiresDisclosure:
           type: boolean
-        templateIds:
-          type: array
-          items:
-            type: string
-            format: uuid
-        completionRules:
+        requiresTemplateEdit:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/StepStatus'
+        disclosure:
           type: object
+          nullable: true
+          properties:
+            text:
+              type: string
+            acknowledgementToken:
+              type: string
+    StepStatus:
+      type: string
+      enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+    StepStatusRequest:
+      type: object
+      required: [status, acknowledgementToken, templateDiff]
+      properties:
+        status:
+          $ref: '#/components/schemas/StepStatus'
+        acknowledgementToken:
+          type: string
+          nullable: true
+        templateDiff:
+          type: object
+          additionalProperties: true
+          description: Must contain ≥1 edited parameter for template step
     ChecklistStepProgress:
       type: object
-      required: [stepId, status, actor]
       properties:
+        progressId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        workspaceId:
+          type: string
         stepId:
           type: string
         status:
-          type: string
-          enum: [not_started, in_progress, completed, skipped_manual]
-        actor:
-          type: string
-          enum: [user, system, support_override]
-        acknowledgedAt:
-          type: string
-          format: date-time
+          $ref: '#/components/schemas/StepStatus'
         completedAt:
           type: string
           format: date-time
-        metadata:
-          type: object
-    StepStatusUpdate:
+    TemplateSelectRequest:
       type: object
-      required: [status]
+      required: [parameterChanges]
       properties:
-        status:
+        parameterChanges:
+          type: object
+          minProperties: 1
+        draftName:
           type: string
-          enum: [in_progress, completed, skipped_manual]
-        acknowledgement:
-          type: boolean
-        templateId:
+        canvasContext:
+          type: object
+          additionalProperties: true
+    TemplateSelectResponse:
+      type: object
+      properties:
+        draftStrategyId:
           type: string
-          format: uuid
-        actor:
+        checklistStep:
+          $ref: '#/components/schemas/ChecklistStepProgress'
+    OverrideRequest:
+      type: object
+      required: [userId, workspaceId, reason]
+      properties:
+        userId:
           type: string
-          enum: [user, support_override]
+        workspaceId:
+          type: string
         reason:
           type: string
-    TemplateSelectionRequest:
+        actorId:
+          type: string
+        actorRole:
+          type: string
+          enum: [teammate]
+    TelemetryEvent:
       type: object
-      required: [sessionId]
-      properties:
-        sessionId:
-          type: string
-        checklistId:
-          type: string
-          format: uuid
-        stepId:
-          type: string
-        version:
-          type: integer
-    TemplateSelectionResponse:
-      type: object
-      properties:
-        selectionId:
-          type: string
-          format: uuid
-        primedCanvasId:
-          type: string
-          format: uuid
-        defaultDraftName:
-          type: string
-        nodes:
-          type: array
-          items: { type: object }
-        edges:
-          type: array
-          items: { type: object }
-    OnboardingEvent:
-      type: object
-      required: [eventType, timestamp, userId, workspaceId, sessionId]
+      required: [eventType, stepId]
       properties:
         eventType:
           type: string
-          enum: [checklist_viewed, step_start, step_complete, template_selected, template_primed, disclosure_ack, backtest_run, override_applied]
-        timestamp:
-          type: string
-          format: date-time
-        userId:
-          type: string
-          format: uuid
-        workspaceId:
-          type: string
-          format: uuid
-        sessionId:
-          type: string
+          enum: [viewed, step_start, step_complete, template_selected, disclosure_ack, override]
         stepId:
           type: string
         templateId:
           type: string
-          format: uuid
-        cohort:
+          nullable: true
+        metadata:
           type: object
+          additionalProperties: true
+        occurredAt:
+          type: string
+          format: date-time
         clientContext:
           type: object
-        latencyMs:
-          type: integer
-        errorReason:
-          type: string
-    FunnelMetric:
-      type: object
-      properties:
-        stepId:
-          type: string
-        cohortKey:
-          type: string
-        viewCount:
-          type: integer
-        startCount:
-          type: integer
-        completeCount:
-          type: integer
-        conversionRate:
-          type: number
-        medianTimeSec:
-          type: number
-        dropOffPct:
-          type: number
-        dateBucket:
-          type: string
-          format: date
+          properties:
+            sessionId:
+              type: string
+            userAgent:
+              type: string

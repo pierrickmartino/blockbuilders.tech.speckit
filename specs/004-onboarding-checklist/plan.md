@@ -1,44 +1,33 @@
-# Implementation Plan: Onboarding & First-Run Checklist
+# Implementation Plan: 004-onboarding-checklist
 
 **Branch**: `004-onboarding-checklist` | **Date**: 2025-11-12 | **Spec**: `/specs/004-onboarding-checklist/spec.md`
 **Input**: Feature specification from `/specs/004-onboarding-checklist/spec.md`
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
-
 ## Summary
 
-Guide net-new strategy builders through a four-step onboarding checklist whose per-user progress persists across sessions, primes the React Flow-based strategy canvas with curated starter templates, and emits rich telemetry plus dashboards so growth teams can monitor drop-offs by cohort. Frontend work extends the existing Next.js 15 + React 19 + Tailwind CSS + shadcn/ui stack, while backend FastAPI + Supabase services persist checklist state, expose onboarding APIs, and ship analytics schemas/alerts.
+Deliver a four-step onboarding checklist that persistently guides first-time users through disclosures, data connection, starter template priming, and first backtest execution. The frontend remains on the approved stack (Next.js 15 App Router, React 19, Tailwind CSS 3.4, shadcn/ui) and uses React Flow to prime the strategy canvas immediately after a template is selected. Supabase Postgres stores onboarding state and telemetry, while a FastAPI service (Python 3.12) enforces checklist versioning, overrides, and Datadog forwarding so resets and analytics stay consistent with FR-002 through FR-009.
 
 ## Technical Context
 
-<!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
--->
-
-**Language/Version**: TypeScript (Node.js 20 LTS) for Next.js 15 App Router + React 19; Python 3.12 for FastAPI services  
-**Primary Dependencies**: Next.js 15, React 19, Tailwind CSS 3.4, shadcn/ui, React Flow for canvas priming, Supabase JS client + auth helpers, FastAPI, Pydantic v2, Datadog Dashboards + event forwarder  
-**Storage**: Supabase Postgres (checklist state, template selections, overrides) with Datadog metrics fed from the Supabase event forwarder for funnel dashboards  
-**Testing**: `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, Playwright accessibility/e2e suites, `ruff check`, `uv run pytest`, analytics contract tests in CI  
-**Target Platform**: Web app served via Next.js 15 (App Router + React Server Components) with Supabase edge functions/APIs  
-**Project Type**: Web + service monorepo (apps/frontend, apps/backend)  
-**Performance Goals**: Checklist visible ≤5 s after first load, adds <1 s to first meaningful paint, TTI ≤2 s, LCP ≤2.5 s, onboarding API p95 ≤200 ms, median time from first checklist view to backtest ≤15 min, dashboard filter recalculation ≤2 s  
-**Constraints**: WCAG 2.2 AA compliance (focus trap, screen reader announcements), telemetry batching must not block UI threads, per-user checklist events must be idempotent with audit logs, React Flow integration must respect existing bundle budgets  
-**Scale/Scope**: Impacts 90% of new workspaces monthly (thousands of users), ≥70% of template selectors must run a backtest without validation errors, dashboards must support cohorts (plan type, acquisition channel, signup month)
+**Language/Version**: TypeScript on Node.js 20 (Next.js 15 App Router, React 19) plus Python 3.12 (FastAPI service tier).  
+**Primary Dependencies**: Tailwind CSS 3.4 tokens, shadcn/ui primitives, React Flow for canvas priming, Supabase JS client + auth helpers, Supabase Postgres schemas, FastAPI + Pydantic v2, Datadog forwarder, Vitest/Playwright, Ruff/Pytest.  
+**Storage**: Supabase Postgres (onboarding checklist definitions, per-user progress, template selections, telemetry queues).  
+**Testing**: `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm test:e2e`, `pnpm test:a11y`, `ruff check`, `uv run pytest`, contract tests generated from `/specs/004-onboarding-checklist/contracts/onboarding.yaml`.  
+**Target Platform**: Web (Next.js 15 app served via Vercel/Turbopack) plus containerized FastAPI running on Linux with Supabase connectivity.  
+**Project Type**: Web + backend service (apps/frontend + apps/backend monorepo structure).  
+**Performance Goals**: Checklist modal visible ≤1 s after dashboard load, page-level TTI ≤2 s and LCP ≤2.5 s, onboarding API p95 latency ≤200 ms, telemetry fan-out to Datadog ≤60 s.  
+**Constraints**: Per-user progress isolation even inside shared workspaces, disclosure acknowledgement must precede completion, template steps require parameter edits + draft saves, checklist definition changes trigger atomic resets, React Flow canvas integration must reuse existing strategy draft pipeline without new core dependencies.  
+**Scale/Scope**: All new workspaces and first-run teammates (~10k monthly activations) with multi-device persistence and Datadog dashboards sourcing funnel metrics.
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+- **Code Quality Without Compromise**: Frontend changes run `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, `pnpm test:e2e`, and `pnpm test:a11y`; backend work runs `ruff check`, `uv run pytest`, and OpenAPI contract verification. CI must stay green before merge, with reviewers confirming evidence.  
+- **Simplicity Over Speculation**: All deliverables map directly to FR-001–FR-009 (UI checklist, Supabase persistence, template priming via React Flow, telemetry forwarder). No new third-party dependencies beyond React Flow (already approved requirement) and existing Supabase/Datadog plumbing. Any future template variants defer until new specs demand them.  
+- **Test Evidence First**: Write failing Vitest unit tests for checklist reducer/state machine, Playwright e2e coverage for resume + overrides, axe-based accessibility tests for modal focus, and Pytest contract tests for version reset + telemetry endpoints before implementation; maintain ≥80 % coverage per constitution.  
+- **Consistent Experience Every Time**: Use shared Tailwind tokens + shadcn/ui modal/stepper primitives, adhere to `claude-nextjs-15.md` focus-management guidance, and document WCAG 2.2 AA acceptance checks (focus trap, SR announcements, keyboard navigation) linked to FR-001/FR-008 before build.  
+- **Performance and Reliability Budgets**: Track Next.js performance budgets (TTI ≤2 s, LCP ≤2.5 s) via Web Vitals CI, assert checklist render cost ≤1 s via React Profiler, enforce FastAPI p95 ≤200 ms with load tests, and validate Supabase→Datadog delivery under 60 s with forwarder telemetry.
 
-- **Code Quality Without Compromise**: Frontend slices must pass `pnpm lint --max-warnings 0`, `pnpm type-check`, `pnpm test:coverage`, and Playwright visual/axe suites; backend FastAPI endpoints must pass `ruff check`, `uv run pytest`, and API contract tests before review. Peer review confirms gates plus security scans before merge.
-- **Simplicity Over Speculation**: Scope maps to FR-001–FR-010 only: checklist UI + persistence (FR-001/002/003/007/008), starter template priming with canvas integration (FR-004/005), telemetry schema + dashboards (FR-006/009/010). Any additional steps, templates, or analytics views require a governance exception.
-- **Test Evidence First**: Write failing tests ahead of implementation—unit tests for checklist reducers/state machine, Supabase persistence + override logic, API contract tests for onboarding endpoints, Playwright flows for template selection + accessibility, analytics schema contract tests. Maintain ≥80% coverage via vitest + pytest reporting in CI.
-- **Consistent Experience Every Time**: Use Tailwind tokens, shadcn/ui primitives, and React Flow inside accessible wrappers per `claude-nextjs-15.md`. Validate WCAG 2.2 AA via axe scans, keyboard navigation tests, and screen-reader verification of progress announcements.
-- **Performance and Reliability Budgets**: Enforce ≤2 s TTI, ≤2.5 s LCP, checklist render adds <1 s to first meaningful paint, onboarding APIs ≤200 ms p95, telemetry batching ≤50 ms. Validate via Lighthouse CI, Datadog dashboards (event volume drop alerts >20%), and synthetic API load tests.
-
-**Gate Status (Pre-Design)**: PASS — no constitution violations identified; proceeding to Phase 1 artifacts.
-**Gate Status (Post-Design, 2025-11-12)**: PASS — research, data-model, contracts, and quickstart artifacts uphold all five principles without new exceptions.
+**Post-Design Revalidation (2025-11-12)**: Phase 0 research decisions and Phase 1 artifacts (data-model, contracts, quickstart) confirm all five constitutional gates remain satisfied; no exceptions requested.
 
 ## Project Structure
 
@@ -46,47 +35,41 @@ Guide net-new strategy builders through a four-step onboarding checklist whose p
 
 ```text
 specs/004-onboarding-checklist/
-├── plan.md              # Implementation plan (updated this run)
-├── research.md          # Phase 0 artifact (completed)
-├── data-model.md        # Phase 1 artifact (completed)
-├── quickstart.md        # Phase 1 artifact (completed)
-├── contracts/           # Phase 1 API contracts (includes onboarding.yaml)
-└── tasks.md             # Phase 2 artifact produced by /speckit.tasks (not part of this run)
+├── plan.md          # Implementation plan (this file)
+├── research.md      # Phase 0 research decisions
+├── data-model.md    # Phase 1 entity definitions
+├── quickstart.md    # Phase 1 developer bootstrap
+├── contracts/
+│   └── onboarding.yaml
+├── checklists/      # UX flows, annotations, template copy
+└── tasks.md         # Generated during Phase 2 (/speckit.tasks)
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
 apps/
 ├── frontend/
-│   ├── app/                # Next.js 15 routes (App Router)
-│   ├── components/         # Shared React 19 components + shadcn/ui wrappers
-│   ├── lib/                # Client/server utilities, Supabase helpers
-│   ├── styles/             # Tailwind tokens + generated CSS vars
-│   └── tests/              # Playwright + vitest suites
-└── backend/
-    ├── app/                # FastAPI routers, services, Pydantic models
-    ├── tests/              # Pytest suites (unit/integration)
-    └── uv.lock / pyproject # Python dependency manifests
+│   ├── src/app/(dashboard)/onboarding/        # Checklist routes + modal shell
+│   ├── src/app/(dashboard)/templates/         # Template chooser + React Flow canvas bridge
+│   ├── src/components/checklist/              # Stepper, disclosure panel, progress tracker
+│   └── tests/                                 # Vitest + Playwright specs
+├── backend/
+│   ├── app/api/onboarding/                    # FastAPI routers + Pydantic models
+│   ├── app/services/checklist_reset.py        # Version + override orchestration
+│   ├── app/services/telemetry_forwarder.py    # Supabase→Datadog bridge
+│   └── tests/                                 # Pytest + contract fixtures
+shared/
+├── supabase/                                  # SQL migrations + RPC wrappers
+└── ui/                                        # shadcn/ui tokens + Tailwind config
 
-shared/                     # Cross-cutting packages/utilities consumed by apps
-scripts/                    # Automation (setup-plan, agent context updates, etc.)
-specs/004-onboarding-checklist/  # Feature documentation directory
+scripts/
+├── verify-forwarder.sh                        # Datadog telemetry validation
+└── seed-onboarding.ts                         # Seed templates + checklist steps
 ```
 
-**Structure Decision**: Continue delivering within the dual-app monorepo so checklist UI + React Flow workship lives under `apps/frontend` and onboarding APIs/telemetry handling live under `apps/backend`, reusing `/shared` utilities for common types.
+**Structure Decision**: Reuse the existing monorepo split under `apps/frontend` (Next.js 15) and `apps/backend` (FastAPI) so onboarding UI, API, and telemetry logic live beside their respective vertical slices while shared migrations/utilities remain under `shared/`.
 
 ## Complexity Tracking
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
-
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+No constitution violations or additional complexity beyond the approved stack were identified for this iteration.

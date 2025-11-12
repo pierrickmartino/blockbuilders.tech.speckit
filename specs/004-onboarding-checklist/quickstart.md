@@ -1,33 +1,30 @@
-# Quickstart – Onboarding & First-Run Checklist
+# Quickstart — 004 Onboarding & First-Run Checklist
 
-1. **Checkout the feature branch**
-   ```bash
-   git fetch origin 004-onboarding-checklist && git checkout 004-onboarding-checklist
-   ```
-   Install deps via `pnpm install` (root) and `uv sync` inside `apps/backend` if environments changed.
+## Prerequisites
+1. Node.js 20 LTS + `pnpm@9` installed.
+2. Python 3.12 with `uv` and `poetry` plugins enabled.
+3. Supabase service key + anon key in `.env.local` and `apps/backend/.env`.
+4. Datadog API + app keys configured for the event forwarder tests.
 
-2. **Seed checklist + template fixtures**
-   ```bash
-   pnpm --filter @blockbuilders/frontend run db:seed onboarding-checklist
-   uv run python apps/backend/app/scripts/seed_onboarding.py
-   ```
-   Seeds create `onboarding_checklists`, `checklist_step_progress` defaults for test users, and three starter templates with React Flow node JSON.
+## Setup
+```bash
+pnpm install
+uv sync --project apps/backend
+```
 
-3. **Run the dev stack**
-   ```bash
-   pnpm --filter @blockbuilders/frontend dev
-   uv run fastapi dev apps/backend/app/main.py
-   ```
-   Frontend auto-loads the checklist modal; backend exposes `/onboarding` and `/analytics` endpoints for local data persistence.
+## Running the Feature Locally
+1. **Start Supabase/Postgres** via `docker compose up supabase` (see `/configs/supabase/docker-compose.yml`).
+2. **Backend**: `cd apps/backend && uv run fastapi dev app/main.py`.
+3. **Frontend**: `cd apps/frontend && pnpm dev` — confirm checklist modal loads at `/dashboard` for seeded user `newbie@example.com` and selecting "Use template" opens the React Flow canvas with primed nodes/edges.
+4. Enable feature flag `onboarding_checklist_v1` in Supabase `feature_flags` table for your workspace.
 
-4. **Verify checklist + template flow**
-   - Sign in with a fresh Supabase user, confirm four ordered steps render within 5 s.
-   - Complete a disclosure step (modal requires acknowledgement) and refresh to ensure persistence.
-   - Hit "Use template" → React Flow canvas should open with populated nodes/edges and immediately runnable draft.
+## Testing Workflow
+1. Frontend unit + integration: `cd apps/frontend && pnpm test` (Vitest) followed by `pnpm test:e2e` (Playwright) to cover step order, template edits, overrides, and React Flow canvas hydration after template selection.
+2. Backend quality gates: `cd apps/backend && ruff check && uv run pytest tests` (includes contract suite verifying version resets + telemetry persistence).
+3. Accessibility: `pnpm test:a11y` from repo root to run axe CI against the checklist modal.
+4. Telemetry pipeline: Run `scripts/verify-forwarder.sh onboarding` to assert Supabase events reach Datadog with cohort tags.
 
-5. **Validate telemetry + dashboards**
-   ```bash
-   pnpm --filter @blockbuilders/frontend test:onboarding-checklist
-   uv run pytest apps/backend/tests/test_onboarding_events.py
-   ```
-   Ensure Datadog forwarder receives events (check local mock logs) and synthetic data populates the `FunnelMetricSnapshot` view for analytics stakeholders.
+## Deployment Checklist
+- Promote database migrations adding `checklist_version`, `template_diff`, and `override_reason` columns.
+- Run `pnpm build` (frontend) and `uv run python scripts/export_openapi.py` (backend) prior to merge.
+- Update Datadog monitors `onboarding-checklist-latency` and `onboarding-forwarder-errors` with new tags.
