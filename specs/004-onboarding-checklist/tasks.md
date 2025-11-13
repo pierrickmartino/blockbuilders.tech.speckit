@@ -62,7 +62,7 @@
 
 - [ ] T010 [P] [US1] Implement contract tests for `GET /onboarding/checklist` and `POST /onboarding/steps/{stepId}/status` in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/contracts/test_checklist_progress.py` using onboarding.yaml schemas.
 - [ ] T011 [P] [US1] Add Vitest reducer/state-machine tests covering dismissal, resume, and disclosure gating in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/__tests__/checklist-state.test.ts`.
-- [ ] T012 [P] [US1] Create Playwright journey verifying multi-session persistence, resume entry point, and focus restoration in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/onboarding-checklist.spec.ts`.
+- [ ] T012 [P] [US1] Create Playwright journey verifying multi-session persistence, resume entry point, dual-confirmation override flow (including pending-state clearance after a backtest), and focus restoration in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/onboarding-checklist.spec.ts`.
 - [ ] T013 [P] [US1] Add axe + keyboard accessibility spec for the checklist modal in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/a11y/onboarding-checklist.a11y.ts` to enforce FR-008.
 
 ### Implementation for User Story 1
@@ -70,10 +70,10 @@
 - [ ] T014 [US1] Implement FastAPI handlers for checklist fetch/update/events in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/api/onboarding/router.py`, returning versioned payloads and HTTP 409 errors when disclosures/template diffs are missing.
 - [ ] T015 [US1] Build checklist orchestration + reset logic in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/services/checklist_service.py` so per-user `ChecklistStepProgress` rows enforce ordering, overrides, and version resets.
 - [ ] T016 [US1] Create Next.js Server Actions + Supabase auth helpers for checklist load/update/event mutations in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/app/(dashboard)/onboarding/actions.ts` (no client secrets).
-- [ ] T017 [US1] Implement shadcn-based `ChecklistModal`, `StepProgressTracker`, and `DisclosurePanel` components in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/ChecklistModal.tsx` (plus colocated components) with focus trap + screen reader announcements.
+- [ ] T017 [US1] Implement shadcn-based `ChecklistModal`, `StepProgressTracker`, and `DisclosurePanel` components in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/ChecklistModal.tsx` (plus colocated components) with focus trap + screen reader announcements, including the dual-step override confirmation UI and copy explaining activation-metric impact.
 - [ ] T018 [US1] Add persistent “Resume onboarding” entry point and dismissal state handling to `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/app/(dashboard)/layout.tsx`, ensuring modal re-opens to the next incomplete step.
-- [ ] T019 [US1] Implement Mark-as-done override API + audit logging in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/api/onboarding/overrides.py`, persisting actor + reason fields to `ChecklistStepProgress` and `OnboardingEvent`.
-- [ ] T020 [US1] Emit onboarding telemetry events (`viewed`, `step_start`, `step_complete`, `disclosure_ack`, `override`) via `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/lib/analytics/onboarding.ts` and ensure backend forwarding through `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/services/telemetry_forwarder.py`.
+- [ ] T019 [US1] Implement Mark-as-done override API + audit logging in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/api/onboarding/overrides.py`, persisting actor + reason fields, enforcing dual confirmation tokens, writing `override_pending` state, and emitting structured events to `ChecklistStepProgress` + `OnboardingEvent`.
+- [ ] T020 [US1] Emit onboarding telemetry events (`viewed`, `step_start`, `step_complete`, `disclosure_ack`, `override`, `override_pending_cleared`) via `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/lib/analytics/onboarding.ts` and ensure backend forwarding through `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/services/telemetry_forwarder.py`.
 - [ ] T021 [US1] Extend `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/seed-onboarding.ts` and `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/shared/supabase/seed/onboarding_checklist.sql` to publish localized disclosure copy and enforce version-hash resets when step definitions change.
 
 **Checkpoint**: Guided checklist is production-ready, accessible, auditable, and independently testable—qualifies as MVP.
@@ -90,14 +90,14 @@
 
 - [ ] T022 [P] [US2] Implement Pytest contract tests for `POST /onboarding/templates/{templateId}/select` (parameter diff guard + draft id response) in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/contracts/test_template_select.py`.
 - [ ] T023 [P] [US2] Add Vitest unit tests for template diff validation + React Flow serialization in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/__tests__/template-step.test.tsx`.
-- [ ] T024 [P] [US2] Create Playwright scenario verifying template selection primes the canvas + instant backtest in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/template-prime.spec.ts`.
+- [ ] T024 [P] [US2] Create Playwright scenario verifying template selection primes the canvas + instant backtest and that the empty-template state renders the alternate CTA + disabled completion in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/template-prime.spec.ts`.
 
 ### Implementation for User Story 2
 
-- [ ] T025 [US2] Implement FastAPI template selection endpoint in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/api/onboarding/templates.py`, returning draft strategy metadata and advancing the checklist step only after validated parameter edits.
+- [ ] T025 [US2] Implement FastAPI template selection endpoint in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/api/onboarding/templates.py`, returning draft strategy metadata, a `templates_available` flag when none exist, and advancing the checklist step only after validated parameter edits.
 - [ ] T026 [US2] Build `template_selection_service` in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/services/template_selection_service.py` to persist `StarterTemplateSelection`, capture React Flow snapshots, and enqueue telemetry.
 - [ ] T027 [US2] Extend Next.js Server Actions in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/app/(dashboard)/onboarding/actions.ts` to call the template selection API and enforce parameter-edit + draft-save confirmation before marking the step complete.
-- [ ] T028 [US2] Render a template gallery inside the checklist step using shadcn cards in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/TemplateStep.tsx`, showing description, estimated time, and “Use template” CTA.
+- [ ] T028 [US2] Render a template gallery inside the checklist step using shadcn cards in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/TemplateStep.tsx`, showing description, estimated time, and “Use template” CTA, plus an empty-state CTA + explanatory copy when `templates_available` is false.
 - [ ] T029 [US2] Wire the React Flow canvas priming pipeline in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/app/(dashboard)/templates/TemplateCanvas.tsx` so template selections hydrate nodes/edges and run-ready defaults instantly.
 - [ ] T030 [US2] Seed at least three curated templates with metadata + React Flow schemas in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/seed-onboarding.ts` and `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/shared/supabase/seed/starter_templates.sql`, ensuring `requires_template_edit` flags align with data-model.md.
 
@@ -110,8 +110,10 @@
 **Purpose**: Hardening work shared across stories—documentation, monitoring, and release automation.
 
 - [ ] T031 Document QA evidence, accessibility sign-off, and performance budgets in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/docs/qa/onboarding-checklist.md`, linking to test artifacts.
-- [ ] T032 [P] Update Datadog monitor definitions in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/configs/datadog/onboarding-checklist.json` to track checklist latency, p95 API times, and forwarder errors.
+- [ ] T032 [P] Update Datadog monitor definitions in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/configs/datadog/onboarding-checklist.json` to track checklist latency, p95 API times, forwarder errors, and override_pending states that linger without a subsequent backtest.
 - [ ] T033 [P] Add release verification script `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/ci/onboarding-checklist-verify.sh` that runs `pnpm lint`, `pnpm type-check`, `pnpm test:coverage`, `pnpm test:e2e`, `pnpm test:a11y`, `ruff check`, and `uv run pytest` in sequence.
+- [ ] T034 Build Supabase views + Datadog dashboards for SC-01/02/03 using onboarding telemetry in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/configs/datadog/onboarding-funnel.json` and document KPI queries in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/docs/qa/onboarding-checklist.md`.
+- [ ] T035 [P] Add automated React Profiler/Web Vitals capture via `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/perf/measure-onboarding-checklist.ts` and wire it into CI to assert the ≤1 s checklist render budget.
 
 ---
 

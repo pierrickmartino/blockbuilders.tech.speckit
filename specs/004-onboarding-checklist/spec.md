@@ -1,6 +1,6 @@
 # Feature Specification: Onboarding & First-Run Checklist
 
-**Feature Branch**: `001-onboarding-checklist`  
+**Feature Branch**: `004-onboarding-checklist`  
 **Created**: 2025-11-12  
 **Status**: Draft  
 **Input**: User description: "Title: 004-Onboarding & First-Run Checklist Why: Drive time-to-first-backtest under 15 minutes. Scope: - Frontend: Guided checklist, progress tracker, starter template selection, inline disclosures. - Backend: Track onboarding state via dedicated onboarding APIs. Acceptance Criteria: - AC1 : New user sees checklist with at least 4 steps and completion persists across sessions. - AC2: Selecting a starter template primes a draft strategy in the canvas."
@@ -52,12 +52,12 @@ A new user who lacks historical strategies chooses one of the recommended starte
 
 - User dismisses the checklist before completing any step; system must allow re-opening and preserve prior progress.
 - Connectivity loss or browser crash mid-step should not duplicate events or corrupt completion state when the user resumes.
-- Template library may be temporarily empty for certain roles; checklist must gracefully hide the template step or offer an alternate path.
+- Template library may be temporarily empty for certain roles; when zero templates are returned the checklist must replace the step with an "Explore strategies" CTA that links to docs, disable completion, and show copy explaining why templates are unavailable.
 - Users who already completed onboarding in a previous environment should be able to skip remaining steps via a “Mark as done” control without skewing completion metrics.
 - Accessibility failures: checklist navigation must be keyboard operable, announce progress to screen readers, and keep focus within the modal when open.
 - Performance: initial checklist render should not add more than one second to first meaningful paint; batched persistence must avoid blocking UI interactions.
 - Dismissed checklist must surface a persistent “Resume onboarding” entry point within the dashboard masthead; reopening should restore prior progress without replaying completed steps.
-- Support-triggered “Mark as done” overrides require dual confirmation, emit `override_reason`, and must not increment activation metrics unless the user subsequently runs a backtest.
+- Support-triggered “Mark as done” overrides require a two-step confirmation (initial modal + explicit “Confirm override” review), emit `override_reason`, set an `override_pending` flag, and must not increment activation metrics unless the user subsequently runs a backtest that clears the pending state.
 - Disclosure-gated steps must fail with a clear error if completion is attempted without an acknowledgement token; retried submissions must stay idempotent and never double-count acknowledgements.
 - Checklist definition updates must broadcast the reset and restart every user from the first step while preventing data races between the old and new step definitions.
 
@@ -73,12 +73,14 @@ A new user who lacks historical strategies chooses one of the recommended starte
 - **FR-006 (Testing, Observability)**: Record every checklist interaction (viewed, step_start, step_complete, template_selected, disclosure_ack) with timestamp, user identifier, cohort tags, and client context, persisting to Supabase onboarding event tables and relaying via the existing Supabase→Datadog forwarder for dashboards. **Verification**: Contract test ensuring events hit the onboarding ingest endpoint with required fields and appear in Datadog via the forwarder.
 - **FR-007 (Quality, Reliability)**: Maintain an onboarding state object server-side that enforces step ordering, prevents duplicate completion, and supports manual overrides by support staff with audit logs; when the checklist definition changes, automatically reset all users’ completion states to align with the new step sequence. **Verification**: API-level tests hitting state endpoints, verifying idempotent responses plus audit log entries, and simulating a checklist version change that clears prior completion.
 - **FR-008 (Experience, Accessibility)**: Checklist UI must meet accessibility baselines: focus trapping when active, screen-reader-friendly labels for progress, and keyboard shortcuts for navigation. **Verification**: Accessibility audit (axe or similar) plus manual keyboard walkthrough.
-- **FR-009 (Governance, Experience)**: Provide both self-service re-entry (Resume button) and “Mark as done” controls accessible to any signed-in teammate; overrides must capture actor + reason in the audit log, do not auto-complete disclosure acknowledgements, prompt for inline confirmation, and remain reversible. **Verification**: Backend audit log inspection plus Playwright scenario where a dismissed checklist is restored with prior state intact.
+- **FR-009 (Governance, Experience)**: Provide both self-service re-entry (Resume button) and “Mark as done” controls accessible to any signed-in teammate; overrides must capture actor + reason, require a dual-confirmation flow with explicit acknowledgement of metric impact, set an `override_pending` state, and remain reversible until a successful backtest clears the pending flag. **Verification**: Backend audit log inspection plus Playwright scenario covering the dual-confirmation flow, pending state, and auto-clearing after the next backtest.
+- **FR-010 (Observability, Performance)**: Instrument the onboarding funnel so SC-01/02/03 metrics (checklist within 5 s, ≤15 min to first backtest, ≥70% template success) are computed via Supabase views and surfaced in Datadog dashboards; capture checklist render duration (≤1 s) via automated profiling. **Verification**: Telemetry dashboard snapshot plus CI evidence from Web Vitals/React Profiler showing thresholds are met pre-release.
 
 ### Key Entities
 
 - **OnboardingChecklist**: Represents the ordered list of steps displayed to a user, including step id, title, description, disclosure text, and minimum completion criteria.
 - **ChecklistStepProgress**: Stores the user-specific status for each step (not started, in progress, completed), timestamps, acknowledgements, and actor (auto vs. manual override).
+- **StarterTemplate**: Authoritative definition for each curated template, including id, version hash, description, estimated time-to-run, `requires_template_edit` flag, and the serialized React Flow schema used to prime the canvas.
 - **StarterTemplateSelection**: Captures which template a user chose, the version of the template, and the resulting strategy draft metadata passed to the canvas.
 - **OnboardingEvent**: Interaction payload emitted for each checklist action, containing event type, user id, session id, cohort attributes, client context, and optional error details.
 
