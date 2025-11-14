@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Title: 004-Onboarding & First-Run Checklist Why: Drive time-to-first-backtest under 15 minutes. Scope: - Frontend: Guided checklist, progress tracker, starter template selection, inline disclosures. - Backend: Track onboarding state via dedicated onboarding APIs. Acceptance Criteria: - AC1 : New user sees checklist with at least 4 steps and completion persists across sessions. - AC2: Selecting a starter template primes a draft strategy in the canvas."
 
+## Overview
+
+New strategy builders often abandon onboarding before running a first backtest because they do not know which steps matter, lose disclosures, or lack a runnable starting point. This feature adds a guided four-step checklist that greets every first-run teammate, persists per-user progress in Supabase, enforces disclosure acknowledgements, and primes the canvas with curated templates so most users reach a successful backtest in ≤15 minutes while staying compliant with regional disclosure rules.
+
+## Context
+
+- **Primary users**: First-time teammates inside a workspace who have never run a backtest.
+- **Business goal**: Increase activation by shortening time-to-first-backtest and ensuring onboarding telemetry hits SC-01/02/03 targets.
+- **Out of scope**: Editing the core backtest engine, adding new template authoring tools, or redefining workspace roles.
+
 ## Clarifications
 
 ### Session 2025-11-12
@@ -67,14 +77,23 @@ A new user who lacks historical strategies chooses one of the recommended starte
 
 - **FR-001 (Experience, Simplicity)**: Present a guided onboarding checklist with at least four ordered steps on every new user’s first visit until all steps are marked complete. **Verification**: UX review + automated UI test that inspects the DOM for four labeled steps on first load.
 - **FR-002 (Quality, Testing)**: Persist per-step completion state server-side on a per-user basis so each teammate has independent progress that survives page reloads, browser changes, or device switches. **Verification**: Integration test simulating multi-session logins across two users in the same workspace plus database inspection confirming isolated step states per user.
-- **FR-003 (Experience, Performance)**: Provide contextual inline disclosures (e.g., data-risk statements) adjacent to each relevant step, and require explicit acknowledgement before the step can be marked complete. **Verification**: UX acceptance test ensuring disclosures are visible, plus backend/API contract tests that `POST /onboarding/steps/{stepId}/status` returns HTTP 409 if `disclosure_ack` is missing for a disclosure-gated step.
+- **FR-003 (Experience, Performance)**: Provide contextual inline disclosures (e.g., data-risk statements) adjacent to each relevant step, require explicit acknowledgement before the step can be marked complete, and load locale-specific, legally approved disclosure copy from the checklist definition. **Verification**: UX acceptance test ensuring disclosures are visible, backend/API contract tests that `POST /onboarding/steps/{stepId}/status` returns HTTP 409 if `disclosure_ack` is missing for a disclosure-gated step, plus evidence of legal sign-off for each locale captured in `/docs/qa/onboarding-checklist.md`.
 - **FR-004 (Experience, Simplicity)**: Offer at least three curated starter templates within the checklist, each with a short description, estimated time-to-run, and “Use template” action; require the user to modify at least one parameter and save the draft before the step can be marked complete. **Verification**: Content audit confirming template metadata and CTA appear for each template plus UI test that a template step remains incomplete until a user edit + draft save occurs.
 - **FR-005 (Experience, Quality)**: When a template is selected, prime the strategy canvas with the template’s parameters, placeholder data, and naming convention so a backtest can run without additional required inputs. **Verification**: End-to-end test executing a backtest immediately after template selection and asserting success without validation prompts.
-- **FR-006 (Testing, Observability)**: Record every checklist interaction (viewed, step_start, step_complete, template_selected, disclosure_ack) with timestamp, user identifier, cohort tags, and client context, persisting to Supabase onboarding event tables and relaying via the existing Supabase→Datadog forwarder for dashboards. **Verification**: Contract test ensuring events hit the onboarding ingest endpoint with required fields and appear in Datadog via the forwarder.
+- **FR-006 (Testing, Observability)**: Record every checklist interaction (viewed, step_start, step_complete, template_selected, disclosure_ack, override, override_pending_cleared, backtest_success) with timestamp, user identifier, cohort tags, template metadata, and client context, persisting to Supabase onboarding event tables and relaying via the existing Supabase→Datadog forwarder for dashboards. **Verification**: Contract test ensuring events hit the onboarding ingest endpoint with required fields and appear in Datadog via the forwarder, plus dashboard screenshots showing SC-01/02/03 calculations using this telemetry.
 - **FR-007 (Quality, Reliability)**: Maintain an onboarding state object server-side that enforces step ordering, prevents duplicate completion, and supports manual overrides by support staff with audit logs; when the checklist definition changes, automatically reset all users’ completion states to align with the new step sequence. **Verification**: API-level tests hitting state endpoints, verifying idempotent responses plus audit log entries, and simulating a checklist version change that clears prior completion.
 - **FR-008 (Experience, Accessibility)**: Checklist UI must meet accessibility baselines: focus trapping when active, screen-reader-friendly labels for progress, and keyboard shortcuts for navigation. **Verification**: Accessibility audit (axe or similar) plus manual keyboard walkthrough.
 - **FR-009 (Governance, Experience)**: Provide both self-service re-entry (Resume button) and “Mark as done” controls accessible to any signed-in teammate; overrides must capture actor + reason, require a dual-confirmation flow with explicit acknowledgement of metric impact, set an `override_pending` state, and remain reversible until a successful backtest clears the pending flag. **Verification**: Backend audit log inspection plus Playwright scenario covering the dual-confirmation flow, pending state, and auto-clearing after the next backtest.
 - **FR-010 (Observability, Performance)**: Instrument the onboarding funnel so SC-01/02/03 metrics (checklist within 1 s, ≤15 min to first backtest, ≥70% template success) are computed via Supabase views and surfaced in Datadog dashboards; capture checklist render duration (≤1 s) via automated profiling. **Verification**: Telemetry dashboard snapshot plus CI evidence from Web Vitals/React Profiler showing thresholds are met pre-release.
+- **FR-011 (Governance, Compliance)**: Maintain jurisdiction-aware disclosure variants (e.g., US, EU, APAC) so each onboarding step renders the correct localized copy, and do not enable completion in a locale until legal has approved that string set for the active checklist version. **Verification**: Checklist definition JSON includes locale keys, automated tests assert locale selection, and `/docs/qa/onboarding-checklist.md` records the legal reviewer + date for each locale.
+
+### Non-Functional Requirements
+
+- **Accessibility**: Modal, stepper, and resume entry point must meet WCAG 2.2 AA (focus trap, SR announcements, keyboard-only completable) with evidence from axe + manual runbooks.
+- **Performance**: Checklist render adds ≤1 s to first meaningful paint; onboarding APIs stay ≤200 ms p95 under projected load; telemetry fan-out to Datadog occurs within 60 s; SC-01/02/03 must be calculated automatically in CI dashboards.
+- **Reliability**: Version resets are atomic, idempotent, and broadcast to clients without race conditions; telemetry events are deduplicated by `(user_id, step_id, checklist_version)`.
+- **Compliance**: Legal approval is required before publishing or modifying disclosure copy or template guidance; approvals live in version-controlled QA docs referenced by the release checklist.
+- **Security**: Server actions and FastAPI routes must enforce Supabase auth helpers, avoid leaking secrets to the client, and log overrides with actor identity for audit trails.
 
 ### Key Entities
 
