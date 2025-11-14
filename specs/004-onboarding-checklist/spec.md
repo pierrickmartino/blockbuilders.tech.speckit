@@ -74,7 +74,7 @@ A new user who lacks historical strategies chooses one of the recommended starte
 - **FR-007 (Quality, Reliability)**: Maintain an onboarding state object server-side that enforces step ordering, prevents duplicate completion, and supports manual overrides by support staff with audit logs; when the checklist definition changes, automatically reset all users’ completion states to align with the new step sequence. **Verification**: API-level tests hitting state endpoints, verifying idempotent responses plus audit log entries, and simulating a checklist version change that clears prior completion.
 - **FR-008 (Experience, Accessibility)**: Checklist UI must meet accessibility baselines: focus trapping when active, screen-reader-friendly labels for progress, and keyboard shortcuts for navigation. **Verification**: Accessibility audit (axe or similar) plus manual keyboard walkthrough.
 - **FR-009 (Governance, Experience)**: Provide both self-service re-entry (Resume button) and “Mark as done” controls accessible to any signed-in teammate; overrides must capture actor + reason, require a dual-confirmation flow with explicit acknowledgement of metric impact, set an `override_pending` state, and remain reversible until a successful backtest clears the pending flag. **Verification**: Backend audit log inspection plus Playwright scenario covering the dual-confirmation flow, pending state, and auto-clearing after the next backtest.
-- **FR-010 (Observability, Performance)**: Instrument the onboarding funnel so SC-01/02/03 metrics (checklist within 5 s, ≤15 min to first backtest, ≥70% template success) are computed via Supabase views and surfaced in Datadog dashboards; capture checklist render duration (≤1 s) via automated profiling. **Verification**: Telemetry dashboard snapshot plus CI evidence from Web Vitals/React Profiler showing thresholds are met pre-release.
+- **FR-010 (Observability, Performance)**: Instrument the onboarding funnel so SC-01/02/03 metrics (checklist within 1 s, ≤15 min to first backtest, ≥70% template success) are computed via Supabase views and surfaced in Datadog dashboards; capture checklist render duration (≤1 s) via automated profiling. **Verification**: Telemetry dashboard snapshot plus CI evidence from Web Vitals/React Profiler showing thresholds are met pre-release.
 
 ### Key Entities
 
@@ -88,7 +88,7 @@ A new user who lacks historical strategies chooses one of the recommended starte
 
 ### Measurable Outcomes
 
-- **SC-01**: 90% of net-new workspaces created in a calendar month see the onboarding checklist within 5 seconds of loading the application, confirmed via server-side timestamps.
+- **SC-01**: 90% of net-new workspaces created in a calendar month see the onboarding checklist within 1 second of loading the application, confirmed via server-side timestamps + React Profiler traces.
 - **SC-02**: Median time from first checklist view to first successful backtest for guided users is ≤15 minutes during the first month post-launch.
 - **SC-03**: At least 70% of users who select a starter template successfully run a backtest without encountering blocking validation errors within that same session.
 
