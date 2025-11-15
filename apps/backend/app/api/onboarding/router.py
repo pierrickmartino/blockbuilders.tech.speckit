@@ -15,6 +15,8 @@ from app.schemas.onboarding import (
     TemplateSelectResponse,
 )
 from app.services.onboarding import (
+    ChecklistConflictError,
+    ChecklistNotFoundError,
     ChecklistService,
     ChecklistServiceProtocol,
     OverrideService,
@@ -30,6 +32,8 @@ from fastapi import APIRouter, Depends, HTTPException, Path, status
 router = APIRouter(prefix="/onboarding", tags=["Onboarding"])
 
 CurrentUser = Annotated[SupabaseUserProfile, Depends(get_current_supabase_user)]
+
+
 def get_checklist_service() -> ChecklistServiceProtocol:
     return ChecklistService()
 
@@ -61,6 +65,10 @@ async def fetch_checklist(
 
     try:
         return await service.fetch_checklist(current_user.id, workspace_id)
+    except ChecklistNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    except ChecklistConflictError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
     except NotImplementedError as exc:
         raise _not_implemented() from exc
 
@@ -80,6 +88,10 @@ async def update_step_status(
 
     try:
         return await service.update_step_status(current_user.id, workspace_id, step_id, payload)
+    except ChecklistNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    except ChecklistConflictError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
     except NotImplementedError as exc:
         raise _not_implemented() from exc
 
@@ -106,8 +118,15 @@ async def select_template(
 @router.post("/overrides/mark-as-done", status_code=status.HTTP_202_ACCEPTED)
 async def mark_as_done(
     payload: OverrideRequest,
+    current_user: CurrentUser,
     service: OverrideServiceDep,
 ) -> None:
+    workspace_id = _resolve_workspace_id(current_user)
+    if payload.actor_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="actor mismatch")
+    if payload.workspace_id != workspace_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="workspace mismatch")
+
     try:
         await service.mark_as_done(payload)
     except NotImplementedError as exc:
@@ -117,10 +136,12 @@ async def mark_as_done(
 @router.post("/events", status_code=status.HTTP_202_ACCEPTED)
 async def record_onboarding_event(
     payload: TelemetryEvent,
+    current_user: CurrentUser,
     service: TelemetryServiceDep,
 ) -> None:
+    workspace_id = _resolve_workspace_id(current_user)
     try:
-        await service.record_event(payload)
+        await service.record_event(current_user.id, workspace_id, payload)
     except NotImplementedError as exc:
         raise _not_implemented() from exc
 

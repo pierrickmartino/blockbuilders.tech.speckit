@@ -64,12 +64,12 @@
 
 ### Tests for User Story 1 (mandatory per spec)
 
-- [ ] T010 [P] [US1] Implement contract tests for `GET /onboarding/checklist` and `POST /onboarding/steps/{stepId}/status` in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/contracts/test_checklist_progress.py` using onboarding.yaml schemas.
-- [ ] T011 [P] [US1] Add Vitest reducer/state-machine tests covering dismissal, resume, and disclosure gating in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/__tests__/checklist-state.test.ts`.
+- [X] T010 [P] [US1] Implement contract tests for `GET /onboarding/checklist` and `POST /onboarding/steps/{stepId}/status` in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/contracts/test_checklist_progress.py` using onboarding.yaml schemas.
+- [X] T011 [P] [US1] Add Vitest reducer/state-machine tests covering dismissal, resume, and disclosure gating in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/components/checklist/__tests__/checklist-state.test.ts`.
 - [ ] T012 [P] [US1] Create Playwright journey verifying multi-session persistence, resume entry point, dual-confirmation override flow (including pending-state clearance after a backtest), and focus restoration in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/onboarding-checklist.spec.ts`.
 - [ ] T013 [P] [US1] Add axe + keyboard accessibility spec for the checklist modal in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/a11y/onboarding-checklist.a11y.ts` to enforce FR-008.
 - [ ] T037 [P] [US1] Add Playwright offline/crash resilience coverage in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/onboarding-checklist.spec.ts`, forcing network drop + browser restart mid-step to confirm no duplicate events or corrupted `ChecklistStepProgress` rows.
-- [ ] T046 [P] [US1] Implement Pytest contract coverage in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/contracts/test_checklist_security.py` that exercises unauthenticated/unauthorized access to checklist, override, and telemetry endpoints, expecting 401/403 responses and no audit log mutations (satisfies Security NFR + Principle III).
+- [X] T046 [P] [US1] Implement Pytest contract coverage in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/contracts/test_checklist_security.py` that exercises unauthenticated/unauthorized access to checklist, override, and telemetry endpoints, expecting 401/403 responses and no audit log mutations (satisfies Security NFR + Principle III).
 - [ ] T047 [P] [US1] Extend `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/onboarding-checklist.spec.ts` with a Playwright scenario where a regular teammate (non-support) exercises the dual-confirmation override, attempts bypasses (missing acknowledgement token, reused token), and the UI blocks the action while audit logs capture actor + denial reason.
 
 ### Implementation for User Story 1

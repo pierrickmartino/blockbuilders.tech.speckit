@@ -11,6 +11,7 @@ export default defineConfig({
     include: [
       'tests/{unit,integration}/**/*.spec.ts',
       'tests/design-system/**/*.spec.ts',
+      'components/**/__tests__/**/*.{test,spec}.{ts,tsx}',
     ],
     coverage: {
       provider: 'v8',
