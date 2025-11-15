@@ -24,7 +24,13 @@ export class OnboardingApiError extends Error {
   }
 }
 
-const resolveAccessToken = cache(async (): Promise<string> => {
+interface AuthContext {
+  accessToken: string;
+  userId: string;
+  workspaceId: string;
+}
+
+const resolveAuthContext = cache(async (): Promise<AuthContext> => {
   const cookieStore = (await cookies()) as unknown as CookieStoreAdapter;
   const headerStore = await headers();
   const supabase = createServerSupabaseClient({
@@ -37,7 +43,7 @@ const resolveAccessToken = cache(async (): Promise<string> => {
     error,
   } = await supabase.auth.getSession();
 
-  if (error || !session?.access_token) {
+  if (error || !session?.access_token || !session.user) {
     throw new OnboardingApiError(
       'Authentication required for onboarding requests.',
       401,
@@ -45,7 +51,19 @@ const resolveAccessToken = cache(async (): Promise<string> => {
     );
   }
 
-  return session.access_token;
+  const workspaceId =
+    ((session.user.user_metadata as Record<string, unknown> | undefined)?.workspace_id as string | undefined) ??
+    ((session.user.app_metadata as Record<string, unknown> | undefined)?.workspace_id as string | undefined);
+
+  if (!workspaceId) {
+    throw new OnboardingApiError('Workspace context missing for onboarding requests.', 400);
+  }
+
+  return {
+    accessToken: session.access_token,
+    userId: session.user.id,
+    workspaceId,
+  };
 });
 
 type RequestInitish = Omit<RequestInit, 'headers'> & {
@@ -53,7 +71,7 @@ type RequestInitish = Omit<RequestInit, 'headers'> & {
 };
 
 async function request<T>(path: string, init?: RequestInitish): Promise<T> {
-  const accessToken = await resolveAccessToken();
+  const { accessToken } = await resolveAuthContext();
   const response = await fetch(new URL(path, API_BASE_URL), {
     cache: 'no-store',
     ...init,
@@ -111,8 +129,16 @@ export async function recordTelemetryEvent(
 }
 
 export async function submitOverride(payload: OverridePayload): Promise<void> {
+  const { userId, workspaceId } = await resolveAuthContext();
   await request('/onboarding/overrides/mark-as-done', {
     method: 'POST',
-    body: JSON.stringify(payload),
+    body: JSON.stringify({
+      userId,
+      workspaceId,
+      actorId: userId,
+      actorRole: 'teammate',
+      reason: payload.reason,
+      confirmationToken: payload.confirmationToken,
+    }),
   });
 }

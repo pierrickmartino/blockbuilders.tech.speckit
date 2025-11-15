@@ -129,6 +129,8 @@ async def mark_as_done(
 
     try:
         await service.mark_as_done(payload)
+    except ChecklistConflictError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
     except NotImplementedError as exc:
         raise _not_implemented() from exc
 

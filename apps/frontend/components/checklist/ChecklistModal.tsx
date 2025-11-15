@@ -2,11 +2,14 @@
 
 import { useMemo, useState } from 'react';
 
+import { markOverrideAction } from '@/app/(protected)/dashboard/onboarding/actions';
 import { Button } from '@/components/design-system/Button';
 import { Modal } from '@/components/design-system/Modal';
 import { cn } from '@/lib/cn';
 import type { ChecklistStep, StepStatusPayload } from '@/lib/onboarding/types';
 
+import { DisclosurePanel } from './DisclosurePanel';
+import { StepProgressTracker } from './StepProgressTracker';
 import { useChecklist } from './ChecklistProvider';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -31,19 +34,22 @@ export const ChecklistModal = () => {
     busyStepId,
     error,
     definitionChanged,
+    overridePending,
     refresh,
+    recordBacktestSuccess,
   } = useChecklist();
   const [templateDrafts, setTemplateDrafts] = useState<Record<string, string>>({});
+  const [overrideOpen, setOverrideOpen] = useState(false);
+  const [overrideReason, setOverrideReason] = useState('');
+  const [confirmImpact, setConfirmImpact] = useState(false);
+  const [confirmAuthority, setConfirmAuthority] = useState(false);
+  const [overrideBusy, setOverrideBusy] = useState(false);
+  const [overrideError, setOverrideError] = useState<string | null>(null);
 
   const incompleteCount = useMemo(
     () => checklist.steps.filter((step) => step.status !== 'COMPLETED').length,
     [checklist.steps],
   );
-
-  const handleDismiss = () => {
-    dismiss();
-    setOpen(false);
-  };
 
   const handleTemplateChange = (stepId: string, value: string) => {
     setTemplateDrafts((prev) => ({
@@ -63,10 +69,39 @@ export const ChecklistModal = () => {
 
     if (step.requiresTemplateEdit) {
       const diffValue = templateDrafts[step.stepId];
-      payload.templateDiff = diffValue ? { note: diffValue } : { note: 'parameter-updated' };
+      payload.templateDiff = diffValue?.trim().length
+        ? { note: diffValue.trim() }
+        : { note: 'parameter-updated' };
     }
 
     completeStep(step.stepId, payload);
+  };
+
+  const canSubmitOverride =
+    overrideReason.trim().length >= 12 && confirmImpact && confirmAuthority;
+
+  const handleSubmitOverride = async () => {
+    if (!canSubmitOverride) {
+      return;
+    }
+
+    setOverrideBusy(true);
+    setOverrideError(null);
+    try {
+      await markOverrideAction({
+        reason: overrideReason.trim(),
+        confirmationToken: 'override.confirmed.v1',
+      });
+      setOverrideOpen(false);
+      setOverrideReason('');
+      setConfirmAuthority(false);
+      setConfirmImpact(false);
+      refresh();
+    } catch (exc) {
+      setOverrideError(exc instanceof Error ? exc.message : 'Override failed. Try again.');
+    } finally {
+      setOverrideBusy(false);
+    }
   };
 
   return (
@@ -78,14 +113,14 @@ export const ChecklistModal = () => {
       testId="onboarding-checklist-modal"
       footer={
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500" aria-live="polite">
             {incompleteCount === 0
               ? 'All steps are complete.'
               : `${incompleteCount} ${incompleteCount === 1 ? 'step' : 'steps'} remaining`}
           </p>
           <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={handleDismiss}>
-              Dismiss
+            <Button variant="ghost" onClick={dismiss}>
+              Dismiss checklist
             </Button>
             <Button variant="secondary" onClick={refresh}>
               Reload latest steps
@@ -94,9 +129,39 @@ export const ChecklistModal = () => {
         </div>
       }
     >
+      <StepProgressTracker steps={checklist.steps} />
+
       {definitionChanged ? (
-        <div className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          Checklist definition updated. Reload required to ensure progress reflects the new flow.
+        <div
+          className="rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"
+          role="status"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p>Checklist definition updated. Reload to ensure progress reflects the latest flow.</p>
+            <Button size="sm" variant="outline" onClick={refresh}>
+              Reload checklist
+            </Button>
+          </div>
+        </div>
+      ) : null}
+
+      {overridePending ? (
+        <div
+          className="rounded-md border border-fuchsia-300 bg-fuchsia-50 p-4 text-sm text-fuchsia-900"
+          role="status"
+          aria-label="Override status"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="font-semibold">Override pending</p>
+              <p className="text-xs text-fuchsia-800">
+                Activation metrics will update once a successful backtest is recorded.
+              </p>
+            </div>
+            <Button size="sm" variant="secondary" onClick={recordBacktestSuccess}>
+              Record backtest success
+            </Button>
+          </div>
         </div>
       ) : null}
 
@@ -118,6 +183,7 @@ export const ChecklistModal = () => {
             <li
               key={step.stepId}
               className="rounded-xl border border-slate-100 bg-white/50 p-4 shadow-sm"
+              data-testid={`checklist-step-${step.stepId}`}
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
@@ -131,16 +197,19 @@ export const ChecklistModal = () => {
                     'rounded-full px-3 py-1 text-xs font-semibold',
                     STATUS_COLORS[step.status],
                   )}
+                  data-testid={`step-${step.stepId}-status`}
                 >
                   {STATUS_LABELS[step.status]}
                 </span>
               </div>
               <p className="mt-3 text-sm text-slate-600">{step.description}</p>
 
-              {step.disclosure ? (
-                <div className="mt-3 rounded-lg border border-blue-100 bg-blue-50 p-3 text-sm text-blue-900">
-                  {step.disclosure.text}
-                </div>
+              {step.disclosure ? <DisclosurePanel text={step.disclosure.text} /> : null}
+
+              {step.overrideReason ? (
+                <p className="mt-2 text-xs text-amber-600" role="note">
+                  Completed via override ({step.overrideActorRole ?? 'teammate'}): {step.overrideReason}
+                </p>
               ) : null}
 
               {templateRequiresDiff ? (
@@ -156,6 +225,7 @@ export const ChecklistModal = () => {
                     className="w-full rounded-md border border-slate-200 p-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
                     placeholder="Describe at least one parameter change before marking this template complete."
                     value={templateNotes}
+                    aria-label="Parameter edits"
                     onChange={(event) => handleTemplateChange(step.stepId, event.target.value)}
                     rows={3}
                     disabled={step.status === 'COMPLETED'}
@@ -170,7 +240,9 @@ export const ChecklistModal = () => {
                   loading={busyStepId === step.stepId}
                   variant={step.status === 'COMPLETED' ? 'ghost' : 'primary'}
                 >
-                  {step.status === 'COMPLETED' ? 'Completed' : 'Mark as done'}
+                  {step.status === 'COMPLETED'
+                    ? `${step.title} complete`
+                    : `Mark ${step.title} as done`}
                 </Button>
                 {step.requiresDisclosure ? (
                   <p className="text-xs text-slate-500">
@@ -182,6 +254,82 @@ export const ChecklistModal = () => {
           );
         })}
       </ol>
+
+      <div className="mt-6 rounded-xl border border-slate-200 bg-white/80 p-4">
+        {overrideOpen ? (
+          <>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold text-slate-900">Request checklist override</p>
+                <p className="text-xs text-slate-500">
+                  Overrides require dual confirmation and will remain pending until a successful backtest is recorded.
+                </p>
+              </div>
+              <Button variant="ghost" size="sm" onClick={() => setOverrideOpen(false)}>
+                Cancel
+              </Button>
+            </div>
+            <div className="mt-3 space-y-3">
+              <label className="text-xs font-semibold uppercase tracking-widest text-slate-500" htmlFor="override-reason">
+                Override reason
+              </label>
+              <textarea
+                id="override-reason"
+                value={overrideReason}
+                onChange={(event) => setOverrideReason(event.target.value)}
+                rows={3}
+                className="w-full rounded-md border border-slate-200 p-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
+                placeholder="Provide context for audit logs (min 12 characters)."
+              />
+              <label className="flex items-start gap-2 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  className="mt-1"
+                  checked={confirmImpact}
+                  onChange={(event) => setConfirmImpact(event.target.checked)}
+                />
+                I understand the activation impact of marking onboarding complete without a backtest.
+              </label>
+              <label className="flex items-start gap-2 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  className="mt-1"
+                  checked={confirmAuthority}
+                  onChange={(event) => setConfirmAuthority(event.target.checked)}
+                />
+                I am authorized to override requirements on behalf of this workspace.
+              </label>
+              {overrideError ? (
+                <p className="text-sm text-rose-600" role="alert">
+                  {overrideError}
+                </p>
+              ) : null}
+              <div className="flex items-center justify-end gap-3">
+                <Button
+                  variant="primary"
+                  onClick={handleSubmitOverride}
+                  disabled={!canSubmitOverride || overrideBusy}
+                  loading={overrideBusy}
+                >
+                  Confirm override
+                </Button>
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold text-slate-900">Need to mark onboarding as done?</p>
+              <p className="text-xs text-slate-500">
+                Any teammate can request an override after acknowledging the activation impact.
+              </p>
+            </div>
+            <Button variant="outline" onClick={() => setOverrideOpen(true)}>
+              Request checklist override
+            </Button>
+          </div>
+        )}
+      </div>
     </Modal>
   );
 };

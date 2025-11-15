@@ -30,6 +30,9 @@ class ChecklistStep(BaseModel):
     status: StepStatus = StepStatus.NOT_STARTED
     disclosure: Optional[DisclosurePayload] = None
     template_id: Optional[UUID] = Field(default=None, alias="templateId")
+    override_pending: bool = Field(default=False, alias="overridePending")
+    override_reason: Optional[str] = Field(default=None, alias="overrideReason")
+    override_actor_role: Optional[str] = Field(default=None, alias="overrideActorRole")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -48,6 +51,7 @@ class ChecklistResponse(BaseModel):
     version: PositiveInt
     definition_changed: bool = Field(alias="definitionChanged")
     steps: list[ChecklistStep]
+    override_pending: bool = Field(default=False, alias="overridePending")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -81,6 +85,7 @@ class OverrideRequest(BaseModel):
     reason: str
     actor_id: UUID = Field(alias="actorId")
     actor_role: str = Field(alias="actorRole")
+    confirmation_token: str = Field(alias="confirmationToken")
 
     model_config = ConfigDict(populate_by_name=True)
 

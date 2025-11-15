@@ -1,20 +1,8 @@
 -- Default onboarding checklist seed (minimum four steps + disclosures).
 
-with upserted_checklist as (
-    insert into onboarding_checklists (
-        checklist_id,
-        version,
-        title,
-        steps,
-        is_active,
-        disclosure_locale,
-        definition_hash,
-        definition_notes
-    ) values (
-        '00000000-0000-0000-0000-000000000004',
-        1,
-        'Blockbuilders onboarding v1',
-        '[
+with definition as (
+    select '
+        [
             {
                 "step_id": "disclosures",
                 "sequence": 1,
@@ -43,7 +31,7 @@ with upserted_checklist as (
                 "requires_disclosure": false,
                 "requires_template_edit": true,
                 "cta_label": "Use template",
-                "template_id": '00000000-0000-0000-0000-00000000a11a'
+                "template_id": "00000000-0000-0000-0000-00000000a11a"
             },
             {
                 "step_id": "run_backtest",
@@ -55,10 +43,27 @@ with upserted_checklist as (
                 "cta_label": "Run backtest",
                 "template_id": null
             }
-        ]'::jsonb,
+        ]
+    '::text as raw_steps
+),
+upserted_checklist as (
+    insert into onboarding_checklists (
+        checklist_id,
+        version,
+        title,
+        steps,
+        is_active,
+        disclosure_locale,
+        definition_hash,
+        definition_notes
+    ) values (
+        '00000000-0000-0000-0000-000000000004',
+        1,
+        'Blockbuilders onboarding v1',
+        (select raw_steps::jsonb from definition),
         true,
         'en-US',
-        md5('blockbuilders-onboarding-v1'),
+        md5((select raw_steps from definition)),
         'Seeded during Phase 2 – reset required when version increments.'
     )
     on conflict (checklist_id, version)
@@ -67,7 +72,8 @@ with upserted_checklist as (
         steps = excluded.steps,
         is_active = excluded.is_active,
         disclosure_locale = excluded.disclosure_locale,
-        definition_notes = excluded.definition_notes
+        definition_notes = excluded.definition_notes,
+        definition_hash = excluded.definition_hash
     returning checklist_id, version
 )
 insert into onboarding_disclosures (locale, disclosure_copy, reviewer, reviewed_at, evidence_link)
@@ -92,7 +98,9 @@ insert into onboarding_reset_events (checklist_id, version, definition_hash, bro
 select
     checklist_id,
     version,
-    md5('blockbuilders-onboarding-v1'),
+    md5((select raw_steps from definition)),
     'onboarding_checklist_reset'
 from upserted_checklist
-on conflict do nothing;
+on conflict (checklist_id, version)
+    do update set definition_hash = excluded.definition_hash,
+        broadcast_topic = excluded.broadcast_topic;

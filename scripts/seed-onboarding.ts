@@ -207,7 +207,7 @@ async function recordResetEvent() {
   await request('/rest/v1/onboarding_reset_events', {
     method: 'POST',
     headers: {
-      Prefer: 'resolution=ignore-duplicates',
+      Prefer: 'resolution=merge-duplicates',
     },
     body: JSON.stringify({
       checklist_id: CHECKLIST_ID,

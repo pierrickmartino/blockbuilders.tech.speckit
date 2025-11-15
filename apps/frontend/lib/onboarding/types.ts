@@ -14,6 +14,9 @@ export interface ChecklistStep {
   status: StepStatus;
   disclosure?: ChecklistDisclosure | null;
   templateId?: string | null;
+  overridePending?: boolean;
+  overrideReason?: string | null;
+  overrideActorRole?: string | null;
 }
 
 export interface ChecklistResponse {
@@ -21,6 +24,7 @@ export interface ChecklistResponse {
   version: number;
   definitionChanged: boolean;
   steps: ChecklistStep[];
+  overridePending: boolean;
 }
 
 export interface StepStatusPayload {
@@ -30,11 +34,8 @@ export interface StepStatusPayload {
 }
 
 export interface OverridePayload {
-  userId: string;
-  workspaceId: string;
   reason: string;
-  actorId: string;
-  actorRole: 'teammate';
+  confirmationToken: string;
 }
 
 export interface OnboardingTelemetryEvent {
@@ -45,6 +46,8 @@ export interface OnboardingTelemetryEvent {
     | 'template_selected'
     | 'disclosure_ack'
     | 'override'
+    | 'override_pending_cleared'
+    | 'backtest_success';
     | 'override_pending_cleared'
     | 'backtest_success';
   stepId?: string;

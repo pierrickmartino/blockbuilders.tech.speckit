@@ -100,10 +100,14 @@ components:
           format: uuid
         version:
           type: integer
+        definitionChanged:
+          type: boolean
         steps:
           type: array
           items:
             $ref: '#/components/schemas/ChecklistStep'
+        overridePending:
+          type: boolean
     ChecklistStep:
       type: object
       properties:
@@ -127,6 +131,14 @@ components:
               type: string
             acknowledgementToken:
               type: string
+        overridePending:
+          type: boolean
+        overrideReason:
+          type: string
+          nullable: true
+        overrideActorRole:
+          type: string
+          nullable: true
     StepStatus:
       type: string
       enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
@@ -181,7 +193,7 @@ components:
           $ref: '#/components/schemas/ChecklistStepProgress'
     OverrideRequest:
       type: object
-      required: [userId, workspaceId, reason]
+      required: [userId, workspaceId, reason, confirmationToken]
       properties:
         userId:
           type: string
@@ -194,13 +206,25 @@ components:
         actorRole:
           type: string
           enum: [teammate]
+        confirmationToken:
+          type: string
     TelemetryEvent:
       type: object
       required: [eventType, stepId]
       properties:
         eventType:
           type: string
-          enum: [viewed, step_start, step_complete, template_selected, disclosure_ack, override]
+          enum:
+            [
+              viewed,
+              step_start,
+              step_complete,
+              template_selected,
+              disclosure_ack,
+              override,
+              override_pending_cleared,
+              backtest_success,
+            ]
         stepId:
           type: string
         templateId:

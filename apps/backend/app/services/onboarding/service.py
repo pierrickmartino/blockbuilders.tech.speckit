@@ -24,6 +24,7 @@ from .versioning import has_definition_changed
 DEFAULT_CHECKLIST_ID = UUID("00000000-0000-0000-0000-000000000004")
 DEFAULT_TEMPLATE_ID = UUID("00000000-0000-0000-0000-00000000A11A")
 PROGRESS_NAMESPACE = UUID("5b2506ba-7f6b-5c70-8a65-65fc02832964")
+OVERRIDE_CONFIRMATION_TOKEN = "override.confirmed.v1"
 
 
 class ChecklistStateError(RuntimeError):
@@ -77,6 +78,7 @@ class UserChecklistState:
     workspace_id: UUID
     version: int
     steps: dict[str, StepProgressRecord] = field(default_factory=dict)
+    override_pending: bool = False
 
 
 def _default_definition() -> ChecklistDefinition:
@@ -157,12 +159,48 @@ class ChecklistStateStore:
 
         return state, definition_changed
 
+    def set_override_pending(
+        self,
+        user_id: UUID,
+        workspace_id: UUID,
+        *,
+        actor_id: UUID,
+        reason: str,
+        actor_role: str,
+    ) -> UserChecklistState:
+        state, _ = self.get_or_create_state(user_id, workspace_id)
+        state.override_pending = True
+        now = _now()
+        for record in state.steps.values():
+            record.status = StepStatus.COMPLETED
+            record.completed_at = record.completed_at or now
+            record.completed_by = actor_id
+            record.override_reason = reason
+            record.override_actor_role = actor_role
+            record.override_pending = True
+        return state
+
+    def clear_override_pending(self, user_id: UUID, workspace_id: UUID) -> None:
+        key = (user_id, workspace_id)
+        state = self._states.get(key)
+        if not state:
+            return
+        state.override_pending = False
+        for record in state.steps.values():
+            record.override_pending = False
+
     def _build_state(self, user_id: UUID, workspace_id: UUID) -> UserChecklistState:
         steps: dict[str, StepProgressRecord] = {}
         for definition in self._definition.steps:
             progress_id = uuid5(PROGRESS_NAMESPACE, f"{user_id}:{workspace_id}:{definition.step_id}")
             steps[definition.step_id] = StepProgressRecord(progress_id=progress_id)
-        return UserChecklistState(user_id=user_id, workspace_id=workspace_id, version=self._definition.version, steps=steps)
+        return UserChecklistState(
+            user_id=user_id,
+            workspace_id=workspace_id,
+            version=self._definition.version,
+            steps=steps,
+            override_pending=False,
+        )
 
 
 GLOBAL_STORE = ChecklistStateStore()
@@ -218,6 +256,7 @@ class ChecklistService(ChecklistServiceProtocol):
             checklist_id=self._store.definition.checklist_id,
             version=self._store.definition.version,
             definition_changed=definition_changed,
+             override_pending=state.override_pending,
             steps=steps,
         )
 
@@ -289,6 +328,11 @@ class ChecklistService(ChecklistServiceProtocol):
                 "text": definition.disclosure_copy or "",
                 "acknowledgementToken": definition.acknowledgement_token,
             }
+        payload["overridePending"] = record.override_pending or state.override_pending
+        if record.override_reason:
+            payload["overrideReason"] = record.override_reason
+        if record.override_actor_role:
+            payload["overrideActorRole"] = record.override_actor_role
         return ChecklistStep.model_validate(payload)
 
     def _validate_completion(
@@ -339,15 +383,16 @@ class OverrideService(OverrideServiceProtocol):
         self._forwarder = forwarder or TelemetryForwarder()
 
     async def mark_as_done(self, payload: OverrideRequest) -> None:
-        state, _ = self._store.get_or_create_state(payload.user_id, payload.workspace_id)
-        now = _now()
-        for record in state.steps.values():
-            record.status = StepStatus.COMPLETED
-            record.completed_at = now
-            record.completed_by = payload.actor_id
-            record.override_reason = payload.reason
-            record.override_actor_role = payload.actor_role
-            record.override_pending = False
+        if payload.confirmation_token != OVERRIDE_CONFIRMATION_TOKEN:
+            raise ChecklistConflictError("Override requires dual confirmation token")
+
+        self._store.set_override_pending(
+            payload.user_id,
+            payload.workspace_id,
+            actor_id=payload.actor_id,
+            reason=payload.reason,
+            actor_role=payload.actor_role,
+        )
 
         event = TelemetryEvent(
             event_type=TelemetryEventType.OVERRIDE,
@@ -362,13 +407,43 @@ class OverrideService(OverrideServiceProtocol):
 
 
 class TelemetryService(TelemetryServiceProtocol):
-    def __init__(self, forwarder: TelemetryForwarder | None = None) -> None:
+    _DEDUP_TYPES = {
+        TelemetryEventType.STEP_COMPLETE,
+        TelemetryEventType.DISCLOSURE_ACK,
+        TelemetryEventType.TEMPLATE_SELECTED,
+    }
+
+    def __init__(
+        self,
+        forwarder: TelemetryForwarder | None = None,
+        store: ChecklistStateStore | None = None,
+    ) -> None:
         self._forwarder = forwarder or TelemetryForwarder()
+        self._store = store or GLOBAL_STORE
+        self._dedupe_cache: set[tuple[str, str, str, str, str]] = set()
 
     async def record_event(self, user_id: UUID, workspace_id: UUID, payload: TelemetryEvent) -> None:
+        state, _ = self._store.get_or_create_state(user_id, workspace_id)
         payload.metadata.setdefault("userId", str(user_id))
         payload.metadata.setdefault("workspaceId", str(workspace_id))
+
+        dedupe_key = (
+            str(user_id),
+            str(workspace_id),
+            payload.event_type.value,
+            payload.step_id or "*",
+            str(state.version),
+        )
+
+        if payload.event_type in self._DEDUP_TYPES:
+            if dedupe_key in self._dedupe_cache:
+                return
+            self._dedupe_cache.add(dedupe_key)
+
         self._forwarder.forward(payload)
+
+        if payload.event_type is TelemetryEventType.BACKTEST_SUCCESS:
+            self._store.clear_override_pending(user_id, workspace_id)
 
 
 def reset_onboarding_state() -> None:

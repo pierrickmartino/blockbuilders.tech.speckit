@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   useTransition,
 } from 'react';
@@ -18,6 +19,8 @@ import {
   resetChecklistDismissalAction,
   updateStepStatusAction,
 } from '@/app/(protected)/dashboard/onboarding/actions';
+import { useToast } from '@/components/design-system/Toast';
+import { createOnboardingAnalytics } from '@/lib/analytics/onboarding';
 import type {
   ChecklistResponse,
   OnboardingTelemetryEvent,
@@ -40,12 +43,13 @@ export interface ChecklistContextValue {
   error: string | null;
   resumeAvailable: boolean;
   definitionChanged: boolean;
+  overridePending: boolean;
   refresh: () => void;
   dismiss: () => void;
   resume: () => void;
+  recordBacktestSuccess: () => void;
   setOpen: (next: boolean) => void;
   completeStep: (stepId: string, payload: StepStatusPayload) => void;
-  emitEvent: (event: OnboardingTelemetryEvent) => void;
 }
 
 const ChecklistContext = createContext<ChecklistContextValue | undefined>(undefined);
@@ -72,15 +76,22 @@ export function ChecklistProvider({
   const [busyStepId, setBusyStepId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
+  const { showToast } = useToast();
+  const analyticsRef = useRef(createOnboardingAnalytics((event: OnboardingTelemetryEvent) => recordTelemetryEventAction(event)));
 
   const resumeAvailable = useMemo(
     () => hasIncompleteSteps(checklist.steps),
     [checklist.steps],
   );
 
-  const emitEvent = useCallback((event: OnboardingTelemetryEvent) => {
-    void recordTelemetryEventAction(event);
-  }, []);
+  const emitEvent = useCallback(
+    (event: OnboardingTelemetryEvent) => {
+      void analyticsRef.current.emit(event).catch((exc: unknown) => {
+        setError(formatError(exc));
+      });
+    },
+    [setError],
+  );
 
   useEffect(() => {
     emitEvent({
@@ -89,20 +100,33 @@ export function ChecklistProvider({
     });
   }, [checklist, emitEvent]);
 
+  useEffect(() => {
+    analyticsRef.current.reset();
+  }, [checklist.version]);
+
+  const loadLatestChecklist = useCallback(async () => {
+    const latest = await loadChecklistAction();
+    setChecklist(latest);
+    if (latest.definitionChanged) {
+      setDismissed(false);
+      setOpen(true);
+      showToast({
+        tone: 'info',
+        title: 'Checklist updated',
+        description: 'Step definitions changed. Please review the latest requirements.',
+      });
+    }
+  }, [showToast]);
+
   const refresh = useCallback(() => {
     startTransition(async () => {
       try {
-        const latest = await loadChecklistAction();
-        setChecklist(latest);
-        if (latest.definitionChanged) {
-          setDismissed(false);
-          setOpen(true);
-        }
+        await loadLatestChecklist();
       } catch (exc) {
         setError(formatError(exc));
       }
     });
-  }, []);
+  }, [loadLatestChecklist]);
 
   const completeStep = useCallback(
     (stepId: string, payload: StepStatusPayload) => {
@@ -160,6 +184,23 @@ export function ChecklistProvider({
     });
   }, [checklist, emitEvent]);
 
+  const recordBacktestSuccess = useCallback(() => {
+    startTransition(async () => {
+      try {
+        await analyticsRef.current.emit({ eventType: 'backtest_success', stepId: 'run_backtest' });
+        await analyticsRef.current.emit({ eventType: 'override_pending_cleared', stepId: 'run_backtest' });
+        showToast({
+          tone: 'success',
+          title: 'Override pending cleared',
+          description: 'We recorded the first backtest and updated activation metrics.',
+        });
+        await loadLatestChecklist();
+      } catch (exc) {
+        setError(formatError(exc));
+      }
+    });
+  }, [loadLatestChecklist, showToast]);
+
   const value = useMemo<ChecklistContextValue>(
     () => ({
       checklist,
@@ -169,12 +210,13 @@ export function ChecklistProvider({
       error,
       resumeAvailable,
       definitionChanged: checklist.definitionChanged,
+      overridePending: checklist.overridePending,
       refresh,
       dismiss,
       resume,
+      recordBacktestSuccess,
       setOpen,
       completeStep,
-      emitEvent,
     }),
     [
       checklist,
@@ -186,8 +228,8 @@ export function ChecklistProvider({
       refresh,
       dismiss,
       resume,
+      recordBacktestSuccess,
       completeStep,
-      emitEvent,
     ],
   );
 

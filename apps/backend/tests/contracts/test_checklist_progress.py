@@ -85,6 +85,7 @@ async def test_fetch_checklist_returns_active_steps(onboarding_client: httpx.Asy
     assert payload["checklistId"] == "00000000-0000-0000-0000-000000000004"
     assert payload["version"] >= 1
     assert payload["definitionChanged"] is False
+    assert payload["overridePending"] is False
     steps = payload["steps"]
     assert len(steps) >= 4
     first_step = steps[0]

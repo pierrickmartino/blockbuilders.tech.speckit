@@ -14,7 +14,8 @@
     "type-check": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test --project=smoke --project=smoke-fallback --project=auth"
+    "test:e2e": "playwright test --project=smoke --project=smoke-fallback --project=auth --project=design-system --project=onboarding",
+    "test:a11y": "playwright test --project=a11y"
   },
   "dependencies": {
     "@supabase/ssr": "^0.4.0",
