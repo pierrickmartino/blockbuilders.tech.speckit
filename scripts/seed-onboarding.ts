@@ -1,6 +1,9 @@
 #!/usr/bin/env tsx
 import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 
 type FetchOptions = Parameters<typeof fetch>[1];
@@ -118,7 +121,14 @@ const config: SeedConfig = {
   resetTopic: process.env.ONBOARDING_RESET_BROADCAST_TOPIC ?? 'onboarding_checklist_reset',
 };
 
+const templatesSource = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../shared/templates/starter_templates.json',
+);
+
 async function main() {
+  const starterTemplates = await loadStarterTemplates();
+
   if (mode === 'flags') {
     console.log('> Seeding feature flag toggle only');
     await seedFeatureFlag(argv.values.workspace ?? process.env.ONBOARDING_SEED_WORKSPACE_ID ?? null);
@@ -129,6 +139,7 @@ async function main() {
     console.log('> Seeding checklist + disclosures only');
     await seedChecklist();
     await seedDisclosures();
+    await seedTemplates(starterTemplates);
     await recordResetEvent();
     return;
   }
@@ -136,6 +147,7 @@ async function main() {
   console.log('> Bootstrapping checklist, disclosures, flags, and reset broadcast');
   await seedChecklist();
   await seedDisclosures();
+  await seedTemplates(starterTemplates);
   await seedFeatureFlag(argv.values.workspace ?? process.env.ONBOARDING_SEED_WORKSPACE_ID ?? null);
   await recordResetEvent();
 }
@@ -239,3 +251,38 @@ main().catch((error) => {
   console.error('[seed-onboarding] failed:', error);
   process.exitCode = 1;
 });
+
+async function loadStarterTemplates() {
+  const raw = await readFile(templatesSource, 'utf-8');
+  return JSON.parse(raw) as StarterTemplateDefinition[];
+}
+
+interface StarterTemplateDefinition {
+  template_id: string;
+  title: string;
+  description: string;
+  estimated_run_time_minutes: number;
+  default_parameters: Record<string, unknown>;
+  react_flow: Record<string, unknown>;
+}
+
+async function seedTemplates(definitions: StarterTemplateDefinition[]) {
+  console.log(`> Seeding ${definitions.length} starter templates`);
+  for (const template of definitions) {
+    await request('/rest/v1/starter_templates', {
+      method: 'POST',
+      headers: {
+        Prefer: 'resolution=merge-duplicates',
+      },
+      body: JSON.stringify({
+        template_id: template.template_id,
+        title: template.title,
+        description: template.description,
+        estimated_run_time: `${template.estimated_run_time_minutes} minutes`,
+        default_parameters: template.default_parameters,
+        react_flow_schema: template.react_flow,
+        status: 'ACTIVE',
+      }),
+    });
+  }
+}

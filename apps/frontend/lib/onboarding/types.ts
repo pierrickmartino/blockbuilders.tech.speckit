@@ -5,6 +5,20 @@ export interface ChecklistDisclosure {
   acknowledgementToken?: string | null;
 }
 
+export interface TemplateCanvasSchema {
+  nodes: Array<Record<string, unknown>>;
+  edges: Array<Record<string, unknown>>;
+}
+
+export interface StarterTemplate {
+  templateId: string;
+  title: string;
+  description: string;
+  estimatedRunTime: string;
+  defaultParameters: Record<string, number | string>;
+  reactFlow: TemplateCanvasSchema;
+}
+
 export interface ChecklistStep {
   stepId: string;
   title: string;
@@ -17,6 +31,8 @@ export interface ChecklistStep {
   overridePending?: boolean;
   overrideReason?: string | null;
   overrideActorRole?: string | null;
+  templates?: StarterTemplate[];
+  templatesAvailable?: boolean;
 }
 
 export interface ChecklistResponse {
@@ -31,6 +47,19 @@ export interface StepStatusPayload {
   status: StepStatus;
   acknowledgementToken?: string | null;
   templateDiff?: Record<string, unknown> | null;
+}
+
+export interface TemplateSelectionPayload {
+  templateId: string;
+  parameterChanges: Record<string, unknown>;
+  draftName?: string;
+  canvasContext: TemplateCanvasSchema;
+}
+
+export interface TemplateSelectResponse {
+  draftStrategyId: string;
+  checklistStep: ChecklistStep;
+  templatesAvailable: boolean;
 }
 
 export interface OverridePayload {

@@ -21,6 +21,17 @@ class DisclosurePayload(BaseModel):
     model_config = ConfigDict(frozen=True)
 
 
+class StarterTemplatePayload(BaseModel):
+    template_id: UUID = Field(alias="templateId")
+    title: str
+    description: str
+    estimated_run_time: str = Field(alias="estimatedRunTime")
+    default_parameters: Dict[str, Any] = Field(alias="defaultParameters")
+    react_flow: Dict[str, Any] = Field(alias="reactFlow")
+
+    model_config = ConfigDict(populate_by_name=True, frozen=True)
+
+
 class ChecklistStep(BaseModel):
     step_id: str = Field(alias="stepId")
     title: str
@@ -33,6 +44,8 @@ class ChecklistStep(BaseModel):
     override_pending: bool = Field(default=False, alias="overridePending")
     override_reason: Optional[str] = Field(default=None, alias="overrideReason")
     override_actor_role: Optional[str] = Field(default=None, alias="overrideActorRole")
+    templates: Optional[list[StarterTemplatePayload]] = None
+    templates_available: Optional[bool] = Field(default=None, alias="templatesAvailable")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -75,6 +88,7 @@ class TemplateSelectRequest(BaseModel):
 class TemplateSelectResponse(BaseModel):
     draft_strategy_id: UUID = Field(alias="draftStrategyId")
     checklist_step: ChecklistStep = Field(alias="checklistStep")
+    templates_available: bool = Field(alias="templatesAvailable")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -118,6 +132,7 @@ __all__ = [
     "ChecklistStepProgress",
     "DisclosurePayload",
     "OverrideRequest",
+    "StarterTemplatePayload",
     "StepStatus",
     "StepStatusRequest",
     "TelemetryEvent",

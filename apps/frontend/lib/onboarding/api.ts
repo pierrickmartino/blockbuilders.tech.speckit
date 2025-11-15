@@ -9,6 +9,8 @@ import type {
   OnboardingTelemetryEvent,
   OverridePayload,
   StepStatusPayload,
+  TemplateSelectResponse,
+  TemplateSelectionPayload,
 } from './types';
 
 const API_BASE_URL = process.env.ONBOARDING_API_URL ?? 'http://localhost:8000';
@@ -139,6 +141,19 @@ export async function submitOverride(payload: OverridePayload): Promise<void> {
       actorRole: 'teammate',
       reason: payload.reason,
       confirmationToken: payload.confirmationToken,
+    }),
+  });
+}
+
+export async function selectTemplate(
+  payload: TemplateSelectionPayload,
+): Promise<TemplateSelectResponse> {
+  return request(`/onboarding/templates/${payload.templateId}/select`, {
+    method: 'POST',
+    body: JSON.stringify({
+      parameterChanges: payload.parameterChanges,
+      draftName: payload.draftName,
+      canvasContext: payload.canvasContext,
     }),
   });
 }

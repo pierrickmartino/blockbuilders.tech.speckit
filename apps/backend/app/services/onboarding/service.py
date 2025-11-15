@@ -19,11 +19,14 @@ from app.schemas.onboarding import (
 )
 from app.services.telemetry_forwarder import TelemetryForwarder
 
+from .templates import StarterTemplateDefinition, TemplateCatalog, get_template_catalog
+
 from .versioning import has_definition_changed
 
 DEFAULT_CHECKLIST_ID = UUID("00000000-0000-0000-0000-000000000004")
 DEFAULT_TEMPLATE_ID = UUID("00000000-0000-0000-0000-00000000A11A")
 PROGRESS_NAMESPACE = UUID("5b2506ba-7f6b-5c70-8a65-65fc02832964")
+DRAFT_NAMESPACE = UUID("e0d2f90e-c65c-4dc9-9c7b-b8f9af9b931f")
 OVERRIDE_CONFIRMATION_TOKEN = "override.confirmed.v1"
 
 
@@ -246,8 +249,13 @@ class TelemetryServiceProtocol(Protocol):
 
 
 class ChecklistService(ChecklistServiceProtocol):
-    def __init__(self, store: ChecklistStateStore | None = None) -> None:
+    def __init__(
+        self,
+        store: ChecklistStateStore | None = None,
+        catalog: TemplateCatalog | None = None,
+    ) -> None:
         self._store = store or GLOBAL_STORE
+        self._catalog = catalog or get_template_catalog()
 
     async def fetch_checklist(self, user_id: UUID, workspace_id: UUID) -> ChecklistResponse:
         state, definition_changed = self._store.get_or_create_state(user_id, workspace_id)
@@ -256,7 +264,7 @@ class ChecklistService(ChecklistServiceProtocol):
             checklist_id=self._store.definition.checklist_id,
             version=self._store.definition.version,
             definition_changed=definition_changed,
-             override_pending=state.override_pending,
+            override_pending=state.override_pending,
             steps=steps,
         )
 
@@ -328,6 +336,20 @@ class ChecklistService(ChecklistServiceProtocol):
                 "text": definition.disclosure_copy or "",
                 "acknowledgementToken": definition.acknowledgement_token,
             }
+        if definition.requires_template_edit:
+            templates = [
+                {
+                    "templateId": template.template_id,
+                    "title": template.title,
+                    "description": template.description,
+                    "estimatedRunTime": f"≤{template.estimated_run_time_minutes} min",
+                    "defaultParameters": template.default_parameters,
+                    "reactFlow": template.react_flow_schema,
+                }
+                for template in self._catalog.list()
+            ]
+            payload["templates"] = templates
+            payload["templatesAvailable"] = self._catalog.is_available()
         payload["overridePending"] = record.override_pending or state.override_pending
         if record.override_reason:
             payload["overrideReason"] = record.override_reason
@@ -363,6 +385,17 @@ class ChecklistService(ChecklistServiceProtocol):
 
 
 class TemplateSelectionService(TemplateSelectionServiceProtocol):
+    def __init__(
+        self,
+        store: ChecklistStateStore | None = None,
+        catalog: TemplateCatalog | None = None,
+        forwarder: TelemetryForwarder | None = None,
+    ) -> None:
+        self._store = store or GLOBAL_STORE
+        self._catalog = catalog or get_template_catalog()
+        self._forwarder = forwarder or TelemetryForwarder()
+        self._checklist_service = ChecklistService(self._store, catalog=self._catalog)
+
     async def select_template(
         self,
         user_id: UUID,
@@ -370,7 +403,112 @@ class TemplateSelectionService(TemplateSelectionServiceProtocol):
         template_id: UUID,
         payload: TemplateSelectRequest,
     ) -> TemplateSelectResponse:
-        raise NotImplementedError("Template service not implemented yet")
+        if not self._catalog.is_available():
+            raise ChecklistConflictError("Starter templates are temporarily unavailable")
+
+        try:
+            template = self._catalog.get(template_id)
+        except LookupError as exc:
+            raise ChecklistNotFoundError(str(exc)) from exc
+
+        sanitized_diff = self._sanitize_parameter_changes(template, payload.parameter_changes)
+        status_request = StepStatusRequest(
+            status=StepStatus.COMPLETED,
+            template_diff=sanitized_diff,
+        )
+
+        await self._checklist_service.update_step_status(
+            user_id,
+            workspace_id,
+            "select_template",
+            status_request,
+        )
+
+        checklist = await self._checklist_service.fetch_checklist(user_id, workspace_id)
+        step = next((item for item in checklist.steps if item.step_id == "select_template"), None)
+        if step is None:
+            raise ChecklistNotFoundError("select_template step unavailable")
+
+        draft_strategy_id = uuid5(
+            DRAFT_NAMESPACE,
+            f"draft:{user_id}:{workspace_id}:{template.template_id}",
+        )
+
+        template_event = TelemetryEvent(
+            event_type=TelemetryEventType.TEMPLATE_SELECTED,
+            step_id="select_template",
+            template_id=template.template_id,
+            metadata={
+                "userId": str(user_id),
+                "workspaceId": str(workspace_id),
+                "templateTitle": template.title,
+                "parameterChanges": sanitized_diff,
+                "canvasContext": payload.canvas_context,
+            },
+        )
+        self._forwarder.forward(template_event)
+
+        return TemplateSelectResponse(
+            draft_strategy_id=draft_strategy_id,
+            checklist_step=step,
+            templates_available=self._catalog.is_available(),
+        )
+
+    def _sanitize_parameter_changes(
+        self,
+        template: StarterTemplateDefinition,
+        diff: Dict[str, Any] | None,
+    ) -> Dict[str, Any]:
+        if not isinstance(diff, Mapping):
+            raise ChecklistConflictError("Parameter changes required before saving a template")
+
+        sanitized: Dict[str, Any] = {}
+        for key, value in diff.items():
+            if key in {"__proto__", "constructor"}:
+                raise ChecklistConflictError("Invalid parameter key provided")
+            if key not in template.default_parameters:
+                raise ChecklistConflictError(f"Parameter '{key}' is not editable")
+
+            default_value = template.default_parameters[key]
+            normalised = self._coerce_value(default_value, value)
+            if normalised == default_value:
+                continue
+            sanitized[key] = normalised
+
+        if not sanitized:
+            raise ChecklistConflictError("Parameter changes required before saving a template")
+
+        return sanitized
+
+    def _coerce_value(self, expected: Any, provided: Any) -> Any:
+        if isinstance(expected, (int, float)):
+            if isinstance(provided, (int, float)):
+                return type(expected)(provided)
+            if isinstance(provided, str):
+                try:
+                    parsed = float(provided) if isinstance(expected, float) else int(float(provided))
+                except ValueError as exc:
+                    raise ChecklistConflictError("Parameter value must be numeric") from exc
+                return type(expected)(parsed)
+        if isinstance(expected, str):
+            if not isinstance(provided, str):
+                raise ChecklistConflictError("Parameter value must be a string")
+            return provided.strip()
+        if isinstance(expected, bool):
+            if isinstance(provided, bool):
+                return provided
+            if isinstance(provided, str):
+                lowered = provided.lower()
+                if lowered in {"true", "1", "yes"}:
+                    return True
+                if lowered in {"false", "0", "no"}:
+                    return False
+            raise ChecklistConflictError("Parameter value must be a boolean")
+
+        if isinstance(provided, (dict, list)):
+            raise ChecklistConflictError("Complex parameter payloads are not supported")
+
+        return provided
 
 
 class OverrideService(OverrideServiceProtocol):

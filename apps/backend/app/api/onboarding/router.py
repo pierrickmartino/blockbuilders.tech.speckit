@@ -111,6 +111,10 @@ async def select_template(
 
     try:
         return await service.select_template(current_user.id, workspace_id, template_id, payload)
+    except ChecklistNotFoundError as exc:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc
+    except ChecklistConflictError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
     except NotImplementedError as exc:
         raise _not_implemented() from exc
 

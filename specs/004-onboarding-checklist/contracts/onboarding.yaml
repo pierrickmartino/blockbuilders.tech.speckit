@@ -139,6 +139,13 @@ components:
         overrideActorRole:
           type: string
           nullable: true
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/StarterTemplate'
+        templatesAvailable:
+          type: boolean
+          description: Indicates whether curated templates are currently available
     StepStatus:
       type: string
       enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
@@ -172,6 +179,24 @@ components:
         completedAt:
           type: string
           format: date-time
+    StarterTemplate:
+      type: object
+      properties:
+        templateId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        estimatedRunTime:
+          type: string
+        defaultParameters:
+          type: object
+          additionalProperties: true
+        reactFlow:
+          type: object
+          additionalProperties: true
     TemplateSelectRequest:
       type: object
       required: [parameterChanges]
@@ -190,7 +215,9 @@ components:
         draftStrategyId:
           type: string
         checklistStep:
-          $ref: '#/components/schemas/ChecklistStepProgress'
+          $ref: '#/components/schemas/ChecklistStep'
+        templatesAvailable:
+          type: boolean
     OverrideRequest:
       type: object
       required: [userId, workspaceId, reason, confirmationToken]

@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import {
   fetchChecklist,
   recordTelemetryEvent,
+  selectTemplate,
   submitOverride,
   updateStepStatus,
 } from '@/lib/onboarding/api';
@@ -13,6 +14,8 @@ import type {
   OnboardingTelemetryEvent,
   OverridePayload,
   StepStatusPayload,
+  TemplateSelectResponse,
+  TemplateSelectionPayload,
 } from '@/lib/onboarding/types';
 
 const DISMISS_COOKIE = 'onboarding_checklist_dismissed';
@@ -32,6 +35,12 @@ export async function recordTelemetryEventAction(
   payload: OnboardingTelemetryEvent,
 ): Promise<void> {
   await recordTelemetryEvent(payload);
+}
+
+export async function selectTemplateAction(
+  payload: TemplateSelectionPayload,
+): Promise<TemplateSelectResponse> {
+  return selectTemplate(payload);
 }
 
 export async function markOverrideAction(payload: OverridePayload): Promise<void> {

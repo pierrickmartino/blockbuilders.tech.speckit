@@ -10,6 +10,7 @@ import type { ChecklistStep, StepStatusPayload } from '@/lib/onboarding/types';
 
 import { DisclosurePanel } from './DisclosurePanel';
 import { StepProgressTracker } from './StepProgressTracker';
+import { TemplateStep } from './TemplateStep';
 import { useChecklist } from './ChecklistProvider';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -37,8 +38,8 @@ export const ChecklistModal = () => {
     overridePending,
     refresh,
     recordBacktestSuccess,
+    selectTemplate,
   } = useChecklist();
-  const [templateDrafts, setTemplateDrafts] = useState<Record<string, string>>({});
   const [overrideOpen, setOverrideOpen] = useState(false);
   const [overrideReason, setOverrideReason] = useState('');
   const [confirmImpact, setConfirmImpact] = useState(false);
@@ -51,13 +52,6 @@ export const ChecklistModal = () => {
     [checklist.steps],
   );
 
-  const handleTemplateChange = (stepId: string, value: string) => {
-    setTemplateDrafts((prev) => ({
-      ...prev,
-      [stepId]: value,
-    }));
-  };
-
   const handleResolveStep = (step: ChecklistStep) => {
     const payload: StepStatusPayload = {
       status: 'COMPLETED',
@@ -65,13 +59,6 @@ export const ChecklistModal = () => {
 
     if (step.requiresDisclosure) {
       payload.acknowledgementToken = step.disclosure?.acknowledgementToken ?? null;
-    }
-
-    if (step.requiresTemplateEdit) {
-      const diffValue = templateDrafts[step.stepId];
-      payload.templateDiff = diffValue?.trim().length
-        ? { note: diffValue.trim() }
-        : { note: 'parameter-updated' };
     }
 
     completeStep(step.stepId, payload);
@@ -174,10 +161,7 @@ export const ChecklistModal = () => {
       <ol className="space-y-4">
         {checklist.steps.map((step, index) => {
           const templateRequiresDiff = step.requiresTemplateEdit;
-          const templateNotes = templateDrafts[step.stepId] ?? '';
-          const disabled =
-            step.status === 'COMPLETED' ||
-            (templateRequiresDiff && templateNotes.trim().length === 0);
+          const disabled = step.status === 'COMPLETED';
 
           return (
             <li
@@ -213,43 +197,35 @@ export const ChecklistModal = () => {
               ) : null}
 
               {templateRequiresDiff ? (
-                <div className="mt-4 space-y-2">
-                  <label
-                    htmlFor={`${step.stepId}-diff`}
-                    className="text-xs font-semibold uppercase tracking-widest text-slate-500"
-                  >
-                    Parameter edits
-                  </label>
-                  <textarea
-                    id={`${step.stepId}-diff`}
-                    className="w-full rounded-md border border-slate-200 p-2 text-sm text-slate-900 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                    placeholder="Describe at least one parameter change before marking this template complete."
-                    value={templateNotes}
-                    aria-label="Parameter edits"
-                    onChange={(event) => handleTemplateChange(step.stepId, event.target.value)}
-                    rows={3}
+                <div className="mt-4">
+                  <TemplateStep
+                    step={step}
+                    busy={busyStepId === step.stepId}
                     disabled={step.status === 'COMPLETED'}
+                    onSelectTemplate={selectTemplate}
                   />
                 </div>
-              ) : null}
-
-              <div className="mt-4 flex flex-wrap items-center gap-3">
-                <Button
-                  onClick={() => handleResolveStep(step)}
-                  disabled={disabled}
-                  loading={busyStepId === step.stepId}
-                  variant={step.status === 'COMPLETED' ? 'ghost' : 'primary'}
-                >
-                  {step.status === 'COMPLETED'
-                    ? `${step.title} complete`
-                    : `Mark ${step.title} as done`}
-                </Button>
-                {step.requiresDisclosure ? (
-                  <p className="text-xs text-slate-500">
-                    Selecting this button acknowledges the disclosure copy above.
-                  </p>
-                ) : null}
-              </div>
+              ) : (
+                <>
+                  <div className="mt-4 flex flex-wrap items-center gap-3">
+                    <Button
+                      onClick={() => handleResolveStep(step)}
+                      disabled={disabled}
+                      loading={busyStepId === step.stepId}
+                      variant={step.status === 'COMPLETED' ? 'ghost' : 'primary'}
+                    >
+                      {step.status === 'COMPLETED'
+                        ? `${step.title} complete`
+                        : `Mark ${step.title} as done`}
+                    </Button>
+                    {step.requiresDisclosure ? (
+                      <p className="text-xs text-slate-500">
+                        Selecting this button acknowledges the disclosure copy above.
+                      </p>
+                    ) : null}
+                  </div>
+                </>
+              )}
             </li>
           );
         })}

@@ -17,6 +17,7 @@ import {
   loadChecklistAction,
   recordTelemetryEventAction,
   resetChecklistDismissalAction,
+  selectTemplateAction,
   updateStepStatusAction,
 } from '@/app/(protected)/dashboard/onboarding/actions';
 import { useToast } from '@/components/design-system/Toast';
@@ -25,6 +26,7 @@ import type {
   ChecklistResponse,
   OnboardingTelemetryEvent,
   StepStatusPayload,
+  TemplateSelectionPayload,
 } from '@/lib/onboarding/types';
 import { determineNextIncompleteStep, hasIncompleteSteps } from './stateMachine';
 
@@ -50,6 +52,7 @@ export interface ChecklistContextValue {
   recordBacktestSuccess: () => void;
   setOpen: (next: boolean) => void;
   completeStep: (stepId: string, payload: StepStatusPayload) => void;
+  selectTemplate: (payload: TemplateSelectionPayload) => void;
 }
 
 const ChecklistContext = createContext<ChecklistContextValue | undefined>(undefined);
@@ -156,6 +159,27 @@ export function ChecklistProvider({
     [emitEvent],
   );
 
+  const selectTemplate = useCallback(
+    (payload: TemplateSelectionPayload) => {
+      startTransition(async () => {
+        setBusyStepId('select_template');
+        try {
+          await selectTemplateAction(payload);
+          await loadLatestChecklist();
+          setOpen(true);
+          setError(null);
+          emitEvent({ eventType: 'template_selected', stepId: 'select_template', templateId: payload.templateId });
+          emitEvent({ eventType: 'step_complete', stepId: 'select_template' });
+        } catch (exc) {
+          setError(formatError(exc));
+        } finally {
+          setBusyStepId(null);
+        }
+      });
+    },
+    [emitEvent, loadLatestChecklist],
+  );
+
   const dismiss = useCallback(() => {
     startTransition(async () => {
       setOpen(false);
@@ -217,6 +241,7 @@ export function ChecklistProvider({
       recordBacktestSuccess,
       setOpen,
       completeStep,
+      selectTemplate,
     }),
     [
       checklist,
