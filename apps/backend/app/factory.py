@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app.api.onboarding.router import router as onboarding_router
 from app.api.routers.health import router as health_router
 from app.api.routes.me import router as me_router
 from app.core.settings import Settings, get_settings
@@ -23,6 +24,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.dependency_overrides[get_settings] = lambda: runtime_settings
     app.include_router(health_router)
     app.include_router(me_router)
+    app.include_router(onboarding_router)
 
     return app
 
