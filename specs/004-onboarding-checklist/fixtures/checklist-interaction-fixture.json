@@ -1,0 +1,9 @@
+{
+  "stepSubmissionSamples": [
+    {"stepId": "ack_disclosures", "durationMs": 112},
+    {"stepId": "connect_data", "durationMs": 97},
+    {"stepId": "select_template", "durationMs": 131},
+    {"stepId": "run_backtest", "durationMs": 125}
+  ],
+  "notes": "Derived from Supabase RPC latency logs on 2025-11-14"
+}

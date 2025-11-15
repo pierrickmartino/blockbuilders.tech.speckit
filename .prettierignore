@@ -1,0 +1,30 @@
+# Node/TypeScript artefacts
+node_modules/
+.pnpm-store/
+dist/
+build/
+.next/
+out/
+*.log
+
+# Tests and coverage
+coverage/
+playwright-report/
+**/test-results/
+
+# Lockfiles
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment
+.env
+.env.*
+
+# Editors and OS junk
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+.vscode/
+.idea/

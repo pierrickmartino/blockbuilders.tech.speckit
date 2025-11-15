@@ -7,7 +7,7 @@ import pytest
 
 from app.schemas.onboarding import OverrideRequest, StepStatus, StepStatusRequest, TelemetryEvent, TelemetryEventType
 from app.services.onboarding import ChecklistConflictError, OverrideService
-from app.services.onboarding.service import ChecklistService, ChecklistStateStore, TelemetryService
+from app.services.onboarding.service import ChecklistService, ChecklistStateStore, OverrideService, TelemetryService
 from app.services.telemetry_forwarder import TelemetryForwarder
 
 USER_ID = UUID("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
@@ -120,3 +120,32 @@ async def test_override_requires_confirmation_token() -> None:
     await service.mark_as_done(invalid_payload)
     state, _ = store.get_or_create_state(USER_ID, WORKSPACE_ID)
     assert state.override_pending is True
+
+
+@pytest.mark.asyncio
+async def test_backtest_success_clears_override_pending() -> None:
+    store = ChecklistStateStore()
+    overrides = OverrideService(store)
+    telemetry = TelemetryService(store=store, forwarder=RecordingForwarder())
+
+    payload = OverrideRequest(
+        user_id=USER_ID,
+        workspace_id=WORKSPACE_ID,
+        reason="Support override required",
+        actor_id=USER_ID,
+        actor_role="teammate",
+        confirmation_token="override.confirmed.v1",
+    )
+
+    await overrides.mark_as_done(payload)
+    state, _ = store.get_or_create_state(USER_ID, WORKSPACE_ID)
+    assert state.override_pending is True
+
+    await telemetry.record_event(
+        USER_ID,
+        WORKSPACE_ID,
+        TelemetryEvent(event_type=TelemetryEventType.BACKTEST_SUCCESS, step_id="run_backtest"),
+    )
+
+    state, _ = store.get_or_create_state(USER_ID, WORKSPACE_ID)
+    assert state.override_pending is False

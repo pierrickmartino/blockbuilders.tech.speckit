@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2025-11-15T15:55:49.592Z",
+  "mode": "fixture",
+  "source": "specs/004-onboarding-checklist/fixtures/checklist-render-fixture.json",
+  "selector": "[data-testid=\"onboarding-checklist-modal\"]",
+  "metrics": {
+    "timeToChecklistMs": 820,
+    "largestContentfulPaintMs": 2100,
+    "firstContentfulPaintMs": 730
+  },
+  "thresholds": {
+    "timeToChecklistMs": 1000,
+    "largestContentfulPaintMs": 2500
+  },
+  "status": {
+    "checklistRender": "pass",
+    "lcp": "pass"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "generatedAt": "2025-11-15T15:22:50.704Z",
+  "eventsFile": "specs/004-onboarding-checklist/fixtures/sc-metrics-fixture.json",
+  "ignoredSessions": [
+    "sess-7"
+  ],
+  "metrics": {
+    "SC-01": {
+      "description": "Checklist visible ≤1s for 90% of new workspaces",
+      "ratio": 1,
+      "threshold": 0.9,
+      "status": "pass",
+      "counts": {
+        "withinBudget": 9,
+        "total": 9
+      }
+    },
+    "SC-02": {
+      "description": "Median time view→backtest ≤15m",
+      "medianMs": 540000,
+      "thresholdMs": 900000,
+      "status": "pass",
+      "samples": 7
+    },
+    "SC-03": {
+      "description": "≥70% of template selections succeed",
+      "ratio": 0.875,
+      "threshold": 0.7,
+      "status": "pass",
+      "counts": {
+        "successfulSessions": 7,
+        "templateSessions": 8
+      }
+    }
+  }
+}
