@@ -12,6 +12,13 @@ Last updated: 2025-11-15
 
 Future locales must append to both this table and the disclosure copy doc **before** seeds run. CI validation (T053) will compare Supabase locale metadata with this registry.
 
+### Disclosure Enforcement & Evidence
+
+- `scripts/seed-onboarding.ts` parses this table before inserting disclosure records; locales missing reviewer/date metadata cause the seed to exit with instructions to update `docs/qa/onboarding-checklist.md`.
+- `shared/supabase/seed/onboarding_checklist.sql` raises an exception if any disclosure row lacks reviewer or decision date, preventing silent drift.
+- Runtime gating is covered by `apps/backend/tests/contracts/test_disclosure_gate.py` and `apps/frontend/tests/e2e/disclosure-gate.spec.ts`, which assert that pending locales return HTTP 409 with structured details and surface the “copy pending approval” UI state.
+- CI runs `scripts/ci/verify-disclosure-approvals.sh` (invoked from `scripts/ci/onboarding-checklist-verify.sh`) to compare Supabase `onboarding_disclosures` rows against this registry and fails builds on drift; link any remediation back to this file.
+
 ## Evidence Attachments
 
 - Accessibility notes + WCAG confirmations documented alongside the feature spec once UI exists.

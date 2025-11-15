@@ -59,12 +59,26 @@ class ChecklistStepProgress(BaseModel):
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
 
+class LocaleApprovalPayload(BaseModel):
+    locale: str
+    status: str
+    approved: bool
+    message: str
+    reviewer: Optional[str] = None
+    role: Optional[str] = None
+    decision_date: Optional[str] = Field(default=None, alias="decisionDate")
+    evidence_link: Optional[str] = Field(default=None, alias="evidenceLink")
+
+    model_config = ConfigDict(populate_by_name=True, frozen=True)
+
+
 class ChecklistResponse(BaseModel):
     checklist_id: UUID = Field(alias="checklistId")
     version: PositiveInt
     definition_changed: bool = Field(alias="definitionChanged")
     steps: list[ChecklistStep]
     override_pending: bool = Field(default=False, alias="overridePending")
+    locale_approval: LocaleApprovalPayload = Field(alias="localeApproval")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -130,6 +144,7 @@ __all__ = [
     "ChecklistResponse",
     "ChecklistStep",
     "ChecklistStepProgress",
+    "LocaleApprovalPayload",
     "DisclosurePayload",
     "OverrideRequest",
     "StarterTemplatePayload",

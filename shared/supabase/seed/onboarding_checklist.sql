@@ -87,6 +87,20 @@ on conflict (locale) do update set
     reviewed_at = excluded.reviewed_at,
     evidence_link = excluded.evidence_link;
 
+do $$
+begin
+    if exists (
+        select 1
+        from onboarding_disclosures
+        where reviewer is null
+           or reviewer = ''
+           or reviewed_at is null
+    ) then
+        raise exception 'Missing locale approval metadata. Update docs/qa/onboarding-checklist.md before seeding disclosures.';
+    end if;
+end
+$$;
+
 insert into feature_flags (flag_key, description, enabled)
 values
     ('onboarding_checklist_v1', 'Enable the onboarding checklist modal + APIs', true)

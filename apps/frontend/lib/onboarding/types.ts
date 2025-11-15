@@ -41,6 +41,18 @@ export interface ChecklistResponse {
   definitionChanged: boolean;
   steps: ChecklistStep[];
   overridePending: boolean;
+  localeApproval?: LocaleApprovalStatus;
+}
+
+export interface LocaleApprovalStatus {
+  locale: string;
+  status: 'approved' | 'pending';
+  approved: boolean;
+  message: string;
+  reviewer?: string | null;
+  role?: string | null;
+  decisionDate?: string | null;
+  evidenceLink?: string | null;
 }
 
 export interface StepStatusPayload {
@@ -75,8 +87,6 @@ export interface OnboardingTelemetryEvent {
     | 'template_selected'
     | 'disclosure_ack'
     | 'override'
-    | 'override_pending_cleared'
-    | 'backtest_success';
     | 'override_pending_cleared'
     | 'backtest_success';
   stepId?: string;

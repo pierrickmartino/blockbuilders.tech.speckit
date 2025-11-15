@@ -26,6 +26,14 @@ interface SeedConfig {
   resetTopic: string;
 }
 
+interface LocaleApprovalEntry {
+  locale: string;
+  reviewer: string;
+  role: string;
+  decisionDate: string;
+  evidenceLink: string;
+}
+
 const CHECKLIST_ID = '00000000-0000-0000-0000-000000000004';
 const TEMPLATE_ID = '00000000-0000-0000-0000-00000000a11a';
 
@@ -121,13 +129,15 @@ const config: SeedConfig = {
   resetTopic: process.env.ONBOARDING_RESET_BROADCAST_TOPIC ?? 'onboarding_checklist_reset',
 };
 
-const templatesSource = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '../shared/templates/starter_templates.json',
-);
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const approvalDocRelative = 'docs/qa/onboarding-checklist.md';
+const approvalDocPath = path.resolve(repoRoot, approvalDocRelative);
+
+const templatesSource = path.resolve(repoRoot, 'shared/templates/starter_templates.json');
 
 async function main() {
   const starterTemplates = await loadStarterTemplates();
+  const approvals = await loadLocaleApprovals();
 
   if (mode === 'flags') {
     console.log('> Seeding feature flag toggle only');
@@ -138,7 +148,7 @@ async function main() {
   if (mode === 'seed') {
     console.log('> Seeding checklist + disclosures only');
     await seedChecklist();
-    await seedDisclosures();
+    await seedDisclosures(approvals);
     await seedTemplates(starterTemplates);
     await recordResetEvent();
     return;
@@ -146,7 +156,7 @@ async function main() {
 
   console.log('> Bootstrapping checklist, disclosures, flags, and reset broadcast');
   await seedChecklist();
-  await seedDisclosures();
+  await seedDisclosures(approvals);
   await seedTemplates(starterTemplates);
   await seedFeatureFlag(argv.values.workspace ?? process.env.ONBOARDING_SEED_WORKSPACE_ID ?? null);
   await recordResetEvent();
@@ -182,8 +192,9 @@ async function seedChecklist() {
   });
 }
 
-async function seedDisclosures() {
+async function seedDisclosures(approvals: Map<string, LocaleApprovalEntry>) {
   for (const disclosure of disclosures) {
+    ensureLocaleApproval(disclosure.locale, approvals);
     await request('/rest/v1/onboarding_disclosures', {
       method: 'POST',
       headers: {
@@ -285,4 +296,54 @@ async function seedTemplates(definitions: StarterTemplateDefinition[]) {
       }),
     });
   }
+}
+
+async function loadLocaleApprovals(): Promise<Map<string, LocaleApprovalEntry>> {
+  try {
+    const raw = await readFile(approvalDocPath, 'utf-8');
+    const approvals = new Map<string, LocaleApprovalEntry>();
+    const pattern = /^\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|/;
+    for (const line of raw.split(/\r?\n/)) {
+      const trimmed = line.trim();
+      if (!trimmed.startsWith('|')) {
+        continue;
+      }
+      const match = pattern.exec(trimmed);
+      if (!match) {
+        continue;
+      }
+      const locale = match[1].trim();
+      if (locale.toLowerCase() === 'locale') {
+        continue;
+      }
+      approvals.set(locale, {
+        locale,
+        reviewer: cleanCell(match[2]),
+        role: cleanCell(match[3]),
+        decisionDate: cleanCell(match[4]),
+        evidenceLink: cleanCell(match[5]) || approvalDocRelative,
+      });
+    }
+    return approvals;
+  } catch (error) {
+    console.warn(`[seed-onboarding] Unable to parse ${approvalDocRelative}:`, error);
+    return new Map<string, LocaleApprovalEntry>();
+  }
+}
+
+function ensureLocaleApproval(locale: string, approvals: Map<string, LocaleApprovalEntry>) {
+  const approval = approvals.get(locale);
+  if (!approval || !approval.reviewer || !approval.decisionDate) {
+    throw new Error(
+      `[seed-onboarding] Locale ${locale} is missing approval metadata. Update ${approvalDocRelative} before seeding.`,
+    );
+  }
+}
+
+function cleanCell(value: string): string {
+  const trimmed = value.trim();
+  if (trimmed.startsWith('`') && trimmed.endsWith('`')) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
 }

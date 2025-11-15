@@ -91,10 +91,15 @@ async function request<T>(path: string, init?: RequestInitish): Promise<T> {
     } catch {
       payload = undefined;
     }
-    const message =
-      typeof payload === 'object' && payload && 'detail' in payload
-        ? String((payload as Record<string, unknown>).detail)
-        : response.statusText || 'Onboarding request failed';
+    let message = response.statusText || 'Onboarding request failed';
+    if (payload && typeof payload === 'object' && 'detail' in (payload as Record<string, unknown>)) {
+      const detail = (payload as Record<string, unknown>).detail;
+      if (detail && typeof detail === 'object' && 'message' in (detail as Record<string, unknown>)) {
+        message = String((detail as Record<string, unknown>).message);
+      } else if (typeof detail === 'string') {
+        message = detail;
+      }
+    }
     throw new OnboardingApiError(message, response.status, payload);
   }
 

@@ -65,6 +65,13 @@ export class ChecklistMockServer {
   private failNextStepUpdate: string | null = null;
   private templatesAvailable = true;
   private templates: TemplateDefinition[] = DEFAULT_TEMPLATES;
+  private localeApproval = {
+    locale: 'en-US',
+    status: 'approved' as const,
+    approved: true,
+    message: 'Locale en-US approved.',
+    evidenceLink: 'docs/qa/onboarding-checklist.md#en-us',
+  };
 
   constructor(private readonly page: Page) {
     const initialSteps: StepDefinition[] = [
@@ -155,12 +162,20 @@ export class ChecklistMockServer {
     return this.events;
   }
 
+  public setLocaleApproval(status: Partial<typeof this.localeApproval> & { approved: boolean; status: 'approved' | 'pending' }): void {
+    this.localeApproval = {
+      ...this.localeApproval,
+      ...status,
+    };
+  }
+
   private serialize() {
     return {
       checklistId: '00000000-0000-0000-0000-000000000004',
       version: this.version,
       definitionChanged: this.definitionChanged,
       overridePending: this.overridePending,
+      localeApproval: this.localeApproval,
       steps: Array.from(this.steps.values()).map((step) => ({
         ...step,
         disclosure: step.disclosure ?? null,

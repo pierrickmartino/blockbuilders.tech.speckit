@@ -42,4 +42,7 @@ if ! "${METRICS_SCRIPT}" "$@"; then
   exit 1
 fi
 
+run_step "verify disclosure approvals" \
+  scripts/ci/verify-disclosure-approvals.sh
+
 echo "[onboarding-verify] Completed all verification steps." >&2

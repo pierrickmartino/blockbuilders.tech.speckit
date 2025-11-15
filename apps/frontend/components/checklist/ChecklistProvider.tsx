@@ -20,6 +20,7 @@ import {
   selectTemplateAction,
   updateStepStatusAction,
 } from '@/app/(protected)/dashboard/onboarding/actions';
+import { OnboardingApiError } from '@/lib/onboarding/api';
 import { useToast } from '@/components/design-system/Toast';
 import { createOnboardingAnalytics } from '@/lib/analytics/onboarding';
 import type {
@@ -57,7 +58,39 @@ export interface ChecklistContextValue {
 
 const ChecklistContext = createContext<ChecklistContextValue | undefined>(undefined);
 
+const APPROVAL_DOC_LINK = '/docs/qa/onboarding-checklist.md';
+
+const extractLocaleApprovalDetail = (details: unknown): { locale?: string; evidenceLink?: string; message?: string } | null => {
+  if (!details || typeof details !== 'object') {
+    return null;
+  }
+  const payload = details as Record<string, unknown>;
+  const detail = payload.detail ?? payload;
+  if (!detail || typeof detail !== 'object') {
+    return null;
+  }
+  const record = detail as Record<string, unknown>;
+  if (record.code !== 'locale_unapproved') {
+    return null;
+  }
+  const context = record.context && typeof record.context === 'object' ? (record.context as Record<string, unknown>) : {};
+  return {
+    locale: typeof context.locale === 'string' ? context.locale : undefined,
+    evidenceLink: typeof context.evidenceLink === 'string' ? context.evidenceLink : undefined,
+    message: typeof record.message === 'string' ? record.message : undefined,
+  };
+};
+
 const formatError = (error: unknown): string => {
+  if (error instanceof OnboardingApiError) {
+    const localeDetail = extractLocaleApprovalDetail(error.details);
+    if (localeDetail) {
+      const locale = localeDetail.locale ?? 'this locale';
+      const evidence = localeDetail.evidenceLink ?? APPROVAL_DOC_LINK;
+      return localeDetail.message ?? `Locale ${locale} is awaiting legal approval. See ${evidence} for review status.`;
+    }
+    return error.message;
+  }
   if (error instanceof Error) {
     return error.message;
   }

@@ -19,6 +19,8 @@ from app.schemas.onboarding import (
 )
 from app.services.telemetry_forwarder import TelemetryForwarder
 
+from .approvals import LocaleApprovalRegistry, LocaleApprovalStatus, get_locale_registry
+
 from .templates import StarterTemplateDefinition, TemplateCatalog, get_template_catalog
 
 from .versioning import has_definition_changed
@@ -28,6 +30,8 @@ DEFAULT_TEMPLATE_ID = UUID("00000000-0000-0000-0000-00000000A11A")
 PROGRESS_NAMESPACE = UUID("5b2506ba-7f6b-5c70-8a65-65fc02832964")
 DRAFT_NAMESPACE = UUID("e0d2f90e-c65c-4dc9-9c7b-b8f9af9b931f")
 OVERRIDE_CONFIRMATION_TOKEN = "override.confirmed.v1"
+DEFAULT_LOCALE = "en-US"
+DEFAULT_EVIDENCE_LINK = "docs/qa/onboarding-checklist.md"
 
 
 class ChecklistStateError(RuntimeError):
@@ -40,6 +44,11 @@ class ChecklistNotFoundError(ChecklistStateError):
 
 class ChecklistConflictError(ChecklistStateError):
     """Raised when a checklist transition violates business rules."""
+
+    def __init__(self, message: str, *, code: str | None = None, context: Mapping[str, Any] | None = None) -> None:
+        super().__init__(message)
+        self.code = code
+        self.context = dict(context or {})
 
 
 @dataclass(frozen=True)
@@ -214,7 +223,13 @@ def _now() -> datetime:
 
 
 class ChecklistServiceProtocol(Protocol):
-    async def fetch_checklist(self, user_id: UUID, workspace_id: UUID) -> ChecklistResponse: ...
+    async def fetch_checklist(
+        self,
+        user_id: UUID,
+        workspace_id: UUID,
+        *,
+        locale: str | None = None,
+    ) -> ChecklistResponse: ...
 
     async def update_step_status(
         self,
@@ -222,7 +237,13 @@ class ChecklistServiceProtocol(Protocol):
         workspace_id: UUID,
         step_id: str,
         payload: StepStatusRequest,
+        *,
+        locale: str | None = None,
     ) -> ChecklistStepProgress: ...
+
+    def get_locale_status(self, locale: str | None = None) -> LocaleApprovalStatus: ...
+
+    def ensure_locale_approved(self, locale: str | None = None) -> LocaleApprovalStatus: ...
 
 
 class TemplateSelectionServiceProtocol(Protocol):
@@ -232,6 +253,8 @@ class TemplateSelectionServiceProtocol(Protocol):
         workspace_id: UUID,
         template_id: UUID,
         payload: TemplateSelectRequest,
+        *,
+        locale: str | None = None,
     ) -> TemplateSelectResponse: ...
 
 
@@ -253,19 +276,29 @@ class ChecklistService(ChecklistServiceProtocol):
         self,
         store: ChecklistStateStore | None = None,
         catalog: TemplateCatalog | None = None,
+        locale_registry: LocaleApprovalRegistry | None = None,
     ) -> None:
         self._store = store or GLOBAL_STORE
         self._catalog = catalog or get_template_catalog()
+        self._locale_registry = locale_registry or get_locale_registry()
 
-    async def fetch_checklist(self, user_id: UUID, workspace_id: UUID) -> ChecklistResponse:
+    async def fetch_checklist(
+        self,
+        user_id: UUID,
+        workspace_id: UUID,
+        *,
+        locale: str | None = None,
+    ) -> ChecklistResponse:
+        locale_status = self.get_locale_status(locale)
         state, definition_changed = self._store.get_or_create_state(user_id, workspace_id)
-        steps = [self._build_step(definition, state) for definition in self._store.definition.steps]
+        steps = [self._build_step(definition, state, locale_status) for definition in self._store.definition.steps]
         return ChecklistResponse(
             checklist_id=self._store.definition.checklist_id,
             version=self._store.definition.version,
             definition_changed=definition_changed,
             override_pending=state.override_pending,
             steps=steps,
+            locale_approval=self._build_locale_payload(locale_status),
         )
 
     async def update_step_status(
@@ -274,8 +307,11 @@ class ChecklistService(ChecklistServiceProtocol):
         workspace_id: UUID,
         step_id: str,
         payload: StepStatusRequest,
+        *,
+        locale: str | None = None,
     ) -> ChecklistStepProgress:
         step_definition = self._store.get_step_definition(step_id)
+        self.ensure_locale_approved(locale)
         state, _ = self._store.get_or_create_state(user_id, workspace_id)
         record = state.steps[step_definition.step_id]
         next_status = payload.status
@@ -319,7 +355,12 @@ class ChecklistService(ChecklistServiceProtocol):
             completed_at=record.completed_at,
         )
 
-    def _build_step(self, definition: StepDefinition, state: UserChecklistState) -> ChecklistStep:
+    def _build_step(
+        self,
+        definition: StepDefinition,
+        state: UserChecklistState,
+        locale_status: LocaleApprovalStatus,
+    ) -> ChecklistStep:
         record = state.steps[definition.step_id]
         payload: dict[str, Any] = {
             "stepId": definition.step_id,
@@ -332,8 +373,11 @@ class ChecklistService(ChecklistServiceProtocol):
         if definition.template_id:
             payload["templateId"] = definition.template_id
         if definition.requires_disclosure:
+            disclosure_text = definition.disclosure_copy or ""
+            if not locale_status.approved:
+                disclosure_text = locale_status.message
             payload["disclosure"] = {
-                "text": definition.disclosure_copy or "",
+                "text": disclosure_text,
                 "acknowledgementToken": definition.acknowledgement_token,
             }
         if definition.requires_template_edit:
@@ -356,6 +400,47 @@ class ChecklistService(ChecklistServiceProtocol):
         if record.override_actor_role:
             payload["overrideActorRole"] = record.override_actor_role
         return ChecklistStep.model_validate(payload)
+
+    def get_locale_status(self, locale: str | None = None) -> LocaleApprovalStatus:
+        normalized = (locale or DEFAULT_LOCALE).strip() or DEFAULT_LOCALE
+        return self._locale_registry.get_status(normalized)
+
+    def ensure_locale_approved(self, locale: str | None = None) -> LocaleApprovalStatus:
+        status = self.get_locale_status(locale)
+        self._ensure_locale_approved(status)
+        return status
+
+    def _build_locale_payload(self, status: LocaleApprovalStatus) -> dict[str, Any]:
+        return {
+            "locale": status.locale,
+            "status": status.status,
+            "approved": status.approved,
+            "message": status.message,
+            "reviewer": status.reviewer,
+            "role": status.role,
+            "decisionDate": status.decision_date,
+            "evidenceLink": status.evidence_link or DEFAULT_EVIDENCE_LINK,
+        }
+
+    def _ensure_locale_approved(self, status: LocaleApprovalStatus) -> None:
+        if status.approved:
+            return
+        context: dict[str, Any] = {
+            "locale": status.locale,
+            "evidenceLink": status.evidence_link or DEFAULT_EVIDENCE_LINK,
+            "message": status.message,
+        }
+        if status.reviewer:
+            context["reviewer"] = status.reviewer
+        if status.role:
+            context["role"] = status.role
+        if status.decision_date:
+            context["decisionDate"] = status.decision_date
+        raise ChecklistConflictError(
+            "Locale disclosures pending legal approval",
+            code="locale_unapproved",
+            context=context,
+        )
 
     def _validate_completion(
         self,
@@ -390,11 +475,17 @@ class TemplateSelectionService(TemplateSelectionServiceProtocol):
         store: ChecklistStateStore | None = None,
         catalog: TemplateCatalog | None = None,
         forwarder: TelemetryForwarder | None = None,
+        locale_registry: LocaleApprovalRegistry | None = None,
     ) -> None:
         self._store = store or GLOBAL_STORE
         self._catalog = catalog or get_template_catalog()
         self._forwarder = forwarder or TelemetryForwarder()
-        self._checklist_service = ChecklistService(self._store, catalog=self._catalog)
+        self._locale_registry = locale_registry or get_locale_registry()
+        self._checklist_service = ChecklistService(
+            self._store,
+            catalog=self._catalog,
+            locale_registry=self._locale_registry,
+        )
 
     async def select_template(
         self,
@@ -402,6 +493,8 @@ class TemplateSelectionService(TemplateSelectionServiceProtocol):
         workspace_id: UUID,
         template_id: UUID,
         payload: TemplateSelectRequest,
+        *,
+        locale: str | None = None,
     ) -> TemplateSelectResponse:
         if not self._catalog.is_available():
             raise ChecklistConflictError("Starter templates are temporarily unavailable")
@@ -422,9 +515,10 @@ class TemplateSelectionService(TemplateSelectionServiceProtocol):
             workspace_id,
             "select_template",
             status_request,
+            locale=locale,
         )
 
-        checklist = await self._checklist_service.fetch_checklist(user_id, workspace_id)
+        checklist = await self._checklist_service.fetch_checklist(user_id, workspace_id, locale=locale)
         step = next((item for item in checklist.steps if item.step_id == "select_template"), None)
         if step is None:
             raise ChecklistNotFoundError("select_template step unavailable")

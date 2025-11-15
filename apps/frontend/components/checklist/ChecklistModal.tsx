@@ -51,8 +51,15 @@ export const ChecklistModal = () => {
     () => checklist.steps.filter((step) => step.status !== 'COMPLETED').length,
     [checklist.steps],
   );
+  const localeApproval = checklist.localeApproval;
+  const pendingLocaleApproval = Boolean(localeApproval && localeApproval.approved === false);
+  const localeEvidenceLink = localeApproval?.evidenceLink ?? '/docs/qa/onboarding-checklist.md';
 
   const handleResolveStep = (step: ChecklistStep) => {
+    if (pendingLocaleApproval) {
+      setError(localeApproval?.message ?? 'Locale approval pending. Please wait for legal review.');
+      return;
+    }
     const payload: StepStatusPayload = {
       status: 'COMPLETED',
     };
@@ -152,6 +159,29 @@ export const ChecklistModal = () => {
         </div>
       ) : null}
 
+      {pendingLocaleApproval ? (
+        <div
+          className="mt-4 rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900"
+          role="alert"
+          data-testid="locale-approval-alert"
+        >
+          <p className="font-semibold">Copy pending approval</p>
+          <p className="mt-1">
+            Locale {localeApproval?.locale ?? 'current'} is awaiting legal approval. Disclosures cannot be completed
+            until compliance records the review.{' '}
+            <a
+              className="underline"
+              href={localeEvidenceLink}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View QA evidence
+            </a>
+            .
+          </p>
+        </div>
+      ) : null}
+
       {error ? (
         <div className="rounded-md border border-rose-200 bg-rose-50 p-4 text-sm text-rose-900">
           {error}
@@ -161,7 +191,7 @@ export const ChecklistModal = () => {
       <ol className="space-y-4">
         {checklist.steps.map((step, index) => {
           const templateRequiresDiff = step.requiresTemplateEdit;
-          const disabled = step.status === 'COMPLETED';
+          const disabled = step.status === 'COMPLETED' || pendingLocaleApproval;
 
           return (
             <li
@@ -201,7 +231,7 @@ export const ChecklistModal = () => {
                   <TemplateStep
                     step={step}
                     busy={busyStepId === step.stepId}
-                    disabled={step.status === 'COMPLETED'}
+                    disabled={disabled}
                     onSelectTemplate={selectTemplate}
                   />
                 </div>
@@ -284,7 +314,7 @@ export const ChecklistModal = () => {
                 <Button
                   variant="primary"
                   onClick={handleSubmitOverride}
-                  disabled={!canSubmitOverride || overrideBusy}
+                  disabled={!canSubmitOverride || overrideBusy || pendingLocaleApproval}
                   loading={overrideBusy}
                 >
                   Confirm override
@@ -300,7 +330,7 @@ export const ChecklistModal = () => {
                 Any teammate can request an override after acknowledging the activation impact.
               </p>
             </div>
-            <Button variant="outline" onClick={() => setOverrideOpen(true)}>
+            <Button variant="outline" onClick={() => setOverrideOpen(true)} disabled={pendingLocaleApproval}>
               Request checklist override
             </Button>
           </div>
