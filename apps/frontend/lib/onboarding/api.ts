@@ -3,6 +3,7 @@ import { cache } from 'react';
 
 import type { CookieStoreAdapter } from '@/lib/supabase/cookies';
 import { createServerSupabaseClient } from '@/lib/supabase/clients';
+import { OnboardingApiError } from './errors';
 
 import type {
   ChecklistResponse,
@@ -14,17 +15,22 @@ import type {
 } from './types';
 
 const API_BASE_URL = process.env.ONBOARDING_API_URL ?? 'http://localhost:8000';
+const WORKSPACE_ID_FALLBACK = (process.env.ONBOARDING_DEFAULT_WORKSPACE_ID ?? '').trim() || undefined;
 
-export class OnboardingApiError extends Error {
-  constructor(
-    message: string,
-    readonly status: number,
-    readonly details?: unknown,
-  ) {
-    super(message);
-    this.name = 'OnboardingApiError';
+const extractWorkspaceId = (metadata?: Record<string, unknown>): string | undefined => {
+  if (!metadata) {
+    return undefined;
   }
-}
+
+  for (const key of ['workspace_id', 'workspaceId']) {
+    const value = metadata[key];
+    if (typeof value === 'string' && value.trim()) {
+      return value.trim();
+    }
+  }
+
+  return undefined;
+};
 
 interface AuthContext {
   accessToken: string;
@@ -54,11 +60,15 @@ const resolveAuthContext = cache(async (): Promise<AuthContext> => {
   }
 
   const workspaceId =
-    ((session.user.user_metadata as Record<string, unknown> | undefined)?.workspace_id as string | undefined) ??
-    ((session.user.app_metadata as Record<string, unknown> | undefined)?.workspace_id as string | undefined);
+    extractWorkspaceId(session.user.user_metadata as Record<string, unknown> | undefined) ??
+    extractWorkspaceId(session.user.app_metadata as Record<string, unknown> | undefined) ??
+    WORKSPACE_ID_FALLBACK;
 
   if (!workspaceId) {
-    throw new OnboardingApiError('Workspace context missing for onboarding requests.', 400);
+    throw new OnboardingApiError(
+      'Workspace context missing for onboarding requests. Add a workspace_id to the authenticated profile (user_metadata or app_metadata) or set ONBOARDING_DEFAULT_WORKSPACE_ID for local testing.',
+      400,
+    );
   }
 
   return {

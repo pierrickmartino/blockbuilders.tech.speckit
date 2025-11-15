@@ -20,7 +20,7 @@ import {
   selectTemplateAction,
   updateStepStatusAction,
 } from '@/app/(protected)/dashboard/onboarding/actions';
-import { OnboardingApiError } from '@/lib/onboarding/api';
+import { OnboardingApiError } from '@/lib/onboarding/errors';
 import { useToast } from '@/components/design-system/Toast';
 import { createOnboardingAnalytics } from '@/lib/analytics/onboarding';
 import type {
