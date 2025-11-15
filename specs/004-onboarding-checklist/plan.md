@@ -76,11 +76,12 @@ scripts/
 No constitution violations or additional complexity beyond the approved stack were identified for this iteration.
 
 ### Validation
-Every user story now has: migrations/entities, backend services, server actions, UI, telemetry, and dedicated failing-first tests. Phase 5 also introduces CI KPI validation and override-metric auditing so SC-01/02/03 plus FR-009/FR-011 controls stay enforced before code merge.
+Every user story now has: migrations/entities, backend services, server actions, UI, telemetry/compliance hooks, and dedicated failing-first tests. Phase 3 delivers the FR-009 override controls alongside US1, Phase 5 hardens SC-01/02/03 telemetry + performance evidence, and Phase 6 (US4) completes FR-011’s disclosure gate across seeds, runtime, and CI before release.
 
 ### Phase Breakdown
 - **Phase 1 – Setup (T001–T003, T041)**: Align env files, Makefile automation, and legal copy capture so quickstart credentials and disclosure approvals exist before engineering work begins.
 - **Phase 2 – Foundational (T004–T009, T036)**: Ship Supabase schemas/RPCs, FastAPI scaffolding, and telemetry plumbing; outcome is a stable backend + event pipeline that later phases consume.
 - **Phase 3 – User Story 1 (T010–T021, T037–T038, T042, T046–T047)**: Deliver the guided checklist MVP with per-user persistence, overrides, accessibility, and telemetry hooks fulfilling FR-001–FR-003, FR-007–FR-009.
 - **Phase 4 – User Story 2 (T022–T030, T048)**: Implement template selection endpoints, gallery UI, and React Flow priming so FR-004–FR-005 are satisfied independently once foundations exist.
-- **Phase 5 – Polish (T031–T045)**: Harden telemetry dashboards, CI monitors, performance tests, and QA evidence to meet FR-006, FR-010–FR-011 and all NFRs before release.
+- **Phase 5 – User Story 3 (T032–T045, T054)**: Build telemetry dashboards, CI monitors, performance tests, override-aware analytics, and regression remediation automation to satisfy FR-006, FR-010, performance budgets, and Principle V evidence before release.
+- **Phase 6 – User Story 4 (T031, T049–T053)**: Enforce the jurisdiction-aware disclosure gate across seeds, runtime UI/API flows, CI release checks, and QA evidence so FR-011 and the compliance NFR have implementation + verification coverage.

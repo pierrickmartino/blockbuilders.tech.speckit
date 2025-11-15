@@ -70,7 +70,7 @@
 - [ ] T013 [P] [US1] Add axe + keyboard accessibility spec for the checklist modal in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/a11y/onboarding-checklist.a11y.ts` to enforce FR-008.
 - [ ] T037 [P] [US1] Add Playwright offline/crash resilience coverage in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/onboarding-checklist.spec.ts`, forcing network drop + browser restart mid-step to confirm no duplicate events or corrupted `ChecklistStepProgress` rows.
 - [ ] T046 [P] [US1] Implement Pytest contract coverage in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/contracts/test_checklist_security.py` that exercises unauthenticated/unauthorized access to checklist, override, and telemetry endpoints, expecting 401/403 responses and no audit log mutations (satisfies Security NFR + Principle III).
-- [ ] T047 [P] [US1] Extend `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/onboarding-checklist.spec.ts` with a Playwright scenario that attempts to bypass the dual-confirmation override (missing acknowledgement token, reused token) and asserts the UI blocks the action while audit logs capture actor + denial reason.
+- [ ] T047 [P] [US1] Extend `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/onboarding-checklist.spec.ts` with a Playwright scenario where a regular teammate (non-support) exercises the dual-confirmation override, attempts bypasses (missing acknowledgement token, reused token), and the UI blocks the action while audit logs capture actor + denial reason.
 
 ### Implementation for User Story 1
 
@@ -79,7 +79,7 @@
 - [ ] T016 [US1] Create Next.js Server Actions + Supabase auth helpers for checklist load/update/event mutations in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/app/(dashboard)/onboarding/actions.ts` (no client secrets).
 - [ ] T017 [US1] Implement shadcn-based `ChecklistModal`, `StepProgressTracker`, and `DisclosurePanel` components in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/ChecklistModal.tsx` (plus colocated components) with focus trap + screen reader announcements, including the dual-step override confirmation UI and copy explaining activation-metric impact.
 - [ ] T018 [US1] Add a persistent “Resume onboarding” masthead button (right of notifications) plus dismissal state handling to `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/app/(dashboard)/layout.tsx`, ensuring the masthead control re-opens the next incomplete step after reloads.
-- [ ] T019 [US1] Implement Mark-as-done override API + audit logging in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/api/onboarding/overrides.py`, persisting actor + reason fields, enforcing dual confirmation tokens, writing `override_pending` state, and emitting structured events to `ChecklistStepProgress` + `OnboardingEvent`.
+- [ ] T019 [US1] Implement Mark-as-done override API + audit logging in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/api/onboarding/overrides.py`, ensuring any signed-in teammate can initiate the flow after dual confirmation, persisting actor + reason fields, enforcing dual confirmation tokens, writing `override_pending` state, and emitting structured events to `ChecklistStepProgress` + `OnboardingEvent`.
 - [ ] T020 [US1] Emit onboarding telemetry events (`viewed`, `step_start`, `step_complete`, `disclosure_ack`, `override`, `override_pending_cleared`, `template_selected`, `backtest_success`) via `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/lib/analytics/onboarding.ts` and ensure backend forwarding through `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/services/telemetry_forwarder.py`.
 - [ ] T021 [US1] Extend `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/seed-onboarding.ts` and `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/shared/supabase/seed/onboarding_checklist.sql` to publish localized disclosure copy and enforce version-hash resets when step definitions change.
 - [ ] T038 [US1] Implement idempotent checklist service + telemetry dedupe keyed on `(user_id, step_id, checklist_version)` in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/services/checklist_service.py` with coverage in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/services/test_checklist_service.py` to tolerate reconnects/crashes without double completion.
@@ -134,6 +134,7 @@
 - [ ] T039 Add FastAPI onboarding API load test suite (Locust or k6) under `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/perf/onboarding_load_test.py` (invoked via `uv run`) to prove p95 latency ≤200 ms before release, recording evidence in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/docs/qa/onboarding-checklist.md`.
 - [ ] T040 [P] Create `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/configs/datadog/onboarding-forwarder.json` monitors that alert when Supabase→Datadog fan-out exceeds 60 s or template/backtest-success rates fall below SC-03 thresholds, satisfying Constitution Principle V without duplicating the checklist monitor file.
 - [ ] T044 Extend onboarding telemetry aggregation and Datadog dashboards to exclude `override_pending` sessions from activation/SC metrics until a `backtest_success` event clears the flag; cover this logic with backend unit tests and add monitor thresholds for violations.
+- [ ] T054 [P] Wire `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/ci/report-sc-regression.ts` into `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/ci/onboarding-checklist-verify.sh` so failed `/scripts/ci/verify-sc-metrics.sh` runs automatically create or update a remediation task entry (referencing `/docs/qa/onboarding-checklist.md` evidence) inside `specs/004-onboarding-checklist/tasks.md`.
 - [ ] T045 Measure async persistence responsiveness (e.g., checklist step submission latency ≤150 ms) via Playwright + browser performance APIs in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/perf/checklist-interaction.ts`, asserting results inside CI.
 
 ---
@@ -144,18 +145,26 @@
 
 **Independent Test**: Attempt to seed an unapproved locale and confirm the seed task fails with a pointer to `/docs/qa/onboarding-checklist.md`; load the checklist in that locale to see the “copy pending approval” message; run the release verification script to ensure Supabase locales match the approval registry.
 
+### Tests for User Story 4
+
+- [ ] T049 [P] [US4] Add Pytest contract tests in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/tests/contracts/test_disclosure_gate.py` that seed approved vs. unapproved locales, expect HTTP 409 + error payload when approvals are missing, and verify overrides remain blocked until approvals exist.
+- [ ] T050 [P] [US4] Extend Playwright coverage in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/tests/e2e/disclosure-gate.spec.ts` to confirm unapproved locales show the “copy pending approval” message, block completion, and log QA evidence links.
+
 ### Implementation for User Story 4
 
+- [ ] T051 [US4] Enforce locale approval gating inside `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/seed-onboarding.ts` and `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/shared/supabase/seed/onboarding_checklist.sql`, aborting seeds when approval metadata is missing and outputting guidance pointing to `/docs/qa/onboarding-checklist.md`.
+- [ ] T052 [US4] Add runtime enforcement to `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/api/onboarding/router.py`, `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/backend/app/services/checklist_service.py`, and `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/apps/frontend/src/components/checklist/ChecklistModal.tsx` so unapproved locales return 409 with structured details and UI surfaces the “copy pending approval” state blocking completion.
+- [ ] T053 [P] [US4] Create `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/scripts/ci/verify-disclosure-approvals.sh` (invoked by `scripts/ci/onboarding-checklist-verify.sh`) that compares Supabase locale metadata against `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/docs/qa/onboarding-checklist.md`, fails CI on drift, and posts remediation links.
 - [ ] T031 Document QA evidence, accessibility sign-off, disclosure approvals, and performance budgets in `/Users/pierrickmartino/Developer/blockbuilders.tech.speckit/docs/qa/onboarding-checklist.md`, including locale reviewer/date tables referenced by FR-011.
 
 **Prerequisite Reminder**: T041 (Phase 1 disclosures + legal sign-off capture) must be completed/maintained for this story before any release step proceeds.
 
 ## Dependencies & Execution Order
 
-- **Graph**: Setup → Foundational → US1 → US2 → Polish (US2 can begin after Foundational if US1 server actions are stubbed, but shipping order remains linear).
-- **Phase Dependencies**: Setup → Foundational → User Story phases → Polish. User stories cannot start until T001–T009 complete, and US1 cannot begin until T041 (legal disclosures) is finished.
-- **User Story Order**: US1 (P1) is the MVP and must land before US2. US2 (P2) depends on the migrations/RPCs plus checklist modal infrastructure but not on US1-specific UI once Phase 2 finishes.
-- **Cross-Story Dependencies**: Telemetry + seeds (T006, T009, T021, T030) underpin both stories; template gallery work (US2) reuses server actions created in US1 (T016), so branch carefully.
+- **Graph**: Setup → Foundational → US1 → US2 → US3 → US4. US2 can start once Foundational completes, but US3 waits on telemetry hooks from US1/US2, and US4 cannot begin until T041 (legal disclosures) plus US3 telemetry evidence exist.
+- **Phase Dependencies**: Setup → Foundational → User Story phases → Release. User stories cannot start until T001–T009 complete, US1 cannot begin until T041 is finished, US3 depends on telemetry emitters from US1/US2, and US4 depends on both the legal artifacts (T041) and telemetry/CI harness (T033, T043).
+- **User Story Order**: US1 (P1) is the MVP and must land before US2. US2 (P2) depends on the migrations/RPCs plus checklist modal infrastructure. US3 (P2) consumes telemetry hooks from earlier stories. US4 (P2) finalizes compliance gating after US3’s CI harness is in place.
+- **Cross-Story Dependencies**: Telemetry + seeds (T006, T009, T021, T030, T051) underpin all stories; template gallery work (US2) reuses server actions created in US1 (T016); US3 leverages telemetry emitted in T020/T024; US4 reuses the CI runner from T033/T043 to execute the new disclosure verification script.
 
 ## Parallel Execution Examples
 
@@ -172,7 +181,8 @@
 ### Incremental Delivery
 1. Ship MVP (US1) to reach time-to-first-backtest goals and gather telemetry.
 2. Layer in US2 (T022–T030) to unlock starter templates without blocking further learnings.
-3. Close with Polish tasks (T031–T033) once both stories are stable.
+3. Harden telemetry/performance budgets with US3 (T032–T045) so CI evidence and Datadog monitors meet Principle V.
+4. Lock legal approval gates with US4 (T031, T049–T053) before any release candidate is considered.
 
 ### Validation
-Every user story now has: migrations/entities, backend services, server actions, UI, telemetry, and dedicated failing-first tests. Each story can be tested independently using the listed “Independent Test” plus its automated suites.
+Every user story (US1–US4) now has migrations/entities, backend services, server actions, UI, telemetry/compliance hooks, and dedicated failing-first tests. Each story can be tested independently using the listed “Independent Test” plus its automated suites.
