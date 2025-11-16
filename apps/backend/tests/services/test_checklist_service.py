@@ -3,15 +3,28 @@ from __future__ import annotations
 from dataclasses import replace
 from uuid import UUID
 
-import pytest
-
-from app.schemas.onboarding import OverrideRequest, StepStatus, StepStatusRequest, TelemetryEvent, TelemetryEventType
-from app.services.onboarding import ChecklistConflictError, OverrideService
-from app.services.onboarding.service import ChecklistService, ChecklistStateStore, OverrideService, TelemetryService
+from app.schemas.onboarding import (
+    OverrideRequest,
+    StepStatus,
+    StepStatusRequest,
+    TelemetryEvent,
+    TelemetryEventType,
+)
+from app.services.onboarding import ChecklistConflictError
+from app.services.onboarding.service import (
+    ChecklistService,
+    ChecklistStateStore,
+    OverrideService,
+    TelemetryService,
+)
 from app.services.telemetry_forwarder import TelemetryForwarder
+
+import pytest
 
 USER_ID = UUID("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 WORKSPACE_ID = UUID("bbbbbbbb-cccc-dddd-eeee-ffffffffffff")
+EXPECTED_TELEMETRY_EVENT_REPETITIONS = 2
+CHECKLIST_STEP_COUNT = 4
 
 
 class RecordingForwarder(TelemetryForwarder):
@@ -76,7 +89,7 @@ async def test_telemetry_events_are_deduplicated_per_version() -> None:
 
     store._definition = replace(store.definition, version=store.definition.version + 1)
     await telemetry.record_event(USER_ID, WORKSPACE_ID, event)
-    assert len(forwarder.events) == 2
+    assert len(forwarder.events) == EXPECTED_TELEMETRY_EVENT_REPETITIONS
 
 
 @pytest.mark.asyncio
@@ -96,7 +109,7 @@ async def test_different_steps_emit_unique_events() -> None:
         TelemetryEvent(event_type=TelemetryEventType.STEP_COMPLETE, step_id="connect_data"),
     )
 
-    assert len(forwarder.events) == 2
+    assert len(forwarder.events) == EXPECTED_TELEMETRY_EVENT_REPETITIONS
 
 
 @pytest.mark.asyncio

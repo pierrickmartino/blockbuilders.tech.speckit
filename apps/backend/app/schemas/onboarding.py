@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
-from typing import Any, Dict, Optional
+from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, PositiveInt
@@ -16,7 +16,7 @@ class StepStatus(str, Enum):
 
 class DisclosurePayload(BaseModel):
     text: str
-    acknowledgement_token: Optional[str] = None
+    acknowledgement_token: str | None = None
 
     model_config = ConfigDict(frozen=True)
 
@@ -26,8 +26,8 @@ class StarterTemplatePayload(BaseModel):
     title: str
     description: str
     estimated_run_time: str = Field(alias="estimatedRunTime")
-    default_parameters: Dict[str, Any] = Field(alias="defaultParameters")
-    react_flow: Dict[str, Any] = Field(alias="reactFlow")
+    default_parameters: dict[str, Any] = Field(alias="defaultParameters")
+    react_flow: dict[str, Any] = Field(alias="reactFlow")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -39,13 +39,13 @@ class ChecklistStep(BaseModel):
     requires_disclosure: bool = Field(alias="requiresDisclosure")
     requires_template_edit: bool = Field(alias="requiresTemplateEdit")
     status: StepStatus = StepStatus.NOT_STARTED
-    disclosure: Optional[DisclosurePayload] = None
-    template_id: Optional[UUID] = Field(default=None, alias="templateId")
+    disclosure: DisclosurePayload | None = None
+    template_id: UUID | None = Field(default=None, alias="templateId")
     override_pending: bool = Field(default=False, alias="overridePending")
-    override_reason: Optional[str] = Field(default=None, alias="overrideReason")
-    override_actor_role: Optional[str] = Field(default=None, alias="overrideActorRole")
-    templates: Optional[list[StarterTemplatePayload]] = None
-    templates_available: Optional[bool] = Field(default=None, alias="templatesAvailable")
+    override_reason: str | None = Field(default=None, alias="overrideReason")
+    override_actor_role: str | None = Field(default=None, alias="overrideActorRole")
+    templates: list[StarterTemplatePayload] | None = None
+    templates_available: bool | None = Field(default=None, alias="templatesAvailable")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -54,7 +54,7 @@ class ChecklistStepProgress(BaseModel):
     progress_id: UUID = Field(alias="progressId")
     step_id: str = Field(alias="stepId")
     status: StepStatus
-    completed_at: Optional[datetime] = Field(default=None, alias="completedAt")
+    completed_at: datetime | None = Field(default=None, alias="completedAt")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -64,10 +64,10 @@ class LocaleApprovalPayload(BaseModel):
     status: str
     approved: bool
     message: str
-    reviewer: Optional[str] = None
-    role: Optional[str] = None
-    decision_date: Optional[str] = Field(default=None, alias="decisionDate")
-    evidence_link: Optional[str] = Field(default=None, alias="evidenceLink")
+    reviewer: str | None = None
+    role: str | None = None
+    decision_date: str | None = Field(default=None, alias="decisionDate")
+    evidence_link: str | None = Field(default=None, alias="evidenceLink")
 
     model_config = ConfigDict(populate_by_name=True, frozen=True)
 
@@ -85,16 +85,16 @@ class ChecklistResponse(BaseModel):
 
 class StepStatusRequest(BaseModel):
     status: StepStatus
-    acknowledgement_token: Optional[str] = Field(default=None, alias="acknowledgementToken")
-    template_diff: Optional[Dict[str, Any]] = Field(default=None, alias="templateDiff")
+    acknowledgement_token: str | None = Field(default=None, alias="acknowledgementToken")
+    template_diff: dict[str, Any] | None = Field(default=None, alias="templateDiff")
 
     model_config = ConfigDict(populate_by_name=True)
 
 
 class TemplateSelectRequest(BaseModel):
-    parameter_changes: Dict[str, Any] = Field(alias="parameterChanges")
-    draft_name: Optional[str] = Field(default=None, alias="draftName")
-    canvas_context: Dict[str, Any] = Field(default_factory=dict, alias="canvasContext")
+    parameter_changes: dict[str, Any] = Field(alias="parameterChanges")
+    draft_name: str | None = Field(default=None, alias="draftName")
+    canvas_context: dict[str, Any] = Field(default_factory=dict, alias="canvasContext")
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -131,11 +131,11 @@ class TelemetryEventType(str, Enum):
 
 class TelemetryEvent(BaseModel):
     event_type: TelemetryEventType = Field(alias="eventType")
-    step_id: Optional[str] = Field(default=None, alias="stepId")
-    template_id: Optional[UUID] = Field(default=None, alias="templateId")
-    metadata: Dict[str, Any] = Field(default_factory=dict)
-    occurred_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc), alias="occurredAt")
-    client_context: Dict[str, Any] = Field(default_factory=dict, alias="clientContext")
+    step_id: str | None = Field(default=None, alias="stepId")
+    template_id: UUID | None = Field(default=None, alias="templateId")
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    occurred_at: datetime = Field(default_factory=lambda: datetime.now(UTC), alias="occurredAt")
+    client_context: dict[str, Any] = Field(default_factory=dict, alias="clientContext")
 
     model_config = ConfigDict(populate_by_name=True)
 
@@ -144,8 +144,8 @@ __all__ = [
     "ChecklistResponse",
     "ChecklistStep",
     "ChecklistStepProgress",
-    "LocaleApprovalPayload",
     "DisclosurePayload",
+    "LocaleApprovalPayload",
     "OverrideRequest",
     "StarterTemplatePayload",
     "StepStatus",

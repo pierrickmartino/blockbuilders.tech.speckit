@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from typing import Any, Dict, Iterable, Mapping, Protocol
+from datetime import UTC, datetime
+from typing import Any, ClassVar, Protocol
 from uuid import UUID, uuid5
 
 from app.schemas.onboarding import (
@@ -20,9 +21,7 @@ from app.schemas.onboarding import (
 from app.services.telemetry_forwarder import TelemetryForwarder
 
 from .approvals import LocaleApprovalRegistry, LocaleApprovalStatus, get_locale_registry
-
 from .templates import StarterTemplateDefinition, TemplateCatalog, get_template_catalog
-
 from .versioning import has_definition_changed
 
 DEFAULT_CHECKLIST_ID = UUID("00000000-0000-0000-0000-000000000004")
@@ -78,7 +77,7 @@ class StepProgressRecord:
     completed_at: datetime | None = None
     completed_by: UUID | None = None
     acknowledgement_token: str | None = None
-    template_diff: Dict[str, Any] | None = None
+    template_diff: dict[str, Any] | None = None
     override_reason: str | None = None
     override_actor_role: str | None = None
     override_pending: bool = False
@@ -219,7 +218,7 @@ GLOBAL_STORE = ChecklistStateStore()
 
 
 def _now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class ChecklistServiceProtocol(Protocol):
@@ -551,12 +550,12 @@ class TemplateSelectionService(TemplateSelectionServiceProtocol):
     def _sanitize_parameter_changes(
         self,
         template: StarterTemplateDefinition,
-        diff: Dict[str, Any] | None,
-    ) -> Dict[str, Any]:
+        diff: dict[str, Any] | None,
+    ) -> dict[str, Any]:
         if not isinstance(diff, Mapping):
             raise ChecklistConflictError("Parameter changes required before saving a template")
 
-        sanitized: Dict[str, Any] = {}
+        sanitized: dict[str, Any] = {}
         for key, value in diff.items():
             if key in {"__proto__", "constructor"}:
                 raise ChecklistConflictError("Invalid parameter key provided")
@@ -576,33 +575,43 @@ class TemplateSelectionService(TemplateSelectionServiceProtocol):
 
     def _coerce_value(self, expected: Any, provided: Any) -> Any:
         if isinstance(expected, (int, float)):
-            if isinstance(provided, (int, float)):
-                return type(expected)(provided)
-            if isinstance(provided, str):
-                try:
-                    parsed = float(provided) if isinstance(expected, float) else int(float(provided))
-                except ValueError as exc:
-                    raise ChecklistConflictError("Parameter value must be numeric") from exc
-                return type(expected)(parsed)
+            return self._coerce_numeric_value(expected, provided)
         if isinstance(expected, str):
-            if not isinstance(provided, str):
-                raise ChecklistConflictError("Parameter value must be a string")
-            return provided.strip()
+            return self._coerce_string_value(provided)
         if isinstance(expected, bool):
-            if isinstance(provided, bool):
-                return provided
-            if isinstance(provided, str):
-                lowered = provided.lower()
-                if lowered in {"true", "1", "yes"}:
-                    return True
-                if lowered in {"false", "0", "no"}:
-                    return False
-            raise ChecklistConflictError("Parameter value must be a boolean")
+            return self._coerce_boolean_value(provided)
 
         if isinstance(provided, (dict, list)):
             raise ChecklistConflictError("Complex parameter payloads are not supported")
 
         return provided
+
+    def _coerce_numeric_value(self, expected: int | float, provided: Any) -> int | float:
+        if isinstance(provided, (int, float)):
+            return type(expected)(provided)
+        if isinstance(provided, str):
+            try:
+                parsed = float(provided) if isinstance(expected, float) else int(float(provided))
+            except ValueError as exc:
+                raise ChecklistConflictError("Parameter value must be numeric") from exc
+            return type(expected)(parsed)
+        raise ChecklistConflictError("Parameter value must be numeric")
+
+    def _coerce_string_value(self, provided: Any) -> str:
+        if not isinstance(provided, str):
+            raise ChecklistConflictError("Parameter value must be a string")
+        return provided.strip()
+
+    def _coerce_boolean_value(self, provided: Any) -> bool:
+        if isinstance(provided, bool):
+            return provided
+        if isinstance(provided, str):
+            lowered = provided.lower()
+            if lowered in {"true", "1", "yes"}:
+                return True
+            if lowered in {"false", "0", "no"}:
+                return False
+        raise ChecklistConflictError("Parameter value must be a boolean")
 
 
 class OverrideService(OverrideServiceProtocol):
@@ -639,7 +648,7 @@ class OverrideService(OverrideServiceProtocol):
 
 
 class TelemetryService(TelemetryServiceProtocol):
-    _DEDUP_TYPES = {
+    _DEDUP_TYPES: ClassVar[set[TelemetryEventType]] = {
         TelemetryEventType.STEP_COMPLETE,
         TelemetryEventType.DISCLOSURE_ACK,
         TelemetryEventType.TEMPLATE_SELECTED,
@@ -683,15 +692,15 @@ def reset_onboarding_state() -> None:
 
 
 __all__ = [
-    "ChecklistService",
-    "ChecklistServiceProtocol",
     "ChecklistConflictError",
     "ChecklistNotFoundError",
+    "ChecklistService",
+    "ChecklistServiceProtocol",
     "OverrideService",
     "OverrideServiceProtocol",
-    "TemplateSelectionService",
-    "TemplateSelectionServiceProtocol",
     "TelemetryService",
     "TelemetryServiceProtocol",
+    "TemplateSelectionService",
+    "TemplateSelectionServiceProtocol",
     "reset_onboarding_state",
 ]

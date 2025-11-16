@@ -20,6 +20,7 @@ from httpx import ASGITransport
 
 USER_ID = UUID("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee")
 WORKSPACE_ID = UUID("bbbbbbbb-cccc-dddd-eeee-ffffffffffff")
+CHECKLIST_STEP_COUNT = 4
 
 
 @pytest.fixture(autouse=True)
@@ -87,7 +88,7 @@ async def test_fetch_checklist_returns_active_steps(onboarding_client: httpx.Asy
     assert payload["definitionChanged"] is False
     assert payload["overridePending"] is False
     steps = payload["steps"]
-    assert len(steps) >= 4
+    assert len(steps) >= CHECKLIST_STEP_COUNT
     first_step = steps[0]
     assert first_step["stepId"] == "disclosures"
     assert first_step["requiresDisclosure"] is True

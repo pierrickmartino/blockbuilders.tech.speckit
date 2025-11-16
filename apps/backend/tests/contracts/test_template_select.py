@@ -9,7 +9,11 @@ from app.dependencies.supabase import get_current_supabase_user
 from app.factory import create_app
 from app.schemas.auth import SupabaseUserProfile
 from app.schemas.onboarding import StepStatus, TelemetryEvent
-from app.services.onboarding import ChecklistService, TemplateSelectionService, reset_onboarding_state
+from app.services.onboarding import (
+    ChecklistService,
+    TemplateSelectionService,
+    reset_onboarding_state,
+)
 from app.services.onboarding.service import ChecklistStateStore
 
 import httpx

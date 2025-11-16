@@ -11,8 +11,8 @@ import json
 import math
 import statistics
 import time
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Iterable, List
 
 import httpx
 
@@ -44,10 +44,10 @@ async def exercise_get_checklist(client: httpx.AsyncClient, endpoint: str) -> fl
     return (time.perf_counter() - start) * 1000
 
 
-async def collect_live_samples(base_url: str, samples: int, concurrency: int) -> List[float]:
+async def collect_live_samples(base_url: str, samples: int, concurrency: int) -> list[float]:
     endpoint = f"{base_url.rstrip('/')}/onboarding/checklist"
     sem = asyncio.Semaphore(concurrency)
-    results: List[float] = []
+    results: list[float] = []
 
     async with httpx.AsyncClient(timeout=10.0) as client:
         async def worker() -> None:
@@ -60,7 +60,7 @@ async def collect_live_samples(base_url: str, samples: int, concurrency: int) ->
     return results
 
 
-def load_fixture(path: Path) -> List[float]:
+def load_fixture(path: Path) -> list[float]:
     payload = json.loads(path.read_text())
     if isinstance(payload, dict):
         data = payload.get("latenciesMs") or payload.get("samples")

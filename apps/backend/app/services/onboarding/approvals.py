@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from pathlib import Path
 import re
-from typing import Dict, Mapping
+from collections.abc import Mapping
+from dataclasses import dataclass
+from functools import cache
+from pathlib import Path
 
 DEFAULT_LOCALE = "en-US"
 DEFAULT_EVIDENCE_LINK = "docs/qa/onboarding-checklist.md"
@@ -33,7 +34,7 @@ class LocaleApprovalStatus:
 
 class LocaleApprovalRegistry:
     def __init__(self, approvals: Mapping[str, LocaleApprovalStatus]) -> None:
-        self._approvals: Dict[str, LocaleApprovalStatus] = dict(approvals)
+        self._approvals: dict[str, LocaleApprovalStatus] = dict(approvals)
 
     def get_status(self, locale: str | None) -> LocaleApprovalStatus:
         normalized = (locale or DEFAULT_LOCALE).strip() or DEFAULT_LOCALE
@@ -64,8 +65,8 @@ def _load_locale_rows() -> dict[str, LocaleApprovalStatus]:
     pattern = re.compile(r"^\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|\s*([^|]+)\|")
     approvals: dict[str, LocaleApprovalStatus] = {}
 
-    for line in content.splitlines():
-        line = line.strip()
+    for raw_line in content.splitlines():
+        line = raw_line.strip()
         if not line.startswith("|"):
             continue
         match = pattern.match(line)
@@ -93,26 +94,21 @@ def _load_locale_rows() -> dict[str, LocaleApprovalStatus]:
     return approvals
 
 
-_REGISTRY: LocaleApprovalRegistry | None = None
-
-
+@cache
 def get_locale_registry() -> LocaleApprovalRegistry:
-    global _REGISTRY
-    if _REGISTRY is None:
-        approvals = _load_locale_rows()
-        if not approvals:
-            approvals = {
-                DEFAULT_LOCALE: LocaleApprovalStatus(
-                    locale=DEFAULT_LOCALE,
-                    approved=True,
-                    reviewer="Default reviewer",
-                    role="Legal",
-                    decision_date=None,
-                    evidence_link=DEFAULT_EVIDENCE_LINK,
-                ),
-            }
-        _REGISTRY = LocaleApprovalRegistry(approvals)
-    return _REGISTRY
+    approvals = _load_locale_rows()
+    if not approvals:
+        approvals = {
+            DEFAULT_LOCALE: LocaleApprovalStatus(
+                locale=DEFAULT_LOCALE,
+                approved=True,
+                reviewer="Default reviewer",
+                role="Legal",
+                decision_date=None,
+                evidence_link=DEFAULT_EVIDENCE_LINK,
+            ),
+        }
+    return LocaleApprovalRegistry(approvals)
 
 
 __all__ = ["LocaleApprovalRegistry", "LocaleApprovalStatus", "get_locale_registry"]
