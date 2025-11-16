@@ -1,11 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type * as BuildMetadataModule from '../../lib/build-metadata';
 
-const execFileSync = vi.fn<(scriptPath: string, args: string[]) => Buffer>();
+type ChildProcessExecFileSync = typeof import('node:child_process').execFileSync;
 
-vi.mock('node:child_process', () => ({
-  execFileSync,
-}));
+declare global {
+  var __buildMetadataExec: ChildProcessExecFileSync | undefined;
+}
+
+const execFileSync = vi.fn<ChildProcessExecFileSync>();
 
 const encodeScriptOutput = (payload: unknown) =>
   Buffer.from(JSON.stringify(payload), 'utf8');
@@ -16,11 +18,13 @@ describe('loadBuildMetadata', () => {
     execFileSync.mockReset();
     delete process.env.NEXT_PUBLIC_APP_ENV;
     delete process.env.PLAYWRIGHT_EXPECT_UNKNOWN_COMMIT;
+    globalThis.__buildMetadataExec = execFileSync;
   });
 
   afterEach(() => {
     delete process.env.NEXT_PUBLIC_APP_ENV;
     delete process.env.PLAYWRIGHT_EXPECT_UNKNOWN_COMMIT;
+    delete globalThis.__buildMetadataExec;
   });
 
   it('parses the shared build snapshot and annotates the runtime environment', async () => {
