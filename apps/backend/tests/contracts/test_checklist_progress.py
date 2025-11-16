@@ -243,6 +243,7 @@ async def test_override_marks_steps_complete_and_records_reason(
         "reason": "Manual approval from support",
         "actorId": str(USER_ID),
         "actorRole": "teammate",
+        "confirmationToken": "override.confirmed.v1",
     }
 
     response = await onboarding_client.post("/onboarding/overrides/mark-as-done", json=payload)

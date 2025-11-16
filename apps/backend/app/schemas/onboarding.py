@@ -16,7 +16,7 @@ class StepStatus(str, Enum):
 
 class DisclosurePayload(BaseModel):
     text: str
-    acknowledgement_token: str | None = None
+    acknowledgement_token: str | None = Field(default=None, alias="acknowledgementToken")
 
     model_config = ConfigDict(frozen=True)
 

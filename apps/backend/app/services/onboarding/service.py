@@ -458,7 +458,7 @@ class ChecklistService(ChecklistServiceProtocol):
         if definition.requires_template_edit:
             diff = payload.template_diff
             if not isinstance(diff, Mapping) or len(diff) == 0:
-                raise ChecklistConflictError("Template edit diff required before completing this step")
+                raise ChecklistConflictError("template edit diff required before completing this step")
 
         for previous in self._store.iter_previous_steps(definition):
             previous_status = state.steps[previous.step_id].status
