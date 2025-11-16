@@ -17,6 +17,9 @@
   --color-state-success-background: #ECFDF5;
   --color-state-success-border: #34D399;
   --color-state-success-content: #065F46;
+  --color-brand-200: #D1E3FF;
+  --color-brand-500: #1A56DB;
+  --color-brand-700: #0F3F96;
   --typography-heading-lg: 600 2rem/1.2 "Inter", system-ui;
   --typography-heading-md: 600 1.5rem/1.3 "Inter", system-ui;
   --typography-body: 400 1rem/1.6 "Inter", system-ui;
@@ -46,6 +49,9 @@
   --color-state-success-background: #032016;
   --color-state-success-border: #047857;
   --color-state-success-content: #A7F3D0;
+  --color-brand-200: #1F2A37;
+  --color-brand-500: #7AA5FF;
+  --color-brand-700: #A3B9FF;
   --typography-heading-lg: 600 2rem/1.2 "Inter", system-ui;
   --typography-heading-md: 600 1.5rem/1.3 "Inter", system-ui;
   --typography-body: 400 1rem/1.6 "Inter", system-ui;
