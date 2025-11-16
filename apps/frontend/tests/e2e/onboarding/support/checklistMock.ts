@@ -187,7 +187,7 @@ export class ChecklistMockServer {
   }
 
   private async handle(route: Route): Promise<void> {
-    const { request } = route;
+    const request = route.request();
     const url = new URL(request.url());
     const pathname = url.pathname;
 

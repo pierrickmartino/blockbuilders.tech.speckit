@@ -22,6 +22,7 @@ const buildChecklist = (statuses: Array<'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLET
     disclosure: index === 0 ? { text: 'Disclosure', acknowledgementToken: 'ack-token' } : undefined,
     templateId: null,
   })),
+  overridePending: false,
 });
 
 describe('checklist state machine helpers', () => {

@@ -72,11 +72,16 @@ describe('TemplateStep', () => {
     fireEvent.click(saveButton);
 
     expect(onSelect).toHaveBeenCalledTimes(1);
+    const [sampleTemplate] = buildTemplates();
+    if (!sampleTemplate) {
+      throw new Error('No template available in fixture');
+    }
+
     expect(onSelect).toHaveBeenCalledWith(
       expect.objectContaining({
-        templateId: '00000000-0000-0000-0000-00000000a11a',
+        templateId: sampleTemplate.templateId,
         parameterChanges: { riskTolerance: 'balanced' },
-        canvasContext: buildTemplates()[0].reactFlow,
+        canvasContext: sampleTemplate.reactFlow,
       }),
     );
   });

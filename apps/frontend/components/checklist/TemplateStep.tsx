@@ -1,6 +1,4 @@
 'use client';
-
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@/components/design-system/Button';
@@ -46,9 +44,14 @@ export const TemplateStep = ({ step, busy, disabled, onSelectTemplate }: Templat
         <p className="font-semibold">Templates are temporarily unavailable.</p>
         <p className="mt-1">
           Explore the documented playbooks while we restore curated templates.
-          <Link className="ml-2 text-primary underline" href="/docs/templates/strategy-library.md">
+          <a
+            className="ml-2 text-primary underline"
+            href="/docs/templates/strategy-library.md"
+            target="_blank"
+            rel="noreferrer"
+          >
             Explore the strategy library
-          </Link>
+          </a>
         </p>
       </div>
     );

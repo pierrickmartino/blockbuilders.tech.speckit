@@ -57,7 +57,6 @@ export const ChecklistModal = () => {
 
   const handleResolveStep = (step: ChecklistStep) => {
     if (pendingLocaleApproval) {
-      setError(localeApproval?.message ?? 'Locale approval pending. Please wait for legal review.');
       return;
     }
     const payload: StepStatusPayload = {
@@ -132,7 +131,7 @@ export const ChecklistModal = () => {
         >
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p>Checklist definition updated. Reload to ensure progress reflects the latest flow.</p>
-            <Button size="sm" variant="outline" onClick={refresh}>
+            <Button size="sm" variant="secondary" onClick={refresh}>
               Reload checklist
             </Button>
           </div>
@@ -330,7 +329,7 @@ export const ChecklistModal = () => {
                 Any teammate can request an override after acknowledging the activation impact.
               </p>
             </div>
-            <Button variant="outline" onClick={() => setOverrideOpen(true)} disabled={pendingLocaleApproval}>
+            <Button variant="secondary" onClick={() => setOverrideOpen(true)} disabled={pendingLocaleApproval}>
               Request checklist override
             </Button>
           </div>
