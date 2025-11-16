@@ -33,7 +33,7 @@ The seed runner upserts the flags into Supabase with the correct workspace scope
 The onboarding backend requires every authenticated teammate to surface a `workspace_id` inside their Supabase profile metadata (`user_metadata.workspace_id` or `app_metadata.workspace_id`). In production that comes from your workspace provisioning flow, but locally you can either:
 
 1. Update the local Supabase user (via the dashboard, `supabase` CLI, or straight SQL) so that `raw_user_meta_data` contains the workspace UUID you seeded.
-2. Set `ONBOARDING_DEFAULT_WORKSPACE_ID` in `apps/frontend/.env.local` to the same UUID so the frontend falls back to a value when the metadata is empty.
+2. Set `ONBOARDING_DEFAULT_WORKSPACE_ID` in `apps/frontend/.env.local` to the same UUID so the frontend falls back to a value when the metadata is empty. The `/api/auth/sign-up` route now reads this variable (or `ONBOARDING_SEED_WORKSPACE_ID` when present) and stamps the workspace ID into new users' `user_metadata`, so freshly created accounts immediately expose the expected workspace context.
 
 Doing one of those ensures the dashboard layout can call the onboarding APIs without hitting the missing metadata error.
 
