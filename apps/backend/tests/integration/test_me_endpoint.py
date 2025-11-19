@@ -8,8 +8,10 @@ from http import HTTPStatus
 from pathlib import Path
 
 from app.core.settings import get_settings
-from app.dependencies.supabase import get_jwks_cache
+from app.dependencies import supabase as supabase_deps
+from app.dependencies.supabase import get_jwks_cache, get_jwt_verifier
 from app.factory import create_app
+from app.services.supabase import SupabaseJWTVerificationError
 
 import httpx
 import pytest
@@ -171,3 +173,44 @@ async def test_me_endpoint_latency_under_budget(app_client: httpx.AsyncClient) -
     metrics_path.write_text(json.dumps({"samples": durations, "p95": p95}), encoding="utf-8")
 
     assert p95 < MAX_P95_LATENCY_SECONDS, "p95 latency must remain under 200ms"
+
+
+@pytest.mark.asyncio
+async def test_me_endpoint_falls_back_to_supabase_user_lookup(
+    app_client: httpx.AsyncClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    app = app_client._transport.app  # type: ignore[attr-defined]
+
+    class _FailingVerifier:
+        async def verify(self, token: str) -> dict[str, object]:
+            raise SupabaseJWTVerificationError("jwks unavailable")
+
+    async def _fake_fetch_claims(settings: object, token: str) -> dict[str, object]:
+        return {
+            "sub": "d8ddcc58-d0fe-43e8-9e53-5c5db5589551",
+            "email": "fallback@example.com",
+            "email_confirmed_at": "2025-01-01T00:00:00Z",
+            "last_sign_in_at": "2025-01-01T00:00:00Z",
+            "user_metadata": {"workspace_id": "00000000-0000-0000-0000-000000000000"},
+            "app_metadata": {},
+        }
+
+    monkeypatch.setattr(
+        supabase_deps,
+        "_fetch_claims_via_supabase_user_endpoint",
+        _fake_fetch_claims,
+    )
+    app.dependency_overrides[get_jwt_verifier] = lambda: _FailingVerifier()
+
+    token = build_token()
+    response = await app_client.get(
+        "/me",
+        headers=build_auth_headers(token),
+        cookies=build_auth_cookies(),
+    )
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json()["email"] == "fallback@example.com"
+
+    app.dependency_overrides.pop(get_jwt_verifier, None)
