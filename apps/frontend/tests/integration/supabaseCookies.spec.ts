@@ -55,6 +55,14 @@ class MemoryResponseCookies {
   }
 }
 
+class ReadOnlyRequestCookies extends MemoryRequestCookies {
+  set(): never {
+    throw new Error(
+      'Cookies can only be modified in a Server Action or Route Handler.',
+    );
+  }
+}
+
 describe('Supabase cookie adapters', () => {
   beforeEach(() => {
     resetSupabaseEnvCache();
@@ -119,5 +127,27 @@ describe('Supabase cookie adapters', () => {
 
     expect(serverCookies.setCalls).toHaveLength(1);
     expect(middlewareResponse.setCalls).toHaveLength(1);
+  });
+
+  it('keeps request-scoped mutations in memory when cookie writes are blocked', () => {
+    const readOnlyCookies = new ReadOnlyRequestCookies();
+
+    const serverAdapter = createServerSupabaseCookies(
+      readOnlyCookies as unknown as CookieStoreAdapter,
+    );
+
+    expect(() =>
+      serverAdapter.set(SUPABASE_ACCESS_TOKEN_COOKIE, 'from-server'),
+    ).not.toThrow();
+
+    expect(serverAdapter.get(SUPABASE_ACCESS_TOKEN_COOKIE)).toBe(
+      'from-server',
+    );
+    expect(serverAdapter.getAll()).toEqual([
+      { name: SUPABASE_ACCESS_TOKEN_COOKIE, value: 'from-server' },
+    ]);
+
+    expect(() => serverAdapter.remove(SUPABASE_ACCESS_TOKEN_COOKIE)).not.toThrow();
+    expect(serverAdapter.get(SUPABASE_ACCESS_TOKEN_COOKIE)).toBeUndefined();
   });
 });

@@ -75,38 +75,73 @@ const buildRemovalOptions = (
   expires: overrides?.expires ?? new Date(0),
 });
 
+const READ_ONLY_COOKIE_ERROR_FRAGMENT = 'Cookies can only be modified';
+
+let hasWarnedReadOnlyCookies = false;
+
+const warnReadOnlyCookies = () => {
+  if (hasWarnedReadOnlyCookies || process.env.NODE_ENV === 'test') {
+    return;
+  }
+  hasWarnedReadOnlyCookies = true;
+  console.warn(
+    '[supabase] Auth cookies could not be persisted because Next.js only allows cookie mutations inside Route Handlers or Server Actions. Session refresh will continue in-memory for this request.',
+  );
+};
+
+const isReadOnlyCookiesError = (error: unknown): boolean => {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+  if (typeof error.message !== 'string') {
+    return false;
+  }
+  return error.message.includes(READ_ONLY_COOKIE_ERROR_FRAGMENT);
+};
+
 const callSet = (
   target: { set?: CookieSetter },
   name: string,
   value: string,
   options: CookieAttributes,
-) => {
+): boolean => {
   if (typeof target.set !== 'function') {
-    return;
+    return false;
   }
 
   const setter = target.set;
   const context = target;
-  if (setter.length >= 2) {
-    Reflect.apply(
-      setter as (name: string, value: string, attributes: CookieAttributes) => unknown,
-      context,
-      [name, value, options],
-    );
-  } else {
-    Reflect.apply(
-      setter as (
-        cookie: { name: string; value: string } & CookieAttributes,
-      ) => unknown,
-      context,
-      [{ name, value, ...options }],
-    );
+  try {
+    if (setter.length >= 2) {
+      Reflect.apply(
+        setter as (name: string, value: string, attributes: CookieAttributes) => unknown,
+        context,
+        [name, value, options],
+      );
+    } else {
+      Reflect.apply(
+        setter as (
+          cookie: { name: string; value: string } & CookieAttributes,
+        ) => unknown,
+        context,
+        [{ name, value, ...options }],
+      );
+    }
+    return true;
+  } catch (error) {
+    if (isReadOnlyCookiesError(error)) {
+      warnReadOnlyCookies();
+      return false;
+    }
+    throw error;
   }
 };
 
 export const createServerSupabaseCookies = (
   cookieStore: CookieStoreAdapter,
 ): SupabaseCookieAdapter => {
+  const localMutations = new Map<string, string | undefined>();
+
   const listCookies = () => {
     try {
       return cookieStore.getAll();
@@ -115,16 +150,33 @@ export const createServerSupabaseCookies = (
     }
   };
 
+  const mergeWithLocalMutations = () => {
+    const merged = new Map<string, string>();
+    listCookies().forEach(({ name, value }) => {
+      merged.set(name, value);
+    });
+    localMutations.forEach((value, name) => {
+      if (value === undefined) {
+        merged.delete(name);
+      } else {
+        merged.set(name, value);
+      }
+    });
+    return Array.from(merged.entries()).map(([name, value]) => ({ name, value }));
+  };
+
   const adapter: SupabaseCookieAdapter = {
-    get: (name) => cookieStore.get(name)?.value,
-    getAll: () =>
-      listCookies().map(({ name, value }) => ({
-        name,
-        value,
-      })),
+    get: (name) => {
+      if (localMutations.has(name)) {
+        return localMutations.get(name);
+      }
+      return cookieStore.get(name)?.value;
+    },
+    getAll: () => mergeWithLocalMutations(),
     set: (name, value, overrides) => {
       const options = buildCookieOptions(overrides);
       callSet(cookieStore, name, value, options);
+      localMutations.set(name, value);
     },
     setAll: (cookies) => {
       cookies.forEach(({ name, value, options }) => {
@@ -132,11 +184,13 @@ export const createServerSupabaseCookies = (
           options as Partial<CookieAttributes> | undefined,
         );
         callSet(cookieStore, name, value, resolvedOptions);
+        localMutations.set(name, value);
       });
     },
     remove: (name, overrides) => {
       const options = buildRemovalOptions(overrides);
       callSet(cookieStore, name, '', options);
+      localMutations.set(name, undefined);
     },
   };
 
