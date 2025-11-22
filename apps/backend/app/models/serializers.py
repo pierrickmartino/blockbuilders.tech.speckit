@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from app.schemas.ohlcv import Interval, IssueType, RemediationEntry
+from app.schemas.ohlcv import AlertEvent, AlertState, Interval, IssueType, RemediationEntry
 
 
 def remediation_from_row(row: Mapping[str, Any]) -> RemediationEntry:
@@ -21,6 +21,22 @@ def remediation_from_row(row: Mapping[str, Any]) -> RemediationEntry:
         resolved_at=_coerce_optional_dt(row.get("resolved_at")),
         run_id=_coerce_optional_uuid(row.get("run_id")),
         notes=row.get("notes"),
+    )
+
+
+def alert_event_from_row(row: Mapping[str, Any]) -> AlertEvent:
+    return AlertEvent(
+        id=_coerce_uuid(row.get("id")),
+        asset_symbol=str(row.get("asset_symbol")),
+        interval=Interval(str(row.get("interval"))),
+        detected_at=_coerce_dt(row.get("detected_at")),
+        lag_minutes=int(row.get("lag_minutes", 0)),
+        threshold_minutes=int(row.get("threshold_minutes", 60)),
+        status=AlertState(str(row.get("status"))),
+        notified_at=_coerce_optional_dt(row.get("notified_at")),
+        cleared_at=_coerce_optional_dt(row.get("cleared_at")),
+        notification_channel=str(row.get("notification_channel") or "email"),
+        run_id=_coerce_optional_uuid(row.get("run_id")),
     )
 
 
@@ -48,4 +64,4 @@ def _coerce_optional_uuid(value: Any) -> UUID | None:
     return _coerce_uuid(value)
 
 
-__all__ = ["remediation_from_row"]
+__all__ = ["remediation_from_row", "alert_event_from_row"]

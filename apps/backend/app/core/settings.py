@@ -33,6 +33,12 @@ class Settings(BaseSettings):
         description="JWKS cache TTL in seconds for Supabase public keys.",
     )
     asset_symbols: tuple[str, ...] = Field(default=ASSET_SYMBOLS, alias="ASSET_SYMBOLS")
+    freshness_threshold_minutes: PositiveInt = Field(default=60, alias="FRESHNESS_THRESHOLD_MINUTES")
+    freshness_eval_minutes: PositiveInt = Field(default=10, alias="FRESHNESS_EVAL_MINUTES")
+    alert_email_from: str = Field(default="alerts@example.com", alias="ALERT_EMAIL_FROM")
+    alert_email_to: tuple[str, ...] = Field(default=("alerts@example.com",), alias="ALERT_EMAIL_TO")
+    alert_subject_prefix: str = Field(default="[OHLCV]", alias="ALERT_SUBJECT_PREFIX")
+    status_page_url: AnyHttpUrl = Field(default="http://localhost:3000/status", alias="STATUS_PAGE_URL")
 
     model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True, extra="ignore")
 
@@ -63,6 +69,13 @@ class Settings(BaseSettings):
     def _split_symbols(cls, value: str | tuple[str, ...]) -> tuple[str, ...]:
         if isinstance(value, str):
             return tuple(symbol.strip() for symbol in value.split(",") if symbol.strip())
+        return tuple(value)
+
+    @field_validator("alert_email_to", mode="before")
+    @classmethod
+    def _split_recipients(cls, value: str | tuple[str, ...]) -> tuple[str, ...]:
+        if isinstance(value, str):
+            return tuple(addr.strip() for addr in value.split(",") if addr.strip()) or (value,)
         return tuple(value)
 
 

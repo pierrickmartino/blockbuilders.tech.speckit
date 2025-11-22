@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/design-system/Button';
-import { CoverageRange, FilterBar, StatusBadge, VendorBadge } from '@/components/status';
+import { AlertBadge, CoverageRange, FilterBar, StatusBadge, VendorBadge } from '@/components/status';
 import type { AssetStatus, IngestionRun, RemediationEntry } from '@/lib/status-client';
 import { STATUS_API_BASE_URL, fetchRemediation, fetchStatusSummary } from '@/lib/status-client';
 import { cn } from '@/lib/cn';
@@ -150,6 +150,9 @@ export function StatusDashboard({ initialAssets, initialRemediation, latestRun }
                 Freshness (m)
               </th>
               <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-600">
+                Alert
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-600">
                 Status
               </th>
               <th scope="col" className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-600">
@@ -160,7 +163,7 @@ export function StatusDashboard({ initialAssets, initialRemediation, latestRun }
           <tbody className="divide-y divide-slate-200 bg-white">
             {assets.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-sm text-slate-500">
+                <td colSpan={8} className="px-4 py-6 text-center text-sm text-slate-500">
                   No assets matched the current filter.
                 </td>
               </tr>
@@ -184,6 +187,20 @@ export function StatusDashboard({ initialAssets, initialRemediation, latestRun }
                   </td>
                   <td className="px-4 py-3 text-sm text-slate-700">
                     {asset.freshness_minutes?.toFixed(1) ?? '—'}
+                  </td>
+                  <td className="px-4 py-3">
+                    {asset.alert_status === 'open' ? (
+                      <div className="flex flex-col gap-1">
+                        <AlertBadge status={asset.alert_status} lagMinutes={asset.last_alert_lag_minutes ?? undefined} />
+                        {asset.last_alerted_at ? (
+                          <span className="text-[11px] font-medium uppercase tracking-wide text-rose-700">
+                            Detected {new Date(asset.last_alerted_at).toLocaleTimeString()}
+                          </span>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-slate-400">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <StatusBadge state={asset.status} />

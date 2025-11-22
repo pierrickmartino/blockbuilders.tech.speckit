@@ -4,6 +4,7 @@ type Interval = 'minute' | 'day';
 type VendorState = 'up' | 'degraded' | 'down' | 'rate_limited';
 type AssetState = 'healthy' | 'stale' | 'gap_detected';
 type IssueType = 'gap' | 'duplicate' | 'checksum_mismatch' | 'partial_source';
+type AlertState = 'open' | 'cleared';
 
 type IsoDate = string;
 
@@ -33,6 +34,9 @@ export interface AssetStatus {
   freshness_minutes: number;
   status: AssetState;
   vendor_status: VendorState;
+  alert_status?: AlertState;
+  last_alerted_at?: IsoDate | null;
+  last_alert_lag_minutes?: number | null;
 }
 
 export interface RemediationEntry {

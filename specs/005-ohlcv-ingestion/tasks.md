@@ -101,18 +101,18 @@ Tests are included because the specification marks user scenarios/testing as man
 
 ### Tests for User Story 3
 
-- [ ] T038 [P] [US3] Pytest for freshness evaluation/deduped incidents and clearance logic in `backend/tests/test_alerts.py`
-- [ ] T039 [P] [US3] Contract test for `/alerts/test` endpoint in `backend/tests/contract/test_alerts.py`
-- [ ] T040 [P] [US3] Playwright integration check that stale flag clears after data catch-up in `frontend/tests/status-stale.spec.ts`
-- [ ] T041 [P] [US3] Pytest asserting alert email payload includes subject prefix, asset, interval, lag minutes, vendor status, incident id, run timestamp, status-page deep link, and distro list single-fire behavior in `backend/tests/test_alerts_email.py`
+- [X] T038 [P] [US3] Pytest for freshness evaluation/deduped incidents and clearance logic in `backend/tests/test_alerts.py`
+- [X] T039 [P] [US3] Contract test for `/alerts/test` endpoint in `backend/tests/contracts/test_alerts.py`
+- [X] T040 [P] [US3] Playwright integration check that stale flag clears after data catch-up in `frontend/tests/status-stale.spec.ts`
+- [X] T041 [P] [US3] Pytest asserting alert email payload includes subject prefix, asset, interval, lag minutes, vendor status, incident id, run timestamp, status-page deep link, and distro list single-fire behavior in `backend/tests/test_alerts_email.py`
 
 ### Implementation for User Story 3
 
-- [ ] T042 [US3] Implement freshness monitor job (10m schedule) computing lag per asset/interval in `backend/src/jobs/freshness_monitor.py`
-- [ ] T043 [US3] Implement email alert sender with distribution list + template in `backend/src/services/alerts.py`
-- [ ] T044 [US3] Implement alert deduplication and resolution state updates in `backend/src/services/alerts.py`
-- [ ] T045 [US3] Include alert state (stale flag, last alert) in `/status/summary` response in `backend/src/api/status.py`
-- [ ] T046 [US3] Display alert badges and last-alert metadata on status page in `frontend/src/app/status/page.tsx`
+- [X] T042 [US3] Implement freshness monitor job (10m schedule) computing lag per asset/interval in `apps/backend/app/jobs/freshness_monitor.py`
+- [X] T043 [US3] Implement email alert sender with distribution list + template in `apps/backend/app/services/alerts.py`
+- [X] T044 [US3] Implement alert deduplication and resolution state updates in `apps/backend/app/services/alerts.py`
+- [X] T045 [US3] Include alert state (stale flag, last alert) in `/status/summary` response in `apps/backend/app/api/status.py`
+- [X] T046 [US3] Display alert badges and last-alert metadata on status page in `apps/frontend/app/status/page.tsx`
 
 ---
 

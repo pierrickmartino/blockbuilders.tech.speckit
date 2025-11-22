@@ -167,6 +167,9 @@ class AssetStatus(BaseModel):
     freshness_minutes: float | None
     status: StatusState
     vendor_status: VendorState | None = None
+    alert_status: AlertState | None = None
+    last_alerted_at: datetime | None = None
+    last_alert_lag_minutes: int | None = None
 
     model_config = ConfigDict(from_attributes=True)
 

@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import logging
+import uuid
 from datetime import UTC, datetime
 from typing import Protocol
 
 from app.config import ASSET_SYMBOLS, DEFAULT_INTERVALS
 from app.models.serializers import remediation_from_row
-from app.schemas.ohlcv import AssetStatus, Interval, IssueType, RemediationEntry, StatusState, VendorState
+from app.schemas.ohlcv import AlertEvent, AlertState, AssetStatus, Interval, IssueType, RemediationEntry, StatusState, VendorState
 from app.services.vendor_status import VendorStatusService
 
 LOGGER = logging.getLogger(__name__)
@@ -62,6 +63,7 @@ class StatusRepository(StatusRepositoryProtocol):
             rows = []
 
         vendor_state = await self._resolve_vendor_state()
+        alerts = await self._fetch_alerts_map()
         now = datetime.now(UTC)
         indexed = {(row.get("asset_symbol"), row.get("interval")): row for row in rows}
 
@@ -75,6 +77,7 @@ class StatusRepository(StatusRepositoryProtocol):
                 latest_timestamp = coverage_end
                 freshness_minutes: float | None = None
                 status = StatusState.GAP_DETECTED
+                alert = alerts.get(key)
                 if latest_timestamp:
                     freshness_minutes = (now - latest_timestamp).total_seconds() / 60.0
                     if freshness_minutes > self._threshold_minutes:
@@ -91,6 +94,9 @@ class StatusRepository(StatusRepositoryProtocol):
                         freshness_minutes=freshness_minutes,
                         status=status,
                         vendor_status=vendor_state,
+                        alert_status=alert.status if alert else None,
+                        last_alerted_at=alert.detected_at if alert else None,
+                        last_alert_lag_minutes=alert.lag_minutes if alert else None,
                     )
                 )
 
@@ -131,6 +137,42 @@ class StatusRepository(StatusRepositoryProtocol):
             return None
         vendor_status = await self._vendor_status.get_vendor_status()
         return vendor_status.status if vendor_status else None
+
+    async def _fetch_alerts_map(self) -> dict[tuple[str, str], AlertEvent]:
+        try:
+            async with self._pool.connection() as conn:
+                cursor = await conn.execute(
+                    """
+                    select distinct on (asset_symbol, interval) id, asset_symbol, interval, status, detected_at, lag_minutes
+                    from alert_events
+                    order by asset_symbol, interval, detected_at desc
+                    """
+                )
+                rows = await cursor.fetchall()
+        except Exception as exc:  # pragma: no cover - defensive
+            LOGGER.warning("alert lookup failed", exc_info=exc)
+            return {}
+
+        alerts = {}
+        for row in rows:
+            key = (row.get("asset_symbol"), row.get("interval"))
+            try:
+                alerts[key] = AlertEvent(
+                    id=row.get("id", None) or uuid.uuid4(),
+                    asset_symbol=str(row.get("asset_symbol")),
+                    interval=Interval(str(row.get("interval"))),
+                    detected_at=row.get("detected_at"),
+                    lag_minutes=int(row.get("lag_minutes" or 0)),
+                    threshold_minutes=self._threshold_minutes,
+                    status=AlertState(str(row.get("status"))),
+                    notified_at=None,
+                    cleared_at=None,
+                    notification_channel="email",
+                    run_id=None,
+                )
+            except Exception:  # pragma: no cover - skip malformed rows
+                continue
+        return alerts
 
 
 __all__ = ["StatusRepository", "StatusRepositoryProtocol"]

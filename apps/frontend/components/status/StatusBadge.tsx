@@ -60,3 +60,21 @@ export function VendorBadge({ state }: { state?: 'up' | 'degraded' | 'down' | 'r
     </span>
   );
 }
+
+export function AlertBadge({ status, lagMinutes }: { status?: 'open' | 'cleared'; lagMinutes?: number | null }) {
+  if (!status || status !== 'open') return null;
+
+  const label = typeof lagMinutes === 'number' ? `${lagMinutes}m lag` : 'Open alert';
+
+  return (
+    <span
+      data-testid="alert-badge"
+      className={clsx(
+        'inline-flex items-center gap-1 rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-800 ring-1 ring-inset ring-rose-200',
+      )}
+    >
+      <span className="inline-block h-2 w-2 rounded-full bg-current opacity-75" />
+      {label}
+    </span>
+  );
+}

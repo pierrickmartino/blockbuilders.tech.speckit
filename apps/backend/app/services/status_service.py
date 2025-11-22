@@ -45,7 +45,11 @@ def get_status_service() -> StatusServiceProtocol:
     settings = get_settings()
     pool = get_database_pool(settings)
     vendor_status = VendorStatusService(pool)
-    repository = StatusRepository(pool, vendor_status=vendor_status)
+    repository = StatusRepository(
+        pool,
+        vendor_status=vendor_status,
+        freshness_threshold_minutes=getattr(settings, "freshness_threshold_minutes", 60),
+    )
     return StatusService(repository)
 
 
