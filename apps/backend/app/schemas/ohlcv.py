@@ -45,6 +45,12 @@ class VendorState(str, Enum):
     RATE_LIMITED = "rate_limited"
 
 
+class StatusState(str, Enum):
+    HEALTHY = "healthy"
+    STALE = "stale"
+    GAP_DETECTED = "gap_detected"
+
+
 class Asset(BaseModel):
     """Asset metadata persisted in the catalog."""
 
@@ -152,7 +158,33 @@ class VendorStatus(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class AssetStatus(BaseModel):
+    asset: str
+    interval: Interval
+    coverage_start: datetime | None
+    coverage_end: datetime | None
+    latest_timestamp: datetime | None
+    freshness_minutes: float | None
+    status: StatusState
+    vendor_status: VendorState | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class StatusSummaryResponse(BaseModel):
+    assets: list[AssetStatus]
+
+
+class RemediationResponse(BaseModel):
+    items: list[RemediationEntry]
+
+
+class LineageResponse(BaseModel):
+    items: list[LineageEntry]
+
+
 __all__ = [
+    "AssetStatus",
     "AlertEvent",
     "AlertState",
     "Asset",
@@ -163,7 +195,11 @@ __all__ = [
     "Interval",
     "IssueType",
     "LineageEntry",
+    "LineageResponse",
     "RemediationEntry",
+    "RemediationResponse",
+    "StatusState",
+    "StatusSummaryResponse",
     "VendorState",
     "VendorStatus",
 ]

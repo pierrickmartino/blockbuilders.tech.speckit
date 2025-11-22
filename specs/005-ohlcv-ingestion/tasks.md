@@ -38,29 +38,29 @@ Tests are included because the specification marks user scenarios/testing as man
 
 ### Tests for User Story 1
 
-- [ ] T012 [P] [US1] Contract tests for `/status/summary` and `/status/remediation` in `backend/tests/contract/test_status.py`
-- [ ] T013 [P] [US1] Playwright a11y/filter test for status page in `frontend/tests/status-page.spec.ts`
-- [ ] T013a [P] [US1] Playwright refresh behavior test (auto 30s + manual button, refresh <2s, no full reload) in `frontend/tests/status-refresh.spec.ts`
-- [ ] T014 [P] [US1] Contract test for `/status/remediation` filters and payload shape in `backend/tests/contract/test_remediation.py`
-- [ ] T015 [P] [US1] Contract tests for `/lineage` (success/empty window/error) in `backend/tests/contract/test_lineage.py`
-- [ ] T016 [P] [US1] Load test `/status/summary` (p95 ≤200ms for 10 assets) in `backend/tests/perf/status_load.js`
-- [ ] T016a [P] [US1] Load test `/lineage` (p95 ≤200ms for 10 assets, 90d minute window) in `backend/tests/perf/lineage_load.js`
-- [ ] T017 [P] [US1] Capture Web Vitals (TTI/LCP budgets) for status page via Playwright trace in `frontend/tests/perf/status-webvitals.spec.ts`
-- [ ] T059 [P] [US1] Contract/UI test ensuring status/lineage responses and UI omit backend implementation details (no internal hosts/credentials/infra identifiers) in `backend/tests/contract/test_status_privacy.py`
-- [ ] T059a [P] [US1] Playwright check shows vendor “unavailable/rate-limited” badge when outage/remediation flag set in `frontend/tests/status-vendor-outage.spec.ts`
+- [X] T012 [P] [US1] Contract tests for `/status/summary` and `/status/remediation` in `backend/tests/contract/test_status.py`
+- [X] T013 [P] [US1] Playwright a11y/filter test for status page in `frontend/tests/status/status-page.spec.ts`
+- [X] T013a [P] [US1] Playwright refresh behavior test (auto 30s + manual button, refresh <2s, no full reload) in `frontend/tests/status/status-refresh.spec.ts`
+- [X] T014 [P] [US1] Contract test for `/status/remediation` filters and payload shape in `backend/tests/contracts/test_remediation.py`
+- [X] T015 [P] [US1] Contract tests for `/lineage` (success/empty window/error) in `backend/tests/contract/test_lineage.py`
+- [X] T016 [P] [US1] Load test `/status/summary` (p95 ≤200ms for 10 assets) in `backend/tests/perf/status_load.js`
+- [X] T016a [P] [US1] Load test `/lineage` (p95 ≤200ms for 10 assets, 90d minute window) in `backend/tests/perf/lineage_load.js`
+- [X] T017 [P] [US1] Capture Web Vitals (TTI/LCP budgets) for status page via Playwright trace in `frontend/tests/perf/status-webvitals.spec.ts`
+- [X] T059 [P] [US1] Contract/UI test ensuring status/lineage responses and UI omit backend implementation details (no internal hosts/credentials/infra identifiers) in `backend/tests/contract/test_status_privacy.py`
+- [X] T059a [P] [US1] Playwright check shows vendor “unavailable/rate-limited” badge when outage/remediation flag set in `frontend/tests/status/status-vendor-outage.spec.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T018 [P] [US1] Implement status repository aggregations (coverage, freshness, vendor cache) in `backend/src/services/status_repository.py`
-- [ ] T019 [US1] Implement FastAPI handlers for `/status/summary` and `/status/remediation` using contracts schema in `backend/src/api/status.py`
-- [ ] T020 [P] [US1] Add remediation export serializer mapping DB rows to API schema in `backend/src/models/serializers.py`
-- [ ] T021 [P] [US1] Implement lineage repository query (asset/start/end/interval) in `backend/src/services/lineage_repository.py`
-- [ ] T022 [US1] Implement FastAPI GET `/lineage` handler matching openapi spec in `backend/src/api/lineage.py`
-- [ ] T023 [P] [US1] Create shared UI components (status badge, coverage range display, filter controls) in `frontend/src/components/status/`
-- [ ] T024 [US1] Build Next.js status page layout with coverage/freshness tables and filters in `frontend/src/app/status/page.tsx`
-- [ ] T025 [US1] Wire data fetching, stale highlighting, lineage/remediation export trigger to API client in `frontend/src/app/status/page.tsx`
-- [ ] T026 [US1] Implement vendor status refresh/cache job (10m cadence, 15m TTL, error fallback) and expose on summary response in `backend/src/services/vendor_status.py`
-- [ ] T027 [US1] Record performance/a11y results in `frontend/tests/reports/status_a11y_perf.md`
+- [X] T018 [P] [US1] Implement status repository aggregations (coverage, freshness, vendor cache) in `backend/src/services/status_repository.py`
+- [X] T019 [US1] Implement FastAPI handlers for `/status/summary` and `/status/remediation` using contracts schema in `backend/src/api/status.py`
+- [X] T020 [P] [US1] Add remediation export serializer mapping DB rows to API schema in `backend/src/models/serializers.py`
+- [X] T021 [P] [US1] Implement lineage repository query (asset/start/end/interval) in `backend/src/services/lineage_repository.py`
+- [X] T022 [US1] Implement FastAPI GET `/lineage` handler matching openapi spec in `backend/src/api/lineage.py`
+- [X] T023 [P] [US1] Create shared UI components (status badge, coverage range display, filter controls) in `frontend/components/status/`
+- [X] T024 [US1] Build Next.js status page layout with coverage/freshness tables and filters in `frontend/app/status/page.tsx`
+- [X] T025 [US1] Wire data fetching, stale highlighting, lineage/remediation export trigger to API client in `frontend/app/status/page.tsx`
+- [X] T026 [US1] Implement vendor status refresh/cache job (10m cadence, 15m TTL, error fallback) and expose on summary response in `backend/app/services/vendor_status.py`
+- [X] T027 [US1] Record performance/a11y results in `frontend/tests/reports/status_a11y_perf.md`
 
 ---
 

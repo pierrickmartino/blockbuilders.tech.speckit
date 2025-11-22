@@ -1,5 +1,3 @@
-import { cache } from 'react';
-
 const STATUS_API_BASE_URL = process.env.STATUS_API_BASE_URL ?? 'http://localhost:8000';
 
 type Interval = 'minute' | 'day';
@@ -97,15 +95,15 @@ async function request<T>(path: string, init?: RequestInitish): Promise<T> {
   return (await response.json()) as T;
 }
 
-export const fetchStatusSummary = cache(async (
+export async function fetchStatusSummary(
   params: { onlyStale?: boolean; signal?: AbortSignal } = {},
-): Promise<StatusSummaryResponse> => {
+): Promise<StatusSummaryResponse> {
   const { onlyStale = false, signal } = params;
   return request<StatusSummaryResponse>('/status/summary', {
     signal,
     searchParams: { only_stale: onlyStale },
   });
-});
+}
 
 export async function fetchRemediation(
   params: { asset?: string; issueType?: IssueType; signal?: AbortSignal } = {},

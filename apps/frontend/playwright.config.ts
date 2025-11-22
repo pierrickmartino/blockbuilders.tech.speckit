@@ -20,6 +20,8 @@ const webServerEnv = {
     'local-test-anon-key-placeholder',
   SUPABASE_URL: process.env.SUPABASE_URL ?? 'http://localhost:54321',
   NEXT_TELEMETRY_DISABLED: '1',
+  NEXT_PUBLIC_STATUS_REFRESH_MS: process.env.NEXT_PUBLIC_STATUS_REFRESH_MS ?? '1000',
+  STATUS_API_BASE_URL: process.env.STATUS_API_BASE_URL ?? 'http://localhost:8000',
 };
 
 export default defineConfig({
@@ -90,6 +92,20 @@ export default defineConfig({
       testDir: './tests/a11y',
       metadata: {
         description: 'Runs axe-core coverage for onboarding checklist modal',
+      },
+    },
+    {
+      name: 'status',
+      testDir: './tests/status',
+      metadata: {
+        description: 'Status page filters, refresh, vendor outage, and exports',
+      },
+    },
+    {
+      name: 'status-perf',
+      testDir: './tests/perf',
+      metadata: {
+        description: 'Status page Web Vitals capture and latency budgets',
       },
     },
   ],
