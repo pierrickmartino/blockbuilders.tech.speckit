@@ -9,11 +9,11 @@ Tests are included because the specification marks user scenarios/testing as man
 
 **Purpose**: Ensure environment configuration and docs are ready for implementation.
 
-- [ ] T001 Create backend env template with Supabase/Datadog/email vars in `backend/.env.example`
-- [ ] T002 [P] Create frontend env template with Supabase URL/key and status API base in `frontend/.env.local.example`
-- [ ] T003 Document end-to-end setup steps (pnpm/uv install, env wiring, Timescale enablement) in `specs/005-ohlcv-ingestion/quickstart.md`
-- [ ] T004 Verify Web Vitals/performance budgets (TTI ≤2s, LCP ≤2.5s) are documented in `specs/005-ohlcv-ingestion/spec.md` and aligned with tests T017/T050
-- [ ] T005 Verify load-test goal (p95 ≤200ms for status/lineage APIs) is documented in `specs/005-ohlcv-ingestion/plan.md` and reflected in perf tests T016/T055
+- [X] T001 Create backend env template with Supabase/Datadog/email vars in `backend/.env.example`
+- [X] T002 [P] Create frontend env template with Supabase URL/key and status API base in `frontend/.env.local.example`
+- [X] T003 Document end-to-end setup steps (pnpm/uv install, env wiring, Timescale enablement) in `specs/005-ohlcv-ingestion/quickstart.md`
+- [X] T004 Verify Web Vitals/performance budgets (TTI ≤2s, LCP ≤2.5s) are documented in `specs/005-ohlcv-ingestion/spec.md` and aligned with tests T017/T050
+- [X] T005 Verify load-test goal (p95 ≤200ms for status/lineage APIs) is documented in `specs/005-ohlcv-ingestion/plan.md` and reflected in perf tests T016/T055
 
 ---
 

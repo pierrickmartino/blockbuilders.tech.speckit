@@ -28,6 +28,8 @@ artifacts/
 # Environment and Docker
 .env
 .env.*
+!.env.example
+!.env.local.example
 Dockerfile.local
 *.tsbuildinfo
 

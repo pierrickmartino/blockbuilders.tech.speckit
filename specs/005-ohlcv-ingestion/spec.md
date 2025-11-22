@@ -85,6 +85,11 @@ On-call operator receives an alert when any asset’s latest OHLCV timestamp lag
 - **FR-009 (quality, performance)**: Ingestion jobs MUST be retryable with idempotent writes to avoid duplicate rows when reprocessing the same intervals.
 - **FR-010 (testing, simplicity)**: Observability MUST include metrics/logs to confirm job success, duration, rows ingested, and alert counts; failures must be queryable for the past 30 days.
 
+### Performance Budgets & Test Alignment
+
+- Web Vitals: status page Time-to-Interactive ≤2s and Largest Contentful Paint ≤2.5s for 10 assets; validated via Playwright trace capture in tests T017 and T050.
+- API latency: `/status/summary` and `/status/lineage` p95 ≤200ms for 10 assets; validated via load tests T016 and T016a with results recorded alongside the perf reports.
+
 ### Key Entities
 
 - **Asset**: A tracked market instrument identified by symbol and metadata (name, base/quote), included in the configured set of 10.

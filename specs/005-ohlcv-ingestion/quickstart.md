@@ -7,10 +7,16 @@
 - Datadog API key for metrics if available
 
 ## Setup
-1. Install JS deps: `cd frontend && pnpm install`.
-2. Install Python deps: `cd backend && uv sync` (uses `pyproject.toml`).
-3. Configure environment: set Supabase URL/key and Datadog creds in `.env.local` (frontend) and `.env` (backend).
-4. Apply DB schema (Timescale hypertables, indexes, policies) via migration scripts under `backend/src/models` (to be added in implementation).
+1. Install dependencies  
+   - Frontend: `cd apps/frontend && pnpm install`  
+   - Backend: `uv sync --directory apps/backend`
+2. Wire environment files  
+   - Backend: `cp apps/backend/.env.example apps/backend/.env` and set Supabase URL + service role key, database DSN (Timescale), fixed asset list, Datadog keys, alert email list, and vendor API credentials.  
+   - Frontend: `cp apps/frontend/.env.local.example apps/frontend/.env.local` and set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_URL`, and `STATUS_API_BASE_URL` (FastAPI base, e.g., `http://localhost:8000`).
+3. Enable TimescaleDB  
+   - Supabase: enable the TimescaleDB extension in the project SQL editor (`create extension if not exists timescaledb;`) and confirm `timescaledb.telemetry_level` is set as needed.  
+   - Local Postgres: ensure `shared_preload_libraries = 'timescaledb'`, restart Postgres, then run the extension creation statement above.
+4. Apply DB schema (Timescale hypertables, indexes, policies) once migrations are added under `backend/src/models` (T006).
 
 ## Running
 - Frontend status page: `cd frontend && pnpm dev` (Next.js 15).
