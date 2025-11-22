@@ -5,6 +5,14 @@
 **Status**: Draft  
 **Input**: User description: "Title: 005-Market Data Ingestion (OHLCV v1) Why: Provide reliable historical data for backtests. Scope: • Frontend: Data status page (coverage, freshness, vendor status). • Backend: ETL for crypto OHLCV (minute/day), Timescale schema, integrity checks. • Infra: Scheduled jobs, retries, observability for lag/failures. Acceptance Criteria: • AC1 : Backfill N=10 assets to 3+ years daily and 90 days minute data with checksum reports. • AC2: Data freshness alert triggers if lag > X minutes. • AC3 : Data lineage (vendor, fetch time, checksum) queryable via API."
 
+## Clarifications
+
+### Session 2025-11-22
+
+- Q: What freshness lag threshold and evaluation cadence should alerting use in v1? → A: Alert when lag exceeds 60 minutes with evaluation every 10 minutes.
+- Q: What checksum method should we use for per-run integrity verification? → A: Use SHA256 over sorted OHLCV rows per asset and interval type for each backfill run.
+- Q: Should v1 use a single vendor only or include fallback sourcing? → A: Single primary vendor only; no fallback in v1.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Monitor Coverage & Freshness (Priority: P1)
@@ -47,7 +55,7 @@ On-call operator receives an alert when any asset’s latest OHLCV timestamp lag
 
 **Acceptance Scenarios**:
 
-1. **Given** an asset falls behind the freshness threshold, **When** the monitoring window elapses, **Then** an alert is sent once with asset id, lag minutes, and vendor status, and the status page shows matching stale state.
+1. **Given** an asset falls behind the 60-minute freshness threshold, **When** the 10-minute monitoring window elapses, **Then** an alert is sent once with asset id, lag minutes, and vendor status, and the status page shows matching stale state.
 2. **Given** data resumes and catches up, **When** the system verifies freshness, **Then** the stale flag clears on the status page and no further alerts fire for that incident.
 
 ### Edge Cases
@@ -66,11 +74,11 @@ On-call operator receives an alert when any asset’s latest OHLCV timestamp lag
 
 > Map each requirement to constitution principles (quality, simplicity, testing, experience, performance) and the evidence that will demonstrate compliance.
 
-- **FR-001 (quality, testing)**: System MUST ingest daily and minute OHLCV for the configured 10 assets with target coverage of ≥3 years daily and ≥90 days minute history, producing a per-asset checksum report (row counts and hash) after each backfill run.
+- **FR-001 (quality, testing)**: System MUST ingest daily and minute OHLCV for the configured 10 assets with target coverage of ≥3 years daily and ≥90 days minute history, producing a per-asset checksum report (row counts and SHA256 hash over sorted rows) after each backfill run.
 - **FR-002 (quality, experience)**: Status page MUST display per-asset coverage windows, latest successful timestamp, vendor/source health, and highlight stale or gapped assets with filter/sort to surface issues quickly.
 - **FR-003 (testing, quality)**: System MUST detect gaps, duplicates, or checksum mismatches and record them in a remediation log accessible via the status page and exportable for audits.
 - **FR-004 (experience, performance)**: Status page MUST refresh or be refreshable on demand and load summarized coverage/freshness data within a user-acceptable time (target under 5 seconds for 10 assets) without exposing backend details.
-- **FR-005 (quality, testing)**: Alerting MUST trigger when freshness lag exceeds 30 minutes and send a single actionable notification per incident with asset id, lag duration, and last successful fetch time.
+- **FR-005 (quality, testing)**: Alerting MUST trigger when freshness lag exceeds 60 minutes, evaluated every 10 minutes, and send a single actionable notification per incident with asset id, lag duration, and last successful fetch time.
 - **FR-006 (quality, simplicity)**: System MUST allow configuration of the v1 asset set: BTC, ETH, SOL, USDC, USDT, AAVE, LINK, DOGE, BNB, XRP; these 10 assets are the scope for backfill and monitoring.
 - **FR-007 (experience, simplicity)**: Alert delivery channel MUST be a designated email distribution list and include subject/body fields sufficient for routing and triage.
 - **FR-008 (quality, testing)**: Data lineage API MUST return for any requested asset/time range the source vendor, fetch time, checksum id, and run identifier, enabling AC3 verification without revealing infrastructure specifics.
@@ -91,14 +99,14 @@ On-call operator receives an alert when any asset’s latest OHLCV timestamp lag
 
 - Minute data retention beyond 90 days will follow the same freshness checks but may be trimmed later without changing v1 scope.
 - Backfill can be triggered manually or by schedule; no user-facing scheduling UI is required in v1.
-- Single primary data vendor is used for v1; multi-vendor reconciliation is out of scope unless a failure requires fallback.
+- Single primary data vendor is used for v1; no fallback vendor in scope.
 
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
 
 - **SC-COVERAGE**: 100% of the defined 10 assets show contiguous coverage of at least 3 years (daily) and 90 days (minute) with zero gaps >1 interval; checksum reports for each run are available and match expected row counts.
-- **SC-FRESHNESS**: 100% of assets remain within the agreed freshness threshold during steady-state; any breach generates an alert within 5 minutes of detection and is visible on the status page until resolved.
+- **SC-FRESHNESS**: 100% of assets remain within the 60-minute freshness threshold during steady-state; any breach generates an alert within 10 minutes of detection and is visible on the status page until resolved.
 - **SC-LINEAGE**: Lineage API returns vendor, fetch time, checksum id, and run identifier for any asset/time query within stored ranges; responses include the most recent ingestion run reference.
 - **SC-UX**: Status page loads summary data for 10 assets in ≤5 seconds on a standard connection and clearly flags stale or gapped assets without requiring backend knowledge.
 - **SC-RELIABILITY**: Ingestion/backfill jobs complete with a success rate ≥99% over a rolling 30-day period, with retries preventing duplicate OHLCV entries.
