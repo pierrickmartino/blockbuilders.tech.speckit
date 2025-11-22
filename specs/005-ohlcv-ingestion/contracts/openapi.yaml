@@ -1,0 +1,199 @@
+openapi: 3.0.3
+info:
+  title: OHLCV Ingestion v1
+  version: 0.1.0
+  description: APIs for status page, lineage, ingestion control, and remediation export.
+servers:
+  - url: https://api.speckit.local
+paths:
+  /status/summary:
+    get:
+      summary: List coverage and freshness per asset
+      tags: [status]
+      parameters:
+        - name: only_stale
+          in: query
+          schema: { type: boolean }
+          description: When true, return assets exceeding freshness threshold.
+      responses:
+        '200':
+          description: Coverage and freshness summary
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  assets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssetStatus'
+  /status/remediation:
+    get:
+      summary: Export remediation log entries
+      tags: [status]
+      parameters:
+        - name: asset
+          in: query
+          schema: { type: string }
+        - name: issue_type
+          in: query
+          schema:
+            type: string
+            enum: [gap, duplicate, checksum_mismatch, partial_source]
+      responses:
+        '200':
+          description: Remediation entries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RemediationEntry'
+  /ingestion/backfill:
+    post:
+      summary: Trigger backfill for the configured 10 assets
+      tags: [ingestion]
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                interval:
+                  type: string
+                  enum: [minute, day]
+                  default: day
+                window_start:
+                  type: string
+                  format: date-time
+                window_end:
+                  type: string
+                  format: date-time
+      responses:
+        '202':
+          description: Backfill accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngestionRun'
+  /ingestion/runs/{id}:
+    get:
+      summary: Get ingestion run status and checksum report
+      tags: [ingestion]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Run details with checksum
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IngestionRun'
+  /lineage:
+    get:
+      summary: Query lineage for asset/time range
+      tags: [lineage]
+      parameters:
+        - name: asset
+          in: query
+          required: true
+          schema: { type: string }
+        - name: start
+          in: query
+          required: true
+          schema: { type: string, format: date-time }
+        - name: end
+          in: query
+          required: true
+          schema: { type: string, format: date-time }
+        - name: interval
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [minute, day]
+      responses:
+        '200':
+          description: Lineage entries for requested window
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LineageEntry'
+  /alerts/test:
+    post:
+      summary: Send test alert to email distribution list
+      tags: [alerts]
+      responses:
+        '204':
+          description: Test alert dispatched
+
+components:
+  schemas:
+    AssetStatus:
+      type: object
+      required: [asset, interval, coverage_start, coverage_end, latest_timestamp, freshness_minutes, status, vendor_status]
+      properties:
+        asset: { type: string }
+        interval: { type: string, enum: [minute, day] }
+        coverage_start: { type: string, format: date-time }
+        coverage_end: { type: string, format: date-time }
+        latest_timestamp: { type: string, format: date-time }
+        freshness_minutes: { type: number }
+        status: { type: string, enum: [healthy, stale, gap_detected] }
+        vendor_status: { type: string, enum: [up, degraded, down, rate_limited] }
+    IngestionRun:
+      type: object
+      required: [id, asset_symbol, interval, status, row_count, checksum_sha256]
+      properties:
+        id: { type: string, format: uuid }
+        asset_symbol: { type: string }
+        interval: { type: string, enum: [minute, day] }
+        status: { type: string, enum: [success, failed, partial, running] }
+        row_count: { type: integer }
+        checksum_sha256: { type: string }
+        checksum_version: { type: integer, default: 1 }
+        started_at: { type: string, format: date-time }
+        ended_at: { type: string, format: date-time }
+        trigger: { type: string, enum: [manual, scheduled] }
+        attempt: { type: integer }
+        backfill_window_start: { type: string, format: date-time }
+        backfill_window_end: { type: string, format: date-time }
+    LineageEntry:
+      type: object
+      required: [asset_symbol, bucket_start, interval, run_id, source_vendor, fetched_at, checksum_sha256]
+      properties:
+        asset_symbol: { type: string }
+        bucket_start: { type: string, format: date-time }
+        interval: { type: string, enum: [minute, day] }
+        run_id: { type: string, format: uuid }
+        source_vendor: { type: string }
+        fetched_at: { type: string, format: date-time }
+        checksum_sha256: { type: string }
+        checksum_version: { type: integer }
+    RemediationEntry:
+      type: object
+      required: [id, asset_symbol, issue_type, range_start, range_end, detected_at, resolved]
+      properties:
+        id: { type: string, format: uuid }
+        asset_symbol: { type: string }
+        interval: { type: string, enum: [minute, day] }
+        issue_type: { type: string, enum: [gap, duplicate, checksum_mismatch, partial_source] }
+        range_start: { type: string, format: date-time }
+        range_end: { type: string, format: date-time }
+        detected_at: { type: string, format: date-time }
+        resolved: { type: boolean }
+        resolved_at: { type: string, format: date-time }
+        run_id: { type: string, format: uuid }
+        notes: { type: string }

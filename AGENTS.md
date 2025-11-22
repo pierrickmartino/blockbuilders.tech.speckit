@@ -13,6 +13,8 @@ Auto-generated from all feature plans. Last updated: 2025-10-29
 - Supabase Postgres (onboarding state, template metadata, audit logs) (004-onboarding-checklist)
 - TypeScript on Node.js 20 (Next.js 15 App Router, React 19) plus Python 3.12 (FastAPI service tier). + Tailwind CSS 3.4 tokens, shadcn/ui primitives, React Flow for canvas priming, Supabase JS client + auth helpers, Supabase Postgres schemas, FastAPI + Pydantic v2, Datadog forwarder, Vitest/Playwright, Ruff/Pytest. (004-onboarding-checklist)
 - Supabase Postgres (onboarding checklist definitions, per-user progress, template selections, telemetry queues). (004-onboarding-checklist)
+- Node.js 20 (Next.js 15, React 19) for status page; Python 3.12 (FastAPI workers) for ingestion/ETL + Next.js 15 App Router, Tailwind 3.4 + shadcn/ui, Supabase JS client; FastAPI + Pydantic v2; Supabase Postgres with TimescaleDB extension (005-ohlcv-ingestion)
+- Supabase Postgres/Timescale hypertables for ohlcv (minute/day), ingestion_runs, lineage, remediation logs (005-ohlcv-ingestion)
 
 - TypeScript (Node.js 20 LTS) + Python 3.12 + Next.js 15 (React 19), Tailwind CSS, FastAPI, Pydantic v2, pnpm, uv (001-bootstrap-monorepo)
 
@@ -33,9 +35,9 @@ cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLO
 TypeScript (Node.js 20 LTS) + Python 3.12: Follow standard conventions
 
 ## Recent Changes
+- 005-ohlcv-ingestion: Added Node.js 20 (Next.js 15, React 19) for status page; Python 3.12 (FastAPI workers) for ingestion/ETL + Next.js 15 App Router, Tailwind 3.4 + shadcn/ui, Supabase JS client; FastAPI + Pydantic v2; Supabase Postgres with TimescaleDB extension
 - 004-onboarding-checklist: Added TypeScript on Node.js 20 (Next.js 15 App Router, React 19) plus Python 3.12 (FastAPI service tier). + Tailwind CSS 3.4 tokens, shadcn/ui primitives, React Flow for canvas priming, Supabase JS client + auth helpers, Supabase Postgres schemas, FastAPI + Pydantic v2, Datadog forwarder, Vitest/Playwright, Ruff/Pytest.
 - 004-onboarding-checklist: Added TypeScript (Node.js 20 LTS, Next.js 15 App Router) + Python 3.12 (FastAPI services) + React 19, Tailwind CSS 3.4 + shadcn/ui tokens, Supabase JS client + auth helpers, Supabase Postgres RPC/API layer, FastAPI + Pydantic v2, Datadog forwarder
-- 004-onboarding-checklist: Added TypeScript (Node.js 20 LTS) for Next.js 15 App Router + React 19; Python 3.12 for FastAPI services + Next.js 15, React 19, Tailwind CSS 3.4, shadcn/ui, React Flow for canvas priming, Supabase JS client + auth helpers, FastAPI, Pydantic v2, Datadog Dashboards + event forwarder
 
 
 <!-- MANUAL ADDITIONS START -->
