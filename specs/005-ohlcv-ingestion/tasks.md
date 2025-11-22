@@ -12,8 +12,8 @@ Tests are included because the specification marks user scenarios/testing as man
 - [ ] T001 Create backend env template with Supabase/Datadog/email vars in `backend/.env.example`
 - [ ] T002 [P] Create frontend env template with Supabase URL/key and status API base in `frontend/.env.local.example`
 - [ ] T003 Document end-to-end setup steps (pnpm/uv install, env wiring, Timescale enablement) in `specs/005-ohlcv-ingestion/quickstart.md`
-- [ ] T004 Add Web Vitals/performance budget (TTI ≤2s, LCP ≤2.5s) to `specs/005-ohlcv-ingestion/spec.md` success criteria
-- [ ] T005 Add load-test plan (p95 ≤200ms for status/lineage APIs) to `specs/005-ohlcv-ingestion/plan.md` performance goals
+- [ ] T004 Verify Web Vitals/performance budgets (TTI ≤2s, LCP ≤2.5s) are documented in `specs/005-ohlcv-ingestion/spec.md` and aligned with tests T017/T050
+- [ ] T005 Verify load-test goal (p95 ≤200ms for status/lineage APIs) is documented in `specs/005-ohlcv-ingestion/plan.md` and reflected in perf tests T016/T055
 
 ---
 
@@ -73,6 +73,8 @@ Tests are included because the specification marks user scenarios/testing as man
 - [ ] T030 [P] [US2] Fixtures for 10-asset seed dataset and expected hashes in `backend/tests/fixtures/ohlcv_seed.py`
 - [ ] T054 [P] [US2] Pytest simulating failing runs, retries, and rolling 30-day success-rate calculation (≥99%) in `backend/tests/test_success_rate.py`
 - [ ] T055 [P] [US2] Metric/telemetry test ensuring 30-day retention and query path for run success metrics in `backend/tests/perf/test_telemetry_retention.py`
+- [ ] T056 [P] [US2] Pytest covering DST short/long days and partial-interval ingestion to prevent gaps/overlaps in `backend/tests/test_ingestion_edge_cases.py`
+- [ ] T057 [P] [US2] Pytest for resume-after-interrupt ensuring idempotent retries with no duplicate OHLCV rows in `backend/tests/test_ingestion_resume.py`
 
 ### Implementation for User Story 2
 
@@ -120,6 +122,7 @@ Tests are included because the specification marks user scenarios/testing as man
 - [ ] T051 [P] Instrument Datadog metrics for ingestion runs (success, duration, rows, lag) in `backend/src/services/ingestion.py`
 - [ ] T052 [P] Emit freshness lag gauge and alert count metrics in `backend/src/jobs/freshness_monitor.py`
 - [ ] T053 Publish dashboards/runbook links for observability in `docs/observability/ohlcv.md`
+- [ ] T058 [P] Validate 30-day failure-log query path and dashboard surfacing (errors and retries) in `backend/tests/contract/test_failures_log.py`
 
 ---
 
