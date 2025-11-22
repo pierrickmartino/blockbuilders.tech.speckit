@@ -1,0 +1,272 @@
+openapi: 3.1.0
+info:
+  title: Onboarding Checklist API
+  version: 0.1.0
+servers:
+  - url: /api
+paths:
+  /onboarding/checklist:
+    get:
+      summary: Fetch active checklist for current user
+      tags: [Checklist]
+      responses:
+        '200':
+          description: Checklist payload with per-step progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistResponse'
+  /onboarding/steps/{stepId}/status:
+    post:
+      summary: Update progress for a checklist step
+      tags: [Checklist]
+      parameters:
+        - in: path
+          name: stepId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StepStatusRequest'
+      responses:
+        '200':
+          description: Updated step record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistStepProgress'
+        '409':
+          description: Missing disclosure acknowledgement or template edit
+  /onboarding/templates/{templateId}/select:
+    post:
+      summary: Prime the strategy canvas from a template and persist selection
+      tags: [Templates]
+      parameters:
+        - in: path
+          name: templateId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateSelectRequest'
+      responses:
+        '201':
+          description: Draft strategy created and checklist step advanced
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemplateSelectResponse'
+  /onboarding/overrides/mark-as-done:
+    post:
+      summary: Support-triggered override that marks checklist complete for user/workspace
+      tags: [Overrides]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OverrideRequest'
+      responses:
+        '202':
+          description: Override accepted and audited
+  /onboarding/events:
+    post:
+      summary: Record onboarding telemetry server-side (used by frontend Server Actions)
+      tags: [Telemetry]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelemetryEvent'
+      responses:
+        '202':
+          description: Event enqueued for Supabase→Datadog forwarder
+components:
+  schemas:
+    ChecklistResponse:
+      type: object
+      properties:
+        checklistId:
+          type: string
+          format: uuid
+        version:
+          type: integer
+        definitionChanged:
+          type: boolean
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChecklistStep'
+        overridePending:
+          type: boolean
+    ChecklistStep:
+      type: object
+      properties:
+        stepId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        requiresDisclosure:
+          type: boolean
+        requiresTemplateEdit:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/StepStatus'
+        disclosure:
+          type: object
+          nullable: true
+          properties:
+            text:
+              type: string
+            acknowledgementToken:
+              type: string
+        overridePending:
+          type: boolean
+        overrideReason:
+          type: string
+          nullable: true
+        overrideActorRole:
+          type: string
+          nullable: true
+        templates:
+          type: array
+          items:
+            $ref: '#/components/schemas/StarterTemplate'
+        templatesAvailable:
+          type: boolean
+          description: Indicates whether curated templates are currently available
+    StepStatus:
+      type: string
+      enum: [NOT_STARTED, IN_PROGRESS, COMPLETED]
+    StepStatusRequest:
+      type: object
+      required: [status, acknowledgementToken, templateDiff]
+      properties:
+        status:
+          $ref: '#/components/schemas/StepStatus'
+        acknowledgementToken:
+          type: string
+          nullable: true
+        templateDiff:
+          type: object
+          additionalProperties: true
+          description: Must contain ≥1 edited parameter for template step
+    ChecklistStepProgress:
+      type: object
+      properties:
+        progressId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        workspaceId:
+          type: string
+        stepId:
+          type: string
+        status:
+          $ref: '#/components/schemas/StepStatus'
+        completedAt:
+          type: string
+          format: date-time
+    StarterTemplate:
+      type: object
+      properties:
+        templateId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        estimatedRunTime:
+          type: string
+        defaultParameters:
+          type: object
+          additionalProperties: true
+        reactFlow:
+          type: object
+          additionalProperties: true
+    TemplateSelectRequest:
+      type: object
+      required: [parameterChanges]
+      properties:
+        parameterChanges:
+          type: object
+          minProperties: 1
+        draftName:
+          type: string
+        canvasContext:
+          type: object
+          additionalProperties: true
+    TemplateSelectResponse:
+      type: object
+      properties:
+        draftStrategyId:
+          type: string
+        checklistStep:
+          $ref: '#/components/schemas/ChecklistStep'
+        templatesAvailable:
+          type: boolean
+    OverrideRequest:
+      type: object
+      required: [userId, workspaceId, reason, confirmationToken]
+      properties:
+        userId:
+          type: string
+        workspaceId:
+          type: string
+        reason:
+          type: string
+        actorId:
+          type: string
+        actorRole:
+          type: string
+          enum: [teammate]
+        confirmationToken:
+          type: string
+    TelemetryEvent:
+      type: object
+      required: [eventType, stepId]
+      properties:
+        eventType:
+          type: string
+          enum:
+            [
+              viewed,
+              step_start,
+              step_complete,
+              template_selected,
+              disclosure_ack,
+              override,
+              override_pending_cleared,
+              backtest_success,
+            ]
+        stepId:
+          type: string
+        templateId:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: true
+        occurredAt:
+          type: string
+          format: date-time
+        clientContext:
+          type: object
+          properties:
+            sessionId:
+              type: string
+            userAgent:
+              type: string

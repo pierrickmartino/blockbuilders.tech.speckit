@@ -1,0 +1,51 @@
+{
+  "description": "Forwarder + SC-03 monitors derived from Supabase→Datadog stream.",
+  "monitors": [
+    {
+      "name": "onboarding-forwarder-fanout-delay",
+      "type": "metric alert",
+      "query": "avg(last_5m):max:onboarding.forwarder.delay{env:prod} > 60",
+      "message": "Fan-out delay exceeded 60s. Check scripts/verify-forwarder.sh and Datadog forwarder pipeline.",
+      "tags": ["feature:onboarding-checklist", "forwarder", "env:prod"],
+      "options": {
+        "thresholds": {
+          "critical": 60,
+          "warning": 45
+        },
+        "evaluation_delay": 60,
+        "notify_no_data": false,
+        "include_tags": true
+      }
+    },
+    {
+      "name": "onboarding-forwarder-error-rate",
+      "type": "metric alert",
+      "query": "avg(last_5m):sum:onboarding.forwarder.errors{env:prod} > 5",
+      "message": "Forwarder error rate exceeded budget. Inspect Supabase function logs and Datadog ingestion.",
+      "tags": ["feature:onboarding-checklist", "forwarder"],
+      "options": {
+        "thresholds": {
+          "critical": 5,
+          "warning": 2
+        },
+        "notify_no_data": false,
+        "include_tags": true
+      }
+    },
+    {
+      "name": "onboarding-template-success-rate",
+      "type": "query alert",
+      "query": "avg(last_15m):100 * (sum:onboarding.template_backtest_success{env:prod}/sum:onboarding.template_selected{env:prod}) < 70",
+      "message": "SC-03 violated: less than 70% of template selections reach backtest_success. Cross-check docs/qa/onboarding-checklist/perf/checklist-interaction-metrics.json for evidence.",
+      "tags": ["feature:onboarding-checklist", "sc:sc-03"],
+      "options": {
+        "thresholds": {
+          "critical": 70,
+          "warning": 75
+        },
+        "notify_no_data": false,
+        "include_tags": true
+      }
+    }
+  ]
+}

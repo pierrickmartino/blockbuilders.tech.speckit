@@ -101,13 +101,23 @@ export async function POST(request: Request) {
 
   const { email, password, redirectTo } = parseResult.data;
 
-  const response = await supabase.auth.signUp({
+  const signUpArgs: Parameters<typeof supabase.auth.signUp>[0] = {
     email,
     password,
-    options: {
-      emailRedirectTo: redirectTo,
-    },
-  });
+  };
+
+  const workspaceId = resolveLocalWorkspaceId();
+  if (redirectTo || workspaceId) {
+    signUpArgs.options = {};
+    if (redirectTo) {
+      signUpArgs.options.emailRedirectTo = redirectTo;
+    }
+    if (workspaceId) {
+      signUpArgs.options.data = { workspace_id: workspaceId };
+    }
+  }
+
+  const response = await supabase.auth.signUp(signUpArgs);
 
   if (response.error) {
     const error = mapSupabaseAuthError(response.error);
@@ -122,9 +132,29 @@ export async function POST(request: Request) {
 
   return jsonResponse(
     {
-      session: toAuthSession(response.data.session),
+      session: toAuthSession(response.data.session, response.data.user ?? null),
       user: response.data.user,
     },
     response.data.session ? 201 : 202,
   );
 }
+
+const resolveLocalWorkspaceId = (): string | undefined => {
+  const candidates = [
+    process.env.ONBOARDING_DEFAULT_WORKSPACE_ID,
+    process.env.ONBOARDING_SEED_WORKSPACE_ID,
+  ];
+
+  for (const candidate of candidates) {
+    const trimmed = candidate?.trim();
+    if (!trimmed) {
+      continue;
+    }
+    if (trimmed === '00000000-0000-0000-0000-000000000000') {
+      continue;
+    }
+    return trimmed;
+  }
+
+  return undefined;
+};

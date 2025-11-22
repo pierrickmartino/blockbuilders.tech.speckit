@@ -1,0 +1,90 @@
+{
+  "supabaseViews": [
+    {
+      "name": "analytics.onboarding_sc01_latency",
+      "sql": "CREATE OR REPLACE VIEW analytics.onboarding_sc01_latency AS\nSELECT e.workspace_id, e.user_id, (e.metadata->>'renderDurationMs')::numeric AS render_duration_ms, e.occurred_at\nFROM onboarding_events e\nLEFT JOIN checklist_step_progress p\n  ON p.workspace_id = e.workspace_id\n AND p.user_id = e.user_id\nWHERE e.event_type = 'viewed'\n  AND COALESCE(p.override_pending, false) = false\n  AND (e.metadata ? 'renderDurationMs');"
+    },
+    {
+      "name": "analytics.onboarding_sc02_time_to_backtest",
+      "sql": "CREATE OR REPLACE VIEW analytics.onboarding_sc02_time_to_backtest AS\nWITH views AS (\n  SELECT workspace_id, user_id, occurred_at AS viewed_at\n  FROM onboarding_events\n  WHERE event_type = 'viewed'\n),\nbacktests AS (\n  SELECT workspace_id, user_id, occurred_at AS backtest_at\n  FROM onboarding_events\n  WHERE event_type = 'backtest_success'\n),\noverride_pending AS (\n  SELECT DISTINCT workspace_id, user_id\n  FROM checklist_step_progress\n  WHERE override_pending = true\n)\nSELECT v.workspace_id, v.user_id, EXTRACT(EPOCH FROM (b.backtest_at - v.viewed_at)) * 1000 AS ms_to_backtest\nFROM views v\nJOIN backtests b\n  ON b.workspace_id = v.workspace_id\n AND b.user_id = v.user_id\nWHERE b.backtest_at >= v.viewed_at\n  AND NOT EXISTS (\n    SELECT 1 FROM override_pending o\n    WHERE o.workspace_id = v.workspace_id AND o.user_id = v.user_id\n  );"
+    },
+    {
+      "name": "analytics.onboarding_sc03_template_success",
+      "sql": "CREATE OR REPLACE VIEW analytics.onboarding_sc03_template_success AS\nWITH template_events AS (\n  SELECT workspace_id, user_id, metadata->>'sessionId' AS session_id, occurred_at\n  FROM onboarding_events\n  WHERE event_type = 'template_selected'\n),\nsuccess_events AS (\n  SELECT workspace_id, user_id, metadata->>'sessionId' AS session_id, occurred_at\n  FROM onboarding_events\n  WHERE event_type = 'backtest_success'\n),\noverride_pending AS (\n  SELECT DISTINCT workspace_id, user_id\n  FROM checklist_step_progress\n  WHERE override_pending = true\n)\nSELECT t.workspace_id, t.user_id, t.session_id, (s.occurred_at IS NOT NULL) AS backtest_success\nFROM template_events t\nLEFT JOIN success_events s\n  ON s.workspace_id = t.workspace_id\n AND s.user_id = t.user_id\n AND (s.session_id IS NULL OR s.session_id = t.session_id)\nWHERE COALESCE(t.session_id, '') <> ''\n  AND NOT EXISTS (\n    SELECT 1 FROM override_pending o\n    WHERE o.workspace_id = t.workspace_id AND o.user_id = t.user_id\n  );"
+    }
+  ],
+  "dashboards": [
+    {
+      "title": "Onboarding Funnel (SC-01/02/03)",
+      "description": "Timeseries + gauges derived from Supabase views. Filters: env, workspace, locale.",
+      "layout_type": "ordered",
+      "widgets": [
+        {
+          "definition": {
+            "type": "query_value",
+            "requests": [
+              {
+                "q": "100 - (100 * (count:last_24h{analytics:onboarding_sc01_latency,render_duration_ms>1000}/count:last_24h{analytics:onboarding_sc01_latency}))",
+                "aggregator": "avg"
+              }
+            ],
+            "title": "SC-01 Checklist ≤1s (% within budget)",
+            "autoscale": true
+          }
+        },
+        {
+          "definition": {
+            "type": "query_value",
+            "requests": [
+              {
+                "q": "p50(last_24h):analytics.onboarding_sc02_time_to_backtest{*}",
+                "aggregator": "quantile"
+              }
+            ],
+            "title": "SC-02 Median min to backtest",
+            "precision": 2
+          }
+        },
+        {
+          "definition": {
+            "type": "query_value",
+            "requests": [
+              {
+                "q": "100 * (sum:last_24h{analytics:onboarding_sc03_template_success,backtest_success:true}/count:last_24h{analytics:onboarding_sc03_template_success})",
+                "aggregator": "avg"
+              }
+            ],
+            "title": "SC-03 Template success %",
+            "precision": 2
+          }
+        },
+        {
+          "definition": {
+            "type": "timeseries",
+            "requests": [
+              {
+                "display_type": "line",
+                "q": "avg:last_1h{analytics:onboarding_sc01_latency} by {workspace_id}",
+                "style": {"palette": "dog_classic"}
+              }
+            ],
+            "title": "Checklist render latency per workspace"
+          }
+        },
+        {
+          "definition": {
+            "type": "timeseries",
+            "requests": [
+              {
+                "display_type": "line",
+                "q": "avg:last_1h{analytics:onboarding_sc02_time_to_backtest} by {workspace_id}",
+                "style": {"palette": "warm"}
+              }
+            ],
+            "title": "Time from view→backtest"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,7 @@ dist/
 build/
 .next/
 out/
+*.log*
 pnpm-debug.log*
 npm-debug.log*
 
@@ -31,6 +32,7 @@ playwright-report/
 
 # Docker meta
 .dockerignore
+Dockerfile*
 Dockerfile.local
 
 # OS junk

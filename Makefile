@@ -2,7 +2,7 @@ PNPM ?= pnpm
 UV ?= uv
 COMPOSE_FILE ?= configs/compose/docker-compose.dev.yml
 
-.PHONY: dev dev-frontend dev-backend lint lint-frontend lint-backend type-check test test-frontend test-backend test-e2e compose-up compose-down compose-logs
+.PHONY: dev dev-frontend dev-backend lint lint-frontend lint-backend type-check test test-frontend test-backend test-e2e compose-up compose-down compose-logs onboarding\:init
 
 dev: dev-frontend
 
@@ -42,3 +42,8 @@ compose-down:
 
 compose-logs:
 	docker compose -f $(COMPOSE_FILE) logs -f
+
+onboarding\:init:
+	$(PNPM) install
+	$(UV) sync --project apps/backend
+	$(PNPM) exec tsx scripts/seed-onboarding.ts --bootstrap

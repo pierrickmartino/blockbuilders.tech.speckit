@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2025-11-15T15:55:59.670Z",
+  "mode": "fixture",
+  "source": "specs/004-onboarding-checklist/fixtures/checklist-interaction-fixture.json",
+  "apiPattern": "/onboarding/steps",
+  "thresholdMs": 150,
+  "averageMs": 116.25,
+  "maxMs": 131,
+  "samples": [
+    {
+      "stepId": "ack_disclosures",
+      "durationMs": 112
+    },
+    {
+      "stepId": "connect_data",
+      "durationMs": 97
+    },
+    {
+      "stepId": "select_template",
+      "durationMs": 131
+    },
+    {
+      "stepId": "run_backtest",
+      "durationMs": 125
+    }
+  ],
+  "status": "pass"
+}

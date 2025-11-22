@@ -17,6 +17,10 @@ export interface BuildMetadataSnapshot {
   };
 }
 
+declare global {
+  var __buildMetadataExec: typeof execFileSync | undefined;
+}
+
 const moduleDir = dirname(fileURLToPath(import.meta.url));
 
 const resolveScriptPath = (): string => {
@@ -77,8 +81,10 @@ const executeMetadataScript = (
     return null;
   }
 
+  const runExecFileSync = globalThis.__buildMetadataExec ?? execFileSync;
+
   try {
-    const buffer = execFileSync(METADATA_SCRIPT_PATH, [
+    const buffer = runExecFileSync(METADATA_SCRIPT_PATH, [
       '--fallback-version',
       DEFAULT_VERSION,
     ]);

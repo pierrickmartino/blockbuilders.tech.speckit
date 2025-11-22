@@ -6,12 +6,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   test: {
-    environment: 'node',
+    environment: 'jsdom',
     globals: true,
     include: [
       'tests/{unit,integration}/**/*.spec.ts',
       'tests/design-system/**/*.spec.ts',
+      'components/**/__tests__/**/*.{test,spec}.{ts,tsx}',
     ],
+    setupFiles: ['tests/setup/vitest.setup.ts'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
@@ -27,5 +29,8 @@ export default defineConfig({
     alias: {
       '@': path.join(__dirname),
     },
+  },
+  esbuild: {
+    jsx: 'automatic',
   },
 });

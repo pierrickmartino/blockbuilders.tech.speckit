@@ -44,6 +44,16 @@ export default async function HomePage() {
           <h3 className="text-xl font-semibold text-slate-900">Helpful links</h3>
           <ul className="mt-4 space-y-2 text-sm text-slate-600">
             <li>
+              <Link className="text-brand-700 hover:text-brand-500" href="/dashboard">
+                Dashboard
+              </Link>
+            </li>
+            <li>
+              <Link className="text-brand-700 hover:text-brand-500" href="/design-system/components">
+                Design system components
+              </Link>
+            </li>
+            <li>
               <Link
                 className="text-brand-700 hover:text-brand-500"
                 href={'/docs/quickstart' as Route}

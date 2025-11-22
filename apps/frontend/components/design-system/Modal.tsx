@@ -18,6 +18,14 @@ type CSSVarStyle = CSSProperties & Record<`--${string}`, string>;
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
+type ModalSize = 'md' | 'lg' | 'xl';
+
+const SIZE_CLASSNAMES: Record<ModalSize, string> = {
+  md: 'max-w-lg',
+  lg: 'max-w-2xl',
+  xl: 'max-w-4xl',
+};
+
 export interface ModalProps {
   open: boolean;
   onOpenChange: (next: boolean) => void;
@@ -26,6 +34,7 @@ export interface ModalProps {
   children: ReactNode;
   footer?: ReactNode;
   testId?: string;
+  size?: ModalSize;
 }
 
 export const Modal = ({
@@ -36,6 +45,7 @@ export const Modal = ({
   children,
   footer,
   testId,
+  size = 'md',
 }: ModalProps) => {
   const [mounted, setMounted] = useState(false);
   const overlayRef = useRef<HTMLDivElement | null>(null);
@@ -180,7 +190,8 @@ export const Modal = ({
           data-slot-border="color.border.subtle"
           data-slot-focus="color.focus.ring"
           className={cn(
-            'w-full max-w-lg rounded-[var(--radii-lg)] border border-[color:var(--ds-modal-border)] bg-[color:var(--ds-modal-surface)] p-6 shadow-[var(--ds-modal-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ds-modal-focus)]',
+            'w-full max-h-[90vh] overflow-y-auto rounded-[var(--radii-lg)] border border-[color:var(--ds-modal-border)] bg-[color:var(--ds-modal-surface)] p-6 shadow-[var(--ds-modal-shadow)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--ds-modal-focus)]',
+            SIZE_CLASSNAMES[size] ?? SIZE_CLASSNAMES.md,
           )}
           style={styleWithVars}
           data-testid={testId}

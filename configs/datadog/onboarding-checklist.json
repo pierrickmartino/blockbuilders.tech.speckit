@@ -1,0 +1,55 @@
+{
+  "description": "Alert definitions for onboarding checklist latency, API p95, and override governance.",
+  "monitors": [
+    {
+      "name": "onboarding-checklist-render-latency",
+      "type": "metric alert",
+      "query": "avg(last_5m):p95:onboarding.checklist.render{env:prod} > 1000",
+      "message": "SC-01 violated: checklist render p95 exceeded 1s. See docs/qa/onboarding-checklist.md#performance-evidence.",
+      "tags": ["feature:onboarding-checklist", "sc:sc-01", "env:prod"],
+      "options": {
+        "evaluation_delay": 120,
+        "include_tags": true,
+        "notify_audit": true,
+        "notify_no_data": false,
+        "thresholds": {
+          "critical": 1000,
+          "warning": 900
+        }
+      }
+    },
+    {
+      "name": "onboarding-api-latency-p95",
+      "type": "metric alert",
+      "query": "avg(last_5m):p95:onboarding.api.latency{env:prod,endpoint:onboarding-checklist} > 200",
+      "message": "SC-API latency budget breached (>200ms p95). Run scripts/perf/checklist-interaction.ts for repro steps.",
+      "tags": ["feature:onboarding-checklist", "sc:fr-010", "env:prod"],
+      "options": {
+        "evaluation_delay": 120,
+        "notify_no_data": false,
+        "include_tags": true,
+        "thresholds": {
+          "critical": 200,
+          "warning": 180
+        }
+      }
+    },
+    {
+      "name": "onboarding-override-pending-stale",
+      "type": "query alert",
+      "query": "avg(last_5m):sum:onboarding.override_pending{env:prod} by {workspace_id} > 0",
+      "message": "Override pending flag has not been cleared by backtest_success within 30m. Investigate workspace(s) in tags and confirm override_pending_cleared telemetry was emitted.",
+      "tags": ["feature:onboarding-checklist", "governance:fr-009"],
+      "options": {
+        "evaluation_delay": 0,
+        "notify_no_data": false,
+        "include_tags": true,
+        "timeout_h": 1,
+        "thresholds": {
+          "critical": 0,
+          "warning": 0
+        }
+      }
+    }
+  ]
+}

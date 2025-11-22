@@ -14,9 +14,13 @@ export async function GET() {
     headers: headerStore,
   });
 
-  const { data, error } = await supabase.auth.getSession();
-  if (error) {
-    const payload = mapSupabaseAuthError(error);
+  const [sessionResult, userResult] = await Promise.all([
+    supabase.auth.getSession(),
+    supabase.auth.getUser(),
+  ]);
+
+  if (sessionResult.error) {
+    const payload = mapSupabaseAuthError(sessionResult.error);
     return new NextResponse(
       JSON.stringify({
         code: payload.code,
@@ -32,7 +36,27 @@ export async function GET() {
     );
   }
 
-  if (!data.session) {
+  if (userResult.error) {
+    const payload = mapSupabaseAuthError(userResult.error);
+    return new NextResponse(
+      JSON.stringify({
+        code: payload.code,
+        message: payload.message,
+      }),
+      {
+        status: payload.status,
+        headers: {
+          'content-type': 'application/json',
+          'cache-control': 'no-store',
+        },
+      },
+    );
+  }
+
+  const session = sessionResult.data.session;
+  const user = userResult.data.user;
+
+  if (!session || !user) {
     const payload = buildClientError(
       'invalid_credentials',
       'Authentication required. Please sign in to continue.',
@@ -55,7 +79,7 @@ export async function GET() {
 
   return new NextResponse(
     JSON.stringify({
-      session: toAuthSession(data.session),
+      session: toAuthSession(session, user),
     }),
     {
       status: 200,

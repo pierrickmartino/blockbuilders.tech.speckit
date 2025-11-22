@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import Annotated
+from typing import Annotated, Any
+from urllib.parse import urljoin
+
+import httpx
 
 from app.core.settings import Settings, get_settings
 from app.schemas.auth import SupabaseUserProfile
@@ -10,6 +13,7 @@ from app.services.supabase import (
     SupabaseJWTVerificationError,
     SupabaseJWTVerifier,
     log_auth_failure,
+    log_auth_success,
 )
 
 from fastapi import Depends, Header, HTTPException, Request, status
@@ -49,6 +53,7 @@ def get_jwt_verifier(
 async def get_current_supabase_user(
     request: Request,
     verifier: Annotated[SupabaseJWTVerifier, Depends(get_jwt_verifier)],
+    settings: Annotated[Settings, Depends(get_settings)],
     authorization: AuthorizationHeader = None,
 ) -> SupabaseUserProfile:
     """Resolve the authenticated Supabase user from the incoming request."""
@@ -59,7 +64,12 @@ async def get_current_supabase_user(
     try:
         claims = await verifier.verify(token)
     except SupabaseJWTVerificationError as exc:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="authentication required") from exc
+        if not _should_attempt_userinfo_fallback(exc):
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="authentication required") from exc
+        try:
+            claims = await _fetch_claims_via_supabase_user_endpoint(settings, token)
+        except SupabaseJWTVerificationError as exc:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="authentication required") from exc
 
     try:
         profile = SupabaseUserProfile.model_validate(
@@ -106,6 +116,65 @@ def _require_csrf_protection(request: Request) -> None:
             status_code=status.HTTP_403_FORBIDDEN,
             detail="csrf token missing or invalid",
         )
+
+
+SUPABASE_USER_FETCH_TIMEOUT_SECONDS = 5.0
+FALLBACK_ERROR_DENYLIST = {"email address has not been confirmed"}
+
+
+def _should_attempt_userinfo_fallback(error: SupabaseJWTVerificationError) -> bool:
+    message = str(error)
+    return message not in FALLBACK_ERROR_DENYLIST
+
+
+async def _fetch_claims_via_supabase_user_endpoint(
+    settings: Settings,
+    token: str,
+) -> dict[str, Any]:
+    supabase = settings.supabase
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "apikey": supabase.service_role_key.get_secret_value(),
+        "x-client-info": settings.app_name,
+    }
+    url = urljoin(str(supabase.url).rstrip("/") + "/", "auth/v1/user")
+
+    try:
+        async with httpx.AsyncClient(timeout=SUPABASE_USER_FETCH_TIMEOUT_SECONDS) as client:
+            response = await client.get(url, headers=headers)
+    except httpx.HTTPError as exc:
+        log_auth_failure("supabase_user_fetch_http_error", error=str(exc))
+        raise SupabaseJWTVerificationError("Supabase user lookup failed") from exc
+
+    if response.status_code != status.HTTP_200_OK:
+        log_auth_failure(
+            "supabase_user_fetch_rejected",
+            status_code=response.status_code,
+        )
+        raise SupabaseJWTVerificationError("Supabase user lookup failed")
+
+    try:
+        payload = response.json()
+    except ValueError as exc:
+        log_auth_failure("supabase_user_fetch_invalid_json")
+        raise SupabaseJWTVerificationError("Supabase user lookup failed") from exc
+
+    email_confirmed_at = payload.get("email_confirmed_at")
+    if not email_confirmed_at:
+        log_auth_failure("email_not_confirmed", user_id=payload.get("id"))
+        raise SupabaseJWTVerificationError("email address has not been confirmed")
+
+    claims: dict[str, Any] = {
+        "sub": payload.get("id"),
+        "email": payload.get("email"),
+        "email_confirmed_at": email_confirmed_at,
+        "last_sign_in_at": payload.get("last_sign_in_at"),
+        "user_metadata": payload.get("user_metadata") or {},
+        "app_metadata": payload.get("app_metadata") or {},
+    }
+
+    log_auth_success(claims)
+    return claims
 
 
 __all__ = ["get_current_supabase_user", "get_jwks_cache", "get_jwt_verifier"]

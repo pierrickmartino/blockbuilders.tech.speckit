@@ -77,5 +77,20 @@ export default defineConfig({
           'Validates foundation components for accessibility, theming, and keyboard fallbacks',
       },
     },
+    {
+      name: 'onboarding',
+      testDir: './tests/e2e/onboarding',
+      metadata: {
+        description:
+          'Covers onboarding checklist persistence, overrides, accessibility, and offline resilience',
+      },
+    },
+    {
+      name: 'a11y',
+      testDir: './tests/a11y',
+      metadata: {
+        description: 'Runs axe-core coverage for onboarding checklist modal',
+      },
+    },
   ],
 });

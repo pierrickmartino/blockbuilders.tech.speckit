@@ -1,0 +1,74 @@
+[
+  {
+    "template_id": "00000000-0000-0000-0000-00000000a11a",
+    "title": "Momentum Starter",
+    "description": "Follows short-term momentum with built-in circuit breakers to avoid runaway losses.",
+    "estimated_run_time_minutes": 5,
+    "default_parameters": {
+      "riskTolerance": "low",
+      "capitalAllocation": 25,
+      "lookbackHours": 12
+    },
+    "react_flow": {
+      "nodes": [
+        { "id": "n-source", "type": "input", "position": { "x": 0, "y": 0 }, "data": { "label": "Data source" } },
+        { "id": "n-momentum", "position": { "x": 220, "y": 40 }, "data": { "label": "Momentum filter" } },
+        { "id": "n-risk", "position": { "x": 420, "y": 0 }, "data": { "label": "Risk controls" } },
+        { "id": "n-backtest", "type": "output", "position": { "x": 640, "y": 20 }, "data": { "label": "Backtest" } }
+      ],
+      "edges": [
+        { "id": "e-source-momentum", "source": "n-source", "target": "n-momentum" },
+        { "id": "e-momentum-risk", "source": "n-momentum", "target": "n-risk" },
+        { "id": "e-risk-backtest", "source": "n-risk", "target": "n-backtest" }
+      ]
+    }
+  },
+  {
+    "template_id": "00000000-0000-0000-0000-00000000b00b",
+    "title": "Mean Reversion Guard",
+    "description": "Buys oversold assets with trailing stops and capital guards.",
+    "estimated_run_time_minutes": 7,
+    "default_parameters": {
+      "lookbackWindow": 20,
+      "entryZScore": -1.5,
+      "stopLossPct": 4
+    },
+    "react_flow": {
+      "nodes": [
+        { "id": "n-source", "type": "input", "position": { "x": 0, "y": 40 }, "data": { "label": "Prices" } },
+        { "id": "n-zscore", "position": { "x": 200, "y": 0 }, "data": { "label": "Z-score" } },
+        { "id": "n-position", "position": { "x": 420, "y": 30 }, "data": { "label": "Position sizing" } },
+        { "id": "n-stop", "type": "output", "position": { "x": 640, "y": 40 }, "data": { "label": "Execution" } }
+      ],
+      "edges": [
+        { "id": "e-source-z", "source": "n-source", "target": "n-zscore" },
+        { "id": "e-z-position", "source": "n-zscore", "target": "n-position" },
+        { "id": "e-position-stop", "source": "n-position", "target": "n-stop" }
+      ]
+    }
+  },
+  {
+    "template_id": "00000000-0000-0000-0000-00000000c0de",
+    "title": "Breakout Scout",
+    "description": "Detects volatility breakouts and routes trades to the pre-configured paper broker.",
+    "estimated_run_time_minutes": 6,
+    "default_parameters": {
+      "volatilityLookback": 14,
+      "entryThreshold": 1.2,
+      "capitalAllocation": 40
+    },
+    "react_flow": {
+      "nodes": [
+        { "id": "n-source", "type": "input", "position": { "x": 0, "y": 0 }, "data": { "label": "Quotes" } },
+        { "id": "n-vol", "position": { "x": 200, "y": -20 }, "data": { "label": "Volatility" } },
+        { "id": "n-breakout", "position": { "x": 400, "y": 20 }, "data": { "label": "Breakout detector" } },
+        { "id": "n-exec", "type": "output", "position": { "x": 620, "y": 0 }, "data": { "label": "Execution" } }
+      ],
+      "edges": [
+        { "id": "e-source-vol", "source": "n-source", "target": "n-vol" },
+        { "id": "e-vol-breakout", "source": "n-vol", "target": "n-breakout" },
+        { "id": "e-breakout-exec", "source": "n-breakout", "target": "n-exec" }
+      ]
+    }
+  }
+]
