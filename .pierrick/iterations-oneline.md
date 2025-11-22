@@ -2,7 +2,7 @@
 1. **Bootstrap Monorepo with Spec-Kit & Foundations — Set up monorepo, spec-kit scaffolding, CI, Next.js shell, FastAPI service, Docker, and dev tooling.**
 2. **Auth & Accounts (Supabase) — Implement authentication with Supabase,** profile management, **protected routes, and secure RLS policies.**
 3. **Design System & Tokens — Define design tokens and core components; ensure WCAG AA accessibility with Storybook and visual tests.**
-4. Onboarding & First-Run Checklist — Create guided onboarding with templates and progress tracking to reach first backtest quickly.
+4. **Onboarding & First-Run Checklist — Create guided onboarding with templates and progress tracking to reach first backtest quickly.**
 5. Market Data Ingestion (OHLCV v1) — Build ETL for historical OHLCV into Timescale, integrity checks, freshness monitoring, and status UI.
 6. Strategy Canvas (Graph Editor v1) — Deliver drag-and-drop strategy builder with validation, save/load, and versioned JSON schema.
 7. Validation & Pre-Flight Checks — Add static and dynamic validations to catch missing data, invalid parameters, and bias before runs.
