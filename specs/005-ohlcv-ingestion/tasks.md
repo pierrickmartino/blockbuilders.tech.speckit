@@ -72,24 +72,24 @@ Tests are included because the specification marks user scenarios/testing as man
 
 ### Tests for User Story 2
 
-- [ ] T028 [P] [US2] Contract tests for `/ingestion/backfill` and `/ingestion/runs/{id}` in `backend/tests/contract/test_ingestion.py`
-- [ ] T029 [P] [US2] Pytest coverage for checksum generation and idempotent UPSERT on duplicates in `backend/tests/test_checksum.py`
-- [ ] T030 [P] [US2] Fixtures for 10-asset seed dataset and expected hashes in `backend/tests/fixtures/ohlcv_seed.py`
-- [ ] T054 [P] [US2] Pytest simulating failing runs, retries, and rolling 30-day success-rate calculation (≥99%) in `backend/tests/test_success_rate.py`
-- [ ] T055 [P] [US2] Metric/telemetry test ensuring 30-day retention and query path for run success metrics in `backend/tests/perf/test_telemetry_retention.py`
-- [ ] T056 [P] [US2] Pytest covering DST short/long days and partial-interval ingestion to prevent gaps/overlaps in `backend/tests/test_ingestion_edge_cases.py`
-- [ ] T056a [P] [US2] Pytest simulating vendor 429/503 with exponential backoff, remediation log entry, and non-duplicated alerts in `backend/tests/test_vendor_outage.py`
-- [ ] T057 [P] [US2] Pytest for resume-after-interrupt ensuring idempotent retries with no duplicate OHLCV rows in `backend/tests/test_ingestion_resume.py`
+- [X] T028 [P] [US2] Contract tests for `/ingestion/backfill` and `/ingestion/runs/{id}` in `backend/tests/contract/test_ingestion.py`
+- [X] T029 [P] [US2] Pytest coverage for checksum generation and idempotent UPSERT on duplicates in `backend/tests/test_checksum.py`
+- [X] T030 [P] [US2] Fixtures for 10-asset seed dataset and expected hashes in `backend/tests/fixtures/ohlcv_seed.py`
+- [X] T054 [P] [US2] Pytest simulating failing runs, retries, and rolling 30-day success-rate calculation (≥99%) in `backend/tests/test_success_rate.py`
+- [X] T055 [P] [US2] Metric/telemetry test ensuring 30-day retention and query path for run success metrics in `backend/tests/perf/test_telemetry_retention.py`
+- [X] T056 [P] [US2] Pytest covering DST short/long days and partial-interval ingestion to prevent gaps/overlaps in `backend/tests/test_ingestion_edge_cases.py`
+- [X] T056a [P] [US2] Pytest simulating vendor 429/503 with exponential backoff, remediation log entry, and non-duplicated alerts in `backend/tests/test_ingestion_edge_cases.py`
+- [X] T057 [P] [US2] Pytest for resume-after-interrupt ensuring idempotent retries with no duplicate OHLCV rows in `backend/tests/test_ingestion_resume.py`
 
 ### Implementation for User Story 2
 
-- [ ] T031 [P] [US2] Implement checksum helper over sorted canonical rows in `backend/src/services/checksum.py`
-- [ ] T032 [US2] Implement ingestion/backfill service with retries/backoff and idempotent writes in `backend/src/services/ingestion.py`
-- [ ] T033 [US2] Implement FastAPI POST `/ingestion/backfill` handler invoking service with window/interval args in `backend/src/api/ingestion.py`
-- [ ] T034 [US2] Implement GET `/ingestion/runs/{id}` returning checksum report and row counts in `backend/src/api/ingestion.py`
-- [ ] T035 [P] [US2] Add scheduled/CLI entry point for backfill runs (cron-friendly) in `backend/src/jobs/backfill.py`
-- [ ] T036 [US2] Record remediation log entries for gaps/duplicates/checksum mismatches in `backend/src/services/remediation.py`
-- [ ] T037 [US2] Surface checksum report link/status on frontend status page in `frontend/src/app/status/page.tsx`
+- [X] T031 [P] [US2] Implement checksum helper over sorted canonical rows in `backend/src/services/checksum.py`
+- [X] T032 [US2] Implement ingestion/backfill service with retries/backoff and idempotent writes in `backend/src/services/ingestion.py`
+- [X] T033 [US2] Implement FastAPI POST `/ingestion/backfill` handler invoking service with window/interval args in `backend/src/api/ingestion.py`
+- [X] T034 [US2] Implement GET `/ingestion/runs/{id}` returning checksum report and row counts in `backend/src/api/ingestion.py`
+- [X] T035 [P] [US2] Add scheduled/CLI entry point for backfill runs (cron-friendly) in `backend/src/jobs/backfill.py`
+- [X] T036 [US2] Record remediation log entries for gaps/duplicates/checksum mismatches in `backend/src/services/remediation.py`
+- [X] T037 [US2] Surface checksum report link/status on frontend status page in `frontend/src/app/status/page.tsx`
 
 ---
 

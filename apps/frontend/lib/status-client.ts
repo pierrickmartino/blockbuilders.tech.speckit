@@ -1,4 +1,4 @@
-const STATUS_API_BASE_URL = process.env.STATUS_API_BASE_URL ?? 'http://localhost:8000';
+export const STATUS_API_BASE_URL = process.env.STATUS_API_BASE_URL ?? 'http://localhost:8000';
 
 type Interval = 'minute' | 'day';
 type VendorState = 'up' | 'degraded' | 'down' | 'rate_limited';
@@ -6,6 +6,23 @@ type AssetState = 'healthy' | 'stale' | 'gap_detected';
 type IssueType = 'gap' | 'duplicate' | 'checksum_mismatch' | 'partial_source';
 
 type IsoDate = string;
+
+export interface IngestionRun {
+  id: string;
+  asset_symbol: string;
+  interval: Interval;
+  status: 'success' | 'failed' | 'partial' | 'running';
+  row_count: number;
+  checksum_sha256: string;
+  checksum_version: number;
+  started_at: IsoDate;
+  ended_at?: IsoDate | null;
+  trigger: 'manual' | 'scheduled';
+  attempt: number;
+  backfill_window_start?: IsoDate | null;
+  backfill_window_end?: IsoDate | null;
+  error_summary?: string | null;
+}
 
 export interface AssetStatus {
   asset: string;
@@ -54,6 +71,8 @@ export interface RemediationResponse {
 export interface LineageResponse {
   items: LineageEntry[];
 }
+
+export interface IngestionRunResponse extends IngestionRun {}
 
 interface RequestInitish extends Omit<RequestInit, 'headers'> {
   headers?: Record<string, string>;
@@ -134,6 +153,33 @@ export async function fetchLineage(params: {
     },
   });
 }
+
+export async function fetchLatestRun(params: { interval?: Interval; signal?: AbortSignal } = {}): Promise<IngestionRun> {
+  const { interval = 'day', signal } = params;
+  return request<IngestionRun>('/ingestion/runs/latest', {
+    signal,
+    searchParams: { interval },
+  });
+}
+
+export async function triggerBackfill(params: {
+  interval?: Interval;
+  windowStart?: string;
+  windowEnd?: string;
+  signal?: AbortSignal;
+} = {}): Promise<IngestionRun> {
+  const { interval = 'day', windowStart, windowEnd, signal } = params;
+  return request<IngestionRun>('/ingestion/backfill', {
+    method: 'POST',
+    signal,
+    body: JSON.stringify({ interval, window_start: windowStart, window_end: windowEnd }),
+  });
+}
+
+export const ingestionClient = {
+  fetchLatestRun,
+  triggerBackfill,
+};
 
 export const statusClient = {
   fetchStatusSummary,

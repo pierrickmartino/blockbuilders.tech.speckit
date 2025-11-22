@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/design-system/Button';
 import { CoverageRange, FilterBar, StatusBadge, VendorBadge } from '@/components/status';
-import type { AssetStatus, RemediationEntry } from '@/lib/status-client';
-import { fetchRemediation, fetchStatusSummary } from '@/lib/status-client';
+import type { AssetStatus, IngestionRun, RemediationEntry } from '@/lib/status-client';
+import { STATUS_API_BASE_URL, fetchRemediation, fetchStatusSummary } from '@/lib/status-client';
 import { cn } from '@/lib/cn';
 
 const REFRESH_INTERVAL_MS = Number(process.env.NEXT_PUBLIC_STATUS_REFRESH_MS ?? 30_000);
@@ -12,9 +12,10 @@ const REFRESH_INTERVAL_MS = Number(process.env.NEXT_PUBLIC_STATUS_REFRESH_MS ?? 
 interface StatusDashboardProps {
   initialAssets: AssetStatus[];
   initialRemediation: RemediationEntry[];
+  latestRun?: IngestionRun | null;
 }
 
-export function StatusDashboard({ initialAssets, initialRemediation }: StatusDashboardProps) {
+export function StatusDashboard({ initialAssets, initialRemediation, latestRun }: StatusDashboardProps) {
   const [assets, setAssets] = useState<AssetStatus[]>(initialAssets);
   const [remediation, setRemediation] = useState<RemediationEntry[]>(initialRemediation);
   const [onlyStale, setOnlyStale] = useState(false);
@@ -63,6 +64,8 @@ export function StatusDashboard({ initialAssets, initialRemediation }: StatusDas
     URL.revokeObjectURL(url);
   }, []);
 
+  const latestRunUrl = latestRun ? `${STATUS_API_BASE_URL}/ingestion/runs/${latestRun.id}` : null;
+
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8">
       <header className="flex flex-col gap-2">
@@ -90,6 +93,34 @@ export function StatusDashboard({ initialAssets, initialRemediation }: StatusDas
         lastUpdated={lastUpdated ?? undefined}
         refreshIntervalMs={REFRESH_INTERVAL_MS}
       />
+
+      <section className="flex flex-wrap items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+        <div className="flex flex-col gap-1">
+          <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Checksum</p>
+          {latestRun ? (
+            <div className="flex flex-wrap items-center gap-3 text-sm text-slate-700">
+              <span className="font-semibold text-slate-900">Last run ({latestRun.interval})</span>
+              <span className="rounded-full bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-700">
+                {latestRun.checksum_sha256.slice(0, 12)}…
+              </span>
+              <span className="text-xs text-slate-500">Rows: {latestRun.row_count}</span>
+            </div>
+          ) : (
+            <p className="text-sm text-slate-600">No checksum run recorded yet.</p>
+          )}
+        </div>
+        <div className="ml-auto flex flex-wrap items-center gap-2">
+          {latestRunUrl ? (
+            <a
+              href={latestRunUrl}
+              className="inline-flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-100"
+            >
+              <span aria-hidden className="text-base">📄</span>
+              View report JSON
+            </a>
+          ) : null}
+        </div>
+      </section>
 
       {error ? (
         <div className="flex items-center gap-3 rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-rose-800">
