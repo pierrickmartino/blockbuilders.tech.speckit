@@ -21,12 +21,12 @@ Tests are included because the specification marks user scenarios/testing as man
 
 **Purpose**: Core schema, configuration, and service scaffolding required by all stories.
 
-- [ ] T006 Create Timescale migrations for assets, ohlcv_day, ohlcv_minute, ingestion_runs, lineage, remediation_log, alerts, vendor_status in `backend/src/models/migrations/005_ohlcv_ingestion.sql`
-- [ ] T007 [P] Define Pydantic schemas for Asset, Candle, IngestionRun, LineageEntry, RemediationEntry, AlertEvent in `backend/src/models/schemas.py`
-- [ ] T008 [P] Configure DB/Supabase client factory and connection settings in `backend/src/services/db.py`
-- [ ] T009 Establish FastAPI router skeleton with status/ingestion/alerts namespaces in `backend/src/api/__init__.py`
-- [ ] T010 Create shared asset config (fixed 10 symbols) and interval constants in `backend/src/config/assets.py`
-- [ ] T011 Setup frontend API client wrapper with typed fetchers for status/lineage endpoints in `frontend/src/services/status-client.ts`
+- [X] T006 Create Timescale migrations for assets, ohlcv_day, ohlcv_minute, ingestion_runs, lineage, remediation_log, alerts, vendor_status in `backend/src/models/migrations/005_ohlcv_ingestion.sql`
+- [X] T007 [P] Define Pydantic schemas for Asset, Candle, IngestionRun, LineageEntry, RemediationEntry, AlertEvent in `backend/src/models/schemas.py`
+- [X] T008 [P] Configure DB/Supabase client factory and connection settings in `backend/src/services/db.py`
+- [X] T009 Establish FastAPI router skeleton with status/ingestion/alerts namespaces in `backend/src/api/__init__.py`
+- [X] T010 Create shared asset config (fixed 10 symbols) and interval constants in `backend/src/config/assets.py`
+- [X] T011 Setup frontend API client wrapper with typed fetchers for status/lineage endpoints in `frontend/src/services/status-client.ts`
 
 ---
 

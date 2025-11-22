@@ -3,9 +3,10 @@ from __future__ import annotations
 from functools import lru_cache
 from urllib.parse import urljoin
 
+from app.config import ASSET_SYMBOLS
 from app.core.settings_supabase import SupabaseSettings
 
-from pydantic import AnyHttpUrl, Field, PositiveInt, SecretStr, TypeAdapter, computed_field
+from pydantic import AnyHttpUrl, Field, PositiveInt, PostgresDsn, SecretStr, TypeAdapter, computed_field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 HTTP_URL_ADAPTER = TypeAdapter(AnyHttpUrl)
@@ -18,6 +19,8 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0-dev"
     service_host: str = "0.0.0.0"
     service_port: int = 8000
+    database_url: PostgresDsn = Field(alias="DATABASE_URL")
+    timescale_enabled: bool = Field(default=True, alias="TIMESCALE_ENABLED")
     supabase_url: AnyHttpUrl = Field(alias="SUPABASE_URL")
     supabase_service_role_key: SecretStr = Field(alias="SUPABASE_SERVICE_ROLE_KEY")
     supabase_jwt_audience: str = Field(default="authenticated", alias="SUPABASE_JWT_AUDIENCE")
@@ -29,6 +32,7 @@ class Settings(BaseSettings):
         alias="SUPABASE_JWT_CACHE_TTL",
         description="JWKS cache TTL in seconds for Supabase public keys.",
     )
+    asset_symbols: tuple[str, ...] = Field(default=ASSET_SYMBOLS, alias="ASSET_SYMBOLS")
 
     model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True, extra="ignore")
 
@@ -53,6 +57,13 @@ class Settings(BaseSettings):
         base = str(self.supabase_url).rstrip("/")
         path = self.supabase_jwks_path.lstrip("/")
         return HTTP_URL_ADAPTER.validate_python(urljoin(f"{base}/", path))
+
+    @field_validator("asset_symbols", mode="before")
+    @classmethod
+    def _split_symbols(cls, value: str | tuple[str, ...]) -> tuple[str, ...]:
+        if isinstance(value, str):
+            return tuple(symbol.strip() for symbol in value.split(",") if symbol.strip())
+        return tuple(value)
 
 
 @lru_cache(maxsize=1)
