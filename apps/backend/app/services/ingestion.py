@@ -4,12 +4,14 @@ import asyncio
 import uuid
 from datetime import UTC, datetime, timedelta
 from functools import lru_cache
+from time import perf_counter
 from typing import Callable, Iterable, Protocol, Sequence
 
 from app.config import ASSET_SYMBOLS
 from app.schemas.ohlcv import IngestionRun, IngestionStatus, IngestionTrigger, Interval
 from app.services.checksum import ChecksumHelper
 from app.services.remediation import RemediationService
+from app.telemetry import get_ingestion_metrics
 
 SleepFn = Callable[[float], asyncio.Future | asyncio.Task | None]
 
@@ -80,6 +82,9 @@ class IngestionRepositoryProtocol(Protocol):
         ...
 
     def metrics_snapshot(self, *, window_days: int = 30) -> dict[str, float | int]:
+        ...
+
+    def failure_log(self, *, window_days: int = 30) -> list[IngestionRun]:
         ...
 
 
@@ -168,6 +173,11 @@ class InMemoryIngestionRepository(IngestionRepositoryProtocol):
         ended_at: datetime,
         row_count: int = 0,
         checksum_sha256: str = "",
+        trigger: IngestionTrigger = IngestionTrigger.MANUAL,
+        attempt: int = 1,
+        backfill_window_start: datetime | None = None,
+        backfill_window_end: datetime | None = None,
+        error_summary: str | None = None,
     ) -> IngestionRun:
         run = IngestionRun(
             id=uuid.uuid4(),
@@ -178,8 +188,11 @@ class InMemoryIngestionRepository(IngestionRepositoryProtocol):
             checksum_sha256=checksum_sha256,
             started_at=started_at,
             ended_at=ended_at,
-            trigger=IngestionTrigger.MANUAL,
-            attempt=1,
+            trigger=trigger,
+            attempt=attempt,
+            backfill_window_start=backfill_window_start,
+            backfill_window_end=backfill_window_end,
+            error_summary=error_summary,
         )
         self.runs[run.id] = run
         return run
@@ -210,6 +223,11 @@ class InMemoryIngestionRepository(IngestionRepositoryProtocol):
             "success_rate": self.success_rate(window_days=window_days),
         }
 
+    def failure_log(self, *, window_days: int = 30) -> list[IngestionRun]:
+        cutoff = datetime.now(UTC) - timedelta(days=window_days)
+        failures = [run for run in self.runs.values() if run.status == IngestionStatus.FAILED and run.started_at >= cutoff]
+        return sorted(failures, key=lambda run: run.started_at, reverse=True)
+
 
 class IngestionService:
     def __init__(
@@ -239,6 +257,8 @@ class IngestionService:
         window_end: datetime | None = None,
         trigger: IngestionTrigger = IngestionTrigger.MANUAL,
     ) -> IngestionRun:
+        metrics = get_ingestion_metrics()
+        started_at = perf_counter()
         all_candles = []
         remediation_recorded = False
 
@@ -249,23 +269,57 @@ class IngestionService:
             backfill_window_start=window_start,
             backfill_window_end=window_end,
         )
+        try:
+            for asset in self._assets:
+                candles = await self._fetch_with_retries(asset=asset, interval=interval)
+                unique_candles, remediation_recorded = await self._dedupe_and_record(
+                    asset, interval, candles, remediation_recorded
+                )
+                await self._record_gaps(asset, interval, unique_candles)
+                await self._repository.upsert_candles(asset=asset, interval=interval, candles=unique_candles)
+                all_candles.extend(unique_candles)
 
-        for asset in self._assets:
-            candles = await self._fetch_with_retries(asset=asset, interval=interval)
-            unique_candles, remediation_recorded = await self._dedupe_and_record(
-                asset, interval, candles, remediation_recorded
+            checksum, row_count = self._checksum.compute(all_candles)
+            run = await self._repository.complete_run(
+                batch_run.id,
+                status=IngestionStatus.SUCCESS,
+                row_count=row_count,
+                checksum_sha256=checksum,
             )
-            await self._record_gaps(asset, interval, unique_candles)
-            await self._repository.upsert_candles(asset=asset, interval=interval, candles=unique_candles)
-            all_candles.extend(unique_candles)
-
-        checksum, row_count = self._checksum.compute(all_candles)
-        return await self._repository.complete_run(
-            batch_run.id,
-            status=IngestionStatus.SUCCESS,
-            row_count=row_count,
-            checksum_sha256=checksum,
-        )
+            duration_ms = (perf_counter() - started_at) * 1000
+            metrics.record_run(
+                status=IngestionStatus.SUCCESS.value,
+                interval=interval.value,
+                trigger=trigger.value,
+                rows=row_count,
+                duration_ms=duration_ms,
+                lag_minutes=self._compute_lag(window_end),
+                asset_symbol="*",
+            )
+            return run
+        except Exception as exc:  # pragma: no cover - exercised via contract test path
+            duration_ms = (perf_counter() - started_at) * 1000
+            lag_minutes = self._compute_lag(window_end)
+            try:
+                await self._repository.complete_run(
+                    batch_run.id,
+                    status=IngestionStatus.FAILED,
+                    row_count=len(all_candles),
+                    checksum_sha256="",
+                    error_summary=str(exc),
+                )
+            finally:
+                metrics.record_run(
+                    status=IngestionStatus.FAILED.value,
+                    interval=interval.value,
+                    trigger=trigger.value,
+                    rows=len(all_candles),
+                    duration_ms=duration_ms,
+                    lag_minutes=lag_minutes,
+                    asset_symbol="*",
+                    error_summary=str(exc),
+                )
+            raise
 
     async def get_run(self, run_id) -> IngestionRun | None:
         return await self._repository.get_run(run_id)
@@ -275,6 +329,9 @@ class IngestionService:
 
     def metrics_snapshot(self, *, window_days: int = 30) -> dict[str, float | int]:
         return self._repository.metrics_snapshot(window_days=window_days)
+
+    async def failure_log(self, *, window_days: int = 30) -> Sequence[IngestionRun]:
+        return self._repository.failure_log(window_days=window_days)
 
     async def latest_run(self, *, interval: Interval) -> IngestionRun | None:
         return self._repository.latest_run_for_interval(interval)
@@ -341,6 +398,13 @@ class IngestionService:
 
     async def _record_partial_source(self, asset: str, interval: Interval, reason: str) -> None:
         await self._remediation.log_partial_source(asset=asset, interval=interval, reason=reason)
+
+    @staticmethod
+    def _compute_lag(window_end: datetime | None) -> float | None:
+        if not window_end:
+            return None
+        delta = datetime.now(UTC) - window_end
+        return max(delta.total_seconds() / 60, 0.0)
 
 
 @lru_cache(maxsize=1)

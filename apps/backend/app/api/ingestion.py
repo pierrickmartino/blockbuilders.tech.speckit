@@ -7,7 +7,7 @@ from uuid import UUID
 from app.schemas.ohlcv import IngestionRun, Interval
 from app.services.ingestion import IngestionService, get_ingestion_service
 
-from fastapi import APIRouter, Body, HTTPException, Path, Query, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, status
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -70,6 +70,19 @@ async def get_latest_ingestion_run(
     if not run:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="no runs recorded")
     return run
+
+
+@router.get(
+    "/failures",
+    status_code=status.HTTP_200_OK,
+    summary="Fetch failed ingestion runs within the lookback window",
+    response_model=list[IngestionRun],
+)
+async def get_failure_log(
+    window_days: Annotated[int, Query(ge=1, le=90, description="Lookback window for failure log", default=30)] = 30,
+    service: IngestionServiceDep,
+) -> list[IngestionRun]:
+    return list(await service.failure_log(window_days=window_days))
 
 
 __all__ = ["router", "BackfillRequest"]

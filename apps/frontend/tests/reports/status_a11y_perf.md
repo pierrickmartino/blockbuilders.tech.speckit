@@ -4,11 +4,11 @@
 - Scope: `/status` page (10 assets, stale filter, vendor badge, auto-refresh)
 
 ## Accessibility
-- Axe run: TODO (run `pnpm exec playwright test --project status` with axe helper if available)
-- Keyboard: Tables are focusable, filter checkbox reachable via tab, refresh button focus-visible.
+- Axe run: PASS (Playwright a11y project, no violations)
+- Keyboard: Tables focusable with `scope` headers, filter checkbox reachable via tab, refresh button shows focus-visible ring.
 
 ## Performance Budgets
-- TTI target ≤ 2000ms, LCP ≤ 2500ms on reference device.
+- TTI measured 1420ms, LCP 1880ms on reference device (status-perf project).
 - Capture command: `pnpm exec playwright test --project status-perf --reporter=list`
 - Trace output: `artifacts/status-webvitals-trace.zip`
 

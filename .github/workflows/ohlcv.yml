@@ -1,29 +1,107 @@
-name: OHLCV Perf Checks
+name: OHLCV CI
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/backend/**'
+      - 'apps/frontend/**'
+      - 'specs/005-ohlcv-ingestion/**'
+      - 'docs/observability/**'
+      - '.github/workflows/ohlcv.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'uv.lock'
   pull_request:
     paths:
-      - "specs/005-ohlcv-ingestion/**"
-      - "backend/tests/perf/**"
-      - ".github/workflows/ohlcv.yml"
+      - 'apps/backend/**'
+      - 'apps/frontend/**'
+      - 'specs/005-ohlcv-ingestion/**'
+      - 'docs/observability/**'
+      - '.github/workflows/ohlcv.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'uv.lock'
 
 jobs:
+  frontend:
+    name: Frontend lint / type-check / tests
+    runs-on: ubuntu-latest
+    env:
+      CI: 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.20.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (frontend)
+        run: pnpm --filter @blockbuilders/frontend... lint
+
+      - name: Type-check (frontend)
+        run: pnpm --filter @blockbuilders/frontend... type-check
+
+      - name: Test coverage (frontend)
+        run: pnpm --filter @blockbuilders/frontend... test:coverage
+
+  backend:
+    name: Backend lint / tests
+    runs-on: ubuntu-latest
+    env:
+      CI: 'true'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+
+      - name: Sync backend deps
+        run: uv sync --frozen --directory apps/backend
+
+      - name: Lint (ruff)
+        run: uv run --directory apps/backend ruff check app tests
+
+      - name: Test suite (pytest)
+        run: uv run --directory apps/backend pytest
+
   perf:
     name: Status and Lineage p95 <= 200ms
+    needs: [frontend, backend]
+    if: ${{ hashFiles('apps/backend/tests/perf/status_load.js') != '' || hashFiles('apps/backend/tests/perf/lineage_load.js') != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Status API load (k6)
-        if: ${{ hashFiles('backend/tests/perf/status_load.js') != '' }}
+        if: ${{ hashFiles('apps/backend/tests/perf/status_load.js') != '' }}
         uses: grafana/k6-action@v0.2.0
         with:
-          filename: backend/tests/perf/status_load.js
+          filename: apps/backend/tests/perf/status_load.js
 
       - name: Lineage API load (k6)
-        if: ${{ hashFiles('backend/tests/perf/lineage_load.js') != '' }}
+        if: ${{ hashFiles('apps/backend/tests/perf/lineage_load.js') != '' }}
         uses: grafana/k6-action@v0.2.0
         with:
-          filename: backend/tests/perf/lineage_load.js
+          filename: apps/backend/tests/perf/lineage_load.js

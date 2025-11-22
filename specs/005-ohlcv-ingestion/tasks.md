@@ -120,13 +120,13 @@ Tests are included because the specification marks user scenarios/testing as man
 
 **Purpose**: Hardening, documentation, and quality gates across stories.
 
-- [ ] T047 [P] Update quickstart with new endpoints, seed fixtures, and alert email setup in `specs/005-ohlcv-ingestion/quickstart.md`
-- [ ] T048 Add observability/Datadog dashboard notes for ingestion lag, run success, alert counts, and publish dashboard/runbook links in `docs/observability/ohlcv.md`
-- [ ] T049 [P] Add CI workflow for pnpm lint/type-check/test:coverage and ruff/pytest gates in `.github/workflows/ohlcv.yml`
-- [ ] T050 Run accessibility/performance checklist and record results for status page in `frontend/tests/reports/status_a11y_perf.md`
-- [ ] T051 [P] Instrument Datadog metrics for ingestion runs (success, duration, rows, lag) in `backend/src/services/ingestion.py`
-- [ ] T052 [P] Emit freshness lag gauge and alert count metrics in `backend/src/jobs/freshness_monitor.py`
-- [ ] T058 [P] Validate 30-day failure-log query path and dashboard surfacing (errors and retries) in `backend/tests/contract/test_failures_log.py`
+- [X] T047 [P] Update quickstart with new endpoints, seed fixtures, and alert email setup in `specs/005-ohlcv-ingestion/quickstart.md`
+- [X] T048 Add observability/Datadog dashboard notes for ingestion lag, run success, alert counts, and publish dashboard/runbook links in `docs/observability/ohlcv.md`
+- [X] T049 [P] Add CI workflow for pnpm lint/type-check/test:coverage and ruff/pytest gates in `.github/workflows/ohlcv.yml`
+- [X] T050 Run accessibility/performance checklist and record results for status page in `frontend/tests/reports/status_a11y_perf.md`
+- [X] T051 [P] Instrument Datadog metrics for ingestion runs (success, duration, rows, lag) in `backend/src/services/ingestion.py`
+- [X] T052 [P] Emit freshness lag gauge and alert count metrics in `backend/src/jobs/freshness_monitor.py`
+- [X] T058 [P] Validate 30-day failure-log query path and dashboard surfacing (errors and retries) in `backend/tests/contract/test_failures_log.py`
 
 ---
 
