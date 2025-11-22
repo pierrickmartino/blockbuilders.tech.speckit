@@ -43,7 +43,7 @@ Acceptance Criteria:
 	•	AC2: Selecting a starter template primes a draft strategy in the canvas.
 	•	AC3 : Funnel dashboard shows step completion rates by cohort.
 
-Title: Market Data Ingestion (OHLCV v1)
+Title: 005-Market Data Ingestion (OHLCV v1)
 Why: Provide reliable historical data for backtests.
 Scope:
 	•	Frontend: Data status page (coverage, freshness, vendor status).
