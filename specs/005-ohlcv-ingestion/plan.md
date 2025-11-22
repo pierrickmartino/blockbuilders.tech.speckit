@@ -17,7 +17,7 @@ Deliver v1 ingestion and monitoring for OHLCV (daily + minute) for 10 crypto ass
 **Testing**: pnpm lint --max-warnings 0; pnpm type-check; pnpm test:coverage (Vitest/Playwright as needed); ruff check; uv run pytest
 **Target Platform**: Frontend on Vercel/Next.js server runtime; backend workers on Linux containers (Supabase functions or FastAPI service) hitting Supabase DB
 **Project Type**: Web + backend services
-**Performance Goals**: Status page meets ≤2s TTI and ≤2.5s LCP for 10 assets; API p95 ≤200ms for status/lineage endpoints; ingestion/backfill success ≥99% with retries; alert dispatch within 10 minutes of threshold breach
+**Performance Goals**: Status page meets ≤2s TTI and ≤2.5s LCP for 10 assets; API p95 ≤200ms for status/lineage endpoints; ingestion/backfill success ≥99% over a rolling 30-day window with retries; telemetry retained to compute and surface the 30-day metric; alert dispatch within 10 minutes of threshold breach
 **Constraints**: Freshness threshold 60 minutes evaluated every 10 minutes; single vendor; idempotent writes with checksum per run; 10 assets fixed scope; daily coverage ≥3y, minute ≥90d
 **Scale/Scope**: 10 assets, expected <2k daily rows/day and ~14.4k minute rows/asset/day; lineage retained for audit; telemetry for 30-day lookback
 

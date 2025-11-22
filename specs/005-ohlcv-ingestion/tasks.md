@@ -71,6 +71,8 @@ Tests are included because the specification marks user scenarios/testing as man
 - [ ] T028 [P] [US2] Contract tests for `/ingestion/backfill` and `/ingestion/runs/{id}` in `backend/tests/contract/test_ingestion.py`
 - [ ] T029 [P] [US2] Pytest coverage for checksum generation and idempotent UPSERT on duplicates in `backend/tests/test_checksum.py`
 - [ ] T030 [P] [US2] Fixtures for 10-asset seed dataset and expected hashes in `backend/tests/fixtures/ohlcv_seed.py`
+- [ ] T054 [P] [US2] Pytest simulating failing runs, retries, and rolling 30-day success-rate calculation (≥99%) in `backend/tests/test_success_rate.py`
+- [ ] T055 [P] [US2] Metric/telemetry test ensuring 30-day retention and query path for run success metrics in `backend/tests/perf/test_telemetry_retention.py`
 
 ### Implementation for User Story 2
 
@@ -95,7 +97,7 @@ Tests are included because the specification marks user scenarios/testing as man
 - [ ] T038 [P] [US3] Pytest for freshness evaluation/deduped incidents and clearance logic in `backend/tests/test_alerts.py`
 - [ ] T039 [P] [US3] Contract test for `/alerts/test` endpoint in `backend/tests/contract/test_alerts.py`
 - [ ] T040 [P] [US3] Playwright integration check that stale flag clears after data catch-up in `frontend/tests/status-stale.spec.ts`
-- [ ] T041 [P] [US3] Pytest asserting alert email payload (asset, lag, vendor) and distro list single-fire behavior in `backend/tests/test_alerts_email.py`
+- [ ] T041 [P] [US3] Pytest asserting alert email payload includes subject prefix, asset, interval, lag minutes, vendor status, incident id, run timestamp, status-page deep link, and distro list single-fire behavior in `backend/tests/test_alerts_email.py`
 
 ### Implementation for User Story 3
 
