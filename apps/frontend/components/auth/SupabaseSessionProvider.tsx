@@ -12,7 +12,6 @@ import {
 import type { ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import type { Route } from 'next';
-import type { Session } from '@supabase/supabase-js';
 
 import {
   getBrowserSupabaseClient,
@@ -20,7 +19,6 @@ import {
   setBrowserSupabaseStorageMode,
 } from '@/lib/supabase/clients';
 import type { SupabaseAuthSession } from '@/lib/supabase/types';
-import { toAuthSession } from '@/lib/auth/session';
 import {
   getSessionChannel,
   type SessionBroadcastEvent,
@@ -68,23 +66,6 @@ const DEFAULT_ERROR_MESSAGE =
   'We could not reach Supabase. We will retry automatically.';
 const MAX_RETRIES = 3;
 
-const mapSupabaseEventToBroadcast = (
-  origin: string,
-  event: string,
-  session: Session | null,
-): SessionBroadcastEvent => {
-  if (event === 'SIGNED_OUT') {
-    return { type: 'SIGNED_OUT', origin };
-  }
-
-  const normalized = toAuthSession(session);
-  if (event === 'TOKEN_REFRESHED') {
-    return { type: 'SESSION_REFRESHED', session: normalized ?? undefined, origin };
-  }
-
-  return { type: 'SIGNED_IN', session: normalized ?? null, origin };
-};
-
 const createTestHooks = (
   forceRefresh: () => Promise<void>,
   getStorageMode: () => 'cookies' | 'memory',
@@ -119,9 +100,6 @@ export const SupabaseSessionProvider = ({
   const [outage, setOutage] = useState<{ retryInMs: number | null; attempts: number } | null>(null);
   const retryAttemptRef = useRef(0);
   const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const supabaseRef = useRef<ReturnType<typeof getBrowserSupabaseClient> | null>(
-    null,
-  );
   const metricsRef = useRef<SupabaseSessionMetricSnapshot | null>(null);
   const freezeDurationRef = useRef(0);
   const instanceId = useMemo(() => crypto.randomUUID(), []);
@@ -226,7 +204,10 @@ export const SupabaseSessionProvider = ({
   };
 
   const fetchSession = useCallback(
-    async (origin: string) => {
+    async (
+      origin: string,
+      broadcastType: SessionBroadcastEvent['type'] = 'SESSION_REFRESHED',
+    ) => {
       clearRetryTimer();
       setStatus((previous) =>
         previous === 'authenticated' ? previous : 'loading',
@@ -252,7 +233,7 @@ export const SupabaseSessionProvider = ({
         }
 
         const payload = await parseSessionResponse(response);
-        updateSessionState(payload.session, origin, 'SESSION_REFRESHED');
+        updateSessionState(payload.session, origin, broadcastType);
       } catch (error) {
         console.error('[SupabaseSessionProvider] Failed to refresh session.', error);
         setLastError(
@@ -294,39 +275,31 @@ export const SupabaseSessionProvider = ({
   }, [instanceId, redirectToSignIn, updateSessionState]);
 
   const applySupabaseEvent = useCallback(
-    (event: string, sessionPayload: Session | null) => {
-      const broadcast = mapSupabaseEventToBroadcast(
-        instanceId,
-        event,
-        sessionPayload,
-      );
-
-      if (broadcast.type === 'SIGNED_OUT' || broadcast.type === 'TOKEN_EXPIRED') {
+    (event: string) => {
+      if (event === 'SIGNED_OUT' || event === 'TOKEN_EXPIRED') {
         updateSessionState(null, instanceId, 'SIGNED_OUT');
         redirectToSignIn('expired');
-      } else {
-        updateSessionState(
-          toAuthSession(sessionPayload),
-          instanceId,
-          broadcast.type,
-        );
+        return;
       }
+
+      const nextType: SessionBroadcastEvent['type'] =
+        event === 'TOKEN_REFRESHED' ? 'SESSION_REFRESHED' : 'SIGNED_IN';
+
+      void fetchSession(instanceId, nextType);
     },
-    [instanceId, redirectToSignIn, updateSessionState],
+    [fetchSession, instanceId, redirectToSignIn, updateSessionState],
   );
 
   useEffect(() => {
     setBrowserSupabaseStorageMode(storageMode);
-    supabaseRef.current = null;
     resetSupabaseClientCache();
   }, [storageMode]);
 
   useEffect(() => {
     const supabase = getBrowserSupabaseClient();
-    supabaseRef.current = supabase;
 
-    const { data } = supabase.auth.onAuthStateChange((event, sessionPayload) => {
-      applySupabaseEvent(event, sessionPayload);
+    const { data } = supabase.auth.onAuthStateChange((event) => {
+      applySupabaseEvent(event);
     });
 
     return () => {

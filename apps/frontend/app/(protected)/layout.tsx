@@ -26,15 +26,15 @@ export default async function ProtectedLayout({ children }: ProtectedLayoutProps
   });
 
   const {
-    data: { session },
+    data: { user },
     error,
-  } = await supabase.auth.getSession();
+  } = await supabase.auth.getUser();
 
-  if (error || !session || !session.user.email_confirmed_at) {
+  if (error || !user || !user.email_confirmed_at) {
     const returnTo = resolveReturnPath(headerStore);
     const reason = error
       ? 'session-error'
-      : session
+      : user
         ? 'email-unverified'
         : 'unauthenticated';
     redirect(

@@ -46,22 +46,31 @@ const resolveAuthContext = cache(async (): Promise<AuthContext> => {
     headers: headerStore,
   });
 
+  const [sessionResult, userResult] = await Promise.all([
+    supabase.auth.getSession(),
+    supabase.auth.getUser(),
+  ]);
+
   const {
     data: { session },
-    error,
-  } = await supabase.auth.getSession();
+    error: sessionError,
+  } = sessionResult;
+  const {
+    data: { user },
+    error: userError,
+  } = userResult;
 
-  if (error || !session?.access_token || !session.user) {
+  if (sessionError || userError || !session?.access_token || !user) {
     throw new OnboardingApiError(
       'Authentication required for onboarding requests.',
       401,
-      error ?? undefined,
+      sessionError ?? userError ?? undefined,
     );
   }
 
   const workspaceId =
-    extractWorkspaceId(session.user.user_metadata as Record<string, unknown> | undefined) ??
-    extractWorkspaceId(session.user.app_metadata as Record<string, unknown> | undefined) ??
+    extractWorkspaceId(user.user_metadata as Record<string, unknown> | undefined) ??
+    extractWorkspaceId(user.app_metadata as Record<string, unknown> | undefined) ??
     WORKSPACE_ID_FALLBACK;
 
   if (!workspaceId) {
@@ -73,7 +82,7 @@ const resolveAuthContext = cache(async (): Promise<AuthContext> => {
 
   return {
     accessToken: session.access_token,
-    userId: session.user.id,
+    userId: user.id,
     workspaceId,
   };
 });

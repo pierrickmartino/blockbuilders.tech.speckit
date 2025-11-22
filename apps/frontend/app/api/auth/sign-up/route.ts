@@ -132,7 +132,7 @@ export async function POST(request: Request) {
 
   return jsonResponse(
     {
-      session: toAuthSession(response.data.session),
+      session: toAuthSession(response.data.session, response.data.user ?? null),
       user: response.data.user,
     },
     response.data.session ? 201 : 202,

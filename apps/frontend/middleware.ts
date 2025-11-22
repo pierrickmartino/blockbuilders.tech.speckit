@@ -28,20 +28,20 @@ export async function middleware(request: NextRequest) {
     });
 
     const {
-      data: { session },
+      data: { user },
       error,
-    } = await supabase.auth.getSession();
+    } = await supabase.auth.getUser();
 
     if (error) {
       throw error;
     }
 
-    if (!session || !session.user.email_confirmed_at) {
+    if (!user || !user.email_confirmed_at) {
       const redirectUrl = new URL('/auth/sign-in', request.url);
       redirectUrl.searchParams.set('returnTo', pathname);
       redirectUrl.searchParams.set(
         'reason',
-        session ? 'email-unverified' : 'unauthenticated',
+        user ? 'email-unverified' : 'unauthenticated',
       );
       return NextResponse.redirect(redirectUrl);
     }

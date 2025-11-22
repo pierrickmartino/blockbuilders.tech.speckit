@@ -2,11 +2,28 @@
 
 import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import type { Session } from '@supabase/supabase-js';
 
 import { createServerSupabaseClient } from '@/lib/supabase/clients';
 import type { CookieStoreAdapter } from '@/lib/supabase/cookies';
 
 const REDIRECT_REASON = 'auth-check-required';
+
+const sanitizeSessionForDisplay = (session: Session | null) => {
+  if (!session) {
+    return null;
+  }
+
+  return {
+    access_token: session.access_token,
+    refresh_token: session.refresh_token ?? null,
+    expires_in: session.expires_in ?? null,
+    expires_at: session.expires_at ?? null,
+    token_type: session.token_type ?? null,
+    provider_token: session.provider_token ?? null,
+    provider_refresh_token: session.provider_refresh_token ?? null,
+  };
+};
 
 export default async function AuthCheckPage() {
   const cookieStore = (await cookies()) as unknown as CookieStoreAdapter;
@@ -16,13 +33,26 @@ export default async function AuthCheckPage() {
     headers: headerStore,
   });
 
-  const {
-    data: { session },
-    error,
-  } = await supabase.auth.getSession();
+  const [sessionResult, userResult] = await Promise.all([
+    supabase.auth.getSession(),
+    supabase.auth.getUser(),
+  ]);
 
-  if (error || !session?.user) {
+  const sessionError = sessionResult.error;
+  const userError = userResult.error;
+  const session = sessionResult.data.session;
+  const user = userResult.data.user;
+
+  if (sessionError) {
+    redirect(`/auth/sign-in?reason=session-error`);
+  }
+
+  if (userError || !user) {
     redirect(`/auth/sign-in?reason=${REDIRECT_REASON}`);
+  }
+
+  if (!session) {
+    redirect(`/auth/sign-in?reason=unauthenticated`);
   }
 
   const {
@@ -31,7 +61,7 @@ export default async function AuthCheckPage() {
     email_confirmed_at,
     user_metadata,
     app_metadata,
-  } = session.user;
+  } = user;
 
   const workspaceId =
     (typeof user_metadata?.workspace_id === 'string' && user_metadata.workspace_id) ||
@@ -69,7 +99,9 @@ export default async function AuthCheckPage() {
       </dl>
       <div className="rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-slate-200">
         <p className="font-semibold text-white">Session payload</p>
-        <pre className="mt-2 max-h-40 overflow-auto text-[0.9rem]">{JSON.stringify(session, null, 2)}</pre>
+        <pre className="mt-2 max-h-40 overflow-auto text-[0.9rem]">
+          {JSON.stringify(sanitizeSessionForDisplay(session), null, 2)}
+        </pre>
       </div>
     </section>
   );
