@@ -108,5 +108,5 @@ On-call operator receives an alert when any asset’s latest OHLCV timestamp lag
 - **SC-COVERAGE**: 100% of the defined 10 assets show contiguous coverage of at least 3 years (daily) and 90 days (minute) with zero gaps >1 interval; checksum reports for each run are available and match expected row counts.
 - **SC-FRESHNESS**: 100% of assets remain within the 60-minute freshness threshold during steady-state; any breach generates an alert within 10 minutes of detection and is visible on the status page until resolved.
 - **SC-LINEAGE**: Lineage API returns vendor, fetch time, checksum id, and run identifier for any asset/time query within stored ranges; responses include the most recent ingestion run reference.
-- **SC-UX**: Status page loads summary data for 10 assets in ≤5 seconds on a standard connection and clearly flags stale or gapped assets without requiring backend knowledge.
+- **SC-UX**: Status page meets ≤2s Time-to-Interactive and ≤2.5s Largest Contentful Paint on reference devices, while clearly flagging stale or gapped assets without requiring backend knowledge.
 - **SC-RELIABILITY**: Ingestion/backfill jobs complete with a success rate ≥99% over a rolling 30-day period, with retries preventing duplicate OHLCV entries.
