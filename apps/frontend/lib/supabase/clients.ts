@@ -8,13 +8,15 @@ import {
 } from './env';
 import { createServerSupabaseCookies } from './cookies';
 import type { CookieStoreAdapter } from './cookies';
+import {
+  getForwardableSupabaseHeaders,
+  type HeaderInitType,
+} from './headers';
 
 type RequestCookieStore = Parameters<typeof createServerSupabaseCookies>[0];
-type HeaderInit = ConstructorParameters<typeof Headers>[0];
-
 export interface ServerClientContext {
   cookies: CookieStoreAdapter;
-  headers?: HeaderInit;
+  headers?: HeaderInitType;
 }
 
 type GenericSupabaseClient = SupabaseClient<any, any, any, any, any>;
@@ -47,49 +49,6 @@ const getBrowserStorage = (): SupportedStorage | null => {
   return browserStorage;
 };
 
-const isHeadersInstance = (input: HeaderInit): input is Headers =>
-  typeof Headers !== 'undefined' && input instanceof Headers;
-
-const toHeaderRecord = (
-  input?: HeaderInit,
-): Record<string, string> | undefined => {
-  if (!input) {
-    return undefined;
-  }
-
-  if (isHeadersInstance(input)) {
-    return Object.fromEntries(input.entries());
-  }
-
-  if (Array.isArray(input)) {
-    return Object.fromEntries(input);
-  }
-
-  return Object.fromEntries(Object.entries(input));
-};
-
-const SUPABASE_HEADER_DENYLIST = new Set(['content-length', 'transfer-encoding']);
-
-const sanitizeSupabaseHeaders = (
-  input?: HeaderInit,
-): Record<string, string> | undefined => {
-  const record = toHeaderRecord(input);
-  if (!record) {
-    return undefined;
-  }
-
-  const entries = Object.entries(record).filter(([key]) => {
-    const normalized = key.trim().toLowerCase();
-    return !SUPABASE_HEADER_DENYLIST.has(normalized);
-  });
-
-  if (entries.length === 0) {
-    return undefined;
-  }
-
-  return Object.fromEntries(entries);
-};
-
 export const getBrowserSupabaseClient = <Database = unknown>() => {
   if (browserClient) {
     return browserClient as SupabaseClient<Database>;
@@ -118,7 +77,7 @@ export const createServerSupabaseClient = <Database = unknown>({
   }
 
   const { url, anonKey } = getServerSupabaseConfig();
-  const headerRecord = sanitizeSupabaseHeaders(headers);
+  const headerRecord = getForwardableSupabaseHeaders(headers);
   const supabase = createServerClient<Database>(url, anonKey, {
     cookies: createServerSupabaseCookies(cookies),
     ...(headerRecord ? { global: { headers: headerRecord } } : {}),

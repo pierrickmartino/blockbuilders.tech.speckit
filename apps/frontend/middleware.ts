@@ -3,6 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 
 import { createMiddlewareSupabaseCookies } from '@/lib/supabase/cookies';
 import { getServerSupabaseConfig } from '@/lib/supabase/env';
+import { getForwardableSupabaseHeaders } from '@/lib/supabase/headers';
 
 const PROTECTED_PATH_PREFIXES = ['/dashboard'];
 
@@ -26,13 +27,13 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
   try {
     const { url, anonKey } = getServerSupabaseConfig();
-    const headerRecord = Object.fromEntries(request.headers.entries());
+    const headerRecord = getForwardableSupabaseHeaders(request.headers);
     const supabase = createServerClient(url, anonKey, {
       cookies: createMiddlewareSupabaseCookies({
         request: request.cookies,
         response: response.cookies,
       }),
-      global: { headers: headerRecord },
+      ...(headerRecord ? { global: { headers: headerRecord } } : {}),
     });
 
     const {
