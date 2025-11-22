@@ -40,10 +40,14 @@ Tests are included because the specification marks user scenarios/testing as man
 
 - [ ] T012 [P] [US1] Contract tests for `/status/summary` and `/status/remediation` in `backend/tests/contract/test_status.py`
 - [ ] T013 [P] [US1] Playwright a11y/filter test for status page in `frontend/tests/status-page.spec.ts`
+- [ ] T013a [P] [US1] Playwright refresh behavior test (auto 30s + manual button, refresh <2s, no full reload) in `frontend/tests/status-refresh.spec.ts`
 - [ ] T014 [P] [US1] Contract test for `/status/remediation` filters and payload shape in `backend/tests/contract/test_remediation.py`
 - [ ] T015 [P] [US1] Contract tests for `/lineage` (success/empty window/error) in `backend/tests/contract/test_lineage.py`
 - [ ] T016 [P] [US1] Load test `/status/summary` (p95 ≤200ms for 10 assets) in `backend/tests/perf/status_load.js`
+- [ ] T016a [P] [US1] Load test `/lineage` (p95 ≤200ms for 10 assets, 90d minute window) in `backend/tests/perf/lineage_load.js`
 - [ ] T017 [P] [US1] Capture Web Vitals (TTI/LCP budgets) for status page via Playwright trace in `frontend/tests/perf/status-webvitals.spec.ts`
+- [ ] T059 [P] [US1] Contract/UI test ensuring status/lineage responses and UI omit backend implementation details (no internal hosts/credentials/infra identifiers) in `backend/tests/contract/test_status_privacy.py`
+- [ ] T059a [P] [US1] Playwright check shows vendor “unavailable/rate-limited” badge when outage/remediation flag set in `frontend/tests/status-vendor-outage.spec.ts`
 
 ### Implementation for User Story 1
 
@@ -74,6 +78,7 @@ Tests are included because the specification marks user scenarios/testing as man
 - [ ] T054 [P] [US2] Pytest simulating failing runs, retries, and rolling 30-day success-rate calculation (≥99%) in `backend/tests/test_success_rate.py`
 - [ ] T055 [P] [US2] Metric/telemetry test ensuring 30-day retention and query path for run success metrics in `backend/tests/perf/test_telemetry_retention.py`
 - [ ] T056 [P] [US2] Pytest covering DST short/long days and partial-interval ingestion to prevent gaps/overlaps in `backend/tests/test_ingestion_edge_cases.py`
+- [ ] T056a [P] [US2] Pytest simulating vendor 429/503 with exponential backoff, remediation log entry, and non-duplicated alerts in `backend/tests/test_vendor_outage.py`
 - [ ] T057 [P] [US2] Pytest for resume-after-interrupt ensuring idempotent retries with no duplicate OHLCV rows in `backend/tests/test_ingestion_resume.py`
 
 ### Implementation for User Story 2
@@ -116,12 +121,11 @@ Tests are included because the specification marks user scenarios/testing as man
 **Purpose**: Hardening, documentation, and quality gates across stories.
 
 - [ ] T047 [P] Update quickstart with new endpoints, seed fixtures, and alert email setup in `specs/005-ohlcv-ingestion/quickstart.md`
-- [ ] T048 Add observability/Datadog dashboard notes for ingestion lag, run success, alert counts in `docs/observability/ohlcv.md`
+- [ ] T048 Add observability/Datadog dashboard notes for ingestion lag, run success, alert counts, and publish dashboard/runbook links in `docs/observability/ohlcv.md`
 - [ ] T049 [P] Add CI workflow for pnpm lint/type-check/test:coverage and ruff/pytest gates in `.github/workflows/ohlcv.yml`
 - [ ] T050 Run accessibility/performance checklist and record results for status page in `frontend/tests/reports/status_a11y_perf.md`
 - [ ] T051 [P] Instrument Datadog metrics for ingestion runs (success, duration, rows, lag) in `backend/src/services/ingestion.py`
 - [ ] T052 [P] Emit freshness lag gauge and alert count metrics in `backend/src/jobs/freshness_monitor.py`
-- [ ] T053 Publish dashboards/runbook links for observability in `docs/observability/ohlcv.md`
 - [ ] T058 [P] Validate 30-day failure-log query path and dashboard surfacing (errors and retries) in `backend/tests/contract/test_failures_log.py`
 
 ---

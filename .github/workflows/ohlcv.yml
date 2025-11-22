@@ -1,0 +1,29 @@
+name: OHLCV Perf Checks
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "specs/005-ohlcv-ingestion/**"
+      - "backend/tests/perf/**"
+      - ".github/workflows/ohlcv.yml"
+
+jobs:
+  perf:
+    name: Status and Lineage p95 <= 200ms
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Status API load (k6)
+        if: ${{ hashFiles('backend/tests/perf/status_load.js') != '' }}
+        uses: grafana/k6-action@v0.2.0
+        with:
+          filename: backend/tests/perf/status_load.js
+
+      - name: Lineage API load (k6)
+        if: ${{ hashFiles('backend/tests/perf/lineage_load.js') != '' }}
+        uses: grafana/k6-action@v0.2.0
+        with:
+          filename: backend/tests/perf/lineage_load.js
