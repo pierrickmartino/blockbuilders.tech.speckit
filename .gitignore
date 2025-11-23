@@ -32,6 +32,7 @@ artifacts/
 !.env.local.example
 Dockerfile.local
 *.tsbuildinfo
+secrets/
 
 # Editors and OS junk
 .DS_Store

@@ -191,7 +191,8 @@ if ((${#TEMPLATE_KEYS[@]} == 0)); then
   exit 1
 fi
 
-declare -A SECRET_VALUES
+SECRET_KEYS=()
+SECRET_VALUES=()
 while IFS='=' read -r key value; do
   [[ -z "$key" ]] && continue
   if [[ "$key" == \#* ]]; then
@@ -199,14 +200,27 @@ while IFS='=' read -r key value; do
   fi
   case "$key" in
     SUPABASE*|NEXT_PUBLIC_SUPABASE*)
-      SECRET_VALUES["$key"]="${value}"
+      SECRET_KEYS+=("$key")
+      SECRET_VALUES+=("${value}")
       ;;
   esac
 done < <(grep -E '^[A-Z0-9_]+\s*=' "$ENV_FILE")
 
+get_secret_value() {
+  local lookup="$1"
+  local i
+  for i in "${!SECRET_KEYS[@]}"; do
+    if [[ "${SECRET_KEYS[$i]}" == "$lookup" ]]; then
+      echo "${SECRET_VALUES[$i]}"
+      return 0
+    fi
+  done
+  return 1
+}
+
 missing_values=()
 for key in "${TEMPLATE_KEYS[@]}"; do
-  if [[ -z "${SECRET_VALUES[$key]:-}" ]]; then
+  if [[ -z "$(get_secret_value "$key" 2>/dev/null)" ]]; then
     missing_values+=("$key")
   fi
 done
@@ -231,7 +245,8 @@ echo "Log file: ${log_file}"
 echo ""
 
 for key in "${TEMPLATE_KEYS[@]}"; do
-  fingerprint="$(hash_secret "${SECRET_VALUES[$key]}")"
+  value="$(get_secret_value "$key")"
+  fingerprint="$(hash_secret "$value")"
   echo "Prepared value for ${key} (sha256:${fingerprint})"
 done
 
@@ -245,7 +260,7 @@ if command -v vercel >/dev/null 2>&1 && [[ -n "${VERCEL_PROJECT_ID:-}" ]] && [[ 
       echo "[dry-run] vercel env add ${key} ${TARGET}"
       continue
     fi
-    printf '%s' "${SECRET_VALUES[$key]}" | vercel env add "${key}" "${TARGET}" --token "${VERCEL_TOKEN}" --project "${VERCEL_PROJECT_ID}" --yes >/dev/null
+    printf '%s' "$(get_secret_value "$key")" | vercel env add "${key}" "${TARGET}" --token "${VERCEL_TOKEN}" --project "${VERCEL_PROJECT_ID}" --yes >/dev/null
     echo "Updated Vercel secret ${key}"
   done
 else
@@ -261,10 +276,11 @@ if command -v gh >/dev/null 2>&1 && [[ -n "${GITHUB_REPOSITORY:-}" ]]; then
       echo "[dry-run] gh secret set ${key} --repo ${GITHUB_REPOSITORY} ${GITHUB_ENVIRONMENT:+--env ${GITHUB_ENVIRONMENT}}"
       continue
     fi
+    value="$(get_secret_value "$key")"
     if [[ -n "${GITHUB_ENVIRONMENT:-}" ]]; then
-      printf '%s' "${SECRET_VALUES[$key]}" | gh secret set "${key}" --repo "${GITHUB_REPOSITORY}" --env "${GITHUB_ENVIRONMENT}" --app actions --yes >/dev/null
+      gh secret set "${key}" --repo "${GITHUB_REPOSITORY}" --env "${GITHUB_ENVIRONMENT}" --app actions --body "$value" >/dev/null
     else
-      printf '%s' "${SECRET_VALUES[$key]}" | gh secret set "${key}" --repo "${GITHUB_REPOSITORY}" --app actions --yes >/dev/null
+      gh secret set "${key}" --repo "${GITHUB_REPOSITORY}" --app actions --body "$value" >/dev/null
     fi
     echo "Updated GitHub secret ${key}"
   done
