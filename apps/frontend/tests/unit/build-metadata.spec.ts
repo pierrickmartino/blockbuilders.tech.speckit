@@ -1,13 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type * as BuildMetadataModule from '../../lib/build-metadata';
-
-type ChildProcessExecFileSync = typeof import('node:child_process').execFileSync;
+import type { ExecFileSyncRunner } from '../../lib/build-metadata';
 
 declare global {
-  var __buildMetadataExec: ChildProcessExecFileSync | undefined;
+  var __buildMetadataExec: ExecFileSyncRunner | undefined;
 }
 
-const execFileSync = vi.fn<ChildProcessExecFileSync>();
+const execFileSync = vi.fn<ExecFileSyncRunner>();
 
 const encodeScriptOutput = (payload: unknown) =>
   Buffer.from(JSON.stringify(payload), 'utf8');

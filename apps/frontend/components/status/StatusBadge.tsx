@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cn } from '@/lib/cn';
 
 type StatusState = 'healthy' | 'stale' | 'gap_detected';
 
@@ -19,7 +19,7 @@ export function StatusBadge({ state, label, 'data-testid': testId }: Props) {
   return (
     <span
       data-testid={testId}
-      className={clsx(
+      className={cn(
         'inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset capitalize',
         COLOR_MAP[state],
       )}
@@ -50,7 +50,7 @@ export function VendorBadge({ state }: { state?: 'up' | 'degraded' | 'down' | 'r
   return (
     <span
       data-testid="vendor-badge"
-      className={clsx(
+      className={cn(
         'inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset',
         color,
       )}
@@ -69,7 +69,7 @@ export function AlertBadge({ status, lagMinutes }: { status?: 'open' | 'cleared'
   return (
     <span
       data-testid="alert-badge"
-      className={clsx(
+      className={cn(
         'inline-flex items-center gap-1 rounded-full bg-rose-100 px-3 py-1 text-xs font-semibold text-rose-800 ring-1 ring-inset ring-rose-200',
       )}
     >

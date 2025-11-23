@@ -4,6 +4,8 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadEnv, envNameToLabel } from './env';
 
+export type ExecFileSyncRunner = (file: string, args?: readonly string[]) => Buffer;
+
 export interface BuildMetadataSnapshot {
   version: string;
   commit: string;
@@ -18,7 +20,7 @@ export interface BuildMetadataSnapshot {
 }
 
 declare global {
-  var __buildMetadataExec: typeof execFileSync | undefined;
+  var __buildMetadataExec: ExecFileSyncRunner | undefined;
 }
 
 const moduleDir = dirname(fileURLToPath(import.meta.url));
@@ -47,6 +49,9 @@ const DEFAULT_VERSION = '0.1.0-dev';
 const DEFAULT_COMMIT = 'unknown';
 const DEFAULT_TIMESTAMP = new Date(0).toISOString();
 export const SMOKE_FALLBACK_TEST_SUITE = 'frontend-smoke-fallback';
+
+const toBufferRunner = (runner: typeof execFileSync): ExecFileSyncRunner => (file, args) =>
+  runner(file, args) as Buffer;
 
 const formatTimestampLabel = (timestamp: string): string => {
   const parsed = Date.parse(timestamp);
@@ -81,7 +86,8 @@ const executeMetadataScript = (
     return null;
   }
 
-  const runExecFileSync = globalThis.__buildMetadataExec ?? execFileSync;
+  const runExecFileSync: ExecFileSyncRunner =
+    globalThis.__buildMetadataExec ?? toBufferRunner(execFileSync);
 
   try {
     const buffer = runExecFileSync(METADATA_SCRIPT_PATH, [

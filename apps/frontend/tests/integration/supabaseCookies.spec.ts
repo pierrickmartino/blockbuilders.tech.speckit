@@ -56,7 +56,7 @@ class MemoryResponseCookies {
 }
 
 class ReadOnlyRequestCookies extends MemoryRequestCookies {
-  set(): never {
+  override set(): never {
     throw new Error(
       'Cookies can only be modified in a Server Action or Route Handler.',
     );
