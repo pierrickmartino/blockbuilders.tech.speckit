@@ -23,11 +23,13 @@ class JWKSCache:
         ttl_seconds: float,
         client: httpx.AsyncClient | None = None,
         request_timeout: float = 5.0,
+        api_key: str | None = None,
     ) -> None:
         self._url = url
         self._owns_client = client is None
         self._client = client
         self._timeout = request_timeout
+        self._api_key = api_key
         self._cache: TTLCache[str, dict[str, Any]] = TTLCache(maxsize=1, ttl=ttl_seconds)
         self._lock = asyncio.Lock()
 
@@ -61,7 +63,11 @@ class JWKSCache:
             raise JWKSFetchError("failed to fetch Supabase JWKS payload") from exc
 
     async def _request(self, client: httpx.AsyncClient) -> dict[str, Any]:
-        response = await client.get(self._url, headers={"accept": "application/json"})
+        headers = {"accept": "application/json"}
+        if self._api_key:
+            headers["apikey"] = self._api_key
+
+        response = await client.get(self._url, headers=headers)
         response.raise_for_status()
 
         payload = response.json()

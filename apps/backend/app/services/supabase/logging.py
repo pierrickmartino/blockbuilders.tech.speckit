@@ -31,19 +31,25 @@ def log_auth_success(claims: Mapping[str, Any]) -> None:
     )
 
 
-def log_auth_failure(reason: str, *, user_id: str | None = None) -> None:
-    """Emit a structured warning for failed Supabase authentication attempts."""
+def log_auth_failure(reason: str, *, user_id: str | None = None, **context: Any) -> None:
+    """Emit a structured warning for failed Supabase authentication attempts.
 
-    LOGGER.warning(
-        "Supabase JWT verification failed",
-        extra={
-            "event": "supabase_auth_failed",
-            "channel": "backend",
-            "reason": reason,
-            "user_id_hash": _hash_identifier(user_id),
-            "pii": "redacted",
-        },
-    )
+    The optional ``context`` captures extra diagnostics (e.g., ``status_code`` or
+    ``error``). Accepting arbitrary keyword args prevents runtime ``TypeError``
+    when callers supply additional fields.
+    """
+
+    extra: dict[str, Any] = {
+        "event": "supabase_auth_failed",
+        "channel": "backend",
+        "reason": reason,
+        "user_id_hash": _hash_identifier(user_id),
+        "pii": "redacted",
+    }
+    if context:
+        extra.update(context)
+
+    LOGGER.warning("Supabase JWT verification failed", extra=extra)
 
 
 __all__ = ["LOGGER", "log_auth_failure", "log_auth_success"]

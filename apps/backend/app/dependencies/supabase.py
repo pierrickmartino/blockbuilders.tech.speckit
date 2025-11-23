@@ -22,8 +22,8 @@ AuthorizationHeader = Annotated[str | None, Header(alias="Authorization")]
 
 
 @lru_cache(maxsize=1)
-def _cached_jwks_cache(url: str, ttl_seconds: int) -> JWKSCache:
-    return JWKSCache(url=url, ttl_seconds=ttl_seconds)
+def _cached_jwks_cache(url: str, ttl_seconds: int, api_key: str | None) -> JWKSCache:
+    return JWKSCache(url=url, ttl_seconds=ttl_seconds, api_key=api_key)
 
 
 def get_jwks_cache(
@@ -32,7 +32,11 @@ def get_jwks_cache(
     """Provide a shared JWKS cache for Supabase JWT verification."""
 
     supabase = settings.supabase
-    return _cached_jwks_cache(str(supabase.jwks_url), supabase.jwks_cache_ttl_seconds)
+    return _cached_jwks_cache(
+        str(supabase.jwks_url),
+        supabase.jwks_cache_ttl_seconds,
+        supabase.service_role_key.get_secret_value(),
+    )
 
 
 def get_jwt_verifier(
