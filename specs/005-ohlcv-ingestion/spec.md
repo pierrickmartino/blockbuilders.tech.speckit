@@ -3,7 +3,7 @@
 **Feature Branch**: `005-ohlcv-ingestion`  
 **Created**: 2025-11-22  
 **Status**: Draft  
-**Input**: User description: "Title: 005-Market Data Ingestion (OHLCV v1) Why: Provide reliable historical data for backtests. Scope: • Frontend: Data status page (coverage, freshness, vendor status). • Backend: ETL for crypto OHLCV (minute/day), Timescale schema, integrity checks. • Infra: Scheduled jobs, retries, observability for lag/failures. Acceptance Criteria: • AC1 : Backfill N=10 assets to 3+ years daily and 90 days minute data with checksum reports. • AC2: Data freshness alert triggers if lag > X minutes. • AC3 : Data lineage (vendor, fetch time, checksum) queryable via API."
+**Input**: User description: "Title: 005-Market Data Ingestion (OHLCV v1) Why: Provide reliable historical data for backtests. Scope: • Frontend: Data status page (coverage, freshness, vendor status). • Backend: ETL for crypto OHLCV (minute/day) feeding native partitioned tables on Supabase Postgres with integrity checks. • Infra: Scheduled jobs, retries, observability for lag/failures. Acceptance Criteria: • AC1 : Backfill N=10 assets to 3+ years daily and 90 days minute data with checksum reports. • AC2: Data freshness alert triggers if lag > X minutes. • AC3 : Data lineage (vendor, fetch time, checksum) queryable via API."
 
 ## Clarifications
 

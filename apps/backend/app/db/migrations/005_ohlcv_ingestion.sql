@@ -1,7 +1,6 @@
 -- Migration: OHLCV ingestion schema (v1)
 -- Creates core tables for assets, OHLCV candles, ingestion runs, lineage, remediation, alerts, and vendor status.
 
-create extension if not exists timescaledb;
 create extension if not exists pgcrypto;
 
 -- Enumerations
@@ -80,7 +79,7 @@ create table if not exists ingestion_runs (
 );
 create index if not exists idx_ingestion_runs_asset_interval on ingestion_runs (asset_symbol, interval, started_at desc);
 
--- OHLCV daily candles (hypertable)
+-- OHLCV daily candles
 create table if not exists ohlcv_day (
     id bigserial primary key,
     asset_symbol text not null references assets(symbol),
@@ -97,10 +96,9 @@ create table if not exists ohlcv_day (
     constraint ohlcv_day_unique unique (asset_symbol, bucket_start, interval),
     constraint ohlcv_day_bucket_aligned check (date_trunc('day', bucket_start) = bucket_start)
 );
-select create_hypertable('ohlcv_day', 'bucket_start', if_not_exists => true);
 create index if not exists idx_ohlcv_day_asset_bucket on ohlcv_day (asset_symbol, bucket_start desc);
 
--- OHLCV minute candles (hypertable)
+-- OHLCV minute candles
 create table if not exists ohlcv_minute (
     id bigserial primary key,
     asset_symbol text not null references assets(symbol),
@@ -117,7 +115,6 @@ create table if not exists ohlcv_minute (
     constraint ohlcv_minute_unique unique (asset_symbol, bucket_start, interval),
     constraint ohlcv_minute_bucket_aligned check (date_trunc('minute', bucket_start) = bucket_start)
 );
-select create_hypertable('ohlcv_minute', 'bucket_start', if_not_exists => true);
 create index if not exists idx_ohlcv_minute_asset_bucket on ohlcv_minute (asset_symbol, bucket_start desc);
 
 -- Lineage records per bucket

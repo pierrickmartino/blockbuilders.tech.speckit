@@ -8,7 +8,7 @@
 - Relationships: 1:N with OHLCV Candle, Lineage, Alert Event, Remediation Log.
 
 ### OHLCV Candle (minute/day)
-- Tables: ohlcv_minute, ohlcv_day (Timescale hypertables partitioned by day).
+- Tables: ohlcv_minute, ohlcv_day (Postgres range-partitioned tables or unpartitioned base tables stored in the Supabase.com Postgres project).
 - Fields: id (bigserial, pk), asset_symbol (text fk->asset.symbol), bucket_start (timestamptz, bucket-aligned), interval (enum: minute|day), open (numeric), high (numeric), low (numeric), close (numeric), volume (numeric), run_id (uuid fk->ingestion_run.id), source_vendor (text), fetched_at (timestamptz).
 - Constraints: unique (asset_symbol, bucket_start, interval); check open/high/low/close >=0, volume >=0; bucket_start aligned to interval.
 - Relationships: belongs to Asset; belongs to Ingestion Run; referenced by Lineage via run_id + bucket_start.

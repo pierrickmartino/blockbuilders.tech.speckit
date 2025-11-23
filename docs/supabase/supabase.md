@@ -1,6 +1,6 @@
 # Supabase Configuration (Hosted Project)
 
-Use this checklist to configure a hosted Supabase project (no local stack) and keep app/CI secrets in sync.
+Use this checklist to configure a Supabase cloud project at supabase.com (no local Postgres container) and keep app/CI secrets in sync.
 
 ## Required Environment Variables
 - **Frontend (`apps/frontend/.env.local`)**: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_ENV`, optional `SUPABASE_URL` override.
@@ -15,8 +15,8 @@ Use this checklist to configure a hosted Supabase project (no local stack) and k
    - Keep RLS default **deny**; policies are applied via migrations—do not relax defaults in UI.
 2) **API keys**
    - Copy the **anon** and **service-role** keys; store anon in frontend env, service-role only in backend/CI secrets.
-3) **Database extensions**
-   - For OHLCV, enable **TimescaleDB** in SQL editor: `create extension if not exists timescaledb;` (hosted projects have it available).
+3) **Database schema**
+   - Supabase-managed Postgres now ships without the `timescaledb` extension (newest Postgres 17/stack deprecates it). Our OHLCV migrations rely on native Postgres tables with range partitioning and indexes instead, so do not enable the deprecated extension. If you are migrating an older project, drop the extension before upgrading to Postgres 17 and re-plan partitions (e.g., via pg_partman) to keep performance in line with the coverage goals.
 4) **Storage / buckets**
    - Create bucket `onboarding-disclosures` (or value in `NEXT_PUBLIC_ONBOARDING_DISCLOSURE_BUCKET`) for checklist disclosure copy.
 

@@ -33,7 +33,6 @@ class Settings(BaseSettings):
         alias="DATABASE_URL",
         default="postgresql://postgres:postgres@localhost:5432/postgres",
     )
-    timescale_enabled: bool = Field(default=True, alias="TIMESCALE_ENABLED")
     supabase_url: AnyHttpUrl = Field(default="http://localhost:54321", alias="SUPABASE_URL")
     supabase_service_role_key: SecretStr = Field(
         default=SecretStr("local-dev-service-role"),

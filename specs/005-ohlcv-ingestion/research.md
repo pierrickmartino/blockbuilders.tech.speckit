@@ -2,9 +2,9 @@
 
 ## Decisions
 
-- Decision: Use Timescale hypertables partitioned by day with indexes on (asset_symbol, bucket_start) for both minute and daily candles.
-  Rationale: Timescale offers compression, gap-filling, and fast time-range queries needed for status/lineage; partitioning keeps writes efficient for backfill batches while supporting 3y+ retention.
-  Alternatives considered: Plain Postgres tables (would degrade query/write performance at scale); BigQuery/Snowflake (out of scope for Supabase-hosted stack).
+- Decision: Use Postgres range-partitioned tables (or well-indexed base tables) partitioned by day with indexes on (asset_symbol, bucket_start) for both minute and daily candles in the Supabase Postgres project.
+  Rationale: Native Postgres partitioning provides the required compression and fast time-range queries now that the `timescaledb` extension is not available on Supabase Postgres 17; partitioning keeps writes efficient for backfill batches while supporting 3y+ retention.
+  Alternatives considered: Plain single-table partitioning without indexes (too slow for large windows); BigQuery/Snowflake (out of scope for Supabase-hosted stack).
 
 - Decision: Represent minute and daily candles in separate hypertables (`ohlcv_minute`, `ohlcv_day`) with a unique constraint on (asset_symbol, bucket_start, interval) to enforce idempotency.
   Rationale: Distinct hypertables simplify retention (90d vs 3y+), allow interval-specific compression policies, and the unique constraint prevents duplicates during retries.

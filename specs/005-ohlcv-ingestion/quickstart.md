@@ -3,7 +3,7 @@
 ## Prerequisites
 - Node.js 20, pnpm installed
 - Python 3.12 with `uv`
-- Supabase project with TimescaleDB enabled (or local Postgres+Timescale)
+- Supabase cloud project (supabase.com) running Postgres 17 (no Timescale extension)
 - Datadog API key for metrics if available
 
 ## Setup
@@ -11,14 +11,13 @@
    - Frontend: `cd apps/frontend && pnpm install`  
    - Backend: `uv sync --directory apps/backend`
 2. Wire environment files  
-   - Backend: `cp apps/backend/.env.example apps/backend/.env` and set Supabase URL + service role key, database DSN (Timescale), fixed asset list, Datadog keys (`DATADOG_API_KEY`, `DATADOG_APP_KEY`, `DATADOG_SITE`), alert email distribution list, and vendor API credentials.  
+   - Backend: `cp apps/backend/.env.example apps/backend/.env` and set Supabase URL + service role key, Supabase Postgres connection string, fixed asset list, Datadog keys (`DATADOG_API_KEY`, `DATADOG_APP_KEY`, `DATADOG_SITE`), alert email distribution list, and vendor API credentials.  
    - Frontend: `cp apps/frontend/.env.local.example apps/frontend/.env.local` and set `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_URL`, and `STATUS_API_BASE_URL` (FastAPI base, e.g., `http://localhost:8000`).
-3. Enable TimescaleDB  
-   - Supabase: enable the TimescaleDB extension in the project SQL editor (`create extension if not exists timescaledb;`) and confirm `timescaledb.telemetry_level` is set as needed.  
-   - Local Postgres: ensure `shared_preload_libraries = 'timescaledb'`, restart Postgres, then run the extension creation statement above.
-4. Apply DB schema (Timescale hypertables, indexes, policies) under `apps/backend/app/models/migrations` (already committed for v1).
+3. Prepare Postgres partitions  
+   - Supabase cloud projects now run on Postgres 17 without the `timescaledb` extension. Our SQL under `apps/backend/app/models/migrations` already creates native tables (optionally range-partitioned) plus the supporting indexes and policies, so you simply apply those scripts rather than enabling the deprecated extension. If you prefer finer control over retention windows, pre-create partitions with `pg_partman` or manual `CREATE TABLE ... PARTITION OF` statements before ingesting large datasets.
+4. Apply DB schema (native tables/indexes/policies) to your Supabase project using the SQL under `apps/backend/app/models/migrations` (already committed for v1).
 5. Seed fixtures (optional for local verification)  \
-   - Deterministic dataset lives in `apps/backend/tests/fixtures/ohlcv_seed.py`. Emit a CSV you can `copy` into Timescale:  \
+   - Deterministic dataset lives in `apps/backend/tests/fixtures/ohlcv_seed.py`. Emit a CSV you can `copy` into the Supabase OHLCV tables (partitioned via native Postgres constructs):  \
      ```bash
      uv run --directory apps/backend python - <<'PY' > /tmp/ohlcv_seed.csv
      import csv, sys

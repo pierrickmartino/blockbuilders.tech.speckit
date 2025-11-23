@@ -7,13 +7,13 @@
 
 ## Summary
 
-Deliver v1 ingestion and monitoring for OHLCV (daily + minute) for 10 crypto assets: ETL to Timescale, checksum-backed backfill with retries/idempotency, freshness alerting (lag >60m, eval every 10m), and a Next.js status page exposing coverage, lineage, and remediation info.
+Deliver v1 ingestion and monitoring for OHLCV (daily + minute) for 10 crypto assets: ETL to native partitioned tables in Supabase.com Postgres, checksum-backed backfill with retries/idempotency, freshness alerting (lag >60m, eval every 10m), and a Next.js status page exposing coverage, lineage, and remediation info.
 
 ## Technical Context
 
 **Language/Version**: Node.js 20 (Next.js 15, React 19) for status page; Python 3.12 (FastAPI workers) for ingestion/ETL
-**Primary Dependencies**: Next.js 15 App Router, Tailwind 3.4 + shadcn/ui, Supabase JS client; FastAPI + Pydantic v2; Supabase Postgres with TimescaleDB extension
-**Storage**: Supabase Postgres/Timescale hypertables for ohlcv (minute/day), ingestion_runs, lineage, remediation logs
+**Primary Dependencies**: Next.js 15 App Router, Tailwind 3.4 + shadcn/ui, Supabase JS client; FastAPI + Pydantic v2; Supabase.com hosted Postgres with native partitions
+**Storage**: Supabase.com hosted Postgres partitioned tables for ohlcv (minute/day), ingestion_runs, lineage, remediation logs
 **Testing**: pnpm lint --max-warnings 0; pnpm type-check; pnpm test:coverage (Vitest/Playwright as needed); ruff check; uv run pytest
 **Target Platform**: Frontend on Vercel/Next.js server runtime; backend workers on Linux containers (Supabase functions or FastAPI service) hitting Supabase DB
 **Project Type**: Web + backend services
@@ -64,7 +64,7 @@ frontend/
 └── tests/
 ```
 
-**Structure Decision**: Use existing split `frontend/` (Next.js 15 App Router) for status page and `backend/` (FastAPI workers + ingestion jobs) for ETL, schemas, and APIs against Supabase/Timescale.
+**Structure Decision**: Use existing split `frontend/` (Next.js 15 App Router) for status page and `backend/` (FastAPI workers + ingestion jobs) for ETL, schemas, and APIs against the Supabase.com hosted Postgres partitioned schema.
 
 ## Complexity Tracking
 

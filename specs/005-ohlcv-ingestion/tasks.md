@@ -11,7 +11,7 @@ Tests are included because the specification marks user scenarios/testing as man
 
 - [X] T001 Create backend env template with Supabase/Datadog/email vars in `backend/.env.example`
 - [X] T002 [P] Create frontend env template with Supabase URL/key and status API base in `frontend/.env.local.example`
-- [X] T003 Document end-to-end setup steps (pnpm/uv install, env wiring, Timescale enablement) in `specs/005-ohlcv-ingestion/quickstart.md`
+- [X] T003 Document end-to-end setup steps (pnpm/uv install, env wiring, Supabase cloud project + native Postgres partitioning) in `specs/005-ohlcv-ingestion/quickstart.md`
 - [X] T004 Verify Web Vitals/performance budgets (TTI ≤2s, LCP ≤2.5s) are documented in `specs/005-ohlcv-ingestion/spec.md` and aligned with tests T017/T050
 - [X] T005 Verify load-test goal (p95 ≤200ms for status/lineage APIs) is documented in `specs/005-ohlcv-ingestion/plan.md` and reflected in perf tests T016/T055
 
@@ -21,7 +21,7 @@ Tests are included because the specification marks user scenarios/testing as man
 
 **Purpose**: Core schema, configuration, and service scaffolding required by all stories.
 
-- [X] T006 Create Timescale migrations for assets, ohlcv_day, ohlcv_minute, ingestion_runs, lineage, remediation_log, alerts, vendor_status in `backend/src/models/migrations/005_ohlcv_ingestion.sql`
+- [X] T006 Create partition-ready migrations for assets, ohlcv_day, ohlcv_minute, ingestion_runs, lineage, remediation_log, alerts, vendor_status in the Supabase Postgres project via `backend/src/models/migrations/005_ohlcv_ingestion.sql`
 - [X] T007 [P] Define Pydantic schemas for Asset, Candle, IngestionRun, LineageEntry, RemediationEntry, AlertEvent in `backend/src/models/schemas.py`
 - [X] T008 [P] Configure DB/Supabase client factory and connection settings in `backend/src/services/db.py`
 - [X] T009 Establish FastAPI router skeleton with status/ingestion/alerts namespaces in `backend/src/api/__init__.py`
