@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from functools import lru_cache
+from typing import Annotated
 from urllib.parse import urljoin
 
 from app.config import ASSET_SYMBOLS
@@ -16,7 +17,7 @@ from pydantic import (
     computed_field,
     field_validator,
 )
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 HTTP_URL_ADAPTER = TypeAdapter(AnyHttpUrl)
 
@@ -50,11 +51,11 @@ class Settings(BaseSettings):
         alias="SUPABASE_JWT_CACHE_TTL",
         description="JWKS cache TTL in seconds for Supabase public keys.",
     )
-    asset_symbols: tuple[str, ...] = Field(default=ASSET_SYMBOLS, alias="ASSET_SYMBOLS")
+    asset_symbols: Annotated[tuple[str, ...], NoDecode] = Field(default=ASSET_SYMBOLS, alias="ASSET_SYMBOLS")
     freshness_threshold_minutes: PositiveInt = Field(default=60, alias="FRESHNESS_THRESHOLD_MINUTES")
     freshness_eval_minutes: PositiveInt = Field(default=10, alias="FRESHNESS_EVAL_MINUTES")
     alert_email_from: str = Field(default="alerts@example.com", alias="ALERT_EMAIL_FROM")
-    alert_email_to: tuple[str, ...] = Field(default=("alerts@example.com",), alias="ALERT_EMAIL_TO")
+    alert_email_to: Annotated[tuple[str, ...], NoDecode] = Field(default=("alerts@example.com",), alias="ALERT_EMAIL_TO")
     alert_subject_prefix: str = Field(default="[OHLCV]", alias="ALERT_SUBJECT_PREFIX")
     status_page_url: AnyHttpUrl = Field(default="http://localhost:3000/status", alias="STATUS_PAGE_URL")
 
