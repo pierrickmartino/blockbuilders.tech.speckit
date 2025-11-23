@@ -2,18 +2,26 @@ from __future__ import annotations
 
 import asyncio
 import uuid
+from collections.abc import Callable, Iterable, Sequence
 from datetime import UTC, datetime, timedelta
 from functools import lru_cache
 from time import perf_counter
-from typing import Callable, Iterable, Protocol, Sequence
+from typing import Protocol
 
 from app.config import ASSET_SYMBOLS
-from app.schemas.ohlcv import IngestionRun, IngestionStatus, IngestionTrigger, Interval
+from app.schemas.ohlcv import (
+    IngestionRun,
+    IngestionStatus,
+    IngestionTrigger,
+    Interval,
+    RemediationEntry,
+)
 from app.services.checksum import ChecksumHelper
 from app.services.remediation import RemediationService
 from app.telemetry import get_ingestion_metrics
 
 SleepFn = Callable[[float], asyncio.Future | asyncio.Task | None]
+MIN_GAP_RECORDS = 2
 
 
 class VendorRateLimitError(RuntimeError):
@@ -40,7 +48,7 @@ class NullDatasetProvider(DatasetProviderProtocol):
 
 
 class IngestionRepositoryProtocol(Protocol):
-    async def create_run(
+    async def create_run(  # noqa: PLR0913
         self,
         *,
         asset_symbol: str,
@@ -94,7 +102,7 @@ class InMemoryIngestionRepository(IngestionRepositoryProtocol):
         self.runs: dict[uuid.UUID, IngestionRun] = {}
         self.remediation_entries: list[RemediationEntry] = []
 
-    async def create_run(
+    async def create_run(  # noqa: PLR0913
         self,
         *,
         asset_symbol: str,
@@ -163,7 +171,7 @@ class InMemoryIngestionRepository(IngestionRepositoryProtocol):
             return len(self.candles.get((asset, interval), {}))
         return sum(len(store) for (symbol, itvl), store in self.candles.items() if itvl == interval)
 
-    def add_run(
+    def add_run(  # noqa: PLR0913
         self,
         *,
         asset_symbol: str,
@@ -230,7 +238,7 @@ class InMemoryIngestionRepository(IngestionRepositoryProtocol):
 
 
 class IngestionService:
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         *,
         repository: IngestionRepositoryProtocol,
@@ -378,7 +386,7 @@ class IngestionService:
         return unique, remediation_recorded
 
     async def _record_gaps(self, asset: str, interval: Interval, candles) -> None:
-        if len(candles) < 2:
+        if len(candles) < MIN_GAP_RECORDS:
             return
 
         sorted_candles = sorted(candles, key=lambda c: c.bucket_start)
@@ -418,7 +426,6 @@ def get_ingestion_service() -> IngestionService:
 
 __all__ = [
     "DatasetProviderProtocol",
-    "get_ingestion_service",
     "InMemoryIngestionRepository",
     "IngestionRepositoryProtocol",
     "IngestionService",
@@ -426,4 +433,5 @@ __all__ = [
     "RemediationService",
     "StaticDatasetProvider",
     "VendorRateLimitError",
+    "get_ingestion_service",
 ]

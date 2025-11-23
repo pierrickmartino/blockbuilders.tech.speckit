@@ -4,8 +4,6 @@ from functools import lru_cache
 from typing import Annotated, Any
 from urllib.parse import urljoin
 
-import httpx
-
 from app.core.settings import Settings, get_settings
 from app.schemas.auth import SupabaseUserProfile
 from app.services.supabase import (
@@ -16,6 +14,7 @@ from app.services.supabase import (
     log_auth_success,
 )
 
+import httpx
 from fastapi import Depends, Header, HTTPException, Request, status
 from pydantic import ValidationError
 

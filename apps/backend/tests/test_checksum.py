@@ -2,11 +2,15 @@ from __future__ import annotations
 
 from copy import deepcopy
 
-import pytest
-
 from app.schemas.ohlcv import Interval, IssueType
 from app.services.checksum import ChecksumHelper
-from app.services.ingestion import InMemoryIngestionRepository, IngestionService, StaticDatasetProvider
+from app.services.ingestion import (
+    IngestionService,
+    InMemoryIngestionRepository,
+    StaticDatasetProvider,
+)
+
+import pytest
 from tests.fixtures.ohlcv_seed import EXPECTED_CHECKSUMS, EXPECTED_ROW_COUNTS, SEED_CANDLES
 
 

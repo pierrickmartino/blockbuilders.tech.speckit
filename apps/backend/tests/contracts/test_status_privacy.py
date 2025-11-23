@@ -1,24 +1,31 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from app.api.lineage import get_lineage_service
 from app.api.status import get_status_service
-from app.schemas.ohlcv import Interval, IssueType, LineageEntry, RemediationEntry, StatusState, VendorState
+from app.factory import create_app
+from app.schemas.ohlcv import (
+    Interval,
+    IssueType,
+    LineageEntry,
+    RemediationEntry,
+    StatusState,
+    VendorState,
+)
 from app.services.lineage_service import LineageServiceProtocol
 from app.services.status_service import StatusServiceProtocol
 
 import httpx
+import pytest
 import pytest_asyncio
 from httpx import ASGITransport
-
-from app.factory import create_app
 
 
 class _FakeStatusService(StatusServiceProtocol):
     async def get_summary(self, *, only_stale: bool = False):
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return [
             {
                 "asset": "BTC",
@@ -38,7 +45,7 @@ class _FakeStatusService(StatusServiceProtocol):
         asset: str | None = None,
         issue_type: IssueType | None = None,
     ) -> list[RemediationEntry]:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         return [
             RemediationEntry(
                 id="ffffffff-1111-2222-3333-444444444444",

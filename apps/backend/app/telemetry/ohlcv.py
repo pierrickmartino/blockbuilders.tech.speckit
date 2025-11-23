@@ -4,6 +4,9 @@ from dataclasses import dataclass, field
 from functools import lru_cache
 from typing import Any
 
+MAX_RECENT_RUNS = 50
+MAX_LAG_SAMPLES = 200
+
 
 @dataclass
 class IngestionMetrics:
@@ -18,7 +21,7 @@ class IngestionMetrics:
     last_tags: dict[str, str] = field(default_factory=dict)
     recent: list[dict[str, Any]] = field(default_factory=list)
 
-    def record_run(
+    def record_run(  # noqa: PLR0913
         self,
         *,
         status: str,
@@ -59,8 +62,8 @@ class IngestionMetrics:
             }
         )
         # keep last 50 entries to avoid unbounded growth
-        if len(self.recent) > 50:
-            self.recent = self.recent[-50:]
+        if len(self.recent) > MAX_RECENT_RUNS:
+            self.recent = self.recent[-MAX_RECENT_RUNS:]
 
     def snapshot(self) -> dict[str, Any]:
         return {
@@ -96,8 +99,8 @@ class FreshnessMetrics:
 
     def record_lag(self, *, asset: str, interval: str, lag_minutes: float) -> None:
         self.lag_samples.append({"asset": asset, "interval": interval, "lag_minutes": lag_minutes})
-        if len(self.lag_samples) > 200:
-            self.lag_samples = self.lag_samples[-200:]
+        if len(self.lag_samples) > MAX_LAG_SAMPLES:
+            self.lag_samples = self.lag_samples[-MAX_LAG_SAMPLES:]
 
     def record_alerts(self, *, created: int, cleared: int) -> None:
         self.alerts_created += created

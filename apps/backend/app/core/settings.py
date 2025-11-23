@@ -6,7 +6,16 @@ from urllib.parse import urljoin
 from app.config import ASSET_SYMBOLS
 from app.core.settings_supabase import SupabaseSettings
 
-from pydantic import AnyHttpUrl, Field, PositiveInt, PostgresDsn, SecretStr, TypeAdapter, computed_field, field_validator
+from pydantic import (
+    AnyHttpUrl,
+    Field,
+    PositiveInt,
+    PostgresDsn,
+    SecretStr,
+    TypeAdapter,
+    computed_field,
+    field_validator,
+)
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 HTTP_URL_ADAPTER = TypeAdapter(AnyHttpUrl)

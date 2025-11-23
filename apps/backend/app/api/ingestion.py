@@ -8,7 +8,6 @@ from app.schemas.ohlcv import IngestionRun, Interval
 from app.services.ingestion import IngestionService, get_ingestion_service
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Path, Query, status
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 router = APIRouter(prefix="/ingestion", tags=["ingestion"])
@@ -28,15 +27,17 @@ class BackfillRequest(BaseModel):
     response_model=IngestionRun,
 )
 async def trigger_backfill(
-    request: Annotated[BackfillRequest, Body(embed=False)] = BackfillRequest(),
     service: IngestionServiceDep,
+    request: Annotated[BackfillRequest | None, Body(embed=False)] = None,
 ) -> IngestionRun:
     """Trigger a checksum-backed backfill across configured assets."""
 
+    payload = request or BackfillRequest()
+
     return await service.run_backfill(
-        interval=request.interval,
-        window_start=request.window_start,
-        window_end=request.window_end,
+        interval=payload.interval,
+        window_start=payload.window_start,
+        window_end=payload.window_end,
     )
 
 
@@ -79,10 +80,10 @@ async def get_latest_ingestion_run(
     response_model=list[IngestionRun],
 )
 async def get_failure_log(
-    window_days: Annotated[int, Query(ge=1, le=90, description="Lookback window for failure log", default=30)] = 30,
     service: IngestionServiceDep,
+    window_days: Annotated[int, Query(ge=1, le=90, description="Lookback window for failure log", default=30)] = 30,
 ) -> list[IngestionRun]:
     return list(await service.failure_log(window_days=window_days))
 
 
-__all__ = ["router", "BackfillRequest"]
+__all__ = ["BackfillRequest", "router"]

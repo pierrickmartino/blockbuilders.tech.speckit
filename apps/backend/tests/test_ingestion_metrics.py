@@ -1,13 +1,18 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
-
-import pytest
+from datetime import UTC, datetime, timedelta
 
 from app.schemas.ohlcv import Interval
 from app.services.checksum import ChecksumHelper
-from app.services.ingestion import InMemoryIngestionRepository, IngestionService, StaticDatasetProvider, VendorRateLimitError
+from app.services.ingestion import (
+    IngestionService,
+    InMemoryIngestionRepository,
+    StaticDatasetProvider,
+    VendorRateLimitError,
+)
 from app.telemetry import get_ingestion_metrics, reset_ingestion_metrics
+
+import pytest
 from tests.fixtures.ohlcv_seed import SEED_CANDLES
 
 
@@ -21,7 +26,7 @@ async def test_run_backfill_records_metrics_with_lag() -> None:
         data_provider=StaticDatasetProvider(SEED_CANDLES),
     )
 
-    window_end = datetime.now(timezone.utc) - timedelta(minutes=15)
+    window_end = datetime.now(UTC) - timedelta(minutes=15)
     await service.run_backfill(interval=Interval.DAY, window_end=window_end)
 
     snapshot = get_ingestion_metrics().snapshot()

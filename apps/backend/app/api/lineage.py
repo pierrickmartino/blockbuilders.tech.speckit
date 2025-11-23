@@ -30,4 +30,4 @@ async def get_lineage(
     return LineageResponse(items=items)
 
 
-__all__ = ["router", "get_lineage_service"]
+__all__ = ["get_lineage_service", "router"]

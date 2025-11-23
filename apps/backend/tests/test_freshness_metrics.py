@@ -1,12 +1,14 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
-
-import pytest
+from datetime import UTC, datetime, timedelta
 
 from app.jobs import freshness_monitor
 from app.schemas.ohlcv import AssetStatus, Interval, StatusState
 from app.telemetry import get_freshness_metrics, reset_freshness_metrics
+
+import pytest
+
+STALE_MINUTES = 75
 
 
 class FakeStatusService:
@@ -17,8 +19,8 @@ class FakeStatusService:
                 interval=Interval.MINUTE,
                 coverage_start=None,
                 coverage_end=None,
-                latest_timestamp=datetime.now(timezone.utc) - timedelta(minutes=75),
-                freshness_minutes=75,
+                latest_timestamp=datetime.now(UTC) - timedelta(minutes=STALE_MINUTES),
+                freshness_minutes=STALE_MINUTES,
                 status=StatusState.STALE,
                 vendor_status=None,
                 alert_status=None,
@@ -46,4 +48,4 @@ async def test_freshness_metrics_recorded(monkeypatch) -> None:
     assert snapshot["alerts_cleared"] == 0
     assert snapshot["alerts_open"] == 1
     assert snapshot["lag_samples"]
-    assert snapshot["lag_samples"][0]["lag_minutes"] == 75
+    assert snapshot["lag_samples"][0]["lag_minutes"] == STALE_MINUTES

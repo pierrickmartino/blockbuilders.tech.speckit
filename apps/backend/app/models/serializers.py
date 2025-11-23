@@ -64,4 +64,4 @@ def _coerce_optional_uuid(value: Any) -> UUID | None:
     return _coerce_uuid(value)
 
 
-__all__ = ["remediation_from_row", "alert_event_from_row"]
+__all__ = ["alert_event_from_row", "remediation_from_row"]

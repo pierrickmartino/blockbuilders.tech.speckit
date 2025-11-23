@@ -7,7 +7,16 @@ from typing import Protocol
 
 from app.config import ASSET_SYMBOLS, DEFAULT_INTERVALS
 from app.models.serializers import remediation_from_row
-from app.schemas.ohlcv import AlertEvent, AlertState, AssetStatus, Interval, IssueType, RemediationEntry, StatusState, VendorState
+from app.schemas.ohlcv import (
+    AlertEvent,
+    AlertState,
+    AssetStatus,
+    Interval,
+    IssueType,
+    RemediationEntry,
+    StatusState,
+    VendorState,
+)
 from app.services.vendor_status import VendorStatusService
 
 LOGGER = logging.getLogger(__name__)

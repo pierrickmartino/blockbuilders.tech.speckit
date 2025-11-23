@@ -1,15 +1,15 @@
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from functools import lru_cache
-from typing import AsyncIterator
+
+from app.core.settings import Settings, get_settings
 
 import httpx
 from psycopg import AsyncConnection
-from psycopg_pool import AsyncConnectionPool
 from psycopg.rows import dict_row
-
-from app.core.settings import Settings, get_settings
+from psycopg_pool import AsyncConnectionPool
 
 
 class DatabasePool:

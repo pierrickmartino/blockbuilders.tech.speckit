@@ -3,13 +3,13 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 from http import HTTPStatus
 
+from app.api.alerts import get_alerts_service
+from app.factory import create_app
+
 import httpx
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport
-
-from app.api.alerts import get_alerts_service
-from app.factory import create_app
 
 
 class FakeAlertsCoordinator:

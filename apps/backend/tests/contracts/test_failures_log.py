@@ -1,17 +1,22 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from http import HTTPStatus
+
+from app.api.ingestion import get_ingestion_service, router as ingestion_router
+from app.schemas.ohlcv import IngestionStatus, Interval
+from app.services.checksum import ChecksumHelper
+from app.services.ingestion import (
+    IngestionService,
+    InMemoryIngestionRepository,
+    StaticDatasetProvider,
+)
 
 import httpx
 import pytest
 import pytest_asyncio
+from fastapi import FastAPI
 from httpx import ASGITransport
-
-from app.api.ingestion import router as ingestion_router, get_ingestion_service
-from app.schemas.ohlcv import IngestionStatus, Interval
-from app.services.ingestion import InMemoryIngestionRepository, IngestionService, StaticDatasetProvider
-from app.services.checksum import ChecksumHelper
 from tests.fixtures.ohlcv_seed import SEED_CANDLES
 
 
@@ -26,7 +31,7 @@ async def ingestion_client() -> httpx.AsyncClient:
         data_provider=StaticDatasetProvider(SEED_CANDLES),
     )
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     repo.add_run(
         asset_symbol="BTC",
         interval=Interval.DAY,
@@ -43,8 +48,6 @@ async def ingestion_client() -> httpx.AsyncClient:
         ended_at=now - timedelta(days=40, minutes=1),
         error_summary="vendor 503",
     )
-
-    from fastapi import FastAPI
 
     app = FastAPI()
     app.dependency_overrides[get_ingestion_service] = lambda: service

@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from http import HTTPStatus
 
 from app.api.status import get_status_service
+from app.factory import create_app
 from app.schemas.ohlcv import Interval, IssueType, RemediationEntry
 from app.services.status_service import StatusServiceProtocol
 
@@ -13,12 +14,12 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport
 
-from app.factory import create_app
+EXPECTED_REMEDIATION_ITEMS = 2
 
 
 class FakeStatusService(StatusServiceProtocol):
     def __init__(self) -> None:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         self._entries: list[RemediationEntry] = [
             RemediationEntry(
                 id="11111111-2222-3333-4444-555555555555",
@@ -77,7 +78,7 @@ async def test_remediation_returns_all(remediation_client: httpx.AsyncClient) ->
     response = await remediation_client.get("/status/remediation")
     assert response.status_code == HTTPStatus.OK
     payload = response.json()
-    assert len(payload["items"]) == 2
+    assert len(payload["items"]) == EXPECTED_REMEDIATION_ITEMS
     assert {item["asset_symbol"] for item in payload["items"]} == {"BTC", "ETH"}
 
 

@@ -2,12 +2,19 @@ from __future__ import annotations
 
 from datetime import timedelta
 
-import pytest
-
 from app.schemas.ohlcv import Interval, IssueType
 from app.services.checksum import ChecksumHelper
-from app.services.ingestion import InMemoryIngestionRepository, IngestionService, StaticDatasetProvider, VendorRateLimitError
+from app.services.ingestion import (
+    IngestionService,
+    InMemoryIngestionRepository,
+    StaticDatasetProvider,
+    VendorRateLimitError,
+)
+
+import pytest
 from tests.fixtures.ohlcv_seed import SEED_CANDLES, make_minute_candles
+
+MAX_RETRY_ATTEMPTS = 3
 
 
 @pytest.mark.asyncio
@@ -43,7 +50,7 @@ async def test_vendor_rate_limit_retries_with_backoff_and_single_log() -> None:
     class FlakyProvider(StaticDatasetProvider):
         async def fetch(self, asset: str, interval: Interval):  # type: ignore[override]
             attempts["count"] += 1
-            if attempts["count"] < 3:
+            if attempts["count"] < MAX_RETRY_ATTEMPTS:
                 raise VendorRateLimitError("rate limited")
             return await super().fetch(asset, interval)
 
@@ -64,7 +71,7 @@ async def test_vendor_rate_limit_retries_with_backoff_and_single_log() -> None:
     run = await service.run_backfill(interval=Interval.DAY)
 
     assert run.status.value == "success"
-    assert attempts["count"] == 3
+    assert attempts["count"] == MAX_RETRY_ATTEMPTS
     assert backoffs and backoffs[0] < backoffs[-1]
 
     partial_logs = [entry for entry in repo.remediation_entries if entry.issue_type is IssueType.PARTIAL_SOURCE]

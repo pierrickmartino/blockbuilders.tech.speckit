@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Annotated
 
+from app.services.alerts import AlertsCoordinatorProtocol, get_alerts_service
+
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import Response
-
-from app.services.alerts import AlertsCoordinatorProtocol, get_alerts_service
 
 router = APIRouter(prefix="/alerts", tags=["alerts"])
 

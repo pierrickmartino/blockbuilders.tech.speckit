@@ -29,4 +29,4 @@ def main() -> None:  # pragma: no cover - thin CLI shim
     asyncio.run(trigger_backfill_job())
 
 
-__all__ = ["trigger_backfill_job", "main"]
+__all__ = ["main", "trigger_backfill_job"]

@@ -3,15 +3,20 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 from http import HTTPStatus
 
+from app.api.ingestion import get_ingestion_service, router as ingestion_router
+from app.schemas.ohlcv import Interval
+from app.services.checksum import ChecksumHelper
+from app.services.ingestion import (
+    IngestionService,
+    InMemoryIngestionRepository,
+    StaticDatasetProvider,
+)
+
 import httpx
 import pytest
 import pytest_asyncio
+from fastapi import FastAPI
 from httpx import ASGITransport
-
-from app.api.ingestion import router as ingestion_router, get_ingestion_service
-from app.schemas.ohlcv import Interval
-from app.services.checksum import ChecksumHelper
-from app.services.ingestion import InMemoryIngestionRepository, IngestionService, StaticDatasetProvider
 from tests.fixtures.ohlcv_seed import EXPECTED_CHECKSUMS, EXPECTED_ROW_COUNTS, SEED_CANDLES
 
 
@@ -25,8 +30,6 @@ async def ingestion_client() -> AsyncIterator[httpx.AsyncClient]:
         checksum=ChecksumHelper(),
         data_provider=StaticDatasetProvider(SEED_CANDLES),
     )
-
-    from fastapi import FastAPI
 
     app = FastAPI()
     app.dependency_overrides[get_ingestion_service] = lambda: service

@@ -3,7 +3,6 @@ from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -59,9 +58,9 @@ class Asset(BaseModel):
     name: str
     base: str
     quote: str
-    vendor_ref: Optional[str] = None
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    vendor_ref: str | None = None
+    created_at: datetime | None = None
+    updated_at: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True, frozen=True)
 
@@ -77,9 +76,9 @@ class Candle(BaseModel):
     low: Decimal = Field(ge=0)
     close: Decimal = Field(ge=0)
     volume: Decimal = Field(ge=0)
-    run_id: Optional[UUID] = None
-    source_vendor: Optional[str] = None
-    fetched_at: Optional[datetime] = None
+    run_id: UUID | None = None
+    source_vendor: str | None = None
+    fetched_at: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -93,12 +92,12 @@ class IngestionRun(BaseModel):
     checksum_sha256: str
     checksum_version: int = Field(default=1, ge=1)
     started_at: datetime
-    ended_at: Optional[datetime] = None
+    ended_at: datetime | None = None
     trigger: IngestionTrigger = IngestionTrigger.SCHEDULED
     attempt: int = Field(default=1, ge=1)
-    backfill_window_start: Optional[datetime] = None
-    backfill_window_end: Optional[datetime] = None
-    error_summary: Optional[str] = None
+    backfill_window_start: datetime | None = None
+    backfill_window_end: datetime | None = None
+    error_summary: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -109,8 +108,8 @@ class LineageEntry(BaseModel):
     bucket_start: datetime
     interval: Interval
     run_id: UUID
-    source_vendor: Optional[str] = None
-    fetched_at: Optional[datetime] = None
+    source_vendor: str | None = None
+    fetched_at: datetime | None = None
     checksum_sha256: str
     checksum_version: int = Field(default=1, ge=1)
 
@@ -125,10 +124,10 @@ class RemediationEntry(BaseModel):
     range_end: datetime
     issue_type: IssueType
     detected_at: datetime
-    run_id: Optional[UUID] = None
-    notes: Optional[str] = None
+    run_id: UUID | None = None
+    notes: str | None = None
     resolved: bool = False
-    resolved_at: Optional[datetime] = None
+    resolved_at: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -141,10 +140,10 @@ class AlertEvent(BaseModel):
     lag_minutes: int = Field(ge=0)
     threshold_minutes: int = Field(default=60, gt=0)
     status: AlertState
-    notified_at: Optional[datetime] = None
-    cleared_at: Optional[datetime] = None
+    notified_at: datetime | None = None
+    cleared_at: datetime | None = None
     notification_channel: str = "email"
-    run_id: Optional[UUID] = None
+    run_id: UUID | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -153,7 +152,7 @@ class VendorStatus(BaseModel):
     vendor: str
     status: VendorState
     checked_at: datetime
-    details: Optional[dict] = None
+    details: dict | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -187,10 +186,10 @@ class LineageResponse(BaseModel):
 
 
 __all__ = [
-    "AssetStatus",
     "AlertEvent",
     "AlertState",
     "Asset",
+    "AssetStatus",
     "Candle",
     "IngestionRun",
     "IngestionStatus",

@@ -8,15 +8,15 @@ small while exercising multi-asset aggregation.
 from __future__ import annotations
 
 import hashlib
-from datetime import datetime, timedelta, timezone
+from collections.abc import Iterable
+from datetime import UTC, datetime, timedelta
 from decimal import Decimal
-from typing import Iterable
 
 from app.config import ASSET_SYMBOLS
 from app.schemas.ohlcv import Candle, Interval
 
-START_DAY = datetime(2024, 1, 1, tzinfo=timezone.utc)
-START_MINUTE = datetime(2024, 2, 1, tzinfo=timezone.utc)
+START_DAY = datetime(2024, 1, 1, tzinfo=UTC)
+START_MINUTE = datetime(2024, 2, 1, tzinfo=UTC)
 
 
 def _canonical_payload(candles: Iterable[Candle]) -> str:
@@ -111,9 +111,9 @@ EXPECTED_CHECKSUMS = {
 
 
 __all__ = [
-    "SEED_CANDLES",
     "EXPECTED_CHECKSUMS",
     "EXPECTED_ROW_COUNTS",
+    "SEED_CANDLES",
     "make_day_candles",
     "make_minute_candles",
 ]

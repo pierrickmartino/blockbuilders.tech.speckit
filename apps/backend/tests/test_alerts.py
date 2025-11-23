@@ -1,15 +1,20 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
+
+from app.schemas.ohlcv import AlertState, AssetStatus, Interval, StatusState
+from app.services.alerts import (
+    AlertEmailSender,
+    AlertsService,
+    InMemoryAlertRepository,
+    InMemoryEmailTransport,
+)
 
 import pytest
 
-from app.schemas.ohlcv import AlertState, AssetStatus, Interval, StatusState
-from app.services.alerts import AlertsService, InMemoryAlertRepository, InMemoryEmailTransport, AlertEmailSender
-
 
 def _status(*, minutes_ago: int, status: StatusState = StatusState.STALE) -> AssetStatus:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     latest = now - timedelta(minutes=minutes_ago)
     return AssetStatus(
         asset="BTC",

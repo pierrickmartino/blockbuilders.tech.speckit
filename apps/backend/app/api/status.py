@@ -14,8 +14,8 @@ StatusServiceDep = Annotated[StatusServiceProtocol, Depends(get_status_service)]
 
 @router.get("/summary", status_code=status.HTTP_200_OK, response_model=StatusSummaryResponse)
 async def get_status_summary(
-    only_stale: Annotated[bool, Query(description="Return only stale assets", alias="only_stale")] = False,
     service: StatusServiceDep,
+    only_stale: Annotated[bool, Query(description="Return only stale assets", alias="only_stale")] = False,
 ) -> StatusSummaryResponse:
     """Return coverage and freshness per asset/interval."""
 
@@ -25,9 +25,9 @@ async def get_status_summary(
 
 @router.get("/remediation", status_code=status.HTTP_200_OK, response_model=RemediationResponse)
 async def get_remediation_entries(
+    service: StatusServiceDep,
     asset: Annotated[str | None, Query(description="Asset symbol filter")] = None,
     issue_type: Annotated[IssueType | None, Query(description="Issue type filter")] = None,
-    service: StatusServiceDep,
 ) -> RemediationResponse:
     """Return remediation log entries respecting optional filters."""
 
@@ -38,4 +38,4 @@ async def get_remediation_entries(
     return RemediationResponse(items=items)
 
 
-__all__ = ["router", "get_status_service"]
+__all__ = ["get_status_service", "router"]

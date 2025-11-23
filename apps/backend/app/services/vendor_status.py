@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 from datetime import UTC, datetime, timedelta
-from typing import Optional
 
 from app.schemas.ohlcv import VendorState, VendorStatus
 
@@ -18,7 +17,7 @@ class VendorStatusService:
         self._cached: VendorStatus | None = None
         self._expires_at: datetime | None = None
 
-    async def get_vendor_status(self) -> Optional[VendorStatus]:
+    async def get_vendor_status(self) -> VendorStatus | None:
         now = datetime.now(UTC)
         if self._cached and self._expires_at and now < self._expires_at:
             return self._cached

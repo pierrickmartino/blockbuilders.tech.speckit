@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from http import HTTPStatus
 from uuid import uuid4
 
 from app.api.lineage import get_lineage_service
+from app.factory import create_app
 from app.schemas.ohlcv import Interval, LineageEntry
 from app.services.lineage_service import LineageServiceProtocol
 
@@ -14,12 +15,12 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport
 
-from app.factory import create_app
+EXPECTED_LINEAGE_ITEMS = 2
 
 
 class FakeLineageService(LineageServiceProtocol):
     def __init__(self) -> None:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         self._entries: list[LineageEntry] = [
             LineageEntry(
                 id=uuid4(),
@@ -68,7 +69,7 @@ async def lineage_client() -> AsyncIterator[httpx.AsyncClient]:
 
 @pytest.mark.asyncio
 async def test_lineage_returns_entries_within_range(lineage_client: httpx.AsyncClient) -> None:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     response = await lineage_client.get(
         "/lineage",
         params={
@@ -81,13 +82,13 @@ async def test_lineage_returns_entries_within_range(lineage_client: httpx.AsyncC
     assert response.status_code == HTTPStatus.OK
     payload = response.json()
     assert "items" in payload
-    assert len(payload["items"]) == 2
+    assert len(payload["items"]) == EXPECTED_LINEAGE_ITEMS
     assert all(item["asset_symbol"] == "BTC" for item in payload["items"])
 
 
 @pytest.mark.asyncio
 async def test_lineage_rejects_invalid_range(lineage_client: httpx.AsyncClient) -> None:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     response = await lineage_client.get(
         "/lineage",
         params={

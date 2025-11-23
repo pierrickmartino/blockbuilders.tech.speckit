@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 import logging
-from typing import Awaitable, Callable
+from collections.abc import Awaitable, Callable
+
+from app.core.settings import get_settings
+from app.schemas.ohlcv import VendorState
+from app.services.db import get_database_pool
+from app.services.vendor_status import VendorStatusPoller, VendorStatusService
 
 import httpx
 
-from app.core.settings import get_settings
-from app.services.db import get_database_pool
-from app.services.vendor_status import VendorStatusPoller, VendorStatusService
-from app.schemas.ohlcv import VendorState
+SUCCESS_STATUS_THRESHOLD = 400
+RATE_LIMIT_STATUS = 429
 
 LOGGER = logging.getLogger(__name__)
 
@@ -21,9 +24,9 @@ async def _default_probe() -> tuple[VendorState, dict | None]:
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
             response = await client.get(health_url)
-            if response.status_code < 400:
+            if response.status_code < SUCCESS_STATUS_THRESHOLD:
                 return VendorState.UP, {"status_code": response.status_code}
-            if response.status_code == 429:
+            if response.status_code == RATE_LIMIT_STATUS:
                 return VendorState.RATE_LIMITED, {"status_code": response.status_code}
             return VendorState.DEGRADED, {"status_code": response.status_code}
     except httpx.HTTPError as exc:  # pragma: no cover - defensive fallback
@@ -54,4 +57,4 @@ async def get_cached_vendor_status() -> VendorState | None:
     return status.status if status else None
 
 
-__all__ = ["refresh_vendor_status", "get_cached_vendor_status"]
+__all__ = ["get_cached_vendor_status", "refresh_vendor_status"]

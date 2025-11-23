@@ -1,11 +1,16 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
-
-import pytest
+from datetime import UTC, datetime, timedelta
 
 from app.schemas.ohlcv import AssetStatus, Interval, StatusState, VendorState
-from app.services.alerts import AlertsService, InMemoryAlertRepository, InMemoryEmailTransport, AlertEmailSender
+from app.services.alerts import (
+    AlertEmailSender,
+    AlertsService,
+    InMemoryAlertRepository,
+    InMemoryEmailTransport,
+)
+
+import pytest
 
 
 @pytest.mark.asyncio
@@ -22,7 +27,7 @@ async def test_email_payload_includes_required_fields() -> None:
 
     service = AlertsService(repository=repo, email_sender=email_sender, threshold_minutes=60)
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     stale_status = AssetStatus(
         asset="ETH",
         interval=Interval.MINUTE,

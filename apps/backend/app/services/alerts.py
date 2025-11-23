@@ -1,16 +1,17 @@
 from __future__ import annotations
 
 import logging
-import uuid
+from collections.abc import Iterable
 from datetime import UTC, datetime
 from email.message import EmailMessage
-from typing import Iterable, Protocol
-from uuid import UUID
+from typing import Protocol
+from uuid import UUID, uuid4
 
 from app.config import ASSET_SYMBOLS
 from app.core.settings import Settings, get_settings
 from app.models.serializers import alert_event_from_row
 from app.schemas.ohlcv import AlertEvent, AlertState, AssetStatus, Interval, StatusState
+from app.services.db import get_database_pool
 
 LOGGER = logging.getLogger(__name__)
 
@@ -156,7 +157,7 @@ class InMemoryAlertRepository(AlertRepositoryProtocol):
         run_id: UUID | None = None,
     ) -> AlertEvent:
         event = AlertEvent(
-            id=uuid.uuid4(),
+            id=uuid4(),
             asset_symbol=asset_symbol,
             interval=interval,
             detected_at=datetime.now(UTC),
@@ -288,10 +289,9 @@ class AlertsService:
                 )
                 await self._email.send(alert, asset_status=asset)
                 created.append(alert)
-            else:
-                if open_event:
-                    cleared_event = await self._repository.mark_cleared(open_event.id)
-                    cleared.append(cleared_event)
+            elif open_event:
+                cleared_event = await self._repository.mark_cleared(open_event.id)
+                cleared.append(cleared_event)
 
         return created, cleared
 
@@ -311,7 +311,7 @@ class AlertsService:
             last_alert_lag_minutes=120,
         )
         dummy_event = AlertEvent(
-            id=uuid.uuid4(),
+            id=uuid4(),
             asset_symbol=sample_asset,
             interval=Interval.MINUTE,
             detected_at=datetime.now(UTC),
@@ -336,7 +336,6 @@ class AlertsCoordinatorProtocol(Protocol):
 
 def get_alerts_service(settings: Settings | None = None) -> AlertsService:
     runtime_settings = settings or get_settings()
-    from app.services.db import get_database_pool
 
     pool = get_database_pool(runtime_settings)
 
@@ -357,11 +356,11 @@ def get_alerts_service(settings: Settings | None = None) -> AlertsService:
 __all__ = [
     "AlertEmailSender",
     "AlertRepositoryProtocol",
-    "AlertsService",
     "AlertsCoordinatorProtocol",
+    "AlertsService",
     "DatabaseAlertRepository",
-    "InMemoryAlertRepository",
     "EmailTransport",
+    "InMemoryAlertRepository",
     "InMemoryEmailTransport",
     "get_alerts_service",
 ]

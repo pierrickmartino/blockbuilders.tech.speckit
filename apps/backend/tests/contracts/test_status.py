@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from http import HTTPStatus
 
 from app.api.status import get_status_service
+from app.factory import create_app
 from app.schemas.ohlcv import Interval, IssueType, RemediationEntry, StatusState, VendorState
 from app.services.status_service import StatusServiceProtocol
 
@@ -13,12 +14,14 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport
 
-from app.factory import create_app
+EXPECTED_ASSET_COUNT = 2
+STALE_FRESHNESS_LIMIT = 10
+EXPECTED_REMEDIATION_ITEMS = 2
 
 
 class FakeStatusService(StatusServiceProtocol):
     def __init__(self) -> None:
-        now = datetime.now(timezone.utc)
+        now = datetime.now(UTC)
         self._summary = [
             {
                 "asset": "BTC",
@@ -110,13 +113,13 @@ async def test_status_summary_returns_assets_and_filters_stale(status_client: ht
     payload = response.json()
     assert "assets" in payload
     assets = payload["assets"]
-    assert len(assets) == 2
+    assert len(assets) == EXPECTED_ASSET_COUNT
 
     btc = next(item for item in assets if item["asset"] == "BTC")
     assert btc["interval"] == Interval.MINUTE.value
     assert btc["status"] == StatusState.HEALTHY.value
     assert btc["vendor_status"] == VendorState.UP.value
-    assert btc["freshness_minutes"] <= 10
+    assert btc["freshness_minutes"] <= STALE_FRESHNESS_LIMIT
 
     stale_response = await status_client.get("/status/summary", params={"only_stale": "true"})
     stale_payload = stale_response.json()
@@ -130,7 +133,7 @@ async def test_remediation_filters_by_asset_and_issue(status_client: httpx.Async
     response = await status_client.get("/status/remediation")
     assert response.status_code == HTTPStatus.OK
     items = response.json()["items"]
-    assert len(items) == 2
+    assert len(items) == EXPECTED_REMEDIATION_ITEMS
     assert {item["issue_type"] for item in items} == {IssueType.GAP.value, IssueType.CHECKSUM_MISMATCH.value}
 
     filtered = await status_client.get(
