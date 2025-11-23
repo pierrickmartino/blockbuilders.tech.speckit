@@ -1,4 +1,7 @@
-export const STATUS_API_BASE_URL = process.env.STATUS_API_BASE_URL ?? 'http://localhost:8000';
+export const STATUS_API_BASE_URL =
+  process.env.NEXT_PUBLIC_STATUS_API_BASE_URL ??
+  process.env.STATUS_API_BASE_URL ??
+  'http://localhost:8000';
 
 type Interval = 'minute' | 'day';
 type VendorState = 'up' | 'degraded' | 'down' | 'rate_limited';

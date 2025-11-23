@@ -67,6 +67,10 @@ services:
       dockerfile: configs/docker/frontend.Dockerfile
     env_file:
       - ../../apps/frontend/.env.local
+    environment:
+      # Point the Next.js client at the FastAPI service running in this Compose network
+      STATUS_API_BASE_URL: http://backend:8000
+      ONBOARDING_API_URL: http://backend:8000
     command:
       - pnpm
       - --filter
