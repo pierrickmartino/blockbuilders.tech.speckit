@@ -234,7 +234,7 @@ class AlertEmailSender:
             f"Asset: {asset_status.asset}\n"
             f"Interval: {asset_status.interval.value}\n"
             f"Lag minutes: {alert.lag_minutes}\n"
-            f"Vendor status: {asset_status.vendor_status or 'unknown'}\n"
+            f"Vendor status: {(asset_status.vendor_status.value if asset_status.vendor_status else 'unknown')}\n"
             f"Incident id: {alert.id}\n"
             f"Last timestamp: {asset_status.latest_timestamp}\n"
             f"Status page: {self._status_page_url}\n"

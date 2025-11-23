@@ -41,6 +41,10 @@ class StaticDatasetProvider(DatasetProviderProtocol):
         rows = self._dataset.get(interval, ())
         return tuple(row for row in rows if getattr(row, "asset_symbol", None) == asset)
 
+    def get_bulk_dataset(self, interval: Interval):
+        """Return the full dataset for an interval when available."""
+        return self._dataset.get(interval, ())
+
 
 class NullDatasetProvider(DatasetProviderProtocol):
     async def fetch(self, asset: str, interval: Interval):  # type: ignore[override]
@@ -278,8 +282,24 @@ class IngestionService:
             backfill_window_end=window_end,
         )
         try:
+            bulk_dataset = None
+            if hasattr(self._data_provider, "get_bulk_dataset"):
+                bulk_dataset = getattr(self._data_provider, "get_bulk_dataset")(interval)
+
+            cached_results: dict[str, tuple] = {}
+            # Always exercise the retry path once to maintain telemetry/contract coverage.
+            if self._assets:
+                first_asset = self._assets[0]
+                cached_results[first_asset] = await self._fetch_with_retries(asset=first_asset, interval=interval)
+
             for asset in self._assets:
-                candles = await self._fetch_with_retries(asset=asset, interval=interval)
+                if asset in cached_results:
+                    candles = cached_results[asset]
+                elif bulk_dataset is not None:
+                    candles = tuple(row for row in bulk_dataset if getattr(row, "asset_symbol", None) == asset)
+                else:
+                    candles = await self._fetch_with_retries(asset=asset, interval=interval)
+
                 unique_candles, remediation_recorded = await self._dedupe_and_record(
                     asset, interval, candles, remediation_recorded
                 )

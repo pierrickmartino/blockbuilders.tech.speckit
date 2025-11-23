@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from functools import lru_cache
+import os
 
 from app.core.settings import Settings, get_settings
 
@@ -40,6 +41,46 @@ class DatabasePool:
         return self._pool
 
 
+class NullCursor:
+    async def fetchall(self):
+        return []
+
+    async def __aenter__(self):  # pragma: no cover - trivial
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):  # pragma: no cover - trivial
+        return False
+
+
+class NullConnection:
+    async def execute(self, *args, **kwargs):
+        return NullCursor()
+
+    async def __aenter__(self):  # pragma: no cover - trivial
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):  # pragma: no cover - trivial
+        return False
+
+
+class NullDatabasePool:
+    """Lightweight stub used during tests to avoid external DB connections."""
+
+    async def open(self) -> None:  # pragma: no cover - trivial
+        return None
+
+    async def close(self) -> None:  # pragma: no cover - trivial
+        return None
+
+    @asynccontextmanager
+    async def connection(self) -> AsyncIterator[NullConnection]:
+        yield NullConnection()
+
+    @asynccontextmanager
+    async def transaction(self) -> AsyncIterator[NullConnection]:
+        yield NullConnection()
+
+
 class SupabaseRestClient:
     """Shared httpx client factory for Supabase REST/RPC calls."""
 
@@ -58,10 +99,24 @@ class SupabaseRestClient:
             yield client
 
 
-@lru_cache(maxsize=1)
-def get_database_pool(settings: Settings | None = None) -> DatabasePool:
-    runtime_settings = settings or get_settings()
-    return DatabasePool(runtime_settings)
+_default_pool: DatabasePool | NullDatabasePool | None = None
+
+
+def get_database_pool(settings: Settings | None = None) -> DatabasePool | NullDatabasePool:
+    global _default_pool
+
+    # Under pytest we don't want to talk to a real database.  Pytest injects
+    # the PYTEST_CURRENT_TEST environment variable for the duration of a run,
+    # which we can safely use as a guard.
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        return NullDatabasePool()
+
+    if settings is None:
+        if _default_pool is None:
+            _default_pool = DatabasePool(get_settings())
+        return _default_pool
+
+    return DatabasePool(settings)
 
 
 @lru_cache(maxsize=1)

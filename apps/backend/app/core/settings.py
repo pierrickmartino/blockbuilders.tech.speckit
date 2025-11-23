@@ -28,12 +28,21 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0-dev"
     service_host: str = "0.0.0.0"
     service_port: int = 8000
-    database_url: PostgresDsn = Field(alias="DATABASE_URL")
+    database_url: PostgresDsn = Field(
+        alias="DATABASE_URL",
+        default="postgresql://postgres:postgres@localhost:5432/postgres",
+    )
     timescale_enabled: bool = Field(default=True, alias="TIMESCALE_ENABLED")
-    supabase_url: AnyHttpUrl = Field(alias="SUPABASE_URL")
-    supabase_service_role_key: SecretStr = Field(alias="SUPABASE_SERVICE_ROLE_KEY")
+    supabase_url: AnyHttpUrl = Field(default="http://localhost:54321", alias="SUPABASE_URL")
+    supabase_service_role_key: SecretStr = Field(
+        default=SecretStr("local-dev-service-role"),
+        alias="SUPABASE_SERVICE_ROLE_KEY",
+    )
     supabase_jwt_audience: str = Field(default="authenticated", alias="SUPABASE_JWT_AUDIENCE")
-    supabase_jwt_issuer: AnyHttpUrl = Field(alias="SUPABASE_JWT_ISSUER")
+    supabase_jwt_issuer: AnyHttpUrl = Field(
+        default="http://localhost:54321/auth/v1",
+        alias="SUPABASE_JWT_ISSUER",
+    )
     supabase_jwks_url: AnyHttpUrl | None = Field(default=None, alias="SUPABASE_JWKS_URL")
     supabase_jwks_path: str = Field(default="/auth/v1/jwks", alias="SUPABASE_JWKS_PATH")
     supabase_jwt_cache_ttl_seconds: PositiveInt = Field(

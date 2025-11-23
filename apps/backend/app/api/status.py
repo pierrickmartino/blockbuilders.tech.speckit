@@ -2,7 +2,12 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from app.schemas.ohlcv import IssueType, RemediationResponse, StatusSummaryResponse
+from app.schemas.ohlcv import (
+    IssueType,
+    PublicAssetStatus,
+    PublicStatusSummaryResponse,
+    RemediationResponse,
+)
 from app.services.status_service import StatusServiceProtocol, get_status_service
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -12,15 +17,21 @@ router = APIRouter(prefix="/status", tags=["status"])
 StatusServiceDep = Annotated[StatusServiceProtocol, Depends(get_status_service)]
 
 
-@router.get("/summary", status_code=status.HTTP_200_OK, response_model=StatusSummaryResponse)
+@router.get(
+    "/summary",
+    status_code=status.HTTP_200_OK,
+    response_model=PublicStatusSummaryResponse,
+    response_model_exclude_none=True,
+)
 async def get_status_summary(
     service: StatusServiceDep,
     only_stale: Annotated[bool, Query(description="Return only stale assets", alias="only_stale")] = False,
-) -> StatusSummaryResponse:
+) -> PublicStatusSummaryResponse:
     """Return coverage and freshness per asset/interval."""
 
     assets = await service.get_summary(only_stale=only_stale)
-    return StatusSummaryResponse(assets=assets)
+    public_assets = [PublicAssetStatus.model_validate(asset) for asset in assets]
+    return PublicStatusSummaryResponse(assets=public_assets)
 
 
 @router.get("/remediation", status_code=status.HTTP_200_OK, response_model=RemediationResponse)

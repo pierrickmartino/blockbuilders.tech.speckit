@@ -64,7 +64,7 @@ async def get_ingestion_run(
     response_model=IngestionRun,
 )
 async def get_latest_ingestion_run(
-    interval: Annotated[Interval, Query(description="Interval to query", default=Interval.DAY)],
+    interval: Annotated[Interval, Query(description="Interval to query")],
     service: IngestionServiceDep,
 ) -> IngestionRun:
     run = await service.latest_run(interval=interval)
@@ -81,7 +81,10 @@ async def get_latest_ingestion_run(
 )
 async def get_failure_log(
     service: IngestionServiceDep,
-    window_days: Annotated[int, Query(ge=1, le=90, description="Lookback window for failure log", default=30)] = 30,
+    window_days: Annotated[
+        int,
+        Query(ge=1, le=90, description="Lookback window for failure log"),
+    ] = 30,
 ) -> list[IngestionRun]:
     return list(await service.failure_log(window_days=window_days))
 

@@ -173,8 +173,27 @@ class AssetStatus(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class PublicAssetStatus(BaseModel):
+    """Minimal asset status surface for public/status endpoints."""
+
+    asset: str
+    interval: Interval
+    coverage_start: datetime | None
+    coverage_end: datetime | None
+    latest_timestamp: datetime | None
+    freshness_minutes: float | None
+    status: StatusState
+    vendor_status: VendorState | None = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class StatusSummaryResponse(BaseModel):
     assets: list[AssetStatus]
+
+
+class PublicStatusSummaryResponse(BaseModel):
+    assets: list[PublicAssetStatus]
 
 
 class RemediationResponse(BaseModel):
@@ -196,6 +215,8 @@ __all__ = [
     "IngestionTrigger",
     "Interval",
     "IssueType",
+    "PublicAssetStatus",
+    "PublicStatusSummaryResponse",
     "LineageEntry",
     "LineageResponse",
     "RemediationEntry",
