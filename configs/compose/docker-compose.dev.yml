@@ -7,6 +7,9 @@ services:
       dockerfile: configs/docker/backend.Dockerfile
     env_file:
       - ../../apps/backend/.env
+    environment:
+      # Point backend at the Timescale/Postgres container instead of localhost inside Compose
+      DATABASE_URL: postgresql://postgres:postgres@timescaledb:5432/postgres
     command:
       - uv
       - run
@@ -32,6 +35,26 @@ services:
         - -f
         - http://localhost:8000/health
       interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app-network
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    container_name: timescaledb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "54322:5432"
+    volumes:
+      - timescaledb_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
@@ -76,6 +99,7 @@ services:
 volumes:
   backend_uv_cache:
   frontend_pnpm_store:
+  timescaledb_data:
 
 networks:
   app-network:
