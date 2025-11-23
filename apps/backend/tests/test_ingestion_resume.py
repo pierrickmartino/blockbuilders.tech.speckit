@@ -34,5 +34,5 @@ async def test_resume_after_interrupt_remains_idempotent() -> None:
 
     final_run = await service.run_backfill(interval=Interval.MINUTE)
 
-    assert repo.count_candles(interval=Interval.MINUTE) == EXPECTED_ROW_COUNTS[Interval.MINUTE]
+    assert await repo.count_candles(interval=Interval.MINUTE) == EXPECTED_ROW_COUNTS[Interval.MINUTE]
     assert final_run.checksum_sha256 == EXPECTED_CHECKSUMS[Interval.MINUTE]

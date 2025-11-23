@@ -68,7 +68,7 @@ create table if not exists ingestion_runs (
     ended_at timestamptz,
     status ingestion_status not null,
     row_count integer not null default 0 check (row_count >= 0),
-    checksum_sha256 text not null,
+    checksum_sha256 text not null default '',
     checksum_version smallint not null default 1,
     error_summary text,
     attempt smallint not null default 1 check (attempt >= 1),

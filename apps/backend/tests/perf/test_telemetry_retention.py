@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 
+import pytest
+
 from app.schemas.ohlcv import IngestionStatus, Interval
 from app.services.checksum import ChecksumHelper
 from app.services.ingestion import (
@@ -13,7 +15,8 @@ from app.services.ingestion import (
 from tests.fixtures.ohlcv_seed import SEED_CANDLES
 
 
-def test_metrics_snapshot_trims_runs_beyond_30_days() -> None:
+@pytest.mark.asyncio
+async def test_metrics_snapshot_trims_runs_beyond_30_days() -> None:
     now = datetime.now(UTC)
     repo = InMemoryIngestionRepository()
     service = IngestionService(
@@ -37,7 +40,7 @@ def test_metrics_snapshot_trims_runs_beyond_30_days() -> None:
         ended_at=now - timedelta(days=40, minutes=1),
     )
 
-    snapshot = service.metrics_snapshot(window_days=30)
+    snapshot = await service.metrics_snapshot(window_days=30)
 
     assert snapshot["total_runs"] == 1
     assert snapshot["success_rate"] == 1.0

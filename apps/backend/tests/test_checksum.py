@@ -40,6 +40,6 @@ async def test_upsert_is_idempotent_with_duplicate_buckets() -> None:
     second = await service.run_backfill(interval=Interval.MINUTE)
 
     assert second.checksum_sha256 == EXPECTED_CHECKSUMS[Interval.MINUTE]
-    assert repo.count_candles(interval=Interval.MINUTE) == EXPECTED_ROW_COUNTS[Interval.MINUTE]
+    assert await repo.count_candles(interval=Interval.MINUTE) == EXPECTED_ROW_COUNTS[Interval.MINUTE]
     duplicate_entries = [entry for entry in repo.remediation_entries if entry.issue_type is IssueType.DUPLICATE]
     assert len(duplicate_entries) >= 1

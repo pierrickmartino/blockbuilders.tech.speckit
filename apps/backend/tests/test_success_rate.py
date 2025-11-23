@@ -42,7 +42,7 @@ async def test_success_rate_handles_retries_and_failures() -> None:
         ended_at=now - timedelta(days=1, minutes=4),
     )
 
-    rate = service.success_rate(window_days=30)
+    rate = await service.success_rate(window_days=30)
     assert rate >= SUCCESS_RATE_THRESHOLD
 
 
@@ -71,7 +71,7 @@ async def test_success_rate_drops_old_runs_beyond_retention() -> None:
         ended_at=now - timedelta(days=2, minutes=3),
     )
 
-    rate = service.success_rate(window_days=30)
+    rate = await service.success_rate(window_days=30)
     assert rate == 1.0
-    snapshot = repo.metrics_snapshot(window_days=30)
+    snapshot = await repo.metrics_snapshot(window_days=30)
     assert snapshot["total_runs"] == 1

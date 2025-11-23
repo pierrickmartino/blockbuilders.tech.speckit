@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from functools import lru_cache
@@ -18,20 +19,35 @@ class DatabasePool:
 
     def __init__(self, settings: Settings) -> None:
         self._pool = AsyncConnectionPool(str(settings.database_url), open=False, kwargs={"row_factory": dict_row})
+        self._open_lock = asyncio.Lock()
+        self._is_open = False
 
     async def open(self) -> None:
-        await self._pool.open()
+        async with self._open_lock:
+            if not self._is_open:
+                await self._pool.open()
+                self._is_open = True
 
     async def close(self) -> None:
-        await self._pool.close()
+        async with self._open_lock:
+            if self._is_open:
+                await self._pool.close()
+                self._is_open = False
+
+    async def _ensure_open(self) -> None:
+        if self._is_open:
+            return
+        await self.open()
 
     @asynccontextmanager
     async def connection(self) -> AsyncIterator[AsyncConnection]:
+        await self._ensure_open()
         async with self._pool.connection() as conn:
             yield conn
 
     @asynccontextmanager
     async def transaction(self) -> AsyncIterator[AsyncConnection]:
+        await self._ensure_open()
         async with self._pool.connection() as conn:
             async with conn.transaction():
                 yield conn
@@ -44,6 +60,9 @@ class DatabasePool:
 class NullCursor:
     async def fetchall(self):
         return []
+
+    async def fetchone(self):
+        return None
 
     async def __aenter__(self):  # pragma: no cover - trivial
         return self
