@@ -58,6 +58,24 @@ create table if not exists assets (
     updated_at timestamptz not null default now(),
     constraint assets_symbol_allowed check (symbol in ('BTC','ETH','SOL','USDC','USDT','AAVE','LINK','DOGE','BNB','XRP'))
 );
+insert into assets (symbol, name, base, quote, vendor_ref)
+values
+    ('BTC', 'Bitcoin', 'BTC', 'USD', 'btc-usd'),
+    ('ETH', 'Ethereum', 'ETH', 'USD', 'eth-usd'),
+    ('SOL', 'Solana', 'SOL', 'USD', 'sol-usd'),
+    ('USDC', 'USD Coin', 'USDC', 'USD', 'usdc-usd'),
+    ('USDT', 'Tether', 'USDT', 'USD', 'usdt-usd'),
+    ('AAVE', 'Aave', 'AAVE', 'USD', 'aave-usd'),
+    ('LINK', 'Chainlink', 'LINK', 'USD', 'link-usd'),
+    ('DOGE', 'Dogecoin', 'DOGE', 'USD', 'doge-usd'),
+    ('BNB', 'BNB', 'BNB', 'USD', 'bnb-usd'),
+    ('XRP', 'XRP', 'XRP', 'USD', 'xrp-usd')
+on conflict (symbol) do update
+set name = excluded.name,
+    base = excluded.base,
+    quote = excluded.quote,
+    vendor_ref = excluded.vendor_ref,
+    updated_at = now();
 
 -- Ingestion runs metadata
 create table if not exists ingestion_runs (

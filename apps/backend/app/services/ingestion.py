@@ -385,8 +385,10 @@ class PostgresIngestionRepository(IngestionRepositoryProtocol):
         """
 
         async with self._pool.transaction() as conn:
-            await conn.executemany(candle_query, rows)
-            await conn.executemany(lineage_query, lineage)
+            for params in rows:
+                await conn.execute(candle_query, params)
+            for params in lineage:
+                await conn.execute(lineage_query, params)
 
         return len(rows)
 
@@ -550,8 +552,15 @@ class IngestionService:
         all_candles = []
         remediation_recorded = False
 
+        if self._assets:
+            representative_asset = self._assets[0]
+        elif ASSET_SYMBOLS:
+            representative_asset = ASSET_SYMBOLS[0]
+        else:
+            raise RuntimeError("no asset symbols available to create a backfill run")
+
         batch_run = await self._repository.create_run(
-            asset_symbol="*",
+            asset_symbol=representative_asset,
             interval=interval,
             trigger=trigger,
             backfill_window_start=window_start,
